@@ -1,36 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
-import 'package:jendela_dbp/controller/category_controller.dart';
+import 'package:jendela_dbp/blocs/book_bloc.dart';
+import 'package:jendela_dbp/components/bottom_nav_bar.dart';
+import 'package:jendela_dbp/view/audiobooks.dart';
+import 'package:jendela_dbp/view/book_detail.dart';
+import 'package:jendela_dbp/view/home.dart';
+import 'package:jendela_dbp/view/profile.dart';
+import 'package:jendela_dbp/view/saved_books.dart';
 
-import 'controller/home_controller.dart';
+import 'blocs/bottom_nav_bloc.dart';
 
-import 'package:jendela_dbp/view/home_view.dart';
+
+import 'blocs/category_bloc.dart';
+import 'components/book_list.dart';
 
 void main() {
   runApp(const JendelaDBP());
 }
 
-class JendelaDBP extends StatefulWidget {
-  const JendelaDBP({super.key});
+class JendelaDBP extends StatelessWidget {
+  const JendelaDBP({Key? key}) : super(key: key);
 
-  @override
-  State<JendelaDBP> createState() => _JendelaDBPState();
-}
-
-class _JendelaDBPState extends State<JendelaDBP> {
   @override
   Widget build(BuildContext context) {
-    Get.put(HomeController());
-    Get.put(CategoryController());
-    return  GetMaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 123, 123, 123)),
-        textTheme: GoogleFonts.interTextTheme(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<BottomNavBloc>(
+          create: (context) => BottomNavBloc(),
+        ),
+        BlocProvider<CategoryBloc>(
+          create: (context) => CategoryBloc(),
+        ),
+        BlocProvider<BookListBloc>(
+          create: (context) => BookListBloc()..add(LoadBookListEvent()),
+          child: const BookList(),
+        ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 123, 123, 123),
+          ),
+          textTheme: GoogleFonts.interTextTheme(),
+        ),
+        routes: {
+          // bottom nav bar
+          '/home': (context) => const Home(),
+          '/savedBooks': (context) => const SavedBooks(),
+          '/audiobooks': (context) => const Audiobooks(),
+          '/profile': (context) => const Profile(),
+
+          //pages
+          '/bookDetail': (context) => const BookDetail()
+        },
+        home: const Home(),
       ),
-      home: const HomeView(),
     );
   }
 }

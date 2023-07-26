@@ -51,7 +51,7 @@ class BookDetail extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Column(
-                        mainAxisAlignment:  MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'Page',
@@ -61,30 +61,31 @@ class BookDetail extends StatelessWidget {
                           Text(
                             '244',
                             style: TextStyle(
+                                fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 123, 123, 123)),
                           )
                         ],
                       ),
                       Column(
-                        mainAxisAlignment:  MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'language',
+                            'Language',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 123, 123, 123)),
                           ),
                           Text(
                             'Malay',
-                            
                             style: TextStyle(
+                                fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 123, 123, 123)),
                           )
                         ],
                       ),
                       Column(
-                        mainAxisAlignment:  MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'Audio',
@@ -94,6 +95,7 @@ class BookDetail extends StatelessWidget {
                           Text(
                             '3hr',
                             style: TextStyle(
+                                fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 123, 123, 123)),
                           )
@@ -101,6 +103,102 @@ class BookDetail extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20, left: 25),
+                  child: Row(
+                    children: [
+                      Text('What\'s it about?',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17)),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  child: Container(
+                    child: const Text(
+                      'Sekumpulan angkawasan maut tatkala Stesen Angkasa Antarabangsa Ceres meletup. Namun, kematian itu amat janggal sifatnya. Mereka mendapati diri mereka hidup semula terawang-awang di angkasa lepas dengan perubahan ketara pada jasad mereka, iaitu mereka menjadi sejenis makhluk bercahaya. Apakah pengakhiran kehidupan mereka?',
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Color.fromARGB(255, 123, 123, 123),
+                          height: 1.5),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 7.5, top: 15),
+                  child: Row(
+                    children: [
+                      TextButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'Chapter >',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 235, 127, 35),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          )),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                            side: const BorderSide(
+                                color: Color.fromARGB(255, 235, 127, 35))),
+                        onPressed: () {},
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.import_contacts_rounded,
+                                color: Color.fromARGB(255, 235, 127, 35),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Read Book',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 235, 127, 35)),
+                              )
+                            ],
+                          ),
+                        )),
+                    OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 235, 127, 35),
+                          side: const BorderSide(
+                            color: Color.fromARGB(255, 235, 127, 35),
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.headphones_rounded,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Play Book',
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        )),
+                  ],
                 )
               ],
             ),

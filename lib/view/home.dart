@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
-
-import 'package:jendela_dbp/controller/book_controller.dart';
-import 'package:jendela_dbp/controller/category_controller.dart';
-import 'package:jendela_dbp/view/book_detail.dart';
+import 'package:jendela_dbp/components/book_list.dart';
+import 'package:jendela_dbp/components/bottom_nav_bar.dart';
+import 'package:jendela_dbp/components/category_buttons.dart';
+import 'package:jendela_dbp/components/top_header_home.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,50 +22,23 @@ class Home extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.account_circle_outlined,
-                color: Color.fromARGB(255, 123, 123, 123),
-                size: 40,
-              ))
+            onPressed: () {},
+            icon: const Icon(
+              Icons.account_circle_outlined,
+              color: Color.fromARGB(255, 123, 123, 123),
+              size: 40,
+            ),
+          ),
         ],
       ),
+      bottomNavigationBar: const BottomNavBar(),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: ListView(
           children: [
-            // hamburger icon and user icon
-
-            // first two text on top of screen
-            const Padding(
-              padding:
-                  EdgeInsets.only(top: 10.0, left: 15, right: 15, bottom: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    'Hello User!',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 123, 123, 123)),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    'We have some awesome books for you',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 51, 51, 51)),
-                  )
-                ],
-              ),
-            ),
+            const TopHeader(),
             //search bar
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
@@ -117,50 +89,11 @@ class Home extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  SizedBox(
-                    height: 30,
-                    child: GetBuilder<CategoryController>(
-                      builder: (controller) => ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.categories.length,
-                        itemBuilder: (context, index) {
-                          final double leftPadding = index == 0 ? 20 : 10;
-                          final category = controller.categories[index];
-                          return Padding(
-                            padding: EdgeInsets.only(left: leftPadding),
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor: category.isSelected
-                                    ? const Color.fromARGB(255, 144, 191, 63)
-                                    : Colors.white,
-                                side: BorderSide(
-                                  color: category.isSelected
-                                      ? const Color.fromARGB(255, 144, 191, 63)
-                                      : const Color.fromARGB(
-                                          255, 236, 236, 236),
-                                ),
-                              ),
-                              onPressed: () {
-                                controller.onCategoryPressed(index);
-                              },
-                              child: Text(
-                                category.name,
-                                style: TextStyle(
-                                  color: category.isSelected
-                                      ? Colors.white
-                                      : const Color.fromARGB(
-                                          255, 123, 123, 123),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                  CategoryButtons()
                 ],
               ),
             ),
+
             // books (new releases)
             Column(
               children: [
@@ -187,110 +120,9 @@ class Home extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: GestureDetector(
-                    onTap: (){Get.to(const BookDetail());},
-                    child: SizedBox(
-                      height: 300,
-                      child: Obx(
-                        () => ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: BookController().books.length,
-                          itemBuilder: (context, index) {
-                            final book = BookController().books[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 15),
-                              child: SizedBox(
-                                height: 300,
-                                width: 150,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Card(
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        child: Stack(
-                                          children: [
-                                            Image.asset(
-                                              book.imagePath,
-                                              height: 230,
-                                              fit: BoxFit.fill,
-                                            ),
-                                            Positioned(
-                                              top: 2,
-                                              right: 2,
-                                              child: CircleAvatar(
-                                                radius: 15,
-                                                backgroundColor:
-                                                    const Color.fromARGB(
-                                                        230, 128, 128, 128),
-                                                child: Center(
-                                                  child: Transform.translate(
-                                                    offset:
-                                                        const Offset(-2.7, -1.7),
-                                                    child: IconButton(
-                                                      onPressed: () {},
-                                                      icon: const Icon(
-                                                        Icons
-                                                            .favorite_border_rounded,
-                                                        color: Colors.white,
-                                                        size: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 7,
-                                          right:
-                                              40.0), // Adjust the left padding as per your preference
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            book.title,
-                                            style: const TextStyle(
-                                              fontSize: 17,
-                                              color:
-                                                  Color.fromARGB(255, 51, 51, 51),
-                                            ),
-                                          ),
-                                          Text(
-                                            book.author,
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                              color: Color.fromARGB(
-                                                  255, 123, 123, 123),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                )
+                const SizedBox(height: 300, child: BookList())
               ], // Column Children
             ),
-            // books (recommended)
             Column(
               children: [
                 Padding(
@@ -316,107 +148,7 @@ class Home extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: GestureDetector(
-                    onTap: (){},
-                    child: SizedBox(
-                      height: 300,
-                      child: Obx(
-                        () => ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: BookController().books.length,
-                          itemBuilder: (context, index) {
-                            final book = BookController().books[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 15),
-                              child: SizedBox(
-                                height: 300,
-                                width: 150,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Card(
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        child: Stack(
-                                          children: [
-                                            Image.asset(
-                                              book.imagePath,
-                                              height: 230,
-                                              fit: BoxFit.fill,
-                                            ),
-                                            Positioned(
-                                              top: 2,
-                                              right: 2,
-                                              child: CircleAvatar(
-                                                radius: 15,
-                                                backgroundColor:
-                                                    const Color.fromARGB(
-                                                        230, 128, 128, 128),
-                                                child: Center(
-                                                  child: Transform.translate(
-                                                    offset:
-                                                        const Offset(-2.7, -1.7),
-                                                    child: IconButton(
-                                                      onPressed: () {},
-                                                      icon: const Icon(
-                                                        Icons
-                                                            .favorite_border_rounded,
-                                                        color: Colors.white,
-                                                        size: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 7,
-                                          right:
-                                              40.0), // Adjust the left padding as per your preference
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            book.title,
-                                            style: const TextStyle(
-                                              fontSize: 17,
-                                              color:
-                                                  Color.fromARGB(255, 51, 51, 51),
-                                            ),
-                                          ),
-                                          Text(
-                                            book.author,
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                              color: Color.fromARGB(
-                                                  255, 123, 123, 123),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                )
+                const SizedBox(height: 300, child: BookList())
               ], // Column Children
             ),
           ],
