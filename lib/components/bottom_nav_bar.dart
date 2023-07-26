@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/blocs/bottom_nav_bloc.dart';
-import 'package:jendela_dbp/view/audiobooks.dart';
-import 'package:jendela_dbp/view/bottom_nav_tab.dart';
-import 'package:jendela_dbp/view/home.dart';
-import 'package:jendela_dbp/view/profile.dart';
-import 'package:jendela_dbp/view/saved_books.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({Key? key});

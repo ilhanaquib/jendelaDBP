@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:jendela_dbp/blocs/bottom_nav_bloc.dart';
-import 'package:jendela_dbp/view/home.dart';
-import 'package:jendela_dbp/view/profile.dart';
-import 'package:jendela_dbp/view/saved_books.dart';
 
-import 'audiobooks.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -26,7 +22,7 @@ class BottomNav extends StatelessWidget {
                           item.iconData,
                           color: state.selectedIndex ==
                                   state.bottomNavItems.indexOf(item)
-                              ? Colors.orange
+                              ? const Color.fromARGB(255, 235, 127, 35)
                               : const Color.fromARGB(255, 123, 123, 123),
                           size: 40,
                         ),
@@ -41,7 +37,7 @@ class BottomNav extends StatelessWidget {
               BlocProvider.of<BottomNavBloc>(context)
                   .add(SelectTabEvent(index));
             },
-            selectedItemColor: Colors.orange,
+            selectedItemColor: const Color.fromARGB(255, 235, 127, 35),
             unselectedItemColor: const Color.fromARGB(255, 123, 123, 123),
             type: BottomNavigationBarType.fixed,
             showSelectedLabels: true,

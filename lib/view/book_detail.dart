@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/components/chapter_list.dart';
 
 class BookDetail extends StatelessWidget {
   const BookDetail({super.key});
+
+  void bottomSheet(BuildContext context){
+    showModalBottomSheet<void>(context: context, builder: (BuildContext context){
+      return const ChapterList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
-        centerTitle: true,
-        title: const Text('Details Book'),
       ),
       body: Stack(
         children: [
@@ -105,7 +110,7 @@ class BookDetail extends StatelessWidget {
                   ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.only(top: 20, left: 25),
+                  padding: EdgeInsets.only(top: 30, left: 20),
                   child: Row(
                     children: [
                       Text('What\'s it about?',
@@ -115,7 +120,7 @@ class BookDetail extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: Container(
                     child: const Text(
                       'Sekumpulan angkawasan maut tatkala Stesen Angkasa Antarabangsa Ceres meletup. Namun, kematian itu amat janggal sifatnya. Mereka mendapati diri mereka hidup semula terawang-awang di angkasa lepas dengan perubahan ketara pada jasad mereka, iaitu mereka menjadi sejenis makhluk bercahaya. Apakah pengakhiran kehidupan mereka?',
@@ -131,7 +136,7 @@ class BookDetail extends StatelessWidget {
                   child: Row(
                     children: [
                       TextButton(
-                          onPressed: () {},
+                          onPressed: (){bottomSheet(context);},
                           child: const Text(
                             'Chapter >',
                             style: TextStyle(
@@ -143,13 +148,15 @@ class BookDetail extends StatelessWidget {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OutlinedButton(
                         style: OutlinedButton.styleFrom(
                             side: const BorderSide(
                                 color: Color.fromARGB(255, 235, 127, 35))),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/bookRead');
+                        },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
@@ -170,6 +177,7 @@ class BookDetail extends StatelessWidget {
                             ],
                           ),
                         )),
+                    const SizedBox(width: 29,),
                     OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           backgroundColor:

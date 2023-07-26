@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jendela_dbp/blocs/book_bloc.dart';
-import 'package:jendela_dbp/components/bottom_nav_bar.dart';
 import 'package:jendela_dbp/view/audiobooks.dart';
 import 'package:jendela_dbp/view/book_detail.dart';
+import 'package:jendela_dbp/view/book_read.dart';
 import 'package:jendela_dbp/view/home.dart';
 import 'package:jendela_dbp/view/profile.dart';
 import 'package:jendela_dbp/view/saved_books.dart';
@@ -54,7 +54,8 @@ class JendelaDBP extends StatelessWidget {
           '/profile': (context) => const Profile(),
 
           //pages
-          '/bookDetail': (context) => const BookDetail()
+          '/bookDetail': (context) => const BookDetail(),
+          '/bookRead': (context) => const BookRead()
         },
         home: const Home(),
       ),
