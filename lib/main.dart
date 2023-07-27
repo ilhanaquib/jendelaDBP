@@ -6,13 +6,13 @@ import 'package:jendela_dbp/blocs/book_bloc.dart';
 import 'package:jendela_dbp/blocs/appearance_button_bloc.dart';
 import 'package:jendela_dbp/blocs/font_button_bloc.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
-import 'package:jendela_dbp/view/audiobooks.dart';
-import 'package:jendela_dbp/view/book_detail.dart';
-import 'package:jendela_dbp/view/book_read.dart';
-import 'package:jendela_dbp/view/home.dart';
-import 'package:jendela_dbp/view/profile.dart';
-import 'package:jendela_dbp/view/saved_books.dart';
-import 'package:jendela_dbp/view/user.dart';
+import 'package:jendela_dbp/view/pages/audiobooks.dart';
+import 'package:jendela_dbp/view/pages/book_detail.dart';
+import 'package:jendela_dbp/view/pages/book_read.dart';
+import 'package:jendela_dbp/view/pages/home.dart';
+import 'package:jendela_dbp/view/pages/profile.dart';
+import 'package:jendela_dbp/view/pages/saved_books.dart';
+import 'package:jendela_dbp/view/pages/user.dart';
 
 import 'blocs/bottom_nav_bloc.dart';
 
