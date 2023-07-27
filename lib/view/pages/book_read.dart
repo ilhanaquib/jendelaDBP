@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/components/read_book/paragraphs.dart';
+import 'package:jendela_dbp/components/read_book/setting.dart';
+import 'package:jendela_dbp/components/read_book/slider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BookRead extends StatelessWidget {
   const BookRead({super.key});
 
+  void bottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        elevation: 0,
+        context: context,
+        builder: (BuildContext context) {
+          return const Setting();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    double currentPage = 1;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Reading Book'),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.menu))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                bottomSheet(context);
+              },
+              icon: const Icon(FontAwesomeIcons.ellipsisVertical))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 20),
@@ -37,26 +56,7 @@ class BookRead extends StatelessWidget {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Column(
-                children: [
-                  Text(
-                    '''    “Kita teruskan dengan bahagian yang seterusnya, yakni bahagian teknologi siber, Kapten Eng. Silakan.” Komander Zarnoush bergerak ke bahagian seterusnya.
-
-“Baiklah, Komander Zarnoush. Salam sejahtera semua. Di sini saya akan membentangkan maklumat berkenaan teknologi siber.” Kapten Eng memulakan bicaranya dengan kedengaran sedikit loghat cina.
-
-“Setakat hari ini, tidak ada lagi sebarang petanda mengenai ancaman serangan siber mahupun penggodam yang datanganya daripada bahagian dalam stesen angkasa ini. Namun, sensor luar stesen angkasa ini tidak dapat mengesan sebarang tindak balas peranti yang berdekatan. Ini disebabkan kebanyakan stesen angkasa milik negara lain sudah lama meninggalkan orbit bumi.” Kapten Eng menerangkan dengan jelas.
-
-    “Bagaimana pula dengan tanda-tanda radiasi di permukaan bumi?” Bertanya Komander Zarnoush, masih menaruh harapan yang tinggi. ''',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 123, 123, 123),
-                        fontSize: 15,
-                        height: 1.5),
-                  )
-                ],
-              ),
-            ),
+            const Paragraph(),
             const SizedBox(
               height: 15,
             ),
@@ -100,12 +100,27 @@ class BookRead extends StatelessWidget {
                 ),
               ],
             ),
-            // Slider(
-            //   value: currentPage,
-            //   min: 1,
-            //   max: 240,
-            //   onChanged:
-            // ),
+            const SliderWidget(),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  'Chapter 1',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 123, 123, 123),
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: 127,
+                ),
+                Text(
+                  'Completed 19%',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 123, 123, 123),
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            )
           ],
         ),
       ),

@@ -3,18 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jendela_dbp/blocs/book_bloc.dart';
+import 'package:jendela_dbp/blocs/appearance_button_bloc.dart';
+import 'package:jendela_dbp/blocs/font_button_bloc.dart';
+import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/view/audiobooks.dart';
 import 'package:jendela_dbp/view/book_detail.dart';
 import 'package:jendela_dbp/view/book_read.dart';
 import 'package:jendela_dbp/view/home.dart';
 import 'package:jendela_dbp/view/profile.dart';
 import 'package:jendela_dbp/view/saved_books.dart';
+import 'package:jendela_dbp/view/user.dart';
 
 import 'blocs/bottom_nav_bloc.dart';
 
-
 import 'blocs/category_bloc.dart';
-import 'components/book_list.dart';
+import 'components/home/book_list.dart';
 
 void main() {
   runApp(const JendelaDBP());
@@ -37,6 +40,14 @@ class JendelaDBP extends StatelessWidget {
           create: (context) => BookListBloc()..add(LoadBookListEvent()),
           child: const BookList(),
         ),
+        BlocProvider<AppearanceBloc>(
+          create: (context) => AppearanceBloc(),
+          child: const Setting(),
+        ),
+        BlocProvider<FontBloc>(
+          create: (context) => FontBloc(),
+          child: const Setting(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -55,7 +66,8 @@ class JendelaDBP extends StatelessWidget {
 
           //pages
           '/bookDetail': (context) => const BookDetail(),
-          '/bookRead': (context) => const BookRead()
+          '/bookRead': (context) => const BookRead(),
+          '/user':(context) => const User()
         },
         home: const Home(),
       ),

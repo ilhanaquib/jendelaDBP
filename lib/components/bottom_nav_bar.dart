@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/blocs/bottom_nav_bloc.dart';
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({Key? key});
+  const BottomNavBar({super.key});
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class BottomNavBar extends StatelessWidget {
         Navigator.pushReplacementNamed(context, '/savedBooks');
         break;
       case 2:
-        Navigator.pushReplacementNamed(context, '/audiobooks');
+        Navigator.pushNamed(context, '/audiobooks');
         break;
       case 3:
         Navigator.pushReplacementNamed(context, '/profile');

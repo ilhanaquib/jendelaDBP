@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/blocs/category_bloc.dart';
 
 class CategoryButtons extends StatelessWidget {
+  const CategoryButtons({super.key});
+
   @override
   Widget build(BuildContext context) {
     final categoryBloc = BlocProvider.of<CategoryBloc>(context);

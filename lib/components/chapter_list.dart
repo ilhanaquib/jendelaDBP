@@ -47,14 +47,14 @@ class ChapterList extends StatelessWidget {
               ),
             ],
           ),
-          trailing: Text(
+          trailing: const Text(
             '38min 45sec',
             style: TextStyle(
               fontSize: 13,
               color: Color.fromARGB(255, 123, 123, 123),
             ),
           ),
-          title: Text(
+          title: const Text(
             'Perjuangan Yang Belum Selesai',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),

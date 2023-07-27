@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:jendela_dbp/components/book_list.dart';
+import 'package:jendela_dbp/components/home/book_list.dart';
 import 'package:jendela_dbp/components/bottom_nav_bar.dart';
-import 'package:jendela_dbp/components/category_buttons.dart';
-import 'package:jendela_dbp/components/top_header_home.dart';
+import 'package:jendela_dbp/components/home/category_buttons.dart';
+import 'package:jendela_dbp/components/home/top_header_home.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -22,7 +23,9 @@ class Home extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/user');
+            },
             icon: const Icon(
               Icons.account_circle_outlined,
               color: Color.fromARGB(255, 123, 123, 123),
@@ -69,14 +72,14 @@ class Home extends StatelessWidget {
               ),
             ),
             // categories
-            Padding(
-              padding: const EdgeInsets.only(
+            const Padding(
+              padding:  EdgeInsets.only(
                 top: 20,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.only(right: 20, left: 20),
                     child: Text(
                       'Categories',
@@ -86,7 +89,7 @@ class Home extends StatelessWidget {
                           letterSpacing: 1),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 10,
                   ),
                   CategoryButtons()

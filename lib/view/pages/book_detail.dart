@@ -4,10 +4,14 @@ import 'package:jendela_dbp/components/chapter_list.dart';
 class BookDetail extends StatelessWidget {
   const BookDetail({super.key});
 
-  void bottomSheet(BuildContext context){
-    showModalBottomSheet<void>(context: context, builder: (BuildContext context){
-      return const ChapterList();
-    });
+  void bottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        elevation: 0,
+        context: context,
+        builder: (BuildContext context) {
+          return const ChapterList();
+        });
   }
 
   @override
@@ -18,7 +22,7 @@ class BookDetail extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          CurvedBackground(),
+          const CurvedBackground(),
           Center(
             child: Column(
               children: [
@@ -119,10 +123,10 @@ class BookDetail extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  child: Container(
-                    child: const Text(
+                const Padding(
+                  padding:  EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: SizedBox(
+                    child:  Text(
                       'Sekumpulan angkawasan maut tatkala Stesen Angkasa Antarabangsa Ceres meletup. Namun, kematian itu amat janggal sifatnya. Mereka mendapati diri mereka hidup semula terawang-awang di angkasa lepas dengan perubahan ketara pada jasad mereka, iaitu mereka menjadi sejenis makhluk bercahaya. Apakah pengakhiran kehidupan mereka?',
                       style: TextStyle(
                           fontSize: 15,
@@ -136,7 +140,9 @@ class BookDetail extends StatelessWidget {
                   child: Row(
                     children: [
                       TextButton(
-                          onPressed: (){bottomSheet(context);},
+                          onPressed: () {
+                            bottomSheet(context);
+                          },
                           child: const Text(
                             'Chapter >',
                             style: TextStyle(
@@ -177,7 +183,9 @@ class BookDetail extends StatelessWidget {
                             ],
                           ),
                         )),
-                    const SizedBox(width: 29,),
+                    const SizedBox(
+                      width: 29,
+                    ),
                     OutlinedButton(
                         style: OutlinedButton.styleFrom(
                           backgroundColor:
@@ -186,7 +194,9 @@ class BookDetail extends StatelessWidget {
                             color: Color.fromARGB(255, 235, 127, 35),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/audiobooks');
+                        },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
@@ -218,6 +228,8 @@ class BookDetail extends StatelessWidget {
 }
 
 class CurvedBackground extends StatelessWidget {
+  const CurvedBackground({super.key});
+
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
