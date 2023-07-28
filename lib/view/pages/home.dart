@@ -5,7 +5,6 @@ import 'package:jendela_dbp/components/bottom_nav_bar.dart';
 import 'package:jendela_dbp/components/home/category_buttons.dart';
 import 'package:jendela_dbp/components/home/top_header_home.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 

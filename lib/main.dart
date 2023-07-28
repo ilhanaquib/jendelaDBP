@@ -6,6 +6,9 @@ import 'package:jendela_dbp/blocs/book_bloc.dart';
 import 'package:jendela_dbp/blocs/appearance_button_bloc.dart';
 import 'package:jendela_dbp/blocs/font_button_bloc.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
+import 'package:jendela_dbp/view/authentication/create_new_password.dart';
+import 'package:jendela_dbp/view/authentication/forgot_password.dart';
+import 'package:jendela_dbp/view/authentication/signin.dart';
 import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:jendela_dbp/view/pages/book_detail.dart';
 import 'package:jendela_dbp/view/pages/book_read.dart';
@@ -13,18 +16,23 @@ import 'package:jendela_dbp/view/pages/home.dart';
 import 'package:jendela_dbp/view/pages/profile.dart';
 import 'package:jendela_dbp/view/pages/saved_books.dart';
 import 'package:jendela_dbp/view/pages/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'blocs/bottom_nav_bloc.dart';
 
 import 'blocs/category_bloc.dart';
 import 'components/home/book_list.dart';
 
-void main() {
-  runApp(const JendelaDBP());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final showHome = prefs.getBool('showHome') ?? false;
+  runApp(JendelaDBP(showHome: showHome));
 }
 
 class JendelaDBP extends StatelessWidget {
-  const JendelaDBP({Key? key}) : super(key: key);
+  const JendelaDBP({Key? key, required this.showHome}) : super(key: key);
+  final bool showHome;
 
   @override
   Widget build(BuildContext context) {
@@ -50,27 +58,33 @@ class JendelaDBP extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 123, 123, 123),
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 123, 123, 123),
+            ),
+            textTheme: GoogleFonts.interTextTheme(),
+            unselectedWidgetColor: const Color.fromARGB(255, 123, 123, 123),
+            checkboxTheme: CheckboxThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+            ),
           ),
-          textTheme: GoogleFonts.interTextTheme(),
-        ),
-        routes: {
-          // bottom nav bar
-          '/home': (context) => const Home(),
-          '/savedBooks': (context) => const SavedBooks(),
-          '/audiobooks': (context) => const Audiobooks(),
-          '/profile': (context) => const Profile(),
+          routes: {
+            // bottom nav bar
+            '/home': (context) => const Home(),
+            '/savedBooks': (context) => const SavedBooks(),
+            '/audiobooks': (context) => const Audiobooks(),
+            '/profile': (context) => const Profile(),
 
-          //pages
-          '/bookDetail': (context) => const BookDetail(),
-          '/bookRead': (context) => const BookRead(),
-          '/user':(context) => const User()
-        },
-        home: const Home(),
-      ),
+            //pages
+            '/bookDetail': (context) => const BookDetail(),
+            '/bookRead': (context) => const BookRead(),
+            '/user': (context) => const User()
+          },
+          home: const CreateNewPassword() //showHome ? const Home(): const OnboardScreen(),
+          ),
     );
   }
 }
