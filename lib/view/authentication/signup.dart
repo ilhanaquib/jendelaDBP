@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/authentication/auth_provider.dart';
 import 'package:jendela_dbp/components/authentication/form.dart';
+import 'package:jendela_dbp/components/authentication/password_form.dart';
 import 'package:jendela_dbp/components/authentication/auth_checkbox.dart';
 
 class Signup extends StatelessWidget {
@@ -9,6 +10,10 @@ class Signup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void goToSignin() {
+      Navigator.pushReplacementNamed(context, '/signin');
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
@@ -32,7 +37,7 @@ class Signup extends StatelessWidget {
                 children: [
                   Text(
                     'Let\'s Get Started',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   SizedBox(
                     height: 10,
@@ -40,18 +45,21 @@ class Signup extends StatelessWidget {
                   Text(
                     'Create your account,',
                     style: TextStyle(
+                      fontSize: 15,
                       color: Color.fromARGB(255, 123, 123, 123),
                     ),
                   ),
                   Text(
                     'it takes less than a minute',
                     style: TextStyle(
+                      fontSize: 15,
                       color: Color.fromARGB(255, 123, 123, 123),
                     ),
                   ),
                 ],
               ),
             ),
+            const SizedBox(height: 20,),
             AuthForm(
               fieldName: 'Username',
               fieldIcon: Icons.person_rounded,
@@ -60,9 +68,8 @@ class Signup extends StatelessWidget {
               fieldName: 'Email',
               fieldIcon: Icons.alternate_email_rounded,
             ),
-            AuthForm(
+            AuthPasswordForm(
               fieldName: 'Password',
-              fieldIcon: Icons.visibility_off,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 7),
@@ -106,7 +113,9 @@ class Signup extends StatelessWidget {
                       ),
                       backgroundColor: const Color.fromARGB(255, 235, 127, 35),
                       minimumSize: const Size.fromHeight(70)),
-                  onPressed: () async {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/verification');
+                  },
                   child: const Text(
                     'Create Account',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
@@ -114,7 +123,11 @@ class Signup extends StatelessWidget {
                 ),
               ),
             ),
-            AuthProvider(account: 'Already have an account?', orangeAccount: 'Sign In',)
+            AuthProvider(
+              account: 'Already have an account?',
+              orangeAccount: ' Sign In',
+              pageNavigator: goToSignin,
+            )
           ],
         ),
       ),

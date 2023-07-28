@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/authentication/auth_provider.dart';
 import 'package:jendela_dbp/components/authentication/form.dart';
 import 'package:jendela_dbp/components/authentication/auth_checkbox.dart';
+import 'package:jendela_dbp/components/authentication/password_form.dart';
 
 class Signin extends StatelessWidget {
   const Signin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    void goToSignup() {
+      Navigator.pushReplacementNamed(context, '/signup');
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
@@ -31,7 +36,7 @@ class Signin extends StatelessWidget {
                 children: [
                   Text(
                     'Welcome Back',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   SizedBox(
                     height: 10,
@@ -39,26 +44,29 @@ class Signin extends StatelessWidget {
                   Text(
                     'We are happy to see you here again.',
                     style: TextStyle(
+                      fontSize: 15,
                       color: Color.fromARGB(255, 123, 123, 123),
                     ),
                   ),
                   Text(
                     'Enter your email and password',
                     style: TextStyle(
+                      fontSize: 15,
                       color: Color.fromARGB(255, 123, 123, 123),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 50,),
+            const SizedBox(
+              height: 50,
+            ),
             AuthForm(
               fieldName: 'Email',
               fieldIcon: Icons.alternate_email_rounded,
             ),
-            AuthForm(
+            AuthPasswordForm(
               fieldName: 'Password',
-              fieldIcon: Icons.visibility_off,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 7),
@@ -77,9 +85,13 @@ class Signin extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 100,),
+                  const SizedBox(
+                    width: 100,
+                  ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/forgotPassword');
+                    },
                     child: const Text(
                       'Forgot Password?',
                       style: TextStyle(
@@ -92,7 +104,7 @@ class Signin extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 60, bottom: 20),
               child: SizedBox(
                 width: 100,
                 height: 50,
@@ -104,7 +116,9 @@ class Signin extends StatelessWidget {
                       ),
                       backgroundColor: const Color.fromARGB(255, 235, 127, 35),
                       minimumSize: const Size.fromHeight(70)),
-                  onPressed: () async {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/home');
+                  },
                   child: const Text(
                     'Sign in',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
@@ -112,10 +126,13 @@ class Signin extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             AuthProvider(
               account: 'Don\'t have an account? ',
               orangeAccount: ' Sign Up',
+              pageNavigator: goToSignup,
             )
           ],
         ),

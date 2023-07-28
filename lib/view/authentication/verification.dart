@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/view/authentication/popup_signup.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class Verification extends StatelessWidget {
@@ -30,7 +31,7 @@ class Verification extends StatelessWidget {
                 children: [
                   Text(
                     'Verification',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   SizedBox(
                     height: 10,
@@ -38,12 +39,15 @@ class Verification extends StatelessWidget {
                   Text(
                     'We have sent a verification code to your email',
                     style: TextStyle(
+                      fontSize: 15,
                       color: Color.fromARGB(255, 123, 123, 123),
                     ),
                   ),
                   Text(
                     'mytest@gmail.com',
                     style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
                       color: Colors.black,
                     ),
                   ),
@@ -80,7 +84,18 @@ class Verification extends StatelessWidget {
                       ),
                       backgroundColor: const Color.fromARGB(255, 235, 127, 35),
                       minimumSize: const Size.fromHeight(70)),
-                  onPressed: () async {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const AlertDialog(
+                            elevation: 0,
+                            backgroundColor: Colors.white,
+                            content: SizedBox(
+                                height: 500, width: 400, child: PopupSignup()),
+                          );
+                        });
+                  },
                   child: const Text(
                     'Verify Now',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
@@ -88,7 +103,9 @@ class Verification extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Center(
               child: RichText(
                 text: TextSpan(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:jendela_dbp/components/authentication/auth_provider.dart';
-import 'package:jendela_dbp/components/authentication/form.dart';
 import 'package:jendela_dbp/components/authentication/auth_checkbox.dart';
+import 'package:jendela_dbp/components/authentication/password_form.dart';
+import 'package:jendela_dbp/view/authentication/popup_password.dart';
 
 class CreateNewPassword extends StatelessWidget {
   const CreateNewPassword({super.key});
@@ -55,13 +56,11 @@ class CreateNewPassword extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            AuthForm(
+            AuthPasswordForm(
               fieldName: 'Password',
-              fieldIcon: Icons.visibility_off,
             ),
-            AuthForm(
+            AuthPasswordForm(
               fieldName: 'Confirm Password',
-              fieldIcon: Icons.visibility_off,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 100),
@@ -76,7 +75,20 @@ class CreateNewPassword extends StatelessWidget {
                       ),
                       backgroundColor: const Color.fromARGB(255, 235, 127, 35),
                       minimumSize: const Size.fromHeight(70)),
-                  onPressed: () async {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const AlertDialog(
+                            elevation: 0,
+                            backgroundColor: Colors.white,
+                            content: SizedBox(
+                                height: 500,
+                                width: 400,
+                                child: PopupPassword()),
+                          );
+                        });
+                  },
                   child: const Text(
                     'Create Password',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),

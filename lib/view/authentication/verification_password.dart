@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:jendela_dbp/components/authentication/auth_provider.dart';
-import 'package:jendela_dbp/components/authentication/form.dart';
-import 'package:jendela_dbp/components/authentication/auth_checkbox.dart';
+import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
-class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({super.key});
+class verificationPassword extends StatelessWidget {
+  const verificationPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,36 +29,46 @@ class ForgotPassword extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Forgot Password',
+                    'You\'ve Got Mail',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
-                    'No worries, we\'ll send you reset instructions. ',
+                    'We have sent a verification code to your email.',
                     style: TextStyle(
                       color: Color.fromARGB(255, 123, 123, 123),
                     ),
                   ),
                   Text(
-                    'Enter your email to reset password',
+                    'Check your email and enter the code',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: Colors.black,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 50,
-            ),
-            AuthForm(
-              fieldName: 'Email',
-              fieldIcon: Icons.alternate_email_rounded,
+            Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 80),
+              child: PinCodeTextField(
+                appContext: context,
+                length: 6,
+                pinTheme: PinTheme(
+                  shape: PinCodeFieldShape.box,
+                  borderRadius: BorderRadius.circular(10),
+                  fieldHeight: 50,
+                  fieldWidth: 50,
+                  activeFillColor: Colors.white,
+                  selectedColor: const Color(0xFFEB7F23),
+                  inactiveColor: const Color(0xFFB9B9B9),
+                  activeColor: const Color(0xFF90BF3F),
+                ),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 270),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 290),
               child: SizedBox(
                 width: 100,
                 height: 50,
@@ -73,34 +81,30 @@ class ForgotPassword extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 235, 127, 35),
                       minimumSize: const Size.fromHeight(70)),
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/verificationPassword');
+                    Navigator.pushReplacementNamed(context, '/createNewPassword');
                   },
                   child: const Text(
-                    'Send',
+                    'Confirm',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 20,),
             Center(
               child: RichText(
                 text: TextSpan(
                   children: [
                     const TextSpan(
-                      text: 'Back to ',
+                      text: 'Didn\'t receive code?',
                       style: TextStyle(
                           color: Color.fromARGB(255, 123, 123, 123),
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
                     ),
                     TextSpan(
-                      recognizer: TapGestureRecognizer()..onTap = () {
-                        Navigator.pushReplacementNamed(context, '/signin');
-                      },
-                      text: 'Sign In',
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      text: ' Resend',
                       style: const TextStyle(
                           color: Color.fromARGB(255, 235, 127, 35),
                           fontSize: 17,

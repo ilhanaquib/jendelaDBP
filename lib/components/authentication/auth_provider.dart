@@ -3,10 +3,13 @@ import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AuthProvider extends StatelessWidget {
-  AuthProvider({super.key, required this.account, required this.orangeAccount});
+  AuthProvider({super.key, required this.account, required this.orangeAccount, required this.pageNavigator});
 
   String account;
   String orangeAccount;
+
+  void Function() pageNavigator;
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +71,7 @@ class AuthProvider extends StatelessWidget {
                     fontWeight: FontWeight.normal),
               ),
               TextSpan(
-                recognizer: TapGestureRecognizer()..onTap = () {},
+                recognizer: TapGestureRecognizer()..onTap = pageNavigator,
                 text: orangeAccount,
                 style: const TextStyle(
                     color: Color.fromARGB(255, 235, 127, 35),

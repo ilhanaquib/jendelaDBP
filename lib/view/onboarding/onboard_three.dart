@@ -73,7 +73,7 @@ class Onboard_three extends StatelessWidget {
                       final prefs = await SharedPreferences.getInstance();
                       prefs.setBool('showHome', true);
           
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.pushReplacementNamed(context, '/signup');
                     },
                     child: const Text(
                       'Get Started',
