@@ -23,7 +23,6 @@ class FontBloc extends Bloc<FontButtonPressEvent, FontButtonType> {
     emit(event.type);
   }
 
-  @override
   Stream<FontButtonType> mapEventToState(FontButtonPressEvent event) async* {
     // Default behavior, if needed
   }

@@ -16,6 +16,7 @@ class SavedBooks extends StatelessWidget {
       bottomNavigationBar: const BottomNavBar(),
       body: BlocBuilder<BookListBloc, BookListState>(
         builder: (context, state) {
+          // ignore: unnecessary_type_check
           if (state is BookListState) {
             return ListView.builder(
               itemCount: state.books.length,

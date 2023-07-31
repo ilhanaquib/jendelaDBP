@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class AuthForm extends StatelessWidget {
   AuthForm({super.key, required this.fieldName, required this.fieldIcon});
 

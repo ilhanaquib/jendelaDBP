@@ -55,7 +55,10 @@ class PopupPassword extends StatelessWidget {
               },
               child: const Text(
                 'Sign In',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5),
               ),
             ),
           ],

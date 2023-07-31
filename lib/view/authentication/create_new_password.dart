@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:jendela_dbp/components/authentication/auth_provider.dart';
-import 'package:jendela_dbp/components/authentication/auth_checkbox.dart';
+
 import 'package:jendela_dbp/components/authentication/password_form.dart';
 import 'package:jendela_dbp/view/authentication/popup_password.dart';
 
@@ -69,25 +67,28 @@ class CreateNewPassword extends StatelessWidget {
                 height: 50,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      side: const BorderSide(
-                        color: Color.fromARGB(255, 235, 127, 35),
-                      ),
-                      backgroundColor: const Color.fromARGB(255, 235, 127, 35),
-                      minimumSize: const Size.fromHeight(70)),
+                    foregroundColor: Colors.white,
+                    side: const BorderSide(
+                      color: Color.fromARGB(255, 235, 127, 35),
+                    ),
+                    backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                    minimumSize: const Size.fromHeight(70),
+                  ),
                   onPressed: () {
                     showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const AlertDialog(
-                            elevation: 0,
-                            backgroundColor: Colors.white,
-                            content: SizedBox(
-                                height: 500,
-                                width: 400,
-                                child: PopupPassword()),
-                          );
-                        });
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const AlertDialog(
+                          elevation: 0,
+                          backgroundColor: Colors.white,
+                          content: SizedBox(
+                            height: 500,
+                            width: 400,
+                            child: PopupPassword(),
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: const Text(
                     'Create Password',

@@ -34,7 +34,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     });
   }
 
-  @override
   Stream<CategoryState> mapEventToState(CategoryEvent event) async* {
     // The mapEventToState method can be left empty since you're handling the event using the `on` method.
   }

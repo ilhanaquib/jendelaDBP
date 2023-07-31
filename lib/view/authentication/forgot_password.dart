@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:jendela_dbp/components/authentication/auth_provider.dart';
 import 'package:jendela_dbp/components/authentication/form.dart';
-import 'package:jendela_dbp/components/authentication/auth_checkbox.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: camel_case_types, must_be_immutable
 class Onboard_three extends StatelessWidget {
   Onboard_three({super.key, required this.controller, required this.isLastPage});
 
+  // ignore: prefer_typing_uninitialized_variables
   final controller;
   bool isLastPage;
 
@@ -73,6 +75,7 @@ class Onboard_three extends StatelessWidget {
                       final prefs = await SharedPreferences.getInstance();
                       prefs.setBool('showHome', true);
           
+                      // ignore: use_build_context_synchronously
                       Navigator.pushReplacementNamed(context, '/signup');
                     },
                     child: const Text(

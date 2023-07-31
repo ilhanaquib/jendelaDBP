@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class AuthPasswordForm extends StatefulWidget {
   AuthPasswordForm(
       {super.key, required this.fieldName, });
@@ -14,6 +15,7 @@ class _AuthPasswordFormState extends State<AuthPasswordForm> {
   bool _passwordVisible = true;
   @override
   void initState() {
+    super.initState();
     _passwordVisible = true;
   }
 

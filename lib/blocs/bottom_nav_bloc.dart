@@ -40,6 +40,5 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
     });
   }
 
-  @override
   Stream<BottomNavState> mapEventToState(BottomNavEvent event) async* {}
 }

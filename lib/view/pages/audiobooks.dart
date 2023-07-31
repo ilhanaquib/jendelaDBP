@@ -1,21 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jendela_dbp/components/audiobook/audio_player.dart';
 import 'package:jendela_dbp/components/audiobook/paragraph.dart';
-import 'package:jendela_dbp/components/chapter_list.dart';
-import 'package:jendela_dbp/components/read_book/slider.dart';
 
 class Audiobooks extends StatelessWidget {
   const Audiobooks({super.key});
-
-  void bottomSheet(BuildContext context) {
-    showModalBottomSheet<void>(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        elevation: 0,
-        context: context,
-        builder: (BuildContext context) {
-          return const ChapterList();
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,66 +55,10 @@ class Audiobooks extends StatelessWidget {
                   padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: Column(
                     children: [
-                      SliderWidget(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('11:15'),
-                          SizedBox(
-                            width: 200,
-                          ),
-                          Text('29:10'),
-                        ],
-                      )
+                      AudioPlayerWidget()
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            bottomSheet(context);
-                          },
-                          icon: const Icon(
-                            Icons.list_rounded,
-                            color: Color.fromARGB(255, 191, 191, 191),
-                            size: 30,
-                          )),
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            FontAwesomeIcons.backwardFast,
-                            color: Color.fromARGB(255, 191, 191, 191),
-                            size: 30,
-                          )),
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            FontAwesomeIcons.solidCirclePlay,
-                            color: Color.fromARGB(255, 90, 90, 90),
-                            size: 60,
-                          )),
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            FontAwesomeIcons.forwardFast,
-                            color: Color.fromARGB(255, 191, 191, 191),
-                            size: 30,
-                          )),
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.one_x_mobiledata_outlined,
-                            color: Color.fromARGB(255, 191, 191, 191),
-                            size: 30,
-                          )),
-                    ],
-                  ),
-                )
               ],
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+// ignore: must_be_immutable
 class AuthProvider extends StatelessWidget {
   AuthProvider({super.key, required this.account, required this.orangeAccount, required this.pageNavigator});
 

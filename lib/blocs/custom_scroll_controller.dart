@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/components/audiobook/paragraph.dart';
 
 class CustomScrollControllerWidget extends StatefulWidget {
+  const CustomScrollControllerWidget({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _CustomScrollControllerWidgetState createState() =>
       _CustomScrollControllerWidgetState();
 }
 
 class _CustomScrollControllerWidgetState
     extends State<CustomScrollControllerWidget> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   double boxHeight = 0;
   double middlePosition = 0;
   double paragraphHeight =
@@ -60,7 +62,7 @@ class CustomParagraph extends StatelessWidget {
   final String text;
   final Color textColor;
 
-  const CustomParagraph({required this.text, required this.textColor});
+  const CustomParagraph({super.key, required this.text, required this.textColor});
 
   @override
   Widget build(BuildContext context) {

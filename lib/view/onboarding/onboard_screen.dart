@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jendela_dbp/view/onboarding/onboard_one.dart';
 import 'package:jendela_dbp/view/onboarding/onboard_two.dart';
 import 'package:jendela_dbp/view/onboarding/onboard_three.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
@@ -35,17 +33,17 @@ class _OnboardScreenState extends State<OnboardScreen> {
             });
           },
           children: [
-            Container(
+            SizedBox(
               child: Onboard_one(
                 controller: controller,
               ),
             ),
-            Container(
+            SizedBox(
               child: Onboard_two(
                 controller: controller,
               ),
             ),
-            Container(
+            SizedBox(
               child: Onboard_three(
                 controller: controller,
                 isLastPage: isLastPage,

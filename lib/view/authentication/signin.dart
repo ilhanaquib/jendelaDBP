@@ -13,6 +13,19 @@ class Signin extends StatelessWidget {
       Navigator.pushReplacementNamed(context, '/signup');
     }
 
+    void navigateToHome(BuildContext context) {
+      // This function will navigate to the '/home' route using popUntil
+
+      // Create a predicate to check if a route's name is '/home'
+      isHomeRoute(route) => route.settings.name == '/home';
+
+      // Pop routes until the desired route is reached (if it exists)
+      Navigator.popUntil(context, isHomeRoute);
+
+      // Push the '/home' route onto the stack
+      Navigator.pushNamed(context, '/home');
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
@@ -104,7 +117,8 @@ class Signin extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 60, bottom: 20),
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 60, bottom: 20),
               child: SizedBox(
                 width: 100,
                 height: 50,
@@ -117,7 +131,7 @@ class Signin extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 235, 127, 35),
                       minimumSize: const Size.fromHeight(70)),
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/home');
+                    navigateToHome(context);
                   },
                   child: const Text(
                     'Sign in',

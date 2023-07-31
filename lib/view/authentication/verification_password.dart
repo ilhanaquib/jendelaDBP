@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+// ignore: camel_case_types
 class verificationPassword extends StatelessWidget {
   const verificationPassword({super.key});
 

@@ -23,7 +23,6 @@ class AppearanceBloc extends Bloc<AppearanceButtonPressEvent, AppearanceButtonTy
     emit(event.type);
   }
 
-  @override
   Stream<AppearanceButtonType> mapEventToState(AppearanceButtonPressEvent event) async* {
     // Default behavior, if needed
   }

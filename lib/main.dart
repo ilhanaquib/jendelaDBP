@@ -8,7 +8,6 @@ import 'package:jendela_dbp/blocs/font_button_bloc.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/view/authentication/create_new_password.dart';
 import 'package:jendela_dbp/view/authentication/forgot_password.dart';
-import 'package:jendela_dbp/view/authentication/popup_signup.dart';
 import 'package:jendela_dbp/view/authentication/signin.dart';
 import 'package:jendela_dbp/view/authentication/signup.dart';
 import 'package:jendela_dbp/view/authentication/verification.dart';
