@@ -24,7 +24,7 @@ class BottomNavBar extends StatelessWidget {
                                   state.bottomNavItems.indexOf(item)
                               ? Colors.orange
                               : const Color.fromARGB(255, 123, 123, 123),
-                          size: 40,
+                          size: 30,
                         ),
                       ],
                     ),
