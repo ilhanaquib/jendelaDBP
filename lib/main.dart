@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jendela_dbp/blocs/appearance_button_bloc.dart';
 import 'package:jendela_dbp/blocs/font_button_bloc.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
-import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/view/authentication/create_new_password.dart';
 import 'package:jendela_dbp/view/authentication/forgot_password.dart';
@@ -32,6 +32,10 @@ import 'hive/models/hiveBookModel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
   await registerHive();
   final prefs = await SharedPreferences.getInstance();
   final showHome = prefs.getBool('showHome') ?? false;
@@ -107,7 +111,7 @@ Future<void> registerHive() async {
   Hive.registerAdapter(HiveBookAPIAdapter());
   await Hive.openBox<HiveBookAPI>(GlobalVar.APIBook);
   await Hive.openBox<HivePurchasedBook>(GlobalVar.PuchasedBook);
-  final likedStatusBox = await Hive.openBox<bool>('liked_status');
+  await Hive.openBox<bool>('liked_status');
   await Hive.openBox<HiveBookAPI>('liked_books');
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   var containsEncryptionKey = await secureStorage.containsKey(key: 'key');

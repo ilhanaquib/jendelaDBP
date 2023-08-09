@@ -64,7 +64,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: widget.dataBooks.length == 0
+        child: widget.dataBooks.isEmpty
             ? Center(
                 child: NotFoundCard(),
               )
@@ -79,7 +79,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                   final isBookLiked = likedBooks[key] ?? false;
 
                   return Padding(
-                    padding: EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -135,7 +135,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                                         !isBookLiked;
 
                                                     // Update liked status in the 'liked_status' box
-                                                    await likedStatusBox?.put(
+                                                    await likedStatusBox.put(
                                                         key, newLikedStatus);
 
                                                     // Update the liked status in the book model and in the main book storage box
@@ -193,7 +193,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                             bookSpecific.name!.toLowerCase()),
                                         maxLines: 1,
                                         style: const TextStyle(
-                                          fontSize: 11,
+                                          fontSize: 13,
                                           color:
                                               Color.fromARGB(255, 51, 51, 51),
                                           overflow: TextOverflow.visible,
