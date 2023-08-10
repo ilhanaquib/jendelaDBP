@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jendela_dbp/blocs/appearanceButtonBloc.dart';
 import 'package:jendela_dbp/blocs/fontButtonBloc.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
+import 'package:jendela_dbp/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/view/authentication/createNewPassword.dart';
 import 'package:jendela_dbp/view/authentication/forgotPassword.dart';
@@ -29,18 +30,24 @@ import 'dart:convert';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'hive/models/hiveBookModel.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await registerHive();
   final prefs = await SharedPreferences.getInstance();
   final showHome = prefs.getBool('showHome') ?? false;
   runApp(JendelaDBP(showHome: showHome));
 }
+
+//JendelaDBP(showHome: showHome)
+
+// DevicePreview(
+//       enabled: true,
+//       builder: (context) => JendelaDBP(showHome: showHome),
+//     ),
 
 class JendelaDBP extends StatelessWidget {
   const JendelaDBP({Key? key, required this.showHome}) : super(key: key);
@@ -64,42 +71,45 @@ class JendelaDBP extends StatelessWidget {
           create: (context) => FontBloc(),
           child: const Setting(),
         ),
+        BlocProvider<AuthCubit>(
+          create: (BuildContext context) => AuthCubit(),
+        ),
       ],
       child: MaterialApp(
-        theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 123, 123, 123),
-            ),
-            textTheme: GoogleFonts.interTextTheme(),
-            unselectedWidgetColor: const Color.fromARGB(255, 123, 123, 123),
-            checkboxTheme: CheckboxThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
+          theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color.fromARGB(255, 123, 123, 123),
               ),
-            ),
-            dividerColor: Colors.transparent),
-        routes: {
-          // bottom nav bar
-          '/home': (context) => const Home(),
-          '/savedBooks': (context) => SavedBooks(),
-          '/audiobooks': (context) => const Audiobooks(),
-          '/profile': (context) => const Profile(),
+              textTheme: GoogleFonts.interTextTheme(),
+              unselectedWidgetColor: const Color.fromARGB(255, 123, 123, 123),
+              checkboxTheme: CheckboxThemeData(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+              ),
+              dividerColor: Colors.transparent),
+          routes: {
+            // bottom nav bar
+            '/home': (context) => const Home(),
+            '/savedBooks': (context) => SavedBooks(),
+            '/audiobooks': (context) => const Audiobooks(),
+            '/profile': (context) => const Profile(),
 
-          //pages
-          '/bookRead': (context) => const BookRead(),
-          '/user': (context) => const User(),
+            //pages
+            '/bookRead': (context) => const BookRead(),
+            '/user': (context) => const User(),
 
-          //authentication
-          '/signup': (context) => const Signup(),
-          '/signin': (context) => const Signin(),
-          '/verification': (context) => const Verification(),
-          '/verificationPassword': (context) => const verificationPassword(),
-          '/forgotPassword': (context) => const ForgotPassword(),
-          '/createNewPassword': (context) => const CreateNewPassword()
-        },
-        home: showHome ? const Home() : const OnboardScreen(),
-      ),
+            //authentication
+            '/signup': (context) => const Signup(),
+            '/signin': (context) => const Signin(),
+            '/verification': (context) => const Verification(),
+            '/verificationPassword': (context) => const verificationPassword(),
+            '/forgotPassword': (context) => const ForgotPassword(),
+            '/createNewPassword': (context) => const CreateNewPassword()
+          },
+          home: showHome ? const Home() : const OnboardScreen(),
+          ),
     );
   }
 }

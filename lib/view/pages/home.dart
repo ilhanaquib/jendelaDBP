@@ -540,42 +540,4 @@ class BookSearchDelegate extends SearchDelegate<String> {
       },
     );
   }
-
-  @override
-  // search bar. doesnt work at all
-  Widget buildSearchBar(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TextField(
-        onChanged: (value) {
-          query = value;
-          showSuggestions(context);
-        },
-        style: TextStyle(color: Colors.black), // Customize text color
-        decoration: InputDecoration(
-          hintText: 'Search your favourite book...', // Customize hint text
-          hintStyle: TextStyle(color: Colors.grey), // Customize hint text color
-          prefixIcon: Icon(Icons.search_rounded),
-          suffixIcon: IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () {
-              query = '';
-              showSuggestions(context);
-            },
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: Color.fromARGB(255, 244, 244, 244),
-          floatingLabelBehavior: FloatingLabelBehavior.never,
-        ),
-      ),
-    );
-  }
 }

@@ -4,13 +4,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // ignore: must_be_immutable
 class AuthProvider extends StatelessWidget {
-  AuthProvider({super.key, required this.account, required this.orangeAccount, required this.pageNavigator});
+  AuthProvider(
+      {super.key,
+      required this.account,
+      required this.orangeAccount,
+      required this.pageNavigator,
+      required this.guest,
+      required this.guestAccount});
 
   String account;
   String orangeAccount;
+  String guest;
+  String guestAccount;
 
   void Function() pageNavigator;
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +66,7 @@ class AuthProvider extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 40,
+          height: 20,
         ),
         RichText(
           text: TextSpan(
@@ -74,6 +81,29 @@ class AuthProvider extends StatelessWidget {
               TextSpan(
                 recognizer: TapGestureRecognizer()..onTap = pageNavigator,
                 text: orangeAccount,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 235, 127, 35),
+                    fontSize: 17,
+                    fontWeight: FontWeight.normal),
+              )
+            ],
+          ),
+        ),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: guest,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 123, 123, 123),
+                    fontSize: 17,
+                    fontWeight: FontWeight.normal),
+              ),
+              TextSpan(
+                recognizer: TapGestureRecognizer()..onTap = () {
+                  Navigator.pushNamed(context, '/home');
+                },
+                text: guestAccount,
                 style: const TextStyle(
                     color: Color.fromARGB(255, 235, 127, 35),
                     fontSize: 17,

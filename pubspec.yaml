@@ -60,6 +60,9 @@ dependencies:
   sign_in_with_apple: ^5.0.0
   epub_view: ^3.2.0
   bloc: ^8.1.2
+  device_preview: ^1.1.0
+  email_validator: ^2.1.17
+  persistent_bottom_nav_bar: ^5.0.2
 
 
 dev_dependencies:

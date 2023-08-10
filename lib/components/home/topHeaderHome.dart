@@ -12,11 +12,12 @@ class TopHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            'Hello User!',
+            'Hello Guest!',
             style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                color: Color.fromARGB(255, 123, 123, 123)),
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              color: Color.fromARGB(255, 123, 123, 123),
+            ),
           ),
           SizedBox(
             height: 5,

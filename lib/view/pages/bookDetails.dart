@@ -182,9 +182,9 @@ class BookDetail extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10),
+                              left: 20, right: 20, top: 10, bottom: 10),
                           child: SizedBox(
-                            height: 200,
+                            height: 175,
                             child: SingleChildScrollView(
                               child: bookDesc.isEmpty
                                   ? NoDescriptionCard()
@@ -204,8 +204,8 @@ class BookDetail extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: 690,
-                    left: 8,
+                    top: MediaQuery.of(context).size.height * 0.77,
+                    left: MediaQuery.of(context).size.width * 0.03,
                     child: SafeArea(
                         child: ButtonBar(
                       children: [

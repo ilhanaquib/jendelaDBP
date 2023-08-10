@@ -43,6 +43,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // update user data
   Future<bool> update(
       {required String name,
       required String email,
@@ -197,90 +198,107 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // signup/register
   Future<void> signup(String username, String email, String password,
       String confirmPassword) async {
     emit(AuthLoading(
-        hideNavigationBar: state.hideNavigationBar,
-        user: state.user,
-        isAuthenticated: state.isAuthenticated));
-    // Validate
+      hideNavigationBar: state.hideNavigationBar,
+      user: state.user,
+      isAuthenticated: state.isAuthenticated,
+    ));
+
+    // Validate input fields
     if (username.isEmpty ||
         email.isEmpty ||
         password.isEmpty ||
         confirmPassword.isEmpty) {
       emit(AuthError(
-          hideNavigationBar: state.hideNavigationBar,
-          user: state.user,
-          message: "Semua input diperlukan",
-          isAuthenticated: state.isAuthenticated));
+        hideNavigationBar: state.hideNavigationBar,
+        user: state.user,
+        message: "Semua input diperlukan",
+        isAuthenticated: state.isAuthenticated,
+      ));
       return;
     }
+
     if (password.length < 6) {
       emit(AuthError(
-          hideNavigationBar: state.hideNavigationBar,
-          user: state.user,
-          message: "Panjang kata laluan hendaklah lebih dari 6.",
-          isAuthenticated: state.isAuthenticated));
-    }
-    if (password != confirmPassword) {
-      emit(AuthError(
-          hideNavigationBar: state.hideNavigationBar,
-          user: state.user,
-          message: "Kata laluan tidak sempadan dengan kata laluan pengesahan.",
-          isAuthenticated: state.isAuthenticated));
+        hideNavigationBar: state.hideNavigationBar,
+        user: state.user,
+        message: "Panjang kata laluan hendaklah lebih dari 6.",
+        isAuthenticated: state.isAuthenticated,
+      ));
       return;
     }
-    // Signup
-    try {
-      var data = new Map();
-      data["username"] = username;
-      data["email"] = email;
-      data["password"] = password;
-      data["confirm_password"] = confirmPassword;
-      Object body = json.encode(data);
-      var dataheader = new Map();
-      dataheader["Content-Type"] = "application/json";
-      Object header = json.encode(dataheader);
-      ApiService.register(body).then((response) async {
-        if (response.statusCode >= 200 && response.statusCode < 300) {
-          var userRespBody = json.decode(response.body);
-          Response userRes =
-              await ApiService.maklumatPengguna(userRespBody['token']);
-          if (userRes.statusCode >= 200 && userRes.statusCode < 300) {
-            User user = User.fromJson(json.decode(userRes.body));
-            await saveAuthUserToLocal(
-                username: username, user: user, token: userRespBody['token']);
-            emit(AuthLoaded(
-                hideNavigationBar: state.hideNavigationBar,
-                user: user,
-                message: null,
-                isAuthenticated: true));
-          } else {
-            var errbody = json.decode(userRes.body);
-            emit(AuthError(
-                hideNavigationBar: state.hideNavigationBar,
-                user: state.user,
-                message: errbody['message'],
-                isAuthenticated: state.isAuthenticated));
-          }
-        } else {
-          var errbody = json.decode(response.body);
-          emit(AuthError(
-              hideNavigationBar: state.hideNavigationBar,
-              user: state.user,
-              message: errbody['message'],
-              isAuthenticated: state.isAuthenticated));
-        }
-      });
-    } catch (e) {
+
+    if (password != confirmPassword) {
       emit(AuthError(
+        hideNavigationBar: state.hideNavigationBar,
+        user: state.user,
+        message: "Kata laluan tidak sempadan dengan kata laluan pengesahan.",
+        isAuthenticated: state.isAuthenticated,
+      ));
+      return;
+    }
+
+    // Signup process
+    try {
+      // Call the signup API
+      var data = {
+        "username": username,
+        "email": email,
+        "password": password,
+        "confirm_password": confirmPassword,
+      };
+      var response = await ApiService.register(json.encode(data));
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        var userRespBody = json.decode(response.body);
+        var userRes = await ApiService.maklumatPengguna(userRespBody['token']);
+
+        if (userRes.statusCode >= 200 && userRes.statusCode < 300) {
+          User user = User.fromJson(json.decode(userRes.body));
+
+          // Save user data locally
+          await saveAuthUserToLocal(
+              username: username, user: user, token: userRespBody['token']);
+
+          // Emit AuthLoaded state with successful message
+          emit(AuthLoaded(
+            hideNavigationBar: state.hideNavigationBar,
+            user: user,
+            message: 'Account created successfully!',
+            isAuthenticated: true,
+          ));
+        } else {
+          var errbody = json.decode(userRes.body);
+          emit(AuthError(
+            hideNavigationBar: state.hideNavigationBar,
+            user: state.user,
+            message: errbody['message'],
+            isAuthenticated: state.isAuthenticated,
+          ));
+        }
+      } else {
+        var errbody = json.decode(response.body);
+        emit(AuthError(
           hideNavigationBar: state.hideNavigationBar,
           user: state.user,
-          message: e.toString(),
-          isAuthenticated: state.isAuthenticated));
+          message: errbody['message'],
+          isAuthenticated: state.isAuthenticated,
+        ));
+      }
+    } catch (e) {
+      emit(AuthError(
+        hideNavigationBar: state.hideNavigationBar,
+        user: state.user,
+        message: e.toString(),
+        isAuthenticated: state.isAuthenticated,
+      ));
     }
   }
 
+  // apple sign up
   Future<void> appleSignUp(BuildContext context) async {
     String? message = state.message;
     bool? hideNavigationBar = state.hideNavigationBar;
@@ -382,6 +400,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // login
   Future<Map> login(context,
       {required bool isToLogin,
       required GlobalKey<FormState> formKey,
@@ -437,23 +456,6 @@ class AuthCubit extends Cubit<AuthState> {
                 user: user,
                 token: data['token']);
 
-            // Box<BookAPI> bookAPIBox = Hive.box<BookAPI>(GlobalVar.APIBook);
-            // await bookAPIBox.clear();
-
-            // await getKategori(context, data['token'], GlobalVar.kategori1);
-            // await getKategori(context, data['token'], GlobalVar.kategori2);
-            // await getKategori(context, data['token'], GlobalVar.kategori3);
-            // await getKategori(context, data['token'], GlobalVar.kategori4);
-            // await getKategori(context, data['token'], GlobalVar.kategori5);
-            // await getKategori(context, data['token'], GlobalVar.kategori6);
-            // await getKategori(context, data['token'], GlobalVar.kategori8);
-            // await getKategori(context, data['token'], GlobalVar.kategori9);
-            // await getKategori(context, data['token'], GlobalVar.kategori10);
-            // await getKategori(context, data['token'], GlobalVar.kategori11);
-            // await getKategori(context, data['token'], GlobalVar.kategori12);
-            // await getKategori(context, data['token'], GlobalVar.kategori13);
-            // await getKategori(context, data['token'], GlobalVar.kategori14);
-
             isToLogin = false;
             emit(AuthLoaded(
                 isAuthenticated: true,
@@ -505,6 +507,7 @@ class AuthCubit extends Cubit<AuthState> {
     };
   }
 
+  //make sure logged in user stays logged in
   Future<SharedPreferences> saveAuthUserToLocal(
       {required User user,
       required String username,
@@ -518,6 +521,7 @@ class AuthCubit extends Cubit<AuthState> {
     return prefs;
   }
 
+  // logout
   Future<bool> logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('currentUser', '');

@@ -146,6 +146,8 @@ class Signin extends StatelessWidget {
             AuthProvider(
               account: 'Don\'t have an account? ',
               orangeAccount: ' Sign Up',
+              guest: 'You can also continue as',
+              guestAccount: ' guest',
               pageNavigator: goToSignup,
             )
           ],
