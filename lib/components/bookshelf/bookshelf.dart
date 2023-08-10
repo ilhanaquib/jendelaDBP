@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:jendela_dbp/components/bookshelf/booksInsideShelf.dart';
+import 'package:jendela_dbp/view/pages/allBooks.dart';
 import 'carouselTitle.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 
@@ -22,15 +23,22 @@ Widget bookShelf(
               title: categoryTitle + ' Terkini',
               seeAllText: "View All",
               seeAllOnTap: () {
-                List<dynamic> lihatSemuaObject = [categoryTitle, categoryCode];
-                Navigator.of(context)
-                    .pushNamed('/AllBook', arguments: lihatSemuaObject);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AllBooks(
+                        categoryTitle: categoryTitle, listBook: listBook, bookBox: APIBook,),
+                  ),
+                );
+                // List<dynamic> lihatSemuaObject = [categoryTitle, categoryCode];
+                // Navigator.of(context)
+                //     .pushNamed('/AllBook', arguments: lihatSemuaObject);
               },
             ),
           ),
           SizedBox(
-            height: 275,
-            child: BooksInsideShelf(dataBooks: listBook, bookBox: APIBook))
+              height: 275,
+              child: BooksInsideShelf(dataBooks: listBook, bookBox: APIBook))
           //setBookShelf(context, listBook, APIBook),
         ],
       ),

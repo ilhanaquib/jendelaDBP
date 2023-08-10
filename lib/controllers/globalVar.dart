@@ -24,7 +24,7 @@ class GlobalVar {
   static String localFile = "LocalFile";
   static String encrypt_password = "82Fb8c4XgXj3dhKm8GUNUng61lxUDL6V";
   static String favoriteBook = "FavoriteBook";
-  
+
   static String DewanBahasaId = "2";
   static String DewanSasteraId = "3";
   static String DewanMasyarakatId = "4";
@@ -94,4 +94,42 @@ class GlobalVar {
     {"value": "PJY", "text": "Putrajaya"},
     {"value": "KUL", "text": "Kuala Lumpur"}
   ];
+
+  // static List<String> categoryIds = [
+  //   kategori1,
+  //   kategori2,
+  //   kategori3,
+  //   kategori4,
+  //   kategori5,
+  //   kategori6,
+  //   kategori7,
+  //   kategori8,
+  //   kategori9,
+  //   kategori10,
+  //   kategori11,
+  //   kategori12,
+  //   kategori13,
+  //   kategori14,
+  //   kategori15,
+  //   kategori16,
+  // ];
+
+  // static List<String> categoryTitles = [
+  //   kategori1Title,
+  //   kategori2Title,
+  //   kategori3Title,
+  //   kategori4Title,
+  //   kategori5Title,
+  //   kategori6Title,
+  //   kategori7Title,
+  //   kategori8Title,
+  //   kategori9Title,
+  //   kategori10Title,
+  //   kategori11Title,
+  //   kategori12Title,
+  //   kategori13Title,
+  //   kategori14Title,
+  //   kategori15Title,
+  //   kategori16Title,
+  // ];
 }

@@ -243,31 +243,8 @@ class _HomeState extends State<Home> {
                     ),
                   ),
 
-                  // categories
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 20, left: 20),
-                          child: Text(
-                            'Categories',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20,
-                                letterSpacing: 1),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CategoryButtons()
-                      ],
-                    ),
-                  ),
+                  // filter by category buttons
+                  
 
                   // books
                   ValueListenableBuilder(
@@ -429,6 +406,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
+    // clear button
     return [
       IconButton(
         icon: const Icon(Icons.clear),
@@ -440,6 +418,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
   }
 
   @override
+  // back button
   Widget buildLeading(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
@@ -450,6 +429,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
   }
 
   @override
+  // search result
   Widget buildResults(BuildContext context) {
     return StreamBuilder<List<HiveBookAPI>>(
       stream: searchResultsStream(query),
@@ -515,6 +495,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
   }
 
   @override
+  // suggestion
   Widget buildSuggestions(BuildContext context) {
     return StreamBuilder<List<HiveBookAPI>>(
       stream: searchResultsStream(query),
@@ -533,7 +514,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
             mainAxisSpacing: 10.0,
             crossAxisSpacing: 10.0,
           ),
-          itemCount: 10,
+          itemCount: suggestionList.length ,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
@@ -568,7 +549,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
                         ],
                       ),
                     ),
-                  ), // Use your image data
+                  ),
                   Text(
                     suggestionList[index].name!,
                     textAlign: TextAlign.center,
@@ -584,6 +565,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
   }
 
   @override
+  // search bar. doesnt work at all
   Widget buildSearchBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
