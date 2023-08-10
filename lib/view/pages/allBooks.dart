@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'book_detail.dart';
+import 'bookDetails.dart';
 
 class AllBooks extends StatefulWidget {
   AllBooks(

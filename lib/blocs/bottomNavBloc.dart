@@ -1,6 +1,6 @@
 // bottom_nav_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/model/bottom_nav_model.dart';
+import 'package:jendela_dbp/model/bottomNavModel.dart';
 
 // Events
 abstract class BottomNavEvent {}

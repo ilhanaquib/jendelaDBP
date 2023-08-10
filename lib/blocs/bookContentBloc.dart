@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/model/book_content_model.dart';
+import 'package:jendela_dbp/model/bookContentModel.dart';
 
 class BookContentState {
   final List<BookContentModel> bookContent;

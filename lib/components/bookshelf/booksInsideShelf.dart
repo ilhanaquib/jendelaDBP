@@ -4,7 +4,7 @@ import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:jendela_dbp/view/pages/book_detail.dart';
+import 'package:jendela_dbp/view/pages/bookDetails.dart';
 
 class BooksInsideShelf extends StatefulWidget {
   final List<dynamic> dataBooks;

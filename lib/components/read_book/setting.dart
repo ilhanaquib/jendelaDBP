@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/components/read_book/appearance_button.dart';
-import 'package:jendela_dbp/components/read_book/font_button.dart';
+import 'package:jendela_dbp/components/read_book/appearanceButton.dart';
+import 'package:jendela_dbp/components/read_book/fontButton.dart';
 
 class Setting extends StatelessWidget {
   const Setting({super.key});

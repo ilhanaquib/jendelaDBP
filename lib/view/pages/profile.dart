@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/components/bottom_nav_bar.dart';
+import 'package:jendela_dbp/components/bottomNavBar.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});

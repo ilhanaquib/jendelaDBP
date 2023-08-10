@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/user/button.dart';
-import 'package:jendela_dbp/components/user/top_header.dart';
-import 'package:jendela_dbp/components/user/user_icon.dart';
+import 'package:jendela_dbp/components/user/topHeader.dart';
+import 'package:jendela_dbp/components/user/userIcon.dart';
 
 class User extends StatelessWidget {
   const User({super.key});

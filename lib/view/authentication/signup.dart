@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/components/authentication/auth_provider.dart';
+import 'package:jendela_dbp/components/authentication/authProvider.dart';
 import 'package:jendela_dbp/components/authentication/form.dart';
-import 'package:jendela_dbp/components/authentication/password_form.dart';
-import 'package:jendela_dbp/components/authentication/auth_checkbox.dart';
+import 'package:jendela_dbp/components/authentication/passwordForm.dart';
+import 'package:jendela_dbp/components/authentication/authCheckbox.dart';
 
 class Signup extends StatelessWidget {
   const Signup({super.key});

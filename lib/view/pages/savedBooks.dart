@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/components/bottom_nav_bar.dart';
+import 'package:jendela_dbp/components/bottomNavBar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:hive/hive.dart';
-import 'package:jendela_dbp/view/pages/book_detail.dart';
+import 'package:jendela_dbp/view/pages/bookDetails.dart';
 
 class SavedBooks extends StatefulWidget {
   @override

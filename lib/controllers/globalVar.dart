@@ -95,6 +95,45 @@ class GlobalVar {
     {"value": "KUL", "text": "Kuala Lumpur"}
   ];
 
+  static String getTitleForCategory(int index) {
+    switch (index) {
+      case 1:
+        return kategori1Title;
+      case 2:
+        return kategori2Title;
+      case 3:
+        return kategori3Title;
+      case 4:
+        return kategori4Title;
+      case 5:
+        return kategori5Title;
+      case 6:
+        return kategori6Title;
+      case 7:
+        return kategori7Title;
+      case 8:
+        return kategori8Title;
+      case 9:
+        return kategori9Title;
+      case 10:
+        return kategori10Title;
+      case 11:
+        return kategori11Title;
+      case 12:
+        return kategori12Title;
+      case 13:
+        return kategori13Title;
+      case 14:
+        return kategori14Title;
+      case 15:
+        return kategori15Title;
+      case 16:
+        return kategori16Title;
+      default:
+        return 'All';
+    }
+  }
+
   // static List<String> categoryIds = [
   //   kategori1,
   //   kategori2,

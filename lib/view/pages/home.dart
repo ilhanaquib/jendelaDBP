@@ -1,16 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
-import 'package:jendela_dbp/components/bottom_nav_bar.dart';
-import 'package:jendela_dbp/components/home/category_buttons.dart';
-import 'package:jendela_dbp/components/home/top_header_home.dart';
+import 'package:jendela_dbp/components/bottomNavBar.dart';
+import 'package:jendela_dbp/components/home/topHeaderHome.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:jendela_dbp/view/pages/book_detail.dart';
+import 'package:jendela_dbp/view/pages/bookDetails.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/components/home/filterButtons.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -162,8 +162,29 @@ class _HomeState extends State<Home> {
         .toList();
   }
 
+  List<String> selectedFilters = [];
+
   @override
   Widget build(BuildContext context) {
+    Map<int, List<int>> categoryToBookMap = {
+      1: kategori1Books,
+      2: kategori2Books,
+      3: kategori3Books,
+      4: kategori4Books,
+      5: kategori5Books,
+      6: kategori6Books,
+      7: kategori7Books,
+      8: kategori8Books,
+      9: kategori9Books,
+      10: kategori10Books,
+      11: kategori11Books,
+      12: kategori12Books,
+      13: kategori13Books,
+      14: kategori14Books,
+      15: kategori15Books,
+      // ... and so on for other categories ...
+    };
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -244,125 +265,81 @@ class _HomeState extends State<Home> {
                   ),
 
                   // filter by category buttons
-                  
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, top: 25),
+                    child: SizedBox(
+                      height: 40, // Adjust the height as needed
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: FilterButton(
+                              text: 'All',
+                              isSelected: selectedFilters.isEmpty,
+                              onTap: () {
+                                setState(() {
+                                  selectedFilters.clear();
+                                });
+                              },
+                            ),
+                          ),
+                          for (int i = 1;
+                              i <= 15;
+                              i++) // Loop through kategoriXTitle
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              child: FilterButton(
+                                text: GlobalVar.getTitleForCategory(i),
+                                isSelected:
+                                    selectedFilters.contains(i.toString()),
+                                onTap: () {
+                                  setState(() {
+                                    if (selectedFilters.contains(i.toString())) {
+                                      selectedFilters.remove(i.toString());
+                                    } else {
+                                      selectedFilters.add(i.toString());
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
 
                   // books
                   ValueListenableBuilder(
                     valueListenable: APIBook.listenable(),
                     builder: (context, Box<HiveBookAPI> myAPIBook, _) {
                       return SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         child: FutureBuilder<bool>(
                           future: allProduct,
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.done) {
-                              return Container(
-                                // color: colors.bgTeal50,
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori1Title,
-                                                GlobalVar.kategori1,
-                                                kategori1Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori2Title,
-                                                GlobalVar.kategori2,
-                                                kategori2Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori3Title,
-                                                GlobalVar.kategori3,
-                                                kategori3Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori4Title,
-                                                GlobalVar.kategori4,
-                                                kategori4Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori5Title,
-                                                GlobalVar.kategori5,
-                                                kategori5Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori6Title,
-                                                GlobalVar.kategori6,
-                                                kategori6Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori7Title,
-                                                GlobalVar.kategori7,
-                                                kategori7Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori8Title,
-                                                GlobalVar.kategori8,
-                                                kategori8Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori9Title,
-                                                GlobalVar.kategori9,
-                                                kategori9Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori10Title,
-                                                GlobalVar.kategori10,
-                                                kategori10Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori11Title,
-                                                GlobalVar.kategori11,
-                                                kategori11Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori12Title,
-                                                GlobalVar.kategori12,
-                                                kategori12Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori13Title,
-                                                GlobalVar.kategori13,
-                                                kategori13Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori14Title,
-                                                GlobalVar.kategori14,
-                                                kategori14Books,
-                                                APIBook),
-                                            bookShelf(
-                                                context,
-                                                GlobalVar.kategori15Title,
-                                                GlobalVar.kategori15,
-                                                kategori15Books,
-                                                APIBook),
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                              return SizedBox(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      // Display filtered bookshelves
+                                      for (int i = 1; i <= 15; i++)
+                                        if (selectedFilters.isEmpty ||
+                                            selectedFilters
+                                                .contains(i.toString()))
+                                          bookShelf(
+                                              context,
+                                              GlobalVar.getTitleForCategory(i),
+                                              i.toString(),
+                                              categoryToBookMap[i] ?? [],
+                                              APIBook),
+                                    ],
                                   ),
                                 ),
                               );
@@ -381,7 +358,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -514,7 +491,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
             mainAxisSpacing: 10.0,
             crossAxisSpacing: 10.0,
           ),
-          itemCount: suggestionList.length ,
+          itemCount: suggestionList.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {

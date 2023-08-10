@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
-import 'package:jendela_dbp/components/chapter_list.dart';
+import 'package:jendela_dbp/components/chapterList.dart';
 
 class BookDetail extends StatelessWidget {
   const BookDetail(

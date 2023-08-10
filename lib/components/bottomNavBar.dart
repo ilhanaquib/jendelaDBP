@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/blocs/bottom_nav_bloc.dart';
+import 'package:jendela_dbp/blocs/bottomNavBloc.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key});

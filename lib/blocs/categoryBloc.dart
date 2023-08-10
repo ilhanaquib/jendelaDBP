@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/model/category_model.dart';
+import 'package:jendela_dbp/model/categoryModel.dart';
 
 // Step 2: Create CategoryEvent
 abstract class CategoryEvent {}

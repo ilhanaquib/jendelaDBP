@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/view/onboarding/onboard_one.dart';
-import 'package:jendela_dbp/view/onboarding/onboard_two.dart';
-import 'package:jendela_dbp/view/onboarding/onboard_three.dart';
+import 'package:jendela_dbp/view/onboarding/onboardOne.dart';
+import 'package:jendela_dbp/view/onboarding/onboardTwo.dart';
+import 'package:jendela_dbp/view/onboarding/onboardThree.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:jendela_dbp/components/authentication/password_form.dart';
-import 'package:jendela_dbp/view/authentication/popup_password.dart';
+import 'package:jendela_dbp/components/authentication/passwordForm.dart';
+import 'package:jendela_dbp/view/authentication/popupPassword.dart';
 
 class CreateNewPassword extends StatelessWidget {
   const CreateNewPassword({super.key});
