@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
-import 'package:jendela_dbp/components/bottomNavBar.dart';
 import 'package:jendela_dbp/components/home/topHeaderHome.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:jendela_dbp/main.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
@@ -188,7 +188,9 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            print(showHomeNotifier);
+          },
           icon: const Icon(
             Icons.menu_rounded,
             color: Color.fromARGB(255, 123, 123, 123),
@@ -208,7 +210,6 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      bottomNavigationBar: const BottomNavBar(),
       body: CustomScrollView(
         slivers: [
           const SliverAppBar(

@@ -32,7 +32,7 @@ class _SignupState extends State<Signup> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           elevation: 0,
           backgroundColor: Colors.white,
           content: SizedBox(
@@ -77,7 +77,7 @@ class _SignupState extends State<Signup> {
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(),
               child: Center(
                 child: SizedBox(
                   height: 170,
@@ -393,7 +393,7 @@ class _SignupState extends State<Signup> {
               account: 'Already have an account?',
               orangeAccount: ' Sign In',
               guest: 'You can also continue as',
-              guestAccount: ' guest',
+              guestAccount: ' Guest',
               pageNavigator: goToSignin,
             )
           ],

@@ -22,8 +22,6 @@ import 'package:jendela_dbp/view/pages/savedBooks.dart';
 import 'package:jendela_dbp/view/pages/user.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'blocs/bottomNavBloc.dart';
-import 'blocs/categoryBloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
@@ -31,6 +29,9 @@ import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'hive/models/hiveBookModel.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
+final ValueNotifier<bool> showHomeNotifier = ValueNotifier<bool>(false);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,8 +39,8 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await registerHive();
   final prefs = await SharedPreferences.getInstance();
-  final showHome = prefs.getBool('showHome') ?? false;
-  runApp(JendelaDBP(showHome: showHome));
+  final showHomeNotifier = prefs.getBool('showHome') ?? false;
+  runApp(JendelaDBP(showHomeNotifier: showHomeNotifier));
 }
 
 //JendelaDBP(showHome: showHome)
@@ -50,19 +51,52 @@ void main() async {
 //     ),
 
 class JendelaDBP extends StatelessWidget {
-  const JendelaDBP({Key? key, required this.showHome}) : super(key: key);
-  final bool showHome;
+  JendelaDBP({Key? key, required this.showHomeNotifier}) : super(key: key);
+  final bool showHomeNotifier;
+  final _controller = PersistentTabController(initialIndex: 0);
+
+  List<PersistentBottomNavBarItem> _navBarItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.home),
+        title: "Home",
+        activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
+        inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.book_rounded),
+        title: "Saved",
+        activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
+        inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.headphones_rounded),
+        title: "Audio",
+        activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
+        inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.person_rounded),
+        title: "Profile",
+        activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
+        inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
+      ),
+    ];
+  }
+
+  List<Widget> _buildScreens(context) {
+    return [
+      const Home(),
+      SavedBooks(),
+      const Audiobooks(),
+      const Profile(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<BottomNavBloc>(
-          create: (context) => BottomNavBloc(),
-        ),
-        BlocProvider<CategoryBloc>(
-          create: (context) => CategoryBloc(),
-        ),
         BlocProvider<AppearanceBloc>(
           create: (context) => AppearanceBloc(),
           child: const Setting(),
@@ -76,40 +110,57 @@ class JendelaDBP extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-          theme: ThemeData(
-              useMaterial3: true,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: const Color.fromARGB(255, 123, 123, 123),
+        theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 123, 123, 123),
+            ),
+            textTheme: GoogleFonts.interTextTheme(),
+            unselectedWidgetColor: const Color.fromARGB(255, 123, 123, 123),
+            checkboxTheme: CheckboxThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
               ),
-              textTheme: GoogleFonts.interTextTheme(),
-              unselectedWidgetColor: const Color.fromARGB(255, 123, 123, 123),
-              checkboxTheme: CheckboxThemeData(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-              ),
-              dividerColor: Colors.transparent),
-          routes: {
-            // bottom nav bar
-            '/home': (context) => const Home(),
-            '/savedBooks': (context) => SavedBooks(),
-            '/audiobooks': (context) => const Audiobooks(),
-            '/profile': (context) => const Profile(),
+            ),
+            dividerColor: Colors.transparent),
+        routes: {
+          // bottom nav bar
+          '/home': (context) => const Home(),
+          '/savedBooks': (context) => SavedBooks(),
+          '/audiobooks': (context) => const Audiobooks(),
+          '/profile': (context) => const Profile(),
 
-            //pages
-            '/bookRead': (context) => const BookRead(),
-            '/user': (context) => const User(),
+          //pages
+          '/bookRead': (context) => const BookRead(),
+          '/user': (context) => const User(),
 
-            //authentication
-            '/signup': (context) => const Signup(),
-            '/signin': (context) => const Signin(),
-            '/verification': (context) => const Verification(),
-            '/verificationPassword': (context) => const verificationPassword(),
-            '/forgotPassword': (context) => const ForgotPassword(),
-            '/createNewPassword': (context) => const CreateNewPassword()
-          },
-          home: showHome ? const Home() : const OnboardScreen(),
+          //authentication
+          '/signup': (context) => const Signup(),
+          '/signin': (context) => Signin(),
+          '/verification': (context) => const Verification(),
+          '/verificationPassword': (context) => const verificationPassword(),
+          '/forgotPassword': (context) => const ForgotPassword(),
+          '/createNewPassword': (context) => const CreateNewPassword()
+        },
+        home: 
+        showHomeNotifier ? PersistentTabView(
+          context,
+          controller: PersistentTabController(initialIndex: showHomeNotifier ? 0 : 4),
+          screens: _buildScreens(context),
+          items: _navBarItems(),
+          confineInSafeArea: true,
+          backgroundColor: Colors.white,
+          handleAndroidBackButtonPress: true,
+          resizeToAvoidBottomInset: true,
+          stateManagement: true,
+          hideNavigationBarWhenKeyboardShows: true,
+          decoration: const NavBarDecoration(
+            colorBehindNavBar: Colors.white,
           ),
+          popAllScreensOnTapOfSelectedTab: true,
+          navBarStyle: NavBarStyle.style12,
+        ) : const OnboardScreen()
+      ),
     );
   }
 }

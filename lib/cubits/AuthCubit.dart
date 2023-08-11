@@ -408,6 +408,11 @@ class AuthCubit extends Cubit<AuthState> {
       required TextEditingController passwordController}) async {
     isToLogin = true;
     final form = formKey.currentState;
+    if (form == null) {
+      // Handle the case where formKey.currentState is null
+      // For example, you can return an error map indicating the issue.
+      return {'error': 'Form is null'};
+    }
     String? message = state.message;
     bool? isAuthenticated = state.isAuthenticated;
     bool? hideNavigationBar = state.hideNavigationBar;

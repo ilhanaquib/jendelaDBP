@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PopupSignupError extends StatelessWidget {
-  PopupSignupError({super.key, required this.errorMessage});
+class PopupSigninError extends StatelessWidget {
+  PopupSigninError({super.key, required this.errorMessage});
 
   String errorMessage;
 
@@ -22,14 +22,14 @@ class PopupSignupError extends StatelessWidget {
               height: 20,
             ),
             const Text(
-              'Sign Up Failed',
+              'Sign In Failed',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             const SizedBox(
               height: 40,
             ),
             const Text(
-              'Your account failed to be created.',
+              'Failed to sign in your account',
               style: TextStyle(
                   color: Color.fromARGB(255, 123, 123, 123), fontSize: 15),
             ),

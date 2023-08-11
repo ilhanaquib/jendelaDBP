@@ -19,49 +19,76 @@ class Audiobooks extends StatelessWidget {
         ],
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
       ),
-      body: Stack(
-        children: [
-          const CurvedBackground(),
-          Center(
-            child: Column(
+      body: CustomScrollView(
+        slivers: [
+          const SliverAppBar(
+            floating: true,
+            snap: true,
+            elevation: 0.0,
+            toolbarHeight: 0.01,
+          ),
+          SliverFillRemaining(
+            child: Stack(
               children: [
-                Image.asset(
-                  'assets/images/book 1.jpg',
-                  height: 290,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text('Book Title',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'Page : 78/266',
-                  style: TextStyle(color: Color.fromARGB(255, 123, 123, 123)),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                  child: SizedBox(
-                    height: 200,
-                    child: SingleChildScrollView(
-                      child: Paragraph(),
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                const CurvedBackground(),
+                Center(
                   child: Column(
                     children: [
-                      AudioPlayerWidget()
+                      Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Stack(
+                            children: [
+                              Image.asset(
+                                "assets/images/tiadakulitbuku.png",
+                                height: 250,
+                                width: 180,
+                                fit: BoxFit.fill,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text('Book Title',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        'Page : 78/266',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 123, 123, 123)),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(
+                            top: 50, left: 20, right: 20, bottom: 20),
+                        child: SizedBox(
+                          height: 200,
+                          child: SingleChildScrollView(
+                            child: Paragraph(),
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Column(
+                          children: [AudioPlayerWidget()],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );
