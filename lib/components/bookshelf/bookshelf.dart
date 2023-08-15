@@ -4,6 +4,7 @@ import 'package:jendela_dbp/components/bookshelf/booksInsideShelf.dart';
 import 'package:jendela_dbp/view/pages/allBooks.dart';
 import 'carouselTitle.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 Widget bookShelf(
   context,
@@ -23,23 +24,20 @@ Widget bookShelf(
               title: categoryTitle + ' Terkini',
               seeAllText: "View All",
               seeAllOnTap: () {
-                Navigator.push(
+                PersistentNavBarNavigator.pushNewScreen(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => AllBooks(
-                        categoryTitle: categoryTitle, listBook: listBook, bookBox: APIBook,),
-                  ),
+                  withNavBar: false,
+                  screen: AllBooks(
+                      categoryTitle: categoryTitle,
+                      listBook: listBook,
+                      bookBox: APIBook),
                 );
-                // List<dynamic> lihatSemuaObject = [categoryTitle, categoryCode];
-                // Navigator.of(context)
-                //     .pushNamed('/AllBook', arguments: lihatSemuaObject);
               },
             ),
           ),
           SizedBox(
               height: 275,
               child: BooksInsideShelf(dataBooks: listBook, bookBox: APIBook))
-          //setBookShelf(context, listBook, APIBook),
         ],
       ),
     ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jendela_dbp/main.dart';
+import 'package:jendela_dbp/view/pages/home.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 // ignore: must_be_immutable
 class AuthProvider extends StatelessWidget {
@@ -90,7 +92,9 @@ class AuthProvider extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
         RichText(
           text: TextSpan(
             children: [
@@ -102,10 +106,15 @@ class AuthProvider extends StatelessWidget {
                     fontWeight: FontWeight.normal),
               ),
               TextSpan(
-                recognizer: TapGestureRecognizer()..onTap = () {
-                  showHomeNotifier.value = true;
-                  Navigator.pushNamed(context, '/home');
-                },
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    showHomeNotifier.value = true;
+                    PersistentNavBarNavigator.pushNewScreen(
+                      context,
+                      withNavBar: true,
+                      screen: const Home(),
+                    );
+                  },
                 text: guestAccount,
                 style: const TextStyle(
                     color: Color.fromARGB(255, 235, 127, 35),

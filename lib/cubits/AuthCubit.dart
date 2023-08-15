@@ -215,7 +215,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError(
         hideNavigationBar: state.hideNavigationBar,
         user: state.user,
-        message: "Semua input diperlukan",
+        message: "Please fill all the required information",
         isAuthenticated: state.isAuthenticated,
       ));
       return;
@@ -225,7 +225,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError(
         hideNavigationBar: state.hideNavigationBar,
         user: state.user,
-        message: "Panjang kata laluan hendaklah lebih dari 6.",
+        message: "Password must be longer than 6 characters",
         isAuthenticated: state.isAuthenticated,
       ));
       return;
@@ -235,7 +235,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError(
         hideNavigationBar: state.hideNavigationBar,
         user: state.user,
-        message: "Kata laluan tidak sempadan dengan kata laluan pengesahan.",
+        message: "Password does not match with confirm password",
         isAuthenticated: state.isAuthenticated,
       ));
       return;

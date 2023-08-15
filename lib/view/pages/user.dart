@@ -3,8 +3,8 @@ import 'package:jendela_dbp/components/user/button.dart';
 import 'package:jendela_dbp/components/user/topHeader.dart';
 import 'package:jendela_dbp/components/user/userIcon.dart';
 
-class User extends StatelessWidget {
-  const User({super.key});
+class UserHomeScreen extends StatelessWidget {
+  const UserHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

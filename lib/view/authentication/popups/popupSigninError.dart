@@ -46,7 +46,30 @@ class PopupSigninError extends StatelessWidget {
               textAlign: TextAlign.center,
               style: const TextStyle(
                   color: Color.fromARGB(255, 123, 123, 123), fontSize: 15),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: const BorderSide(
+                    color: Color.fromARGB(255, 235, 127, 35),
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                  
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Dismiss',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

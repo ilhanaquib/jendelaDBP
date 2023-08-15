@@ -355,7 +355,6 @@ class _SignupState extends State<Signup> {
                         minimumSize: const Size.fromHeight(70),
                       ),
                       onPressed: () {
-                        assert(EmailValidator.validate(emailController.text));
                         // Check if the state is AuthLoading before proceeding
                         if (state is AuthLoading) {
                           return;

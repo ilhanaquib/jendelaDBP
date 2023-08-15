@@ -39,7 +39,27 @@ class PopupSignup extends StatelessWidget {
               'preparing for you',
               style: TextStyle(
                   color: Color.fromARGB(255, 123, 123, 123), fontSize: 15),
-            )
+            ),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.white,
+                side: const BorderSide(
+                  color: Color.fromARGB(255, 235, 127, 35),
+                ),
+                backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                minimumSize: const Size.fromHeight(70),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Dismiss',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
         ),
       ),

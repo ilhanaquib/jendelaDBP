@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class BooksInsideShelf extends StatefulWidget {
   final List<dynamic> dataBooks;
@@ -82,14 +83,14 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                     padding: const EdgeInsets.only(left: 20),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        PersistentNavBarNavigator.pushNewScreen(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => BookDetail(
-                                    bookImage: bookSpecific.images!,
-                                    bookTitle: bookSpecific.name!,
-                                    bookDesc: bookSpecific.description!,
-                                  )),
+                          withNavBar: false,
+                          screen: BookDetail(
+                            bookImage: bookSpecific.images!,
+                            bookTitle: bookSpecific.name!,
+                            bookDesc: bookSpecific.description!,
+                          ),
                         );
                       },
                       child: SizedBox(
@@ -122,58 +123,59 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                           right: 2,
                                           child: CircleAvatar(
                                             radius: 15,
-                                            backgroundColor:
-                                                const Color.fromARGB(
+                                            backgroundColor: isBookLiked
+                                                ? const Color.fromARGB(
+                                                    255, 144, 191, 63)
+                                                : const Color.fromARGB(
                                                     230, 128, 128, 128),
                                             child: Center(
                                               child: Transform.translate(
                                                 offset:
                                                     const Offset(-2.7, -1.7),
                                                 child: IconButton(
-                                                  onPressed: () async {
-                                                    final newLikedStatus =
-                                                        !isBookLiked;
+                                                    onPressed: () async {
+                                                      final newLikedStatus =
+                                                          !isBookLiked;
 
-                                                    // Update liked status in the 'liked_status' box
-                                                    await likedStatusBox.put(
-                                                        key, newLikedStatus);
+                                                      // Update liked status in the 'liked_status' box
+                                                      await likedStatusBox.put(
+                                                          key, newLikedStatus);
 
-                                                    // Update the liked status in the book model and in the main book storage box
-                                                    final book =
-                                                        widget.bookBox.get(key);
-                                                    if (book != null) {
-                                                      book.isFavorite =
-                                                          newLikedStatus;
-                                                      widget.bookBox
-                                                          .put(key, book);
-
-                                                      // Add or remove the book from the 'liked_books' box based on the liked status
-                                                      if (newLikedStatus) {
-                                                        widget.likedBooksBox
+                                                      // Update the liked status in the book model and in the main book storage box
+                                                      final book = widget
+                                                          .bookBox
+                                                          .get(key);
+                                                      if (book != null) {
+                                                        book.isFavorite =
+                                                            newLikedStatus;
+                                                        widget.bookBox
                                                             .put(key, book);
-                                                      } else {
-                                                        widget.likedBooksBox.delete(
-                                                            key); // Remove the book from 'liked_books' box
+
+                                                        // Add or remove the book from the 'liked_books' box based on the liked status
+                                                        if (newLikedStatus) {
+                                                          widget.likedBooksBox
+                                                              .put(key, book);
+                                                        } else {
+                                                          widget.likedBooksBox
+                                                              .delete(
+                                                                  key); // Remove the book from 'liked_books' box
+                                                        }
                                                       }
-                                                    }
 
-                                                    setState(() {
-                                                      likedBooks[key] =
-                                                          newLikedStatus;
-                                                    });
+                                                      setState(() {
+                                                        likedBooks[key] =
+                                                            newLikedStatus;
+                                                      });
 
-                                                    print(widget
-                                                        .likedBooksBox.values);
-                                                  },
-                                                  icon: Icon(
-                                                    isBookLiked
-                                                        ? Icons.favorite_rounded
-                                                        : Icons
-                                                            .favorite_border_rounded,
-                                                    color: Colors.white,
-                                                    size: 20,
-                                                  ),
-                                                ),
+                                                      print(widget.likedBooksBox
+                                                          .values);
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons
+                                                          .favorite_border_rounded,
+                                                      color: Colors.white,
+                                                      size: 20,
+                                                    )),
                                               ),
                                             ),
                                           ),

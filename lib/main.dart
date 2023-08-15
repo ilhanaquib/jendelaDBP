@@ -40,7 +40,12 @@ void main() async {
   await registerHive();
   final prefs = await SharedPreferences.getInstance();
   final showHomeNotifier = prefs.getBool('showHome') ?? false;
-  runApp(JendelaDBP(showHomeNotifier: showHomeNotifier));
+  runApp(JendelaDBP(showHomeNotifier: showHomeNotifier)
+      // DevicePreview(
+      //   enabled: true,
+      //   builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
+      // ),
+      );
 }
 
 //JendelaDBP(showHome: showHome)
@@ -132,7 +137,7 @@ class JendelaDBP extends StatelessWidget {
 
           //pages
           '/bookRead': (context) => const BookRead(),
-          '/user': (context) => const User(),
+          '/user': (context) => const UserHomeScreen(),
 
           //authentication
           '/signup': (context) => const Signup(),
@@ -142,24 +147,28 @@ class JendelaDBP extends StatelessWidget {
           '/forgotPassword': (context) => const ForgotPassword(),
           '/createNewPassword': (context) => const CreateNewPassword()
         },
-        home: 
-        showHomeNotifier ? PersistentTabView(
-          context,
-          controller: PersistentTabController(initialIndex: showHomeNotifier ? 0 : 4),
-          screens: _buildScreens(context),
-          items: _navBarItems(),
-          confineInSafeArea: true,
-          backgroundColor: Colors.white,
-          handleAndroidBackButtonPress: true,
-          resizeToAvoidBottomInset: true,
-          stateManagement: true,
-          hideNavigationBarWhenKeyboardShows: true,
-          decoration: const NavBarDecoration(
-            colorBehindNavBar: Colors.white,
-          ),
-          popAllScreensOnTapOfSelectedTab: true,
-          navBarStyle: NavBarStyle.style12,
-        ) : const OnboardScreen()
+        home:
+            //Signin()
+            showHomeNotifier
+                ? PersistentTabView(
+                    context,
+                    controller: PersistentTabController(
+                        initialIndex: showHomeNotifier ? 0 : 4),
+                    screens: _buildScreens(context),
+                    items: _navBarItems(),
+                    confineInSafeArea: true,
+                    backgroundColor: Colors.white,
+                    handleAndroidBackButtonPress: true,
+                    resizeToAvoidBottomInset: true,
+                    stateManagement: true,
+                    hideNavigationBarWhenKeyboardShows: true,
+                    decoration: const NavBarDecoration(
+                      colorBehindNavBar: Colors.white,
+                    ),
+                    popAllScreensOnTapOfSelectedTab: true,
+                    navBarStyle: NavBarStyle.style12,
+                  )
+                : const OnboardScreen(),
       ),
     );
   }

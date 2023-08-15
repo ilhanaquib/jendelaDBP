@@ -2,17 +2,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
 import 'package:jendela_dbp/components/chapterList.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class BookDetail extends StatelessWidget {
   const BookDetail(
       {super.key,
       required this.bookImage,
       required this.bookTitle,
-      required this.bookDesc});
+      required this.bookDesc,
+      this.hideBottomNavBar = true});
 
   final String bookTitle;
   final String bookImage;
   final String bookDesc;
+  final bool hideBottomNavBar;
 
   void bottomSheet(BuildContext context) {
     showModalBottomSheet<void>(

@@ -134,6 +134,8 @@ class GlobalVar {
     }
   }
 
+  bool isBookLiked= false;
+
   // static List<String> categoryIds = [
   //   kategori1,
   //   kategori2,

@@ -118,12 +118,13 @@ class _SigninState extends State<Signin> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 20),
                     child: TextFormField(
                       controller: emailController,
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 20),
                         suffixIcon: const Icon(
                           Icons.email_rounded,
                           color: Color.fromARGB(255, 162, 162, 162),
@@ -155,13 +156,14 @@ class _SigninState extends State<Signin> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 20),
                     child: TextFormField(
                       controller: passwordController,
                       obscureText: !_passwordVisible,
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 20),
                         suffixIcon: IconButton(
                           icon: Icon(
                             // Based on passwordVisible state choose the icon

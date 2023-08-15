@@ -1,12 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
+import 'package:jendela_dbp/components/home/homeDrawer.dart';
+import 'package:jendela_dbp/components/home/searchDelegate.dart';
 import 'package:jendela_dbp/components/home/topHeaderHome.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:jendela_dbp/main.dart';
-import 'package:jendela_dbp/view/pages/bookDetails.dart';
+import 'package:jendela_dbp/view/pages/user.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -164,6 +165,8 @@ class _HomeState extends State<Home> {
 
   List<String> selectedFilters = [];
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     Map<int, List<int>> categoryToBookMap = {
@@ -182,14 +185,14 @@ class _HomeState extends State<Home> {
       13: kategori13Books,
       14: kategori14Books,
       15: kategori15Books,
-      // ... and so on for other categories ...
     };
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            print(showHomeNotifier);
+            _scaffoldKey.currentState?.openDrawer();
           },
           icon: const Icon(
             Icons.menu_rounded,
@@ -200,7 +203,11 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/user');
+              PersistentNavBarNavigator.pushNewScreen(
+                context,
+                withNavBar: false,
+                screen: const UserHomeScreen(),
+              );
             },
             icon: const Icon(
               Icons.account_circle_outlined,
@@ -210,6 +217,7 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
+      drawer: const HomeDrawer(),
       body: CustomScrollView(
         slivers: [
           const SliverAppBar(
@@ -289,14 +297,16 @@ class _HomeState extends State<Home> {
                               i <= 15;
                               i++) // Loop through kategoriXTitle
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
                               child: FilterButton(
                                 text: GlobalVar.getTitleForCategory(i),
                                 isSelected:
                                     selectedFilters.contains(i.toString()),
                                 onTap: () {
                                   setState(() {
-                                    if (selectedFilters.contains(i.toString())) {
+                                    if (selectedFilters
+                                        .contains(i.toString())) {
                                       selectedFilters.remove(i.toString());
                                     } else {
                                       selectedFilters.add(i.toString());
@@ -362,183 +372,6 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-    );
-  }
-}
-
-// search
-class BookSearchDelegate extends SearchDelegate<String> {
-  final Box<HiveBookAPI> apiBook;
-
-  BookSearchDelegate(this.apiBook);
-
-  Stream<List<HiveBookAPI>> searchResultsStream(String query) {
-    return Stream.fromFuture(
-        Future.delayed(const Duration(milliseconds: 300), () {
-      return apiBook.values.where((book) {
-        final title = book.name;
-        return title!.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    }));
-  }
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    // clear button
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-        },
-      ),
-    ];
-  }
-
-  @override
-  // back button
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, '');
-      },
-    );
-  }
-
-  @override
-  // search result
-  Widget buildResults(BuildContext context) {
-    return StreamBuilder<List<HiveBookAPI>>(
-      stream: searchResultsStream(query),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        final searchResults = snapshot.data!;
-
-        return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // You can adjust the number of columns as needed
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
-          ),
-          itemCount: searchResults.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BookDetail(
-                      bookImage: searchResults[index].images!,
-                      bookTitle: searchResults[index].name!,
-                      bookDesc: searchResults[index].description!,
-                    ),
-                  ),
-                );
-              },
-              child: Column(
-                children: [
-                  Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Stack(
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: searchResults[index].images!,
-                            height: 220,
-                            width: 150,
-                            fit: BoxFit.fill,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ), // Use your image data
-                  Text(searchResults[index].name!),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  @override
-  // suggestion
-  Widget buildSuggestions(BuildContext context) {
-    return StreamBuilder<List<HiveBookAPI>>(
-      stream: searchResultsStream(query),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        final suggestionList = snapshot.data!;
-
-        return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // You can adjust the number of columns as needed
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
-          ),
-          itemCount: suggestionList.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BookDetail(
-                      bookImage: suggestionList[index].images!,
-                      bookTitle: suggestionList[index].name!,
-                      bookDesc: suggestionList[index].description!,
-                    ),
-                  ),
-                );
-              },
-              child: Column(
-                children: [
-                  Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Stack(
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: suggestionList[index].images!,
-                            height: 150,
-                            width: 100,
-                            fit: BoxFit.fill,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Text(
-                    suggestionList[index].name!,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
     );
   }
 }
