@@ -90,6 +90,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                             bookImage: bookSpecific.images!,
                             bookTitle: bookSpecific.name!,
                             bookDesc: bookSpecific.description!,
+                            bookPrice: bookSpecific.price!,
                           ),
                         );
                       },
@@ -133,49 +134,45 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                                 offset:
                                                     const Offset(-2.7, -1.7),
                                                 child: IconButton(
-                                                    onPressed: () async {
-                                                      final newLikedStatus =
-                                                          !isBookLiked;
+                                                  onPressed: () async {
+                                                    final newLikedStatus =
+                                                        !isBookLiked;
 
-                                                      // Update liked status in the 'liked_status' box
-                                                      await likedStatusBox.put(
-                                                          key, newLikedStatus);
+                                                    // Update liked status in the 'liked_status' box
+                                                    await likedStatusBox.put(
+                                                        key, newLikedStatus);
 
-                                                      // Update the liked status in the book model and in the main book storage box
-                                                      final book = widget
-                                                          .bookBox
-                                                          .get(key);
-                                                      if (book != null) {
-                                                        book.isFavorite =
-                                                            newLikedStatus;
-                                                        widget.bookBox
+                                                    // Update the liked status in the book model and in the main book storage box
+                                                    final book =
+                                                        widget.bookBox.get(key);
+                                                    if (book != null) {
+                                                      book.isFavorite =
+                                                          newLikedStatus;
+                                                      widget.bookBox
+                                                          .put(key, book);
+
+                                                      // Add or remove the book from the 'liked_books' box based on the liked status
+                                                      if (newLikedStatus) {
+                                                        widget.likedBooksBox
                                                             .put(key, book);
-
-                                                        // Add or remove the book from the 'liked_books' box based on the liked status
-                                                        if (newLikedStatus) {
-                                                          widget.likedBooksBox
-                                                              .put(key, book);
-                                                        } else {
-                                                          widget.likedBooksBox
-                                                              .delete(
-                                                                  key); // Remove the book from 'liked_books' box
-                                                        }
+                                                      } else {
+                                                        widget.likedBooksBox.delete(
+                                                            key); // Remove the book from 'liked_books' box
                                                       }
+                                                    }
 
-                                                      setState(() {
-                                                        likedBooks[key] =
-                                                            newLikedStatus;
-                                                      });
-
-                                                      print(widget.likedBooksBox
-                                                          .values);
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons
-                                                          .favorite_border_rounded,
-                                                      color: Colors.white,
-                                                      size: 20,
-                                                    )),
+                                                    setState(() {
+                                                      likedBooks[key] =
+                                                          newLikedStatus;
+                                                    });
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons
+                                                        .favorite_border_rounded,
+                                                    color: Colors.white,
+                                                    size: 20,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -188,7 +185,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                   padding: const EdgeInsets.only(top: 7),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.stretch,
                                     children: [
                                       Text(
                                         capitalizeEachWord(
@@ -202,7 +199,9 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                         ),
                                       ),
                                       Text(
-                                        'RM' + bookSpecific.price!,
+                                        bookSpecific.price == ''
+                                            ? 'Naskhah Ikhlas'
+                                            : 'RM ${bookSpecific.price!}',
                                         style: const TextStyle(
                                           fontSize: 13,
                                           color: Color.fromARGB(

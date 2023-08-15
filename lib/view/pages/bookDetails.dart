@@ -2,20 +2,30 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
 import 'package:jendela_dbp/components/chapterList.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-class BookDetail extends StatelessWidget {
-  const BookDetail(
-      {super.key,
-      required this.bookImage,
-      required this.bookTitle,
-      required this.bookDesc,
-      this.hideBottomNavBar = true});
+class BookDetail extends StatefulWidget {
+  BookDetail({
+    super.key,
+    required this.bookImage,
+    required this.bookTitle,
+    required this.bookDesc,
+    required this.bookPrice,
+  });
 
   final String bookTitle;
   final String bookImage;
   final String bookDesc;
-  final bool hideBottomNavBar;
+  final String bookPrice;
+
+  @override
+  State<BookDetail> createState() => _BookDetailState();
+}
+
+class _BookDetailState extends State<BookDetail> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void bottomSheet(BuildContext context) {
     showModalBottomSheet<void>(
@@ -32,6 +42,17 @@ class BookDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
+        actions: [
+          // In BookDetail
+          IconButton(
+            onPressed: () async {},
+            icon: Icon(
+              Icons.favorite_border_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+        ],
       ),
       body: CustomScrollView(
         slivers: [
@@ -62,7 +83,7 @@ class BookDetail extends StatelessWidget {
                             child: Stack(
                               children: [
                                 CachedNetworkImage(
-                                  imageUrl: bookImage,
+                                  imageUrl: widget.bookImage,
                                   height: 220,
                                   width: 150,
                                   fit: BoxFit.fill,
@@ -77,7 +98,7 @@ class BookDetail extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            bookTitle,
+                            widget.bookTitle,
                             textAlign:
                                 TextAlign.center, // Center-aligns the text
                             style: const TextStyle(
@@ -189,10 +210,10 @@ class BookDetail extends StatelessWidget {
                           child: SizedBox(
                             height: 175,
                             child: SingleChildScrollView(
-                              child: bookDesc.isEmpty
+                              child: widget.bookDesc.isEmpty
                                   ? NoDescriptionCard()
                                   : Text(
-                                      bookDesc,
+                                      widget.bookDesc,
                                       style: const TextStyle(
                                         fontSize: 15,
                                         color:
@@ -243,6 +264,9 @@ class BookDetail extends StatelessWidget {
                                             color: Color.fromARGB(
                                                 255, 235, 127, 35))),
                                     onPressed: () {
+                                      // 1. check if the book is purchased
+                                      // 2. if book isnt purchased, should buy
+                                      // 3. if book is purhcaesd, open the book pdf/epub
                                       Navigator.pushNamed(context, '/bookRead');
                                     },
                                     child: const Padding(

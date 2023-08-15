@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jendela_dbp/blocs/appearanceButtonBloc.dart';
 import 'package:jendela_dbp/blocs/fontButtonBloc.dart';
+import 'package:jendela_dbp/blocs/likedBooksBloc.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
@@ -112,6 +113,9 @@ class JendelaDBP extends StatelessWidget {
         ),
         BlocProvider<AuthCubit>(
           create: (BuildContext context) => AuthCubit(),
+        ),
+        BlocProvider<LikedBooksBloc>(
+          create: (BuildContext context) => LikedBooksBloc(),
         ),
       ],
       child: MaterialApp(

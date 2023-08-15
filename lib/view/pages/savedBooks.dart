@@ -13,6 +13,7 @@ class SavedBooks extends StatefulWidget {
 class _SavedBooksState extends State<SavedBooks> {
   late Box<bool> likedStatusBox;
   late Box<HiveBookAPI> likedBooksBox;
+  Map<int, bool> likedBookss = {}; // Map to store liked status
 
   @override
   void initState() {
@@ -56,10 +57,13 @@ class _SavedBooksState extends State<SavedBooks> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BookDetail(
-                                      bookImage: book.images!,
-                                      bookTitle: book.name!,
-                                      bookDesc: book.description!)),
+                                builder: (context) => BookDetail(
+                                  bookImage: book.images!,
+                                  bookTitle: book.name!,
+                                  bookDesc: book.description!,
+                                  bookPrice: book.price!,
+                                ),
+                              ),
                             );
                           },
                           child: Card(
