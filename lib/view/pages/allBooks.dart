@@ -29,9 +29,8 @@ class AllBooks extends StatefulWidget {
 }
 
 class _AllBooksState extends State<AllBooks> {
-  Map<int, bool> likedBooks = {};
+// sort books ----------------------------------------------
   SortingOrder selectedSortingOrder = SortingOrder.latest;
-
   void _sortBooks() {
     setState(() {
       widget.listBook.sort((a, b) {
@@ -79,6 +78,9 @@ class _AllBooksState extends State<AllBooks> {
       });
     });
   }
+  // sort books---------------------------------------------------------
+
+  Map<int, bool> likedBooks = {};
 
   late Box<bool> likedStatusBox;
 
@@ -109,6 +111,7 @@ class _AllBooksState extends State<AllBooks> {
 
   @override
   Widget build(BuildContext context) {
+
     Map<SortingOrder, void Function()> sortingFunctions = {
       SortingOrder.highToLow: _sortBooks,
       SortingOrder.lowToHigh: _sortBooks,
@@ -116,6 +119,7 @@ class _AllBooksState extends State<AllBooks> {
       SortingOrder.alphabeticallyAToZ: () => _sortBooksAlphabetically(true),
       SortingOrder.alphabeticallyZToA: () => _sortBooksAlphabetically(false),
     };
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.categoryTitle} Terkini'),
@@ -278,6 +282,7 @@ class _AllBooksState extends State<AllBooks> {
                               bookSpecific.name!,
                               textAlign: TextAlign.center,
                               maxLines: 2,
+                              style: TextStyle(fontSize: 10),
                             ),
                             Text(
                               bookSpecific.price == ''

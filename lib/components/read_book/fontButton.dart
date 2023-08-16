@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/blocs/fontButtonBloc.dart';
+import 'package:jendela_dbp/blocs/notUsed/fontButtonBloc.dart';
 import 'settings_buttons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

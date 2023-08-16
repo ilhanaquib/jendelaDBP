@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/blocs/appearanceButtonBloc.dart';
+import 'package:jendela_dbp/blocs/notUsed/appearanceButtonBloc.dart';
 import 'settings_buttons.dart';
 
 class AppearanceButtons extends StatelessWidget {
