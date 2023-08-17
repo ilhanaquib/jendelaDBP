@@ -9,7 +9,7 @@ import 'package:http/http.dart';
 import 'package:jendela_dbp/api-services.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/model/userModel.dart';
-import 'package:jendela_dbp/states/authState.dart';
+import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';

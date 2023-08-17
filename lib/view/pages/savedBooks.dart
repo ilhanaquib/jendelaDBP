@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noBooksLikedCard.dart';
+import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
 
@@ -143,6 +144,10 @@ class _SavedBooksState extends State<SavedBooks> {
                                           // Update likedBooks list
                                           likedBooks.removeWhere((book) =>
                                               book.id == bookIdToDelete);
+
+                                          LikedStatusManager.updateLikedStatus(
+                                              bookIdToDelete, false);
+
                                         });
                                       }
                                     },

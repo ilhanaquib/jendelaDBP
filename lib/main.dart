@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jendela_dbp/blocs/notUsed/appearanceButtonBloc.dart';
-import 'package:jendela_dbp/blocs/notUsed/fontButtonBloc.dart';
-import 'package:jendela_dbp/blocs/likedBooksBloc.dart';
+import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
+import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
+import 'package:jendela_dbp/stateManagement/blocs/notUsed/appearanceButtonBloc.dart';
+import 'package:jendela_dbp/stateManagement/blocs/notUsed/fontButtonBloc.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
@@ -114,11 +115,12 @@ class JendelaDBP extends StatelessWidget {
         BlocProvider<AuthCubit>(
           create: (BuildContext context) => AuthCubit(),
         ),
-        BlocProvider<LikedBooksBloc>(
-          create: (BuildContext context) => LikedBooksBloc(),
+        BlocProvider<ImageBloc>(
+          create: (BuildContext context) => ImageBloc(),
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(
@@ -141,7 +143,6 @@ class JendelaDBP extends StatelessWidget {
 
           //pages
           '/bookRead': (context) => const BookRead(),
-          '/user': (context) => const UserHomeScreen(),
 
           //authentication
           '/signup': (context) => const Signup(),

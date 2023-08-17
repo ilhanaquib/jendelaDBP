@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/notFoundCard.dart';
+import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -32,8 +33,6 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
     return capitalizedWords.join(' ');
   }
 
-  Map<int, bool> likedBooks = {}; // Map to store liked status
-
   late Box<bool> likedStatusBox;
 
   @override
@@ -56,9 +55,15 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
       }
 
       setState(() {
-        likedBooks[key] = isLiked;
+        LikedStatusManager.likedBooks[key] = isLiked;
       });
     }
+  }
+
+  void _updateLikedStatus(int bookId, bool isLiked) {
+    setState(() {
+      LikedStatusManager.updateLikedStatus(bookId, isLiked);
+    });
   }
 
   @override
@@ -77,7 +82,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                 itemBuilder: (context, index) {
                   final int key = widget.dataBooks[index];
                   final HiveBookAPI? bookSpecific = widget.bookBox.get(key);
-                  final isBookLiked = likedBooks[key] ?? false;
+                  final isBookLiked = LikedStatusManager.likedBooks[key] ?? false;
 
                   return Padding(
                     padding: const EdgeInsets.only(left: 20),
@@ -145,6 +150,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                                     // Update the liked status in the book model and in the main book storage box
                                                     final book =
                                                         widget.bookBox.get(key);
+
                                                     if (book != null) {
                                                       book.isFavorite =
                                                           newLikedStatus;
@@ -160,9 +166,11 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                                             key); // Remove the book from 'liked_books' box
                                                       }
                                                     }
+                                                    _updateLikedStatus(
+                                                        key, newLikedStatus);
 
                                                     setState(() {
-                                                      likedBooks[key] =
+                                                      LikedStatusManager.likedBooks[key] =
                                                           newLikedStatus;
                                                     });
                                                   },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
 import 'package:jendela_dbp/components/home/homeDrawer.dart';
 import 'package:jendela_dbp/components/home/searchDelegate.dart';
@@ -6,6 +7,7 @@ import 'package:jendela_dbp/components/home/topHeaderHome.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
 import 'package:jendela_dbp/view/pages/user.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -166,9 +168,19 @@ class _HomeState extends State<Home> {
   List<String> selectedFilters = [];
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey appBarKey = GlobalKey();
+
+  void _updateAppBar() {
+    setState(() {
+      // Rebuild the app bar to reflect the changes
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final imageBloc = context.read<ImageBloc>();
+    final imageProvider = imageBloc.state.imageProvider;
+
     Map<int, List<int>> categoryToBookMap = {
       1: kategori1Books,
       2: kategori2Books,
@@ -187,190 +199,205 @@ class _HomeState extends State<Home> {
       15: kategori15Books,
     };
 
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-          icon: const Icon(
-            Icons.menu_rounded,
-            color: Color.fromARGB(255, 123, 123, 123),
-            size: 40,
-          ),
-        ),
-        actions: [
-          IconButton(
+    return BlocProvider(
+      create: (context) => ImageBloc(),
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          key: appBarKey,
+          leading: IconButton(
             onPressed: () {
-              PersistentNavBarNavigator.pushNewScreen(
-                context,
-                withNavBar: false,
-                screen: const UserHomeScreen(),
-              );
+              _scaffoldKey.currentState?.openDrawer();
             },
             icon: const Icon(
-              Icons.account_circle_outlined,
+              Icons.menu_rounded,
               color: Color.fromARGB(255, 123, 123, 123),
               size: 40,
             ),
           ),
-        ],
-      ),
-      drawer: const HomeDrawer(),
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar(
-            floating: true,
-            snap: true,
-            elevation: 0.0,
-            toolbarHeight: 0.01,
-          ),
-          SliverFillRemaining(
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: ListView(
-                children: [
-                  const TopHeader(),
-                  //search bar
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: TextButton(
-                      onPressed: () {
-                        showSearch(
-                          context: context,
-                          delegate: BookSearchDelegate(APIBook),
-                        );
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.black, // Text color
-                        backgroundColor: const Color.fromARGB(
-                            255, 244, 244, 244), // Button background color
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          side: BorderSide.none,
-                        ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: GestureDetector(
+                onTap: () {
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    withNavBar: false,
+                    screen: BlocProvider.value(
+                      value: context.read<ImageBloc>(),
+                      child: UserHomeScreen(
+                        updateAppBar: _updateAppBar,
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.search_rounded),
-                            SizedBox(
-                                width: 10), // Add spacing between icon and text
-                            Text(
-                              'Search your favourite book...',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Color.fromARGB(255, 184, 184, 184),
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  backgroundImage:
+                      context.watch<ImageBloc>().selectedImageProvider ??
+                          const AssetImage('assets/images/tiadakulitbuku.png'),
+                ),
+              ),
+            ),
+          ],
+        ),
+        drawer: const HomeDrawer(),
+        body: CustomScrollView(
+          slivers: [
+            const SliverAppBar(
+              floating: true,
+              snap: true,
+              elevation: 0.0,
+              toolbarHeight: 0.01,
+            ),
+            SliverFillRemaining(
+              child: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                },
+                child: ListView(
+                  children: [
+                    const TopHeader(),
+                    //search bar
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: TextButton(
+                        onPressed: () {
+                          showSearch(
+                            context: context,
+                            delegate: BookSearchDelegate(APIBook),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.black, // Text color
+                          backgroundColor: const Color.fromARGB(
+                              255, 244, 244, 244), // Button background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            side: BorderSide.none,
+                          ),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.search_rounded),
+                              SizedBox(
+                                  width:
+                                      10), // Add spacing between icon and text
+                              Text(
+                                'Search your favourite book...',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  color: Color.fromARGB(255, 184, 184, 184),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
-                  // filter by category buttons
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 25),
-                    child: SizedBox(
-                      height: 40, // Adjust the height as needed
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: FilterButton(
-                              text: 'All',
-                              isSelected: selectedFilters.isEmpty,
-                              onTap: () {
-                                setState(() {
-                                  selectedFilters.clear();
-                                });
-                              },
-                            ),
-                          ),
-                          for (int i = 1;
-                              i <= 15;
-                              i++) // Loop through kategoriXTitle
+                    // filter by category buttons
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 25),
+                      child: SizedBox(
+                        height: 40, // Adjust the height as needed
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 5),
                               child: FilterButton(
-                                text: GlobalVar.getTitleForCategory(i),
-                                isSelected:
-                                    selectedFilters.contains(i.toString()),
+                                text: 'All',
+                                isSelected: selectedFilters.isEmpty,
                                 onTap: () {
                                   setState(() {
-                                    if (selectedFilters
-                                        .contains(i.toString())) {
-                                      selectedFilters.remove(i.toString());
-                                    } else {
-                                      selectedFilters.add(i.toString());
-                                    }
+                                    selectedFilters.clear();
                                   });
                                 },
                               ),
                             ),
-                        ],
+                            for (int i = 1;
+                                i <= 15;
+                                i++) // Loop through kategoriXTitle
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: FilterButton(
+                                  text: GlobalVar.getTitleForCategory(i),
+                                  isSelected:
+                                      selectedFilters.contains(i.toString()),
+                                  onTap: () {
+                                    setState(() {
+                                      if (selectedFilters
+                                          .contains(i.toString())) {
+                                        selectedFilters.remove(i.toString());
+                                      } else {
+                                        selectedFilters.add(i.toString());
+                                      }
+                                    });
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
 
-                  // books
-                  ValueListenableBuilder(
-                    valueListenable: APIBook.listenable(),
-                    builder: (context, Box<HiveBookAPI> myAPIBook, _) {
-                      return SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        child: FutureBuilder<bool>(
-                          future: allProduct,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return SizedBox(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      // Display filtered bookshelves
-                                      for (int i = 1; i <= 15; i++)
-                                        if (selectedFilters.isEmpty ||
-                                            selectedFilters
-                                                .contains(i.toString()))
-                                          bookShelf(
+                    // books
+                    ValueListenableBuilder(
+                      valueListenable: APIBook.listenable(),
+                      builder: (context, Box<HiveBookAPI> myAPIBook, _) {
+                        return SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: FutureBuilder<bool>(
+                            future: allProduct,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                return SizedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        // Display filtered bookshelves
+                                        for (int i = 1; i <= 15; i++)
+                                          if (selectedFilters.isEmpty ||
+                                              selectedFilters
+                                                  .contains(i.toString()))
+                                            bookShelf(
                                               context,
                                               GlobalVar.getTitleForCategory(i),
                                               i.toString(),
                                               categoryToBookMap[i] ?? [],
-                                              APIBook),
-                                    ],
+                                              APIBook,
+                                            ),
+                                      ],
+                                    ),
                                   ),
+                                );
+                              }
+                              return Center(
+                                child: SpinKitDoubleBounce(
+                                  color: Colors.grey.shade700,
+                                  size: 50.0,
                                 ),
                               );
-                            }
-                            return Center(
-                              child: SpinKitDoubleBounce(
-                                color: Colors.grey.shade700,
-                                size: 50.0,
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -23,6 +23,7 @@ class Button extends StatelessWidget {
                     minimumSize: const Size.fromHeight(40)),
                 child: const Text('Save'),
               ),
+              const SizedBox(height: 10,),
               OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(

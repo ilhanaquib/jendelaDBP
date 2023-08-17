@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'bookDetails.dart';
 
@@ -80,7 +81,6 @@ class _AllBooksState extends State<AllBooks> {
   }
   // sort books---------------------------------------------------------
 
-  Map<int, bool> likedBooks = {};
 
   late Box<bool> likedStatusBox;
 
@@ -104,14 +104,19 @@ class _AllBooksState extends State<AllBooks> {
       }
 
       setState(() {
-        likedBooks[key] = isLiked;
+        LikedStatusManager.likedBooks[key] = isLiked;
       });
     }
   }
 
+  void _updateLikedStatus(int bookId, bool isLiked) {
+    setState(() {
+      LikedStatusManager.updateLikedStatus(bookId, isLiked);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
     Map<SortingOrder, void Function()> sortingFunctions = {
       SortingOrder.highToLow: _sortBooks,
       SortingOrder.lowToHigh: _sortBooks,
@@ -186,7 +191,7 @@ class _AllBooksState extends State<AllBooks> {
                     itemBuilder: (context, index) {
                       final int key = widget.listBook[index];
                       final HiveBookAPI? bookSpecific = widget.bookBox.get(key);
-                      final isBookLiked = likedBooks[key] ?? false;
+                      final isBookLiked = LikedStatusManager.likedBooks[key] ?? false;
 
                       return GestureDetector(
                         onTap: () {
@@ -258,9 +263,11 @@ class _AllBooksState extends State<AllBooks> {
                                                         key); // Remove the book from 'liked_books' box
                                                   }
                                                 }
+                                                _updateLikedStatus(
+                                                    key, newLikedStatus);
 
                                                 setState(() {
-                                                  likedBooks[key] =
+                                                  LikedStatusManager.likedBooks[key] =
                                                       newLikedStatus;
                                                 });
                                               },
