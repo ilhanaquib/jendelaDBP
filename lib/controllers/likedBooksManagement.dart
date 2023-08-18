@@ -1,11 +1,17 @@
-class LikedStatusManager {
-  static Map<int, bool> likedBooks = {}; // Shared liked status map
+import 'package:hive_flutter/hive_flutter.dart';
 
-  static void updateLikedStatus(int bookId, bool isLiked) {
-    likedBooks[bookId] = isLiked;
+class LikedStatusManager {
+  static Box<bool>? likedStatusBox;
+
+  static Future<void> initLikedStatusBox() async {
+    likedStatusBox = await Hive.openBox<bool>('liked_status');
+  }
+
+  static void updateLikedStatus(int bookId, bool isLiked) async {
+    await likedStatusBox!.put(bookId, isLiked);
   }
 
   static bool isBookLiked(int bookId) {
-    return likedBooks[bookId] ?? false;
+    return likedStatusBox!.get(bookId, defaultValue: false) ?? false;
   }
 }

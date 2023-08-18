@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
 class CarouselTitle extends StatelessWidget {
   final String? title;
   final Function()? seeAllOnTap;
@@ -8,7 +7,6 @@ class CarouselTitle extends StatelessWidget {
   CarouselTitle({this.title, this.seeAllOnTap, this.seeAllText, this.color});
   @override
   Widget build(BuildContext context) {
-    DbpColor colors = DbpColor();
     return Container(
       child: Column(
         children: [

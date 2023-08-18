@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'bookDetails.dart';
 
 enum SortingOrder {
@@ -30,6 +32,8 @@ class AllBooks extends StatefulWidget {
 }
 
 class _AllBooksState extends State<AllBooks> {
+  late Map<int, bool> likedStatusMap;
+
 // sort books ----------------------------------------------
   SortingOrder selectedSortingOrder = SortingOrder.latest;
   void _sortBooks() {
@@ -81,20 +85,29 @@ class _AllBooksState extends State<AllBooks> {
   }
   // sort books---------------------------------------------------------
 
-
   late Box<bool> likedStatusBox;
 
   @override
   void initState() {
     super.initState();
+    likedStatusBox = LikedStatusManager.likedStatusBox!;
+    likedStatusMap = {};
+    for (final key in widget.listBook) {
+      likedStatusMap[key] = false;
+    }
+
+    // Listen to state changes of the LikedStatusCubit
+    context.read<LikedStatusCubit>().stream.listen((state) {
+      setState(() {
+        likedStatusMap = state;
+      });
+    });
     _openLikedStatusBox();
   }
 
   Future<void> _openLikedStatusBox() async {
-    likedStatusBox = await Hive.openBox<bool>('liked_status');
-
     for (final key in widget.listBook) {
-      final isLiked = likedStatusBox.get(key, defaultValue: false) ?? false;
+      final isLiked = LikedStatusManager.isBookLiked(key);
 
       // Update the liked status in the HiveBookAPI model
       final book = widget.bookBox.get(key);
@@ -103,15 +116,18 @@ class _AllBooksState extends State<AllBooks> {
         widget.bookBox.put(key, book);
       }
 
-      setState(() {
-        LikedStatusManager.likedBooks[key] = isLiked;
-      });
+      LikedStatusManager.updateLikedStatus(key, isLiked); // Update liked status
     }
+
+    setState(() {
+      // Refresh the UI if needed
+    });
   }
 
   void _updateLikedStatus(int bookId, bool isLiked) {
+    context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
     setState(() {
-      LikedStatusManager.updateLikedStatus(bookId, isLiked);
+      // Refresh the UI if needed
     });
   }
 
@@ -191,7 +207,9 @@ class _AllBooksState extends State<AllBooks> {
                     itemBuilder: (context, index) {
                       final int key = widget.listBook[index];
                       final HiveBookAPI? bookSpecific = widget.bookBox.get(key);
-                      final isBookLiked = LikedStatusManager.likedBooks[key] ?? false;
+                      final isBookLiked =
+                          LikedStatusManager.isBookLiked(key) ?? false;
+                      final isBookLikedMap = likedStatusMap[key] ?? false;
 
                       return GestureDetector(
                         onTap: () {
@@ -199,10 +217,13 @@ class _AllBooksState extends State<AllBooks> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => BookDetail(
+                                bookId: key,
                                 bookImage: bookSpecific.images!,
                                 bookTitle: bookSpecific.name!,
                                 bookDesc: bookSpecific.description!,
                                 bookPrice: bookSpecific.price!,
+                                likedStatusBox: likedStatusBox,
+                                bookBox: widget.bookBox,
                               ),
                             ),
                           );
@@ -266,10 +287,10 @@ class _AllBooksState extends State<AllBooks> {
                                                 _updateLikedStatus(
                                                     key, newLikedStatus);
 
-                                                setState(() {
-                                                  LikedStatusManager.likedBooks[key] =
-                                                      newLikedStatus;
-                                                });
+                                                LikedStatusManager.isBookLiked(
+                                                    book!.id!);
+
+                                                setState(() {});
                                               },
                                               icon: const Icon(
                                                 Icons.favorite_border_rounded,

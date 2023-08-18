@@ -86,7 +86,6 @@ class _HomeState extends State<Home> {
   }
 
   void getKategoriFromAPI() {
-    print('object');
     kategori1Books = APIBook.keys
         .cast<int>()
         .where(
@@ -178,9 +177,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final imageBloc = context.read<ImageBloc>();
-    final imageProvider = imageBloc.state.imageProvider;
-
     Map<int, List<int>> categoryToBookMap = {
       1: kategori1Books,
       2: kategori2Books,

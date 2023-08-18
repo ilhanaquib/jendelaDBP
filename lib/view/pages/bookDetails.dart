@@ -2,29 +2,72 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
 import 'package:jendela_dbp/components/chapterList.dart';
+import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookDetail extends StatefulWidget {
-  BookDetail({
-    super.key,
-    required this.bookImage,
-    required this.bookTitle,
-    required this.bookDesc,
-    required this.bookPrice,
-  });
+  BookDetail(
+      {super.key,
+      required this.bookId,
+      required this.bookImage,
+      required this.bookTitle,
+      required this.bookDesc,
+      required this.bookPrice,
+      this.likedStatusBox,
+      this.bookBox});
 
+  final int bookId;
   final String bookTitle;
   final String bookImage;
   final String bookDesc;
   final String bookPrice;
+  final Box<bool>? likedStatusBox;
+  final Box<HiveBookAPI>? bookBox;
 
   @override
   State<BookDetail> createState() => _BookDetailState();
 }
 
 class _BookDetailState extends State<BookDetail> {
+  bool _isBookLiked = false;
+  final likedBooksBox = Hive.box<HiveBookAPI>('liked_books');
+
   @override
   void initState() {
     super.initState();
+    _isBookLiked = LikedStatusManager.isBookLiked(widget.bookId);
+  }
+
+  void _toggleLikedStatus() async {
+    final newLikedStatus = !_isBookLiked;
+    final book = widget.bookBox!.get(widget.bookId);
+
+    // Update liked status in the 'liked_status' box
+    await widget.likedStatusBox!.put(widget.bookId, newLikedStatus);
+
+    // Update the liked status in the main liked status map
+    BlocProvider.of<LikedStatusCubit>(context)
+        .updateLikedStatus(widget.bookId, newLikedStatus);
+
+    // Update liked status in 'liked_books' box
+    if (newLikedStatus) {
+      likedBooksBox.put(widget.bookId, book!);
+    } else {
+      likedBooksBox.delete(widget.bookId);
+    }
+
+    if (newLikedStatus) {
+      context.read<LikedStatusCubit>().updateLikedStatus(widget.bookId, true);
+    } else {
+      context.read<LikedStatusCubit>().removeLikedStatus(widget.bookId);
+    }
+
+    setState(() {
+      _isBookLiked = newLikedStatus;
+    });
   }
 
   void bottomSheet(BuildContext context) {
@@ -43,12 +86,13 @@ class _BookDetailState extends State<BookDetail> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
         actions: [
-          // In BookDetail
           IconButton(
-            onPressed: () async {},
+            onPressed: _toggleLikedStatus, // Toggle liked status on button tap
             icon: Icon(
-              Icons.favorite_border_rounded,
-              color: Colors.white,
+              _isBookLiked
+                  ? Icons.favorite_rounded
+                  : Icons.favorite_border_rounded,
+              color: const Color.fromARGB(255, 144, 191, 63),
               size: 20,
             ),
           ),

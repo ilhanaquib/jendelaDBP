@@ -7,8 +7,9 @@ import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/notUsed/appearanceButtonBloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/notUsed/fontButtonBloc.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
-import 'package:jendela_dbp/cubits/AuthCubit.dart';
+import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
+import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/authentication/createNewPassword.dart';
 import 'package:jendela_dbp/view/authentication/forgotPassword.dart';
 import 'package:jendela_dbp/view/authentication/signin.dart';
@@ -40,6 +41,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await registerHive();
+  await LikedStatusManager.initLikedStatusBox();
   final prefs = await SharedPreferences.getInstance();
   final showHomeNotifier = prefs.getBool('showHome') ?? false;
   runApp(JendelaDBP(showHomeNotifier: showHomeNotifier)
@@ -49,13 +51,6 @@ void main() async {
       // ),
       );
 }
-
-//JendelaDBP(showHome: showHome)
-
-// DevicePreview(
-//       enabled: true,
-//       builder: (context) => JendelaDBP(showHome: showHome),
-//     ),
 
 class JendelaDBP extends StatelessWidget {
   JendelaDBP({Key? key, required this.showHomeNotifier}) : super(key: key);
@@ -117,6 +112,9 @@ class JendelaDBP extends StatelessWidget {
         ),
         BlocProvider<ImageBloc>(
           create: (BuildContext context) => ImageBloc(),
+        ),
+        BlocProvider(
+          create: (context) => LikedStatusCubit(),
         ),
       ],
       child: MaterialApp(

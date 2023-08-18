@@ -59,6 +59,7 @@ class _SavedBooksState extends State<SavedBooks> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => BookDetail(
+                                  bookId: book.id!,
                                   bookImage: book.images!,
                                   bookTitle: book.name!,
                                   bookDesc: book.description!,

@@ -71,6 +71,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BookDetail(
+                      bookId: searchResults[index].id!,
                       bookImage: searchResults[index].images!,
                       bookTitle: searchResults[index].name!,
                       bookDesc: searchResults[index].description!,
@@ -138,6 +139,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BookDetail(
+                      bookId: suggestionList[index].id!,
                       bookImage: suggestionList[index].images!,
                       bookTitle: suggestionList[index].name!,
                       bookDesc: suggestionList[index].description!,

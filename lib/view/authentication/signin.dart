@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/authentication/authProvider.dart';
 import 'package:jendela_dbp/components/authentication/authCheckbox.dart';
-import 'package:jendela_dbp/cubits/AuthCubit.dart';
+import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/view/authentication/popups/popupSigninError.dart';
-import 'package:jendela_dbp/view/authentication/popups/popupSignup.dart';
-import 'package:jendela_dbp/view/authentication/popups/popupSignupError.dart';
 import 'package:jendela_dbp/main.dart';
 
 class Signin extends StatefulWidget {
