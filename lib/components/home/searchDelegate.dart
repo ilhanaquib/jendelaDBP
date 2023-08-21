@@ -46,6 +46,8 @@ class BookSearchDelegate extends SearchDelegate<String> {
   @override
   // search result
   Widget buildResults(BuildContext context) {
+    bool isDesktop = MediaQuery.of(context).size.width >= 600;
+    bool isMobile = MediaQuery.of(context).size.width <= 600;
     return StreamBuilder<List<HiveBookAPI>>(
       stream: searchResultsStream(query),
       builder: (context, snapshot) {
@@ -58,10 +60,12 @@ class BookSearchDelegate extends SearchDelegate<String> {
         final searchResults = snapshot.data!;
 
         return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // You can adjust the number of columns as needed
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: isDesktop
+                ? 6
+                : 2, // You can adjust the number of columns as needed
+            mainAxisSpacing: isDesktop ? 5 : 10.0,
+            crossAxisSpacing: isDesktop ? 5 : 10.0,
           ),
           itemCount: searchResults.length,
           itemBuilder: (context, index) {
@@ -114,6 +118,8 @@ class BookSearchDelegate extends SearchDelegate<String> {
   @override
   // suggestion
   Widget buildSuggestions(BuildContext context) {
+    bool isDesktop = MediaQuery.of(context).size.width >= 600;
+    bool isMobile = MediaQuery.of(context).size.width <= 600;
     return StreamBuilder<List<HiveBookAPI>>(
       stream: searchResultsStream(query),
       builder: (context, snapshot) {
@@ -126,10 +132,12 @@ class BookSearchDelegate extends SearchDelegate<String> {
         final suggestionList = snapshot.data!;
 
         return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // You can adjust the number of columns as needed
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: isDesktop
+                ? 6
+                : 2, // You can adjust the number of columns as needed
+            mainAxisSpacing: isDesktop ? 5 : 10.0,
+            crossAxisSpacing: isDesktop ? 5 : 10.0,
           ),
           itemCount: suggestionList.length,
           itemBuilder: (context, index) {

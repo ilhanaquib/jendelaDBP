@@ -14,12 +14,12 @@ Widget bookShelf(
   Box<HiveBookAPI> APIBook,
 ) {
   return Container(
-    height: 350,
+   // height: 350,
     child: Container(
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 20),
             child: CarouselTitle(
               title: categoryTitle + ' Terkini',
               seeAllText: "View All",
@@ -36,7 +36,7 @@ Widget bookShelf(
             ),
           ),
           SizedBox(
-              height: 275,
+              height: 320,
               child: BooksInsideShelf(dataBooks: listBook, bookBox: APIBook))
         ],
       ),

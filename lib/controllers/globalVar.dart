@@ -133,7 +133,6 @@ class GlobalVar {
         return 'All';
     }
   }
-
   // static List<String> categoryIds = [
   //   kategori1,
   //   kategori2,

@@ -48,10 +48,6 @@ class _BookDetailState extends State<BookDetail> {
     // Update liked status in the 'liked_status' box
     await widget.likedStatusBox!.put(widget.bookId, newLikedStatus);
 
-    // Update the liked status in the main liked status map
-    BlocProvider.of<LikedStatusCubit>(context)
-        .updateLikedStatus(widget.bookId, newLikedStatus);
-
     // Update liked status in 'liked_books' box
     if (newLikedStatus) {
       likedBooksBox.put(widget.bookId, book!);
@@ -59,11 +55,10 @@ class _BookDetailState extends State<BookDetail> {
       likedBooksBox.delete(widget.bookId);
     }
 
-    if (newLikedStatus) {
-      context.read<LikedStatusCubit>().updateLikedStatus(widget.bookId, true);
-    } else {
-      context.read<LikedStatusCubit>().removeLikedStatus(widget.bookId);
-    }
+    // Update liked status through the cubit
+    context
+        .read<LikedStatusCubit>()
+        .updateLikedStatus(widget.bookId, newLikedStatus);
 
     setState(() {
       _isBookLiked = newLikedStatus;

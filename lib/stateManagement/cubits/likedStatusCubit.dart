@@ -14,6 +14,10 @@ class LikedStatusCubit extends Cubit<Map<int, bool>> {
     emit(updatedLikedStatus);
   }
 
+  void updateLikedStatusMap(Map<int, bool> newMap) {
+    emit(newMap);
+  }
+
   bool isBookLiked(int bookId) {
     return state[bookId] ?? false;
   }

@@ -295,7 +295,7 @@ class _HomeState extends State<Home> {
 
                     // filter by category buttons
                     Padding(
-                      padding: const EdgeInsets.only(left: 20, top: 25),
+                      padding: const EdgeInsets.only(left: 20, top: 25, bottom: 10),
                       child: SizedBox(
                         height: 40, // Adjust the height as needed
                         child: ListView(
@@ -355,7 +355,7 @@ class _HomeState extends State<Home> {
                                 return SizedBox(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0),
+                                        horizontal: 4.0,),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,

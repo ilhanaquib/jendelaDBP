@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noBooksLikedCard.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SavedBooks extends StatefulWidget {
   @override
@@ -21,6 +22,21 @@ class _SavedBooksState extends State<SavedBooks> {
     super.initState();
     likedStatusBox = Hive.box<bool>('liked_status');
     likedBooksBox = Hive.box<HiveBookAPI>('liked_books');
+  }
+
+  void _updateLikedStatus(int bookId, bool isLiked) {
+    context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
+
+    // Update liked status map in the cubit
+    likedBookss[bookId] = isLiked;
+
+    setState(() {
+      // Refresh the UI if needed
+    });
+  }
+
+  void dispose() {
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -81,7 +97,7 @@ class _SavedBooksState extends State<SavedBooks> {
                                   child: Card(
                                     elevation: 4,
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(8),
                                       child: Image.network(book.images!,
                                           fit: BoxFit.cover),
                                     ),
@@ -124,7 +140,7 @@ class _SavedBooksState extends State<SavedBooks> {
                                   padding:
                                       const EdgeInsets.only(left: 25, top: 40),
                                   child: IconButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       int bookIdToDelete = book.id!;
 
                                       int? keyToDelete;
@@ -138,18 +154,22 @@ class _SavedBooksState extends State<SavedBooks> {
                                       }
 
                                       if (keyToDelete != null) {
-                                        setState(() {
-                                          // Remove from likedBooksBox using the key
-                                          likedBooksBox.delete(keyToDelete);
+                                        // Remove from likedBooksBox using the key
+                                        likedBooksBox.delete(keyToDelete);
 
-                                          // Update likedBooks list
-                                          likedBooks.removeWhere((book) =>
-                                              book.id == bookIdToDelete);
+                                        // Update likedBooks list
+                                        likedBooks.removeWhere((book) =>
+                                            book.id == bookIdToDelete);
 
-                                          LikedStatusManager.updateLikedStatus(
-                                              bookIdToDelete, false);
+                                        // Update liked status map in the cubit and liked status box
+                                        context
+                                            .read<LikedStatusCubit>()
+                                            .removeLikedStatus(bookIdToDelete);
 
-                                        });
+                                        // Notify BooksInsideShelf about the change in liked status
+                                        context
+                                            .read<LikedStatusCubit>()
+                                            .updateLikedStatusMap(likedBookss);
                                       }
                                     },
                                     icon: const Icon(

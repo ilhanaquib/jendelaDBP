@@ -55,6 +55,18 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
       });
     });
     _openLikedStatusBox();
+
+    context.read<LikedStatusCubit>().stream.listen((state) {
+      setState(() {
+        likedStatusMap = state;
+      });
+    });
+  }
+
+  Color getCircleAvatarBackgroundColor(int bookId) {
+    return likedStatusMap[bookId] ?? false
+        ? const Color.fromARGB(255, 144, 191, 63)
+        : Colors.white;
   }
 
   Future<void> _openLikedStatusBox() async {
@@ -81,6 +93,10 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
     setState(() {
       // Refresh the UI if needed
     });
+  }
+
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -125,127 +141,110 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                         );
                       },
                       child: SizedBox(
-                        height: 300,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 2),
-                          child: SizedBox(
-                            height: 250,
-                            width: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Card(
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
+                        //height: 250,
+                        width: 150,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Card(
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
                                     child: Stack(
                                       children: [
                                         CachedNetworkImage(
                                           imageUrl: bookSpecific!.images!,
-                                          height: 220,
-                                          width: 150,
+                                          // height: 220,
+                                          width: 140,
                                           fit: BoxFit.fill,
                                         ),
-                                        Positioned(
-                                          top: 2,
-                                          right: 2,
-                                          child: CircleAvatar(
-                                            radius: 15,
-                                            backgroundColor: isBookLikedMap
-                                                ? const Color.fromARGB(
-                                                    255, 144, 191, 63)
-                                                : const Color.fromARGB(
-                                                    230, 128, 128, 128),
-                                            child: Center(
-                                              child: Transform.translate(
-                                                offset:
-                                                    const Offset(-2.7, -1.7),
-                                                child: IconButton(
-                                                  onPressed: () async {
-                                                    final newLikedStatus =
-                                                        !isBookLiked;
-
-                                                    // Update liked status in the 'liked_status' box
-                                                    await likedStatusBox.put(
-                                                        key, newLikedStatus);
-
-                                                    // Update the liked status in the book model and in the main book storage box
-                                                    final book =
-                                                        widget.bookBox.get(key);
-
-                                                    if (book != null) {
-                                                      book.isFavorite =
-                                                          newLikedStatus;
-                                                      widget.bookBox
-                                                          .put(key, book);
-
-                                                      // Add or remove the book from the 'liked_books' box based on the liked status
-                                                      if (newLikedStatus) {
-                                                        widget.likedBooksBox
-                                                            .put(key, book);
-                                                      } else {
-                                                        widget.likedBooksBox.delete(
-                                                            key); // Remove the book from 'liked_books' box
-                                                      }
-
-                                                      // Update liked status in LikedStatusManager
-                                                      _updateLikedStatus(
-                                                          key, newLikedStatus);
-
-                                                      setState(() {});
-                                                    }
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons
-                                                        .favorite_border_rounded,
-                                                    color: Colors.white,
-                                                    size: 20,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )
                                       ],
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 7),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Text(
-                                        capitalizeEachWord(
-                                            bookSpecific.name!.toLowerCase()),
-                                        maxLines: 1,
-                                        style: const TextStyle(
-                                          fontSize: 13,
+                                  IconButton(
+                                    onPressed: () async {
+                                      final newLikedStatus = !isBookLiked;
+
+                                      // Update liked status in the 'liked_status' box
+                                      await likedStatusBox.put(
+                                          key, newLikedStatus);
+
+                                      // Update the liked status in the book model and in the main book storage box
+                                      final book = widget.bookBox.get(key);
+
+                                      if (book != null) {
+                                        book.isFavorite = newLikedStatus;
+                                        widget.bookBox.put(key, book);
+
+                                        // Add or remove the book from the 'liked_books' box based on the liked status
+                                        if (newLikedStatus) {
+                                          widget.likedBooksBox.put(key, book);
+                                        } else {
+                                          widget.likedBooksBox.delete(
+                                              key); // Remove the book from 'liked_books' box
+                                        }
+
+                                        // Update liked status in LikedStatusManager
+                                        _updateLikedStatus(key, newLikedStatus);
+
+                                        setState(() {});
+                                      }
+                                    },
+                                    icon: Stack(
+                                      children: [
+                                        Icon(
+                                          Icons.favorite,
+                                          color: getCircleAvatarBackgroundColor(
+                                              key),
+                                          size: 30,
+                                        ),
+                                        const Icon(
+                                          Icons.favorite_border,
                                           color:
-                                              Color.fromARGB(255, 51, 51, 51),
-                                          overflow: TextOverflow.visible,
+                                              Color.fromARGB(255, 144, 191, 63),
+                                          size: 30,
                                         ),
-                                      ),
-                                      Text(
-                                        bookSpecific.price == ''
-                                            ? 'Naskhah Ikhlas'
-                                            : 'RM ${bookSpecific.price!}',
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          color: Color.fromARGB(
-                                              255, 123, 123, 123),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 7),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    capitalizeEachWord(
+                                        bookSpecific.name!.toLowerCase()),
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: Color.fromARGB(255, 51, 51, 51),
+                                      overflow: TextOverflow.visible,
+                                    ),
+                                  ),
+                                  Text(
+                                    bookSpecific.price == ''
+                                        ? 'Naskhah Ikhlas'
+                                        : 'RM ${bookSpecific.price!}',
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromARGB(255, 123, 123, 123),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
