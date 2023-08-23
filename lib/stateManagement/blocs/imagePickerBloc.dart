@@ -53,7 +53,7 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
     try {
       // Simulate saving logic
       // Replace this with your actual saving logic
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
 
       // Return success
       return ImageSaveResult(true, null);
@@ -69,6 +69,5 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
 
   late void Function() updateAppBar = () {};
 
-  @override
   Stream<ImageState> mapEventToState(ImageEvent event) async* {}
 }

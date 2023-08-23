@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noBooksLikedCard.dart';
-import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SavedBooks extends StatefulWidget {
+  const SavedBooks({super.key});
+
   @override
   _SavedBooksState createState() => _SavedBooksState();
 }
@@ -35,10 +36,12 @@ class _SavedBooksState extends State<SavedBooks> {
     });
   }
 
+  @override
   void dispose() {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -170,6 +173,7 @@ class _SavedBooksState extends State<SavedBooks> {
                                         context
                                             .read<LikedStatusCubit>()
                                             .updateLikedStatusMap(likedBookss);
+                                            
                                       }
                                     },
                                     icon: const Icon(
@@ -186,7 +190,7 @@ class _SavedBooksState extends State<SavedBooks> {
                     );
                   },
                 )
-              : Center(
+              : const Center(
                   child: NoBooksLikedCard(),
                 );
         },

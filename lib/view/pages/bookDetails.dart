@@ -7,9 +7,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:like_button/like_button.dart';
 
 class BookDetail extends StatefulWidget {
-  BookDetail(
+  const BookDetail(
       {super.key,
       required this.bookId,
       required this.bookImage,
@@ -81,15 +82,26 @@ class _BookDetailState extends State<BookDetail> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
         actions: [
-          IconButton(
-            onPressed: _toggleLikedStatus, // Toggle liked status on button tap
-            icon: Icon(
-              _isBookLiked
-                  ? Icons.favorite_rounded
-                  : Icons.favorite_border_rounded,
-              color: const Color.fromARGB(255, 144, 191, 63),
-              size: 20,
+          LikeButton(
+            size: 20,
+            bubblesColor: const BubblesColor(
+              dotPrimaryColor: Color.fromARGB(255, 245, 88, 88),
+              dotSecondaryColor: Colors.white,
             ),
+            likeBuilder: (bool isLiked) {
+              return Icon(
+                isLiked
+                    ? Icons.favorite_rounded
+                    : Icons.favorite_border_rounded,
+                color: Color(0xfff55858),
+                size: 20,
+              );
+            },
+            isLiked: _isBookLiked,
+            onTap: (isLiked) async {
+              _toggleLikedStatus(); // Toggle the liked status (void function)
+              return !_isBookLiked; // Return the new liked status
+            },
           ),
         ],
       ),
@@ -123,7 +135,6 @@ class _BookDetailState extends State<BookDetail> {
                               children: [
                                 CachedNetworkImage(
                                   imageUrl: widget.bookImage,
-                                  height: 220,
                                   width: 150,
                                   fit: BoxFit.fill,
                                 ),
@@ -250,7 +261,7 @@ class _BookDetailState extends State<BookDetail> {
                             height: 175,
                             child: SingleChildScrollView(
                               child: widget.bookDesc.isEmpty
-                                  ? NoDescriptionCard()
+                                  ? const NoDescriptionCard()
                                   : Text(
                                       widget.bookDesc,
                                       style: const TextStyle(

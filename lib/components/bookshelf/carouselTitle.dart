@@ -4,7 +4,7 @@ class CarouselTitle extends StatelessWidget {
   final Function()? seeAllOnTap;
   final String? seeAllText;
   final Color? color;
-  CarouselTitle({this.title, this.seeAllOnTap, this.seeAllText, this.color});
+  const CarouselTitle({super.key, this.title, this.seeAllOnTap, this.seeAllText, this.color});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,10 +19,10 @@ class CarouselTitle extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
+              SizedBox(
                 width: 250,
                 child: Text(
-                  this.title ?? '',
+                  title ?? '',
                   style: const TextStyle(
                       color: Colors.black,
                       fontSize: 20.0,
@@ -32,9 +32,9 @@ class CarouselTitle extends StatelessWidget {
               ),
               Container(
                 child: GestureDetector(
-                  onTap: this.seeAllOnTap,
+                  onTap: seeAllOnTap,
                   child: Text(
-                    this.seeAllText ?? 'See All',
+                    seeAllText ?? 'See All',
                     style: const TextStyle(color: Color.fromARGB(255, 123, 123, 123)),
                   ),
                 ),

@@ -48,8 +48,8 @@ class User {
       this.firstName,
       this.lastName});
 
-  static User fromJson(Map<String, dynamic?> jsonString) {
-    Map<String, dynamic?> blog = jsonString;
+  static User fromJson(Map<String, dynamic> jsonString) {
+    Map<String, dynamic> blog = jsonString;
     return User(
       id: blog['id'],
       name: blog['name'],
@@ -67,16 +67,16 @@ class User {
   }
 
   String toJson() => json.encode({
-        "id": this.id.toString(),
-        "name": this.name.toString(),
-        "email": this.email.toString(),
-        "avatarUrls": this.avatarUrls.toString(),
-        "links": this.links.toString(),
-        "address_1": this.address_1.toString(),
-        "address_2": this.address_2.toString(),
-        "city": this.city.toString(),
-        "company": this.company.toString(),
-        "country": this.country.toString(),
+        "id": id.toString(),
+        "name": name.toString(),
+        "email": email.toString(),
+        "avatarUrls": avatarUrls.toString(),
+        "links": links.toString(),
+        "address_1": address_1.toString(),
+        "address_2": address_2.toString(),
+        "city": city.toString(),
+        "company": company.toString(),
+        "country": country.toString(),
       });
 
   // Future<List<User>> fetch() async {

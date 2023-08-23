@@ -5,7 +5,7 @@ import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/model/epubSetting.dart';
 
 abstract class ProductState extends Equatable {
-  ProductState(
+  const ProductState(
       {this.prodcuts,
       this.hasReachedMax,
       this.downloads,
@@ -25,10 +25,12 @@ class ProductUninitialized {
 }
 
 class ProductInit extends ProductState {
+  @override
   final List props = [];
 }
 
 class ProductError extends ProductState {
+  @override
   final List props = [];
   final String? message;
   ProductError({this.message});
@@ -37,11 +39,16 @@ class ProductError extends ProductState {
 }
 
 class ProductLoaded extends ProductState {
+  @override
   final List props = [];
   final List<Product>? products;
+  @override
   final bool? hasReachedMax;
+  @override
   final List<Download>? downloads;
+  @override
   final List<int>? dataBooks;
+  @override
   final Box<HiveBookAPI>? bookAPI;
   final EpubSetting? epubSetting;
 
@@ -70,5 +77,6 @@ class ProductLoaded extends ProductState {
 }
 
 class ProductLoading extends ProductState {
+  @override
   final List props = [];
 }

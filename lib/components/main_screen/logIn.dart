@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:jendela_dbp/api-services.dart';
@@ -14,6 +12,7 @@ import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/controllers/sizeConfig.dart';
 import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sentry/sentry.dart';
 //import 'package:connectivity/connectivity.dart';
@@ -21,13 +20,15 @@ import 'package:sentry/sentry.dart';
 TextEditingController passwordController = TextEditingController();
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  var _autoValidate = AutovalidateMode.disabled;
+  final _autoValidate = AutovalidateMode.disabled;
   TextEditingController usernameController = TextEditingController();
 
   // Box<BookAPI> bookAPIBox = Hive.box<BookAPI>(topBookBox);
@@ -42,7 +43,7 @@ class _LoginState extends State<Login> {
 
   bool isLoading = false;
   bool isToLogin = false;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   SharedPreferences? prefs;
 
   @override
@@ -91,21 +92,21 @@ class _LoginState extends State<Login> {
                       Text('JendelaDBP',
                           style: TextStyle(
                               fontSize: SizeConfig.textMultiplier * 2.1)),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Container(
                         height: 5,
                         width: 70,
                         decoration: BoxDecoration(
-                            color: Color(0xff3b6878),
+                            color: const Color(0xff3b6878),
                             borderRadius: BorderRadius.circular(50)),
                       )
                     ],
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Form(
@@ -116,43 +117,44 @@ class _LoginState extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        child: Text(
+                        child: const Text(
                       'Log Masuk',
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 37,
                           color: Color(0xff4F4F4F)),
                     )),
-                    SizedBox(
+                    const SizedBox(
                       height: 100,
                     ),
                     Column(
                       children: [
                         Container(
-                          padding: EdgeInsets.only(left: 15, right: 15),
+                          padding: const EdgeInsets.only(left: 15, right: 15),
                           child: TextFormField(
                             validator: (String? value) {
                               if (value!.isEmpty) {
                                 return "Sila masukkan nama pengguna";
-                              } else
+                              } else {
                                 return null;
+                              }
                             },
                             controller: usernameController,
-                            style: TextStyle(color: Colors.black, fontSize: 18),
+                            style: const TextStyle(color: Colors.black, fontSize: 18),
                             decoration: InputDecoration(
                                 hoverColor: Colors.yellow,
-                                icon: Icon(Icons.people_alt_sharp,
+                                icon: const Icon(Icons.people_alt_sharp,
                                     color: Colors.black),
                                 hintText: 'Nama Pengguna',
                                 hintStyle: TextStyle(
                                     color: Colors.black.withOpacity(0.5))),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Container(
-                            padding: EdgeInsets.only(left: 15, right: 15),
+                            padding: const EdgeInsets.only(left: 15, right: 15),
                             child: TextFormField(
                               // key: widget.fieldKey,
                               validator: _validatePassword,
@@ -163,7 +165,7 @@ class _LoginState extends State<Login> {
                               decoration: InputDecoration(
                                 labelStyle: TextStyle(
                                     color: Colors.black.withOpacity(0.7)),
-                                icon: Icon(Icons.lock, color: Colors.black),
+                                icon: const Icon(Icons.lock, color: Colors.black),
                                 filled: false,
                                 hintText: "Kata Laluan",
                                 suffixIcon: GestureDetector(
@@ -187,12 +189,16 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 50,
                         ),
                         TestInternetAccess
-                            ? SpinKitDoubleBounce(
-                                color: Colors.grey.shade700,
+                            ? LoadingAnimationWidget.discreteCircle(
+                                color: const Color.fromARGB(255, 123, 123, 123),
+                                secondRingColor:
+                                    const Color.fromARGB(255, 144, 191, 63),
+                                thirdRingColor:
+                                    const Color.fromARGB(255, 235, 127, 35),
                                 size: 50.0,
                               )
                             : InkWell(
@@ -243,7 +249,7 @@ class _LoginState extends State<Login> {
                                       stackTrace: stackTrace,
                                     );
                                     ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
+                                        .showSnackBar(const SnackBar(
                                       behavior: SnackBarBehavior.floating,
                                       content: Text('Tiada Akses Internet'),
                                       duration: Duration(seconds: 3),
@@ -254,8 +260,13 @@ class _LoginState extends State<Login> {
                                   });
                                 },
                                 child: isToLogin
-                                    ? SpinKitDoubleBounce(
-                                        color: Colors.grey.shade700,
+                                    ? LoadingAnimationWidget.discreteCircle(
+                                        color: const Color.fromARGB(
+                                            255, 123, 123, 123),
+                                        secondRingColor: const Color.fromARGB(
+                                            255, 144, 191, 63),
+                                        thirdRingColor: const Color.fromARGB(
+                                            255, 235, 127, 35),
                                         size: 50.0,
                                       )
                                     : Container(
@@ -263,7 +274,7 @@ class _LoginState extends State<Login> {
                                         alignment: Alignment.center,
                                         width: 350,
                                         decoration: BoxDecoration(
-                                            color: Color(0xff3b6878),
+                                            color: const Color(0xff3b6878),
                                             borderRadius:
                                                 BorderRadius.circular(30),
                                             boxShadow: [
@@ -272,7 +283,7 @@ class _LoginState extends State<Login> {
                                                       .withOpacity(0.5),
                                                   blurRadius: 4,
                                                   spreadRadius: 0.5,
-                                                  offset: Offset(0, 3))
+                                                  offset: const Offset(0, 3))
                                             ]),
                                         child: Text(
                                           'Log Masuk',
@@ -639,7 +650,7 @@ class _LoginState extends State<Login> {
   }
 
   String? _validatePassword(String? value) {
-    if (passwordController.text == null || passwordController.text.isEmpty) {
+    if (passwordController.text.isEmpty) {
       return 'Kata laluan diperlukan';
     }
     return null;
@@ -658,7 +669,7 @@ class _LoginState extends State<Login> {
     } else {
       form.save();
 
-      var data = new Map();
+      var data = {};
       data["username"] = usernameController.text;
       data["password"] = passwordController.text;
 
@@ -671,7 +682,7 @@ class _LoginState extends State<Login> {
           final int statusCode = response.statusCode;
 
           if (response.statusCode == 401) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               width: 200,
               behavior: SnackBarBehavior.floating,
               content: Text('Session Expired. Please login again'),
@@ -685,7 +696,7 @@ class _LoginState extends State<Login> {
             // print("my token" + data['token']);
             Response userRes = await ApiService.maklumatPengguna(data['token']);
             if (userRes.statusCode != 200) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 width: 200,
                 behavior: SnackBarBehavior.floating,
                 content: Text('Session Expired. Please login again'),
@@ -702,7 +713,8 @@ class _LoginState extends State<Login> {
             prefs.setString('token', data['token']);
             prefs.setInt('id', user.id ?? 0);
 
-            Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
+            Box<HiveBookAPI> bookAPIBox =
+                Hive.box<HiveBookAPI>(GlobalVar.APIBook);
             await bookAPIBox.clear();
 
             // getKategori1Status = await getKategori1(data['token']);
@@ -748,11 +760,11 @@ class _LoginState extends State<Login> {
             if (await wait1 == true && await wait2 == true) {
               isToLogin = false;
 
-              Future.delayed(Duration(seconds: 1)).then((value) {
+              Future.delayed(const Duration(seconds: 1)).then((value) {
                 Navigator.of(context).pushReplacementNamed('/Home');
               });
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 behavior: SnackBarBehavior.floating,
                 content: Text('Something Happen'),
                 duration: Duration(seconds: 3),
@@ -761,9 +773,8 @@ class _LoginState extends State<Login> {
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               behavior: SnackBarBehavior.floating,
-              content: Text('Nama Pengguna atau Kata Laluan Salah @ Code:' +
-                  statusCode.toString()),
-              duration: Duration(seconds: 3),
+              content: Text('Nama Pengguna atau Kata Laluan Salah @ Code:$statusCode'),
+              duration: const Duration(seconds: 3),
             ));
 
             setState(() {
@@ -782,7 +793,7 @@ class _LoginState extends State<Login> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text(exception.toString()),
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         ));
       }
     }

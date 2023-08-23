@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
+import 'package:like_button/like_button.dart';
 import 'bookDetails.dart';
 
 enum SortingOrder {
@@ -55,6 +56,9 @@ class _AllBooksState extends State<AllBooks> {
       });
     });
   }
+
+  //TODO
+  // fix why deleting books from that are liked from the allbooks screen gives an error
 
   void _sortBooksByLatest() {
     setState(() {
@@ -113,7 +117,7 @@ class _AllBooksState extends State<AllBooks> {
 
   Color getCircleAvatarBackgroundColor(int bookId) {
     return likedStatusMap[bookId] ?? false
-        ? const Color.fromARGB(255, 144, 191, 63)
+        ? const Color.fromARGB(255, 245, 88, 88)
         : Colors.white;
   }
 
@@ -138,11 +142,9 @@ class _AllBooksState extends State<AllBooks> {
 
   void _updateLikedStatus(int bookId, bool isLiked) {
     context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
-    setState(() {
-      // Refresh the UI if needed
-    });
   }
 
+  @override
   void dispose() {
     super.dispose();
   }
@@ -270,52 +272,57 @@ class _AllBooksState extends State<AllBooks> {
                                       ],
                                     ),
                                   ),
-                                  IconButton(
-                                    onPressed: () async {
-                                      final newLikedStatus = !isBookLiked;
-
-                                      // Update liked status in the 'liked_status' box
-                                      await likedStatusBox.put(
-                                          key, newLikedStatus);
-
-                                      // Update the liked status in the book model and in the main book storage box
-                                      final book = widget.bookBox.get(key);
-
-                                      if (book != null) {
-                                        book.isFavorite = newLikedStatus;
-                                        widget.bookBox.put(key, book);
-
-                                        // Add or remove the book from the 'liked_books' box based on the liked status
-                                        if (newLikedStatus) {
-                                          widget.likedBooksBox.put(key, book);
-                                        } else {
-                                          widget.likedBooksBox.delete(
-                                              key); // Remove the book from 'liked_books' box
+                                  Positioned(
+                                    top: 4,
+                                    right: 4,
+                                    child: LikeButton(
+                                      isLiked: isBookLiked,
+                                      onTap: (bool isLiked) async {
+                                        final newLikedStatus = !isLiked;
+                                  
+                                        // Update liked status in the 'liked_status' box
+                                        await likedStatusBox.put(
+                                            key, newLikedStatus);
+                                  
+                                        // Update the liked status in the book model and in the main book storage box
+                                        final book = widget.bookBox.get(key);
+                                  
+                                        if (book != null) {
+                                          book.isFavorite = newLikedStatus;
+                                          widget.bookBox.put(key, book);
+                                  
+                                          // Add or remove the book from the 'liked_books' box based on the liked status
+                                          if (newLikedStatus) {
+                                            widget.likedBooksBox.put(key, book);
+                                          } else {
+                                            widget.likedBooksBox.delete(
+                                                key); // Remove the book from 'liked_books' box
+                                          }
+                                  
+                                          // Update liked status in LikedStatusManager
+                                          _updateLikedStatus(key, newLikedStatus);
                                         }
-
-                                        // Update liked status in LikedStatusManager
-                                        _updateLikedStatus(key, newLikedStatus);
-
-                                        setState(() {});
-                                      }
-                                    },
-                                    icon: Stack(
-                                      children: [
-                                        Icon(
-                                          Icons.favorite,
-                                          color: isBookLiked
-                                              ? const Color.fromARGB(
-                                                  255, 144, 191, 63)
-                                              : Colors.white,
-                                          size: 30,
-                                        ),
-                                        const Icon(
-                                          Icons.favorite_border,
-                                          color:
-                                              Color.fromARGB(255, 144, 191, 63),
-                                          size: 30,
-                                        ),
-                                      ],
+                                  
+                                        return !isLiked;
+                                      },
+                                      likeBuilder: (bool isLiked) {
+                                        return Stack(
+                                          children: [
+                                            Icon(
+                                              Icons.favorite,
+                                              color: isLiked
+                                                  ? const Color.fromARGB(255, 245, 88, 88)
+                                                  : Colors.white,
+                                              size: 30,
+                                            ),
+                                            const Icon(
+                                              Icons.favorite_border,
+                                              color: Color.fromARGB(255, 245, 88, 88),
+                                              size: 30,
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     ),
                                   ),
                                 ],

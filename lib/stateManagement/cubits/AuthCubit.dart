@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  AuthCubit() : super(const AuthInitial());
   bool hideNavigationBar = false;
 
   Future<bool> getUserLoginOrNot() async {
@@ -26,7 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<bool> setHideNavigationBar({required bool hideNavBar}) async {
     try {
-      emit(AuthLoading());
+      emit(const AuthLoading());
       hideNavigationBar = hideNavBar;
       if (await getUserLoginOrNot()) {
         emit(AuthLoaded(
@@ -111,13 +111,13 @@ class AuthCubit extends Cubit<AuthState> {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'Authorization': 'Bearer ' + token,
+              'Authorization': 'Bearer $token',
             },
             body: body);
 
         // User? user = await getUser();
         if (response.statusCode >= 200 && response.statusCode <= 299) {
-          var message;
+          String message;
           if (isChangePassword == true) {
             message = 'Maklumat Dan Kata Laluan Dikemas Kini';
           } else {
@@ -132,10 +132,7 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(
               isAuthenticated: false,
               hideNavigationBar: hideNavigationBar,
-              message: 'Error ' +
-                  response.statusCode.toString() +
-                  ' ' +
-                  (response.reasonPhrase ?? '')));
+              message: 'Error ${response.statusCode} ${response.reasonPhrase ?? ''}'));
         }
       }
       return true;
@@ -172,7 +169,7 @@ class AuthCubit extends Cubit<AuthState> {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'Authorization': 'Bearer ' + token,
+              'Authorization': 'Bearer $token',
             });
         if (response.statusCode == 200) {
           user = User.fromJson(json.decode(response.body));
@@ -185,7 +182,7 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(
               isAuthenticated: false,
               hideNavigationBar: hideNavigationBar,
-              message: 'Error ' + response.statusCode.toString()));
+              message: 'Error ${response.statusCode}'));
           return null;
         }
       }
@@ -340,7 +337,7 @@ class AuthCubit extends Cubit<AuthState> {
         },
       );
 
-      emit(AuthLoading());
+      emit(const AuthLoading());
 
       final session = await http.Client().post(
         signInWithAppleEndpoint,
@@ -376,7 +373,7 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(
               isAuthenticated: false,
               hideNavigationBar: hideNavigationBar,
-              message: 'Error ' + session.statusCode.toString()));
+              message: 'Error ${session.statusCode}'));
         }
         logout(context);
       }
@@ -422,7 +419,7 @@ class AuthCubit extends Cubit<AuthState> {
         isAuthenticated: isAuthenticated,
         hideNavigationBar: hideNavigationBar,
         message: message));
-    if (!form!.validate()) {
+    if (!form.validate()) {
       isToLogin = false;
       emit(AuthError(
           isAuthenticated: false,
@@ -430,7 +427,7 @@ class AuthCubit extends Cubit<AuthState> {
           hideNavigationBar: hideNavigationBar));
     } else {
       form.save();
-      var data = new Map();
+      var data = {};
       data["username"] = usernameController.text;
       data["password"] = passwordController.text;
       Object body = json.encode(data);
@@ -483,8 +480,7 @@ class AuthCubit extends Cubit<AuthState> {
             emit(AuthError(
                 isAuthenticated: false,
                 hideNavigationBar: hideNavigationBar,
-                message: 'Nama Pengguna atau Kata Laluan Salah @ Code:' +
-                    statusCode.toString()));
+                message: 'Nama Pengguna atau Kata Laluan Salah @ Code:$statusCode'));
 
             isToLogin = false;
             usernameController.text = "";
@@ -541,7 +537,7 @@ class AuthCubit extends Cubit<AuthState> {
         user: user,
         hideNavigationBar: hideNavigationBar));
     try {
-      emit(AuthLoaded(isAuthenticated: false));
+      emit(const AuthLoaded(isAuthenticated: false));
       // Navigator.of(context).pushReplacementNamed(
       //   '/MyApp',
       // );

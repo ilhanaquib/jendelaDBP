@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class BookSearchDelegate extends SearchDelegate<String> {
   final Box<HiveBookAPI> apiBook;
@@ -47,13 +48,18 @@ class BookSearchDelegate extends SearchDelegate<String> {
   // search result
   Widget buildResults(BuildContext context) {
     bool isDesktop = MediaQuery.of(context).size.width >= 600;
-    bool isMobile = MediaQuery.of(context).size.width <= 600;
+    // bool isMobile = MediaQuery.of(context).size.width <= 600;
     return StreamBuilder<List<HiveBookAPI>>(
       stream: searchResultsStream(query),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: LoadingAnimationWidget.discreteCircle(
+              color: const Color.fromARGB(255, 123, 123, 123),
+              secondRingColor: const Color.fromARGB(255, 144, 191, 63),
+              thirdRingColor: const Color.fromARGB(255, 235, 127, 35),
+              size: 50.0,
+            ),
           );
         }
 
@@ -119,13 +125,18 @@ class BookSearchDelegate extends SearchDelegate<String> {
   // suggestion
   Widget buildSuggestions(BuildContext context) {
     bool isDesktop = MediaQuery.of(context).size.width >= 600;
-    bool isMobile = MediaQuery.of(context).size.width <= 600;
+    // bool isMobile = MediaQuery.of(context).size.width <= 600;
     return StreamBuilder<List<HiveBookAPI>>(
       stream: searchResultsStream(query),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: LoadingAnimationWidget.discreteCircle(
+              color: const Color.fromARGB(255, 123, 123, 123),
+              secondRingColor: const Color.fromARGB(255, 144, 191, 63),
+              thirdRingColor: const Color.fromARGB(255, 235, 127, 35),
+              size: 50.0,
+            ),
           );
         }
 

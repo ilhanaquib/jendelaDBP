@@ -47,13 +47,13 @@ class ApiService {
       });
       final response = await http.get(
           Uri.parse(
-              'https://${GlobalVar.BaseURLDomain}/wp-json/wp/v2/product${q}'),
+              'https://${GlobalVar.BaseURLDomain}/wp-json/wp/v2/product$q'),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           });
 
-      print('getKategori from api-service is being called');
+      //print('getKategori from api-service is being called');
 
       return response;
     } catch (er) {
@@ -71,7 +71,7 @@ class ApiService {
             'Accept': 'application/json'
           });
 
-      print('getCategori from api-service is being called');
+      //print('getCategori from api-service is being called');
 
       return response;
     } catch (er) {
@@ -106,7 +106,7 @@ class ApiService {
       });
       final response = await http.get(
           Uri.parse(
-              'https://${GlobalVar.BaseURLDomain}/wp-json/edbp/v1/downloads${q}'),
+              'https://${GlobalVar.BaseURLDomain}/wp-json/edbp/v1/downloads$q'),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -144,7 +144,7 @@ class ApiService {
       });
       final response = await http.get(
           Uri.parse(
-              'https://${GlobalVar.BaseURLDomain}/wp-json/edbp/v1/cart${q}'),
+              'https://${GlobalVar.BaseURLDomain}/wp-json/edbp/v1/cart$q'),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -216,7 +216,7 @@ class ApiService {
       });
       final response = await http.get(
           Uri.parse(
-              'https://${GlobalVar.BaseURLDomain}/wp-json/edbp/v1/artikel${q}'),
+              'https://${GlobalVar.BaseURLDomain}/wp-json/edbp/v1/artikel$q'),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',

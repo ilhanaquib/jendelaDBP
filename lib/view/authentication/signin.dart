@@ -8,6 +8,8 @@ import 'package:jendela_dbp/view/authentication/popups/popupSigninError.dart';
 import 'package:jendela_dbp/main.dart';
 
 class Signin extends StatefulWidget {
+  const Signin({super.key});
+
   @override
   State<Signin> createState() => _SigninState();
 }

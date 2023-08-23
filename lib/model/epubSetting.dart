@@ -14,10 +14,10 @@ class EpubSetting {
 
   String toJson() {
     return json.encode({
-      'bookmarks': this.bookmarks,
-      'cfi': this.cfi,
-      'textSize': this.textSize,
-      'theme': this.theme
+      'bookmarks': bookmarks,
+      'cfi': cfi,
+      'textSize': textSize,
+      'theme': theme
     });
   }
 }

@@ -22,7 +22,6 @@ import 'package:jendela_dbp/view/pages/bookRead.dart';
 import 'package:jendela_dbp/view/pages/home.dart';
 import 'package:jendela_dbp/view/pages/profile.dart';
 import 'package:jendela_dbp/view/pages/savedBooks.dart';
-import 'package:jendela_dbp/view/pages/user.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive/hive.dart';
@@ -31,7 +30,6 @@ import 'dart:convert';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'hive/models/hiveBookModel.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 final ValueNotifier<bool> showHomeNotifier = ValueNotifier<bool>(false);
@@ -89,7 +87,7 @@ class JendelaDBP extends StatelessWidget {
   List<Widget> _buildScreens(context) {
     return [
       const Home(),
-      SavedBooks(),
+      const SavedBooks(),
       const Audiobooks(),
       const Profile(),
     ];
@@ -135,7 +133,7 @@ class JendelaDBP extends StatelessWidget {
         routes: {
           // bottom nav bar
           '/home': (context) => const Home(),
-          '/savedBooks': (context) => SavedBooks(),
+          '/savedBooks': (context) => const SavedBooks(),
           '/audiobooks': (context) => const Audiobooks(),
           '/profile': (context) => const Profile(),
 
@@ -144,7 +142,7 @@ class JendelaDBP extends StatelessWidget {
 
           //authentication
           '/signup': (context) => const Signup(),
-          '/signin': (context) => Signin(),
+          '/signin': (context) => const Signin(),
           '/verification': (context) => const Verification(),
           '/verificationPassword': (context) => const verificationPassword(),
           '/forgotPassword': (context) => const ForgotPassword(),

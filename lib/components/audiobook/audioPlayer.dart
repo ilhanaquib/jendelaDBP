@@ -123,9 +123,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   Future<String> _loadAudioFromAsset() async {
     final ByteData data =
-        await rootBundle.load('assets/audio/01 Pujuk Rajuk.mp3');
+        await rootBundle.load('assets/audio/audiobook.wav');
     final Directory tempDir = await getTemporaryDirectory();
-    final File tempFile = File('${tempDir.path}/01 Pujuk Rajuk.mp3');
+    final File tempFile = File('${tempDir.path}/audiobook.wav');
     await tempFile.writeAsBytes(data.buffer.asUint8List());
     return tempFile.path;
   }

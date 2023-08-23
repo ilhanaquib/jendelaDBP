@@ -2,6 +2,9 @@ import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/material.dart';
 
 class NoDescriptionCard extends StatelessWidget {
+  const NoDescriptionCard({super.key});
+
+  @override
   Widget build(BuildContext context) {
     // return Center(child: Text('Maaf, pautan tidak dijumpai.'));
     return EmptyWidget(

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:jendela_dbp/api-services.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:http/http.dart' as http;
+//import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+//import 'package:http/http.dart' as http;
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
-import 'package:jendela_dbp/components/main_screen/logIn.dart';
+//import 'package:jendela_dbp/components/main_screen/logIn.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as p;
@@ -26,10 +26,10 @@ Future<bool> getPurchased(generateToken, context) async {
   };
   try {
     ApiService.getPurchasedBook(token, queryParameters).then((response) {
-      var data;
+    //  var data;
 
       if (response.statusCode == 401) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           width: 200,
           behavior: SnackBarBehavior.floating,
           content: Text('Session Expired. Please login again'),

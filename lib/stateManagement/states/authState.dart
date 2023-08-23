@@ -23,9 +23,13 @@ class AuthInitial extends AuthState {
 }
 
 class AuthLoaded extends AuthState {
+  @override
   final User? user;
+  @override
   final String? message;
+  @override
   final bool? hideNavigationBar;
+  @override
   final bool? isAuthenticated;
   const AuthLoaded(
       {this.message,
@@ -40,9 +44,13 @@ class AuthLoaded extends AuthState {
 }
 
 class AuthLoading extends AuthState {
+  @override
   final User? user;
+  @override
   final String? message;
+  @override
   final bool? hideNavigationBar;
+  @override
   final bool? isAuthenticated;
   const AuthLoading(
       {this.hideNavigationBar,
@@ -57,9 +65,13 @@ class AuthLoading extends AuthState {
 }
 
 class AuthError extends AuthState {
+  @override
   final User? user;
+  @override
   final String? message;
+  @override
   final bool? hideNavigationBar;
+  @override
   final bool? isAuthenticated;
   const AuthError(
       {this.hideNavigationBar, this.user, this.message, this.isAuthenticated})

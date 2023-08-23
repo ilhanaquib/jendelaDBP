@@ -5,13 +5,12 @@ import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/userRepositories.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({required this.userRepository}) : super(AuthInitial());
+  AuthBloc({required this.userRepository}) : super(const AuthInitial());
   UserRepository userRepository;
-  @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is AuthLogin) {
       // login
-      yield AuthLoading();
+      yield const AuthLoading();
       User? user = await userRepository.authenticate(
           username: event.username ?? '', password: event.password ?? '');
       yield AuthLoaded(user: user);

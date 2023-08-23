@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/model/epubSetting.dart';
 import 'package:jendela_dbp/model/productModel.dart';
-import 'package:meta/meta.dart';
 
 @immutable
 abstract class ProductEvent extends Equatable {}
@@ -54,12 +53,14 @@ class ProductFetchFromCategory extends ProductEvent {
 }
 
 class ProductDownloadedFetch extends ProductEvent {
+  @override
   List props = [];
   final AuthCubit? authCubit;
   ProductDownloadedFetch({this.authCubit});
 }
 
 class ProductEpubViewInit extends ProductEvent {
+  @override
   final List props = [];
   final Download? download;
   final EpubController? epubController;
@@ -73,12 +74,14 @@ class ProductEpubViewInit extends ProductEvent {
 }
 
 class ProductPurchasedBooksFetch extends ProductEvent {
+  @override
   List props = [];
   BuildContext? context;
   ProductPurchasedBooksFetch({this.context}) : super();
 }
 
 class ProductEpubUpdateSetting extends ProductEvent {
+  @override
   final List props = [];
   final EpubSetting epubSetting;
   final int id;

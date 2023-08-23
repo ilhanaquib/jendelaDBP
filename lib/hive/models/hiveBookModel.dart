@@ -155,7 +155,7 @@ class HiveBookAPI {
 
     static HiveBookAPI fromProduct(Product product) {
     String? productCategoryCheck;
-    if (product.woocommerce!.categoryIds!.length != 0) {
+    if (product.woocommerce!.categoryIds!.isNotEmpty) {
       productCategoryCheck = product.woocommerce!.categoryIds![0].toString();
     }
     return HiveBookAPI(

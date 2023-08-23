@@ -9,6 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:like_button/like_button.dart';
 
 class BooksInsideShelf extends StatefulWidget {
   final List<dynamic> dataBooks;
@@ -65,7 +66,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
 
   Color getCircleAvatarBackgroundColor(int bookId) {
     return likedStatusMap[bookId] ?? false
-        ? const Color.fromARGB(255, 144, 191, 63)
+        ? const Color.fromARGB(255, 245, 88, 88)
         : Colors.white;
   }
 
@@ -104,7 +105,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
     return Scaffold(
       body: Container(
         child: widget.dataBooks.isEmpty
-            ? Center(
+            ? const Center(
                 child: NotFoundCard(),
               )
             : ListView.builder(
@@ -115,10 +116,8 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                 itemBuilder: (context, index) {
                   final int key = widget.dataBooks[index];
                   final HiveBookAPI? bookSpecific = widget.bookBox.get(key);
-                  final isBookLiked =
-                      LikedStatusManager.isBookLiked(key) ?? false;
-                  final isBookLikedMap = likedStatusMap[key] ?? false;
-
+                  final isBookLiked = LikedStatusManager.isBookLiked(key);
+                  //final isBookLikedMap = likedStatusMap[key] ?? false;
                   return Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: GestureDetector(
@@ -168,50 +167,60 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                       ],
                                     ),
                                   ),
-                                  IconButton(
-                                    onPressed: () async {
-                                      final newLikedStatus = !isBookLiked;
-
-                                      // Update liked status in the 'liked_status' box
-                                      await likedStatusBox.put(
-                                          key, newLikedStatus);
-
-                                      // Update the liked status in the book model and in the main book storage box
-                                      final book = widget.bookBox.get(key);
-
-                                      if (book != null) {
-                                        book.isFavorite = newLikedStatus;
-                                        widget.bookBox.put(key, book);
-
-                                        // Add or remove the book from the 'liked_books' box based on the liked status
-                                        if (newLikedStatus) {
-                                          widget.likedBooksBox.put(key, book);
-                                        } else {
-                                          widget.likedBooksBox.delete(
-                                              key); // Remove the book from 'liked_books' box
+                                  Positioned(
+                                    top: 4,
+                                    right: 4,
+                                    child: LikeButton(
+                                      bubblesColor: const BubblesColor(
+                                        dotPrimaryColor:
+                                            Color.fromARGB(255, 245, 88, 88),
+                                        dotSecondaryColor:
+                                            Colors.white,
+                                      ),
+                                      isLiked:
+                                          isBookLiked, // Set initial liked status
+                                      onTap: (bool isLiked) async {
+                                        // Toggle liked status and perform other necessary operations
+                                        final newLikedStatus = !isLiked;
+                                  
+                                        await likedStatusBox.put(
+                                            key, newLikedStatus);
+                                  
+                                        final book = widget.bookBox.get(key);
+                                        if (book != null) {
+                                          book.isFavorite = newLikedStatus;
+                                          widget.bookBox.put(key, book);
+                                  
+                                          if (newLikedStatus) {
+                                            widget.likedBooksBox.put(key, book);
+                                          } else {
+                                            widget.likedBooksBox.delete(key);
+                                          }
+                                  
+                                          _updateLikedStatus(key, newLikedStatus);
+                                          setState(() {});
                                         }
-
-                                        // Update liked status in LikedStatusManager
-                                        _updateLikedStatus(key, newLikedStatus);
-
-                                        setState(() {});
-                                      }
-                                    },
-                                    icon: Stack(
-                                      children: [
-                                        Icon(
-                                          Icons.favorite,
-                                          color: getCircleAvatarBackgroundColor(
-                                              key),
-                                          size: 30,
-                                        ),
-                                        const Icon(
-                                          Icons.favorite_border,
-                                          color:
-                                              Color.fromARGB(255, 144, 191, 63),
-                                          size: 30,
-                                        ),
-                                      ],
+                                  
+                                        return newLikedStatus; // Return the new liked status
+                                      },
+                                      likeBuilder: (bool isLiked) {
+                                        return Stack(
+                                          children: [
+                                            Icon(
+                                              Icons.favorite,
+                                              color:
+                                                  getCircleAvatarBackgroundColor(
+                                                      key),
+                                              size: 30,
+                                            ),
+                                            const Icon(
+                                              Icons.favorite_border,
+                                              color: Color.fromARGB(255, 245, 88, 88),
+                                              size: 30,
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     ),
                                   ),
                                 ],

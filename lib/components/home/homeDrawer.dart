@@ -21,7 +21,7 @@ class HomeDrawer extends StatelessWidget {
                 PersistentNavBarNavigator.pushNewScreen(context,
                     withNavBar: false,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                    screen: Signin());
+                    screen: const Signin());
               },
             ),
             ListTile(

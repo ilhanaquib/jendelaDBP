@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({
@@ -125,9 +126,14 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               context.watch<ImageBloc>().selectedImageProvider,
                         ),
                         if (_isSaving)
-                          const CircularProgressIndicator(
+                          LoadingAnimationWidget.discreteCircle(
                             color: Colors.white,
-                          ), // Show this when saving
+                            secondRingColor:
+                                const Color.fromARGB(255, 144, 191, 63),
+                            thirdRingColor:
+                                const Color.fromARGB(255, 235, 127, 35),
+                            size: 50.0,
+                          ) // Show this when saving
                       ],
                     ),
                   ),

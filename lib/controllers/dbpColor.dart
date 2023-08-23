@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -15,10 +14,10 @@ class DbpColor {
   Color btnPrimaryColor = Colors.grey.shade700;
   Color btnDarkColor = Colors.grey.shade900;
 
-  Color bgSuccessColor = Color(0xFF77a464);
-  Color textSuccessColor = Color(0xFF77a464);
+  Color bgSuccessColor = const Color(0xFF77a464);
+  Color textSuccessColor = const Color(0xFF77a464);
 
-  Color bgTeal800 = Color.fromRGBO(17, 94, 89, 1);
-  Color bgTeal900 = Color.fromRGBO(19, 78, 74, 1);
-  Color bgTeal50 = Color.fromRGBO(240, 253, 250, 1);
+  Color bgTeal800 = const Color.fromRGBO(17, 94, 89, 1);
+  Color bgTeal900 = const Color.fromRGBO(19, 78, 74, 1);
+  Color bgTeal50 = const Color.fromRGBO(240, 253, 250, 1);
 }

@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.13.0"
+  animations:
+    dependency: "direct main"
+    description:
+      name: animations
+      sha256: fe8a6bdca435f718bb1dc8a11661b2c22504c6da40ef934cee8327ed77934164
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   archive:
     dependency: transitive
     description:
@@ -749,6 +757,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.8"
+  like_button:
+    dependency: "direct main"
+    description:
+      name: like_button
+      sha256: "08e6a45b78888412df5d351786c550205ad3a677e72a0820d5bbc0b063c8a463"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   lints:
     dependency: transitive
     description:
@@ -773,6 +789,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  loading_animation_widget:
+    dependency: "direct main"
+    description:
+      name: loading_animation_widget
+      sha256: "1901682600273a966c34cf44a85fc5355da92a8d08a8a43c11adc4e471993e3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0+4"
   logging:
     dependency: transitive
     description:

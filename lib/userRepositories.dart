@@ -11,14 +11,14 @@ class UserRepository {
   User? _user;
   Box? _box;
   FlutterSecureStorage? _secureStorage;
-  dynamic? _encryptionKey;
+  dynamic _encryptionKey;
 
   Future<bool> init() async {
     try {
-      Hive.init(await this.getlocalPath());
+      Hive.init(await getlocalPath());
       Hive.registerAdapter(UserAdapter());
       Hive.ignoreTypeId<User>(32);
-      await this.openBox();
+      await openBox();
     } catch (error) {
       return false;
     }
@@ -45,7 +45,7 @@ class UserRepository {
       _box = await Hive.openBox('auth',
           encryptionCipher: HiveAesCipher(_encryptionKey));
     } catch (error) {
-      throw error;
+      rethrow;
     }
     return true;
   }
@@ -79,7 +79,7 @@ class UserRepository {
       _box!.put('user', _user);
     } catch (e) {
       // print(e);
-      throw e;
+      rethrow;
     }
     return _user;
   }
@@ -92,9 +92,7 @@ class UserRepository {
 
   Future<bool> hasToken() async {
     String? token;
-    if (_user == null) {
-      _user = _box!.get('user');
-    }
+    _user ??= _box!.get('user');
     if (_user != null) {
       token = _user!.jwtToken;
     }
@@ -104,9 +102,7 @@ class UserRepository {
 
   Future<String?> getToken() async {
     String? token;
-    if (_user == null) {
-      _user = _box!.get('user');
-    }
+    _user ??= _box!.get('user');
     if (_user != null) {
       token = _user!.jwtToken;
     }
@@ -115,9 +111,7 @@ class UserRepository {
   }
 
   Future<User?> getUser() async {
-    if (_user == null) {
-      _user = _box!.get('user');
-    }
+    _user ??= _box!.get('user');
     return _user;
   }
 
@@ -132,7 +126,7 @@ class UserRepository {
       var response = await http.post(
           Uri.https(
               GlobalVar.BaseURLDomain, 'wp-json/jwt-auth/v1/token/validate'),
-          headers: {'Authorization': 'Bearer ' + (_user!.jwtToken ?? '')},
+          headers: {'Authorization': 'Bearer ${_user!.jwtToken ?? ''}'},
           body: {});
       // print('Response status: ${response.statusCode}');
       // print('Response body: ${response.body}');
@@ -171,7 +165,7 @@ class UserRepository {
         throw 'Box Not Open';
       }
     } catch (e) {
-      throw e;
+      rethrow;
     }
     return true;
   }

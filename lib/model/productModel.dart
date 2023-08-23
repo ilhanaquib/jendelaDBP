@@ -2,8 +2,8 @@ import 'package:hive/hive.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:path/path.dart' as p;
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
 
 part 'adapters/productModel.g.dart';
 
@@ -46,7 +46,7 @@ class Product {
   @HiveField(17)
   int? postParent;
   @HiveField(18)
-  dynamic? guid;
+  dynamic guid;
   @HiveField(19)
   int? menuOrder;
   @HiveField(20)
@@ -148,13 +148,11 @@ class Product {
     for (var i = 0; i < listBooksApi.length; i++) {
       int key = listBooksApi[i];
       HiveBookAPI? bookSpecific = bookFromAPI.get(key);
-      if (this.id == bookSpecific!.id) {
+      if (id == bookSpecific!.id) {
         bookAPI = bookSpecific;
       }
     }
-    if (bookAPI == null) {
-      bookAPI = this.toBookAPI();
-    }
+    bookAPI ??= toBookAPI();
     return bookAPI;
   }
 
@@ -199,8 +197,8 @@ class WcProduct {
   int? parentId;
   bool? reviewsAllowed;
   String? purchaseNote;
-  dynamic? attributes;
-  dynamic? defaultAttributes;
+  dynamic attributes;
+  dynamic defaultAttributes;
   int? menuOrder;
   String? postPassword;
   bool? virtual;
@@ -208,7 +206,7 @@ class WcProduct {
   List? categoryIds;
   List? tagIds;
   int? shippingClassId;
-  dynamic? downloads;
+  dynamic downloads;
   String? imageId;
   List? galleryImageIds;
   int? downloadLimit;
