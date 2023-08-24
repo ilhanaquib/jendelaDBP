@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
+import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
@@ -59,6 +60,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: const Text('Your Account'),
         centerTitle: true,

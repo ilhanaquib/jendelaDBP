@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,9 +58,6 @@ class _AllBooksState extends State<AllBooks> {
     });
   }
 
-  //TODO
-  // fix why deleting books from that are liked from the allbooks screen gives an error
-
   void _sortBooksByLatest() {
     setState(() {
       widget.listBook.sort((a, b) {
@@ -100,19 +98,28 @@ class _AllBooksState extends State<AllBooks> {
       likedStatusMap[key] = false;
     }
 
-    // Listen to state changes of the LikedStatusCubit
-    context.read<LikedStatusCubit>().stream.listen((state) {
-      setState(() {
-        likedStatusMap = state;
-      });
-    });
-    _openLikedStatusBox();
+    // Update liked status and UI
+    _updateLikedStatusAndUI();
+  }
 
-    context.read<LikedStatusCubit>().stream.listen((state) {
-      setState(() {
-        likedStatusMap = state;
-      });
-    });
+  Future<void> _updateLikedStatusAndUI() async {
+    for (final key in widget.listBook) {
+      final isLiked = LikedStatusManager.isBookLiked(key);
+
+      final book = widget.bookBox.get(key);
+      if (book != null) {
+        book.isFavorite = isLiked;
+        widget.bookBox.put(key, book);
+      }
+
+      LikedStatusManager.updateLikedStatus(key, isLiked);
+
+      if (mounted) {
+        setState(() {
+          likedStatusMap[key] = isLiked;
+        });
+      }
+    }
   }
 
   Color getCircleAvatarBackgroundColor(int bookId) {
@@ -123,21 +130,17 @@ class _AllBooksState extends State<AllBooks> {
 
   Future<void> _openLikedStatusBox() async {
     for (final key in widget.listBook) {
+      if (!mounted) return; // Ensure the widget is still mounted
       final isLiked = LikedStatusManager.isBookLiked(key);
 
-      // Update the liked status in the HiveBookAPI model
       final book = widget.bookBox.get(key);
       if (book != null) {
         book.isFavorite = isLiked;
         widget.bookBox.put(key, book);
       }
 
-      LikedStatusManager.updateLikedStatus(key, isLiked); // Update liked status
+      LikedStatusManager.updateLikedStatus(key, isLiked);
     }
-
-    setState(() {
-      // Refresh the UI if needed
-    });
   }
 
   void _updateLikedStatus(int bookId, bool isLiked) {
@@ -231,123 +234,131 @@ class _AllBooksState extends State<AllBooks> {
                           LikedStatusManager.isBookLiked(key) ?? false;
                       final isBookLikedMap = likedStatusMap[key] ?? false;
 
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BookDetail(
-                                bookId: key,
-                                bookImage: bookSpecific.images!,
-                                bookTitle: bookSpecific.name!,
-                                bookDesc: bookSpecific.description!,
-                                bookPrice: bookSpecific.price!,
-                                likedStatusBox: likedStatusBox,
-                                bookBox: widget.bookBox,
+                      return OpenContainer(
+                        transitionDuration: Duration(milliseconds: 800),
+                        closedElevation: 0,
+                        openElevation: 0,
+                        closedBuilder:
+                            (BuildContext _, VoidCallback openContainer) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Stack(
+                                        children: [
+                                          CachedNetworkImage(
+                                            imageUrl: bookSpecific!.images!,
+                                            // height: 220,
+                                            width: 140,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 4,
+                                      right: 4,
+                                      child: LikeButton(
+                                        isLiked: isBookLiked,
+                                        onTap: (bool isLiked) async {
+                                          final newLikedStatus = !isLiked;
+
+                                          // Update liked status in the 'liked_status' box
+                                          await likedStatusBox.put(
+                                              key, newLikedStatus);
+
+                                          // Update the liked status in the book model and in the main book storage box
+                                          final book = widget.bookBox.get(key);
+
+                                          if (book != null) {
+                                            book.isFavorite = newLikedStatus;
+                                            widget.bookBox.put(key, book);
+
+                                            // Add or remove the book from the 'liked_books' box based on the liked status
+                                            if (newLikedStatus) {
+                                              widget.likedBooksBox
+                                                  .put(key, book);
+                                            } else {
+                                              widget.likedBooksBox.delete(
+                                                  key); // Remove the book from 'liked_books' box
+                                            }
+
+                                            // Update liked status in LikedStatusManager
+                                            _updateLikedStatus(
+                                                key, newLikedStatus);
+                                          }
+
+                                          return !isLiked;
+                                        },
+                                        likeBuilder: (bool isLiked) {
+                                          return Stack(
+                                            children: [
+                                              Icon(
+                                                Icons.favorite,
+                                                color: isLiked
+                                                    ? const Color.fromARGB(
+                                                        255, 245, 88, 88)
+                                                    : Colors.white,
+                                                size: 30,
+                                              ),
+                                              const Icon(
+                                                Icons.favorite_border,
+                                                color: Color.fromARGB(
+                                                    255, 245, 88, 88),
+                                                size: 30,
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(top: isDesktop ? 5 : 0),
+                                child: Text(
+                                  bookSpecific.name!,
+                                  textAlign: TextAlign.center,
+                                  maxLines: isDesktop ? 5 : 2,
+                                  style:
+                                      TextStyle(fontSize: isDesktop ? 14 : 10),
+                                ),
+                              ),
+                              Text(
+                                bookSpecific.price == ''
+                                    ? 'Naskhah Ikhlas'
+                                    : 'RM ${bookSpecific.price!}',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Color.fromARGB(255, 123, 123, 123),
+                                ),
+                              ),
+                            ],
                           );
                         },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Card(
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Stack(
-                                      children: [
-                                        CachedNetworkImage(
-                                          imageUrl: bookSpecific!.images!,
-                                          // height: 220,
-                                          width: 140,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 4,
-                                    right: 4,
-                                    child: LikeButton(
-                                      isLiked: isBookLiked,
-                                      onTap: (bool isLiked) async {
-                                        final newLikedStatus = !isLiked;
-                                  
-                                        // Update liked status in the 'liked_status' box
-                                        await likedStatusBox.put(
-                                            key, newLikedStatus);
-                                  
-                                        // Update the liked status in the book model and in the main book storage box
-                                        final book = widget.bookBox.get(key);
-                                  
-                                        if (book != null) {
-                                          book.isFavorite = newLikedStatus;
-                                          widget.bookBox.put(key, book);
-                                  
-                                          // Add or remove the book from the 'liked_books' box based on the liked status
-                                          if (newLikedStatus) {
-                                            widget.likedBooksBox.put(key, book);
-                                          } else {
-                                            widget.likedBooksBox.delete(
-                                                key); // Remove the book from 'liked_books' box
-                                          }
-                                  
-                                          // Update liked status in LikedStatusManager
-                                          _updateLikedStatus(key, newLikedStatus);
-                                        }
-                                  
-                                        return !isLiked;
-                                      },
-                                      likeBuilder: (bool isLiked) {
-                                        return Stack(
-                                          children: [
-                                            Icon(
-                                              Icons.favorite,
-                                              color: isLiked
-                                                  ? const Color.fromARGB(255, 245, 88, 88)
-                                                  : Colors.white,
-                                              size: 30,
-                                            ),
-                                            const Icon(
-                                              Icons.favorite_border,
-                                              color: Color.fromARGB(255, 245, 88, 88),
-                                              size: 30,
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: isDesktop ? 5 : 0),
-                              child: Text(
-                                bookSpecific.name!,
-                                textAlign: TextAlign.center,
-                                maxLines: isDesktop ? 5 : 2,
-                                style: TextStyle(fontSize: isDesktop ? 14 : 10),
-                              ),
-                            ),
-                            Text(
-                              bookSpecific.price == ''
-                                  ? 'Naskhah Ikhlas'
-                                  : 'RM ${bookSpecific.price!}',
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Color.fromARGB(255, 123, 123, 123),
-                              ),
-                            ),
-                          ],
-                        ),
+                        openBuilder: (BuildContext _, VoidCallback __) {
+                          return BookDetail(
+                            // Pass the necessary details to the details page
+                            bookId: key,
+                            bookImage: bookSpecific!.images!,
+                            bookTitle: bookSpecific.name!,
+                            bookDesc: bookSpecific.description!,
+                            bookPrice: bookSpecific.price!,
+                            likedStatusBox: likedStatusBox,
+                            bookBox: widget.bookBox,
+                          );
+                        },
                       );
                     },
                   ),

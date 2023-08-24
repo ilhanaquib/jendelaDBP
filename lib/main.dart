@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/notUsed/appearanceButtonBloc.dart';
@@ -31,6 +32,7 @@ import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'hive/models/hiveBookModel.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:device_preview/device_preview.dart';
 
 final ValueNotifier<bool> showHomeNotifier = ValueNotifier<bool>(false);
 
@@ -53,45 +55,46 @@ void main() async {
 class JendelaDBP extends StatelessWidget {
   JendelaDBP({Key? key, required this.showHomeNotifier}) : super(key: key);
   final bool showHomeNotifier;
-  final _controller = PersistentTabController(initialIndex: 0);
 
-  List<PersistentBottomNavBarItem> _navBarItems() {
-    return [
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        title: "Home",
-        activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
-        inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.book_rounded),
-        title: "Saved",
-        activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
-        inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.headphones_rounded),
-        title: "Audio",
-        activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
-        inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.person_rounded),
-        title: "Profile",
-        activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
-        inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
-      ),
-    ];
-  }
+  // final _controller = PersistentTabController(initialIndex: 0);
 
-  List<Widget> _buildScreens(context) {
-    return [
-      const Home(),
-      const SavedBooks(),
-      const Audiobooks(),
-      const Profile(),
-    ];
-  }
+  // List<PersistentBottomNavBarItem> _navBarItems() {
+  //   return [
+  //     PersistentBottomNavBarItem(
+  //       icon: const Icon(Icons.home),
+  //       title: "Home",
+  //       activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
+  //       inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
+  //     ),
+  //     PersistentBottomNavBarItem(
+  //       icon: const Icon(Icons.book_rounded),
+  //       title: "Saved",
+  //       activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
+  //       inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
+  //     ),
+  //     PersistentBottomNavBarItem(
+  //       icon: const Icon(Icons.headphones_rounded),
+  //       title: "Audio",
+  //       activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
+  //       inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
+  //     ),
+  //     PersistentBottomNavBarItem(
+  //       icon: const Icon(Icons.person_rounded),
+  //       title: "Profile",
+  //       activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
+  //       inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
+  //     ),
+  //   ];
+  // }
+
+  // List<Widget> _buildScreens(context) {
+  //   return [
+  //     const Home(),
+  //     const SavedBooks(),
+  //     const Audiobooks(),
+  //     const Profile(),
+  //   ];
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -148,28 +151,14 @@ class JendelaDBP extends StatelessWidget {
           '/forgotPassword': (context) => const ForgotPassword(),
           '/createNewPassword': (context) => const CreateNewPassword()
         },
-        home:
-            //Signin()
-            showHomeNotifier
-                ? PersistentTabView(
-                    context,
-                    controller: PersistentTabController(
-                        initialIndex: showHomeNotifier ? 0 : 4),
-                    screens: _buildScreens(context),
-                    items: _navBarItems(),
-                    confineInSafeArea: true,
-                    backgroundColor: Colors.white,
-                    handleAndroidBackButtonPress: true,
-                    resizeToAvoidBottomInset: true,
-                    stateManagement: true,
-                    hideNavigationBarWhenKeyboardShows: true,
-                    decoration: const NavBarDecoration(
-                      colorBehindNavBar: Colors.white,
-                    ),
-                    popAllScreensOnTapOfSelectedTab: true,
-                    navBarStyle: NavBarStyle.style12,
-                  )
-                : const OnboardScreen(),
+        home: showHomeNotifier
+            ? MyPersistentBottomNavBar(
+                selectedIndex: 0, // Initial selected index
+                onItemSelected: (index) {
+                  // Handle tab selection if needed
+                },
+              )
+            : const OnboardScreen(),
       ),
     );
   }

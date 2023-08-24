@@ -4,6 +4,7 @@ import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
 import 'package:jendela_dbp/components/home/homeDrawer.dart';
 import 'package:jendela_dbp/components/home/searchDelegate.dart';
 import 'package:jendela_dbp/components/home/topHeaderHome.dart';
+import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
@@ -224,8 +225,10 @@ class _HomeState extends State<Home> {
     return BlocProvider(
       create: (context) => ImageBloc(),
       child: Scaffold(
+        backgroundColor: Colors.white,
         key: _scaffoldKey,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           key: appBarKey,
           leading: IconButton(
             onPressed: () {
@@ -408,17 +411,20 @@ class _HomeState extends State<Home> {
                                     ),
                                   );
                                 }
-                                return Center(
-                                    child:
-                                        LoadingAnimationWidget.discreteCircle(
-                                  color:
-                                      const Color.fromARGB(255, 123, 123, 123),
-                                  secondRingColor:
-                                      const Color.fromARGB(255, 144, 191, 63),
-                                  thirdRingColor:
-                                      const Color.fromARGB(255, 235, 127, 35),
-                                  size: 50.0,
-                                ));
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 32),
+                                  child: Center(
+                                      child:
+                                          LoadingAnimationWidget.discreteCircle(
+                                    color:
+                                        const Color.fromARGB(255, 123, 123, 123),
+                                    secondRingColor:
+                                        const Color.fromARGB(255, 144, 191, 63),
+                                    thirdRingColor:
+                                        const Color.fromARGB(255, 235, 127, 35),
+                                    size: 50.0,
+                                  )),
+                                );
                               },
                             ),
                           );
