@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noBooksLikedCard.dart';
-import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
@@ -26,16 +25,15 @@ class _SavedBooksState extends State<SavedBooks> {
     likedBooksBox = Hive.box<HiveBookAPI>('liked_books');
   }
 
-  void _updateLikedStatus(int bookId, bool isLiked) {
+void _updateLikedStatus(int bookId, bool isLiked) {
+  if (mounted) {
     context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
-
-    // Update liked status map in the cubit
     likedBookss[bookId] = isLiked;
-
     setState(() {
       // Refresh the UI if needed
     });
   }
+}
 
   @override
   void dispose() {
@@ -45,7 +43,6 @@ class _SavedBooksState extends State<SavedBooks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Saved Books'),
@@ -175,6 +172,9 @@ class _SavedBooksState extends State<SavedBooks> {
                                         context
                                             .read<LikedStatusCubit>()
                                             .updateLikedStatusMap(likedBookss);
+
+                                        _updateLikedStatus(bookIdToDelete, false);
+                                            
                                       }
                                     },
                                     icon: const Icon(

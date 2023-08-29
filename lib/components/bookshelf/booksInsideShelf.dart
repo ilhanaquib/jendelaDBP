@@ -23,7 +23,7 @@ class BooksInsideShelf extends StatefulWidget {
 }
 
 class _BooksInsideShelfState extends State<BooksInsideShelf> {
-  late Map<int, bool> likedStatusMap;
+  late Map<int, bool> likedStatusMap = {};
 
   String capitalizeEachWord(String input) {
     List<String> words = input.toLowerCase().split(' ');
@@ -44,7 +44,6 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
   void initState() {
     super.initState();
     likedStatusBox = LikedStatusManager.likedStatusBox!;
-    likedStatusMap = {};
     for (final key in widget.dataBooks) {
       likedStatusMap[key] = false;
     }
@@ -56,12 +55,6 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
       });
     });
     _openLikedStatusBox();
-
-    context.read<LikedStatusCubit>().stream.listen((state) {
-      setState(() {
-        likedStatusMap = state;
-      });
-    });
   }
 
   Color getCircleAvatarBackgroundColor(int bookId) {
@@ -83,14 +76,12 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
 
       LikedStatusManager.updateLikedStatus(key, isLiked); // Update liked status
     }
-
-    setState(() {
-      // Refresh the UI if needed
-    });
   }
 
   void _updateLikedStatus(int bookId, bool isLiked) {
     context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
+    likedStatusMap[bookId] = isLiked; // Update liked status map
+
     setState(() {
       // Refresh the UI if needed
     });
@@ -174,33 +165,33 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                       bubblesColor: const BubblesColor(
                                         dotPrimaryColor:
                                             Color.fromARGB(255, 245, 88, 88),
-                                        dotSecondaryColor:
-                                            Colors.white,
+                                        dotSecondaryColor: Colors.white,
                                       ),
                                       isLiked:
                                           isBookLiked, // Set initial liked status
                                       onTap: (bool isLiked) async {
                                         // Toggle liked status and perform other necessary operations
                                         final newLikedStatus = !isLiked;
-                                  
+
                                         await likedStatusBox.put(
                                             key, newLikedStatus);
-                                  
+
                                         final book = widget.bookBox.get(key);
+                                        
                                         if (book != null) {
                                           book.isFavorite = newLikedStatus;
                                           widget.bookBox.put(key, book);
-                                  
+
                                           if (newLikedStatus) {
                                             widget.likedBooksBox.put(key, book);
                                           } else {
                                             widget.likedBooksBox.delete(key);
                                           }
-                                  
-                                          _updateLikedStatus(key, newLikedStatus);
-                                          setState(() {});
+
+                                          _updateLikedStatus(
+                                              key, newLikedStatus);
                                         }
-                                  
+
                                         return newLikedStatus; // Return the new liked status
                                       },
                                       likeBuilder: (bool isLiked) {
@@ -215,7 +206,8 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                             ),
                                             const Icon(
                                               Icons.favorite_border,
-                                              color: Color.fromARGB(255, 245, 88, 88),
+                                              color: Color.fromARGB(
+                                                  255, 245, 88, 88),
                                               size: 30,
                                             ),
                                           ],

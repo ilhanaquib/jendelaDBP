@@ -39,7 +39,15 @@ class _BookDetailState extends State<BookDetail> {
   @override
   void initState() {
     super.initState();
-    _isBookLiked = LikedStatusManager.isBookLiked(widget.bookId);
+    _isBookLiked =
+        context.read<LikedStatusCubit>().state[widget.bookId] ?? false;
+
+    // Listen to changes in liked status through the cubit
+    context.read<LikedStatusCubit>().stream.listen((state) {
+      setState(() {
+        _isBookLiked = state[widget.bookId] ?? false;
+      });
+    });
   }
 
   void _toggleLikedStatus() async {

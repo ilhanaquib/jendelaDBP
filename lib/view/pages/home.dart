@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
 import 'package:jendela_dbp/components/home/homeDrawer.dart';
 import 'package:jendela_dbp/components/home/searchDelegate.dart';
 import 'package:jendela_dbp/components/home/topHeaderHome.dart';
-import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
@@ -15,6 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/home/filterButtons.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'dart:math';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -23,7 +27,21 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
+  //-----custom refresh indicator----
+
+  static const _circleSize = 70.0;
+
+  static const _defaultShadow = [
+    BoxShadow(blurRadius: 10, color: Colors.black26)
+  ];
+
+  double _progress = 0.0;
+
+  late AnimationController _controller;
+
+  //-----custom refresh indicator----
+
   // ignore: non_constant_identifier_names
   Box<HiveBookAPI> APIBook = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
   List<int> kategori1Books = [];
@@ -49,6 +67,16 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     allProduct = getAllProduct();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500), // Set the duration as needed
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   Future<bool> getAllProduct() async {
@@ -56,6 +84,8 @@ class _HomeState extends State<Home> {
     var token = value.getString('token');
 
     if (bookAPIBox.isEmpty || bookAPIBox.length == 0) {
+      //bookAPIBox.clear();
+
       setState(() {
         isLoading = true;
       });
@@ -177,29 +207,56 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _handleRefresh() async {
-    // Show loading animation while refreshing
-    // showDialog(
-    //   context: context,
-    //   barrierDismissible: false, // Prevent dismissing the dialog
-    //   builder: (context) {
-    //     return Center(
-    //       child: LoadingAnimationWidget.discreteCircle(
-    //         color: const Color.fromARGB(255, 123, 123, 123),
-    //         secondRingColor: const Color.fromARGB(255, 144, 191, 63),
-    //         thirdRingColor: const Color.fromARGB(255, 235, 127, 35),
-    //         size: 50.0,
-    //       ),
-    //     );
-    //   },
-    // );
+    _controller.reset();
+    _controller.forward();
+    setState(() {
+      isLoading = true;
+    });
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      try {
+        final result = await InternetAddress.lookup('google.com')
+            .timeout(const Duration(seconds: 3));
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          var token = prefs.getString('token');
+          bookAPIBox.clear();
+          await getKategori(context, token, GlobalVar.kategori1);
+          await getKategori(context, token, GlobalVar.kategori2);
+          await getKategori(context, token, GlobalVar.kategori3);
+          await getKategori(context, token, GlobalVar.kategori4);
+          await getKategori(context, token, GlobalVar.kategori5);
+          await getKategori(context, token, GlobalVar.kategori6);
+          await getKategori(context, token, GlobalVar.kategori7);
+          await getKategori(context, token, GlobalVar.kategori8);
+          await getKategori(context, token, GlobalVar.kategori9);
+          await getKategori(context, token, GlobalVar.kategori10);
+          await getKategori(context, token, GlobalVar.kategori11);
+          await getKategori(context, token, GlobalVar.kategori12);
+          await getKategori(context, token, GlobalVar.kategori13);
+          await getKategori(context, token, GlobalVar.kategori14);
+          await getKategori(context, token, GlobalVar.kategori15);
+        }
+      } catch (exception, stackTrace) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text(exception.toString()),
+          duration: Duration(seconds: 3),
+        ));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text('Internet access required'),
+        duration: Duration(seconds: 3),
+      ));
+    }
 
-    // Simulate a refresh delay
-    // await Future.delayed(Duration(seconds: 2));
-
-    // // Dismiss the loading dialog
-    // Navigator.of(context).pop();
-
-    getAllProduct();
+    getKategoriFromAPI();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -279,7 +336,109 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                 },
-                child: RefreshIndicator(
+                child: CustomRefreshIndicator(
+                  builder: (context, child, controller) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      _progress = _controller.value;
+                      final widgetWidth = constraints.maxWidth;
+                      final widgetHeight = constraints.maxHeight;
+                      final letterTopWidth = (widgetWidth / 2) + 50;
+                      final leftValue = (widgetWidth -
+                              (letterTopWidth * controller.value / 1))
+                          .clamp(letterTopWidth - 100, double.infinity);
+
+                      final rightValue =
+                          (widgetWidth - (widgetWidth * controller.value / 1))
+                              .clamp(0.0, double.infinity);
+
+                      final opacity =
+                          (controller.value - 1).clamp(0, 0.5) / 0.5;
+
+                      return Stack(
+                        children: <Widget>[
+                          Transform.scale(
+                            scale: 1 - 0.1 * controller.value.clamp(0.0, 1.0),
+                            child: child,
+                          ),
+                          Positioned(
+                            right: rightValue,
+                            child: Container(
+                              height: widgetHeight,
+                              width: widgetWidth,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: _defaultShadow,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            left: leftValue,
+                            child: CustomPaint(
+                              painter: BookPainter(
+                                strokeColor: Colors.white,
+                                progress: _progress,
+                              ),
+                              child: SizedBox(
+                                height: widgetHeight,
+                                width: letterTopWidth,
+                              ),
+                            ),
+                          ),
+                          if (controller.value >= 1)
+                            Container(
+                              padding: const EdgeInsets.only(),
+                              child: Transform.scale(
+                                scale: controller.value,
+                                child: Opacity(
+                                  opacity: controller.isLoading ? 1 : opacity,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      width: _circleSize,
+                                      height: _circleSize,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: double.infinity,
+                                            width: double.infinity,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(),
+                                              child: Center(
+                                                child: LoadingAnimationWidget
+                                                    .discreteCircle(
+                                                  color: const Color.fromARGB(
+                                                      255, 123, 123, 123),
+                                                  secondRingColor:
+                                                      const Color.fromARGB(
+                                                          255, 144, 191, 63),
+                                                  thirdRingColor:
+                                                      const Color.fromARGB(
+                                                          255, 235, 127, 35),
+                                                  size: 70.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Image.asset(
+                                            'assets/images/logonobg.png',
+                                            height: 50,
+
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                        ],
+                      );
+                    },
+                  ),
                   onRefresh: _handleRefresh,
                   child: ListView(
                     children: [
@@ -414,16 +573,17 @@ class _HomeState extends State<Home> {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 32),
                                   child: Center(
-                                      child:
-                                          LoadingAnimationWidget.discreteCircle(
-                                    color:
-                                        const Color.fromARGB(255, 123, 123, 123),
-                                    secondRingColor:
-                                        const Color.fromARGB(255, 144, 191, 63),
-                                    thirdRingColor:
-                                        const Color.fromARGB(255, 235, 127, 35),
-                                    size: 50.0,
-                                  )),
+                                    child:
+                                        LoadingAnimationWidget.discreteCircle(
+                                      color: const Color.fromARGB(
+                                          255, 123, 123, 123),
+                                      secondRingColor: const Color.fromARGB(
+                                          255, 144, 191, 63),
+                                      thirdRingColor: const Color.fromARGB(
+                                          255, 235, 127, 35),
+                                      size: 50.0,
+                                    ),
+                                  ),
                                 );
                               },
                             ),
@@ -439,5 +599,47 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+}
+
+class BookPainter extends CustomPainter {
+  final Color strokeColor;
+  final double progress;
+
+  BookPainter({
+    required this.strokeColor,
+    required this.progress,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = Colors.transparent
+      ..strokeWidth = 2.0
+      ..style = PaintingStyle.stroke;
+
+    final double maxAngle = pi / 6; // Maximum angle for book closing
+    final double angle = maxAngle * progress;
+    final double offsetX = 20.0 * progress; // Offset for book closing
+
+    final Path path = Path()
+      ..moveTo(offsetX, size.height)
+      ..lineTo(offsetX, 0)
+      ..quadraticBezierTo(size.width * 0.5, -40, size.width - offsetX, 0)
+      ..lineTo(size.width - offsetX, size.height)
+      ..close();
+
+    // Rotate the path to simulate book closing
+    final Matrix4 matrix = Matrix4.identity()
+      ..setEntry(3, 2, 0.001) // Perspective
+      ..rotateX(angle);
+    path.transform(matrix.storage);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
