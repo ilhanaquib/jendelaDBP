@@ -25,15 +25,10 @@ class _SavedBooksState extends State<SavedBooks> {
     likedBooksBox = Hive.box<HiveBookAPI>('liked_books');
   }
 
-void _updateLikedStatus(int bookId, bool isLiked) {
-  if (mounted) {
+  void _updateLikedStatus(int bookId, bool isLiked) {
     context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
     likedBookss[bookId] = isLiked;
-    setState(() {
-      // Refresh the UI if needed
-    });
   }
-}
 
   @override
   void dispose() {
@@ -46,6 +41,11 @@ void _updateLikedStatus(int bookId, bool isLiked) {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Saved Books'),
+        leading: TextButton(
+            onPressed: () {
+              print(likedBooksBox.length);
+            },
+            child: const Text('print')),
       ),
       body: ValueListenableBuilder(
         valueListenable: likedBooksBox.listenable(),
@@ -173,8 +173,8 @@ void _updateLikedStatus(int bookId, bool isLiked) {
                                             .read<LikedStatusCubit>()
                                             .updateLikedStatusMap(likedBookss);
 
-                                        _updateLikedStatus(bookIdToDelete, false);
-                                            
+                                        _updateLikedStatus(
+                                            bookIdToDelete, false);
                                       }
                                     },
                                     icon: const Icon(

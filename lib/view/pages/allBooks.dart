@@ -34,6 +34,7 @@ class AllBooks extends StatefulWidget {
 
 class _AllBooksState extends State<AllBooks> {
   late Map<int, bool> likedStatusMap;
+  late Box<bool> likedStatusBox;
 
 // sort books ----------------------------------------------
   SortingOrder selectedSortingOrder = SortingOrder.latest;
@@ -86,8 +87,6 @@ class _AllBooksState extends State<AllBooks> {
   }
   // sort books---------------------------------------------------------
 
-  late Box<bool> likedStatusBox;
-
   @override
   void initState() {
     super.initState();
@@ -99,23 +98,22 @@ class _AllBooksState extends State<AllBooks> {
 
     // Listen to state changes of the LikedStatusCubit
     context.read<LikedStatusCubit>().stream.listen((state) {
-      setState(() {
-        likedStatusMap = state;
-      });
+      // setState(() {
+      //   likedStatusMap = state;
+      // });
     });
     _openLikedStatusBox();
 
     context.read<LikedStatusCubit>().stream.listen((state) {
-      setState(() {
-        likedStatusMap = state;
-      });
+      // setState(() {
+      //   likedStatusMap = state;
+      // });
     });
   }
 
-  Color getCircleAvatarBackgroundColor(int bookId) {
-    return likedStatusMap[bookId] ?? false
-        ? const Color.fromARGB(255, 245, 88, 88)
-        : Colors.white;
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> _openLikedStatusBox() async {
@@ -132,18 +130,19 @@ class _AllBooksState extends State<AllBooks> {
       LikedStatusManager.updateLikedStatus(key, isLiked); // Update liked status
     }
 
-    setState(() {
-      // Refresh the UI if needed
-    });
+    // setState(() {
+    //   // Refresh the UI if needed
+    // });
   }
 
   void _updateLikedStatus(int bookId, bool isLiked) {
     context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  Color getCircleAvatarBackgroundColor(int bookId) {
+    return likedStatusMap[bookId] ?? false
+        ? const Color.fromARGB(255, 245, 88, 88)
+        : Colors.white;
   }
 
   @override
@@ -226,7 +225,7 @@ class _AllBooksState extends State<AllBooks> {
                       final HiveBookAPI? bookSpecific = widget.bookBox.get(key);
                       var isBookLiked =
                           context.read<LikedStatusCubit>().state[key] ?? false;
-                      final isBookLikedMap = likedStatusMap[key] ?? false;
+                      //final isBookLikedMap = likedStatusMap[key] ?? false;
 
                       return GestureDetector(
                         onTap: () {

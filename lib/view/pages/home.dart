@@ -6,6 +6,7 @@ import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
 import 'package:jendela_dbp/components/home/homeDrawer.dart';
 import 'package:jendela_dbp/components/home/searchDelegate.dart';
 import 'package:jendela_dbp/components/home/topHeaderHome.dart';
+import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
@@ -426,7 +427,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                           Image.asset(
                                             'assets/images/logonobg.png',
                                             height: 50,
-
                                           ),
                                         ],
                                       ),

@@ -152,6 +152,7 @@ class JendelaDBP extends StatelessWidget {
           '/createNewPassword': (context) => const CreateNewPassword()
         },
         home: 
+        //const OnboardScreen()
         showHomeNotifier
             ? MyPersistentBottomNavBar(
                 selectedIndex: 0, // Initial selected index

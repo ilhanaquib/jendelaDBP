@@ -24,7 +24,7 @@ class BooksInsideShelf extends StatefulWidget {
 
 class _BooksInsideShelfState extends State<BooksInsideShelf> {
   late Map<int, bool> likedStatusMap = {};
-
+  late Box<bool> likedStatusBox;
   String capitalizeEachWord(String input) {
     List<String> words = input.toLowerCase().split(' ');
     List<String> capitalizedWords = [];
@@ -37,8 +37,6 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
 
     return capitalizedWords.join(' ');
   }
-
-  late Box<bool> likedStatusBox;
 
   @override
   void initState() {
@@ -57,10 +55,8 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
     _openLikedStatusBox();
   }
 
-  Color getCircleAvatarBackgroundColor(int bookId) {
-    return likedStatusMap[bookId] ?? false
-        ? const Color.fromARGB(255, 245, 88, 88)
-        : Colors.white;
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> _openLikedStatusBox() async {
@@ -87,13 +83,16 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
     });
   }
 
-  void dispose() {
-    super.dispose();
+  Color getCircleAvatarBackgroundColor(int bookId) {
+    return likedStatusMap[bookId] ?? false
+        ? const Color.fromARGB(255, 245, 88, 88)
+        : Colors.white;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         child: widget.dataBooks.isEmpty
             ? const Center(
@@ -177,7 +176,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                             key, newLikedStatus);
 
                                         final book = widget.bookBox.get(key);
-                                        
+
                                         if (book != null) {
                                           book.isFavorite = newLikedStatus;
                                           widget.bookBox.put(key, book);

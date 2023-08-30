@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
 import 'package:jendela_dbp/components/chapterList.dart';
-import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
@@ -44,9 +43,9 @@ class _BookDetailState extends State<BookDetail> {
 
     // Listen to changes in liked status through the cubit
     context.read<LikedStatusCubit>().stream.listen((state) {
-      setState(() {
-        _isBookLiked = state[widget.bookId] ?? false;
-      });
+      // setState(() {
+      //   _isBookLiked = state[widget.bookId] ?? false;
+      // });
     });
   }
 
@@ -69,9 +68,9 @@ class _BookDetailState extends State<BookDetail> {
         .read<LikedStatusCubit>()
         .updateLikedStatus(widget.bookId, newLikedStatus);
 
-    setState(() {
-      _isBookLiked = newLikedStatus;
-    });
+    // setState(() {
+    //   _isBookLiked = newLikedStatus;
+    // });
   }
 
   void bottomSheet(BuildContext context) {
