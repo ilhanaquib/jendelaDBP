@@ -42,6 +42,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
   void initState() {
     super.initState();
     likedStatusBox = LikedStatusManager.likedStatusBox!;
+
     for (final key in widget.dataBooks) {
       likedStatusMap[key] = false;
     }
@@ -241,6 +242,11 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                       color: Color.fromARGB(255, 123, 123, 123),
                                     ),
                                   ),
+                                  // ElevatedButton(
+                                  //     onPressed: () {
+                                  //       print(bookSpecific.isFavorite);
+                                  //     },
+                                  //     child: Text('.'))
                                 ],
                               ),
                             )

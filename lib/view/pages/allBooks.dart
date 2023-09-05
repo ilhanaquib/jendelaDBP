@@ -345,6 +345,11 @@ class _AllBooksState extends State<AllBooks> {
                                 color: Color.fromARGB(255, 123, 123, 123),
                               ),
                             ),
+                            // ElevatedButton(
+                            //     onPressed: () {
+                            //       print(bookSpecific.isFavorite);
+                            //     },
+                            //     child: Text('.'))
                           ],
                         ),
                       );

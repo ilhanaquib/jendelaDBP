@@ -16,6 +16,7 @@ class BookDetail extends StatefulWidget {
       required this.bookTitle,
       required this.bookDesc,
       required this.bookPrice,
+      this.bookFavorite,
       this.likedStatusBox,
       this.bookBox});
 
@@ -24,6 +25,7 @@ class BookDetail extends StatefulWidget {
   final String bookImage;
   final String bookDesc;
   final String bookPrice;
+  final bool? bookFavorite;
   final Box<bool>? likedStatusBox;
   final Box<HiveBookAPI>? bookBox;
 
@@ -95,6 +97,11 @@ class _BookDetailState extends State<BookDetail> {
               dotPrimaryColor: Color.fromARGB(255, 245, 88, 88),
               dotSecondaryColor: Colors.white,
             ),
+            isLiked: _isBookLiked,
+            onTap: (isLiked) async {
+              _toggleLikedStatus(); // Toggle the liked status (void function)
+              return !_isBookLiked; // Return the new liked status
+            },
             likeBuilder: (bool isLiked) {
               return Icon(
                 isLiked
@@ -103,11 +110,6 @@ class _BookDetailState extends State<BookDetail> {
                 color: Color(0xfff55858),
                 size: 20,
               );
-            },
-            isLiked: _isBookLiked,
-            onTap: (isLiked) async {
-              _toggleLikedStatus(); // Toggle the liked status (void function)
-              return !_isBookLiked; // Return the new liked status
             },
           ),
         ],

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noBooksLikedCard.dart';
+import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:like_button/like_button.dart';
 
 class SavedBooks extends StatefulWidget {
   const SavedBooks({super.key});
@@ -16,18 +18,52 @@ class SavedBooks extends StatefulWidget {
 class _SavedBooksState extends State<SavedBooks> {
   late Box<bool> likedStatusBox;
   late Box<HiveBookAPI> likedBooksBox;
-  Map<int, bool> likedBookss = {}; // Map to store liked status
+  late Map<int, bool> likedStatusMap = {};
+  late List boxKeys;
 
   @override
   void initState() {
     super.initState();
-    likedStatusBox = Hive.box<bool>('liked_status');
     likedBooksBox = Hive.box<HiveBookAPI>('liked_books');
+    boxKeys = likedBooksBox.keys.toList();
+    likedStatusBox = LikedStatusManager.likedStatusBox!;
+
+    for (final key in boxKeys) {
+      likedStatusMap[key] = false;
+    }
+
+    // Listen to state changes of the LikedStatusCubit
+    context.read<LikedStatusCubit>().stream.listen((state) {
+      setState(() {
+        likedStatusMap = state;
+      });
+    });
+
+    _openLikedStatusBox();
+  }
+
+  Future<void> _openLikedStatusBox() async {
+    for (final key in boxKeys) {
+      final isLiked = LikedStatusManager.isBookLiked(key);
+
+      // Update the liked status in the HiveBookAPI model
+      final book = likedBooksBox.get(key);
+      if (book != null) {
+        book.isFavorite = isLiked;
+        likedBooksBox.put(key, book);
+      }
+
+      LikedStatusManager.updateLikedStatus(key, isLiked); // Update liked status
+    }
   }
 
   void _updateLikedStatus(int bookId, bool isLiked) {
     context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
-    likedBookss[bookId] = isLiked;
+    likedStatusMap[bookId] = isLiked; // Update liked status map
+
+    setState(() {
+      // Refresh the UI if needed
+    });
   }
 
   @override
@@ -41,11 +77,6 @@ class _SavedBooksState extends State<SavedBooks> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Saved Books'),
-        leading: TextButton(
-            onPressed: () {
-              print(likedBooksBox.length);
-            },
-            child: const Text('print')),
       ),
       body: ValueListenableBuilder(
         valueListenable: likedBooksBox.listenable(),
@@ -82,6 +113,7 @@ class _SavedBooksState extends State<SavedBooks> {
                                   bookTitle: book.name!,
                                   bookDesc: book.description!,
                                   bookPrice: book.price!,
+                                  bookFavorite: book.isFavorite,
                                 ),
                               ),
                             );
@@ -133,16 +165,23 @@ class _SavedBooksState extends State<SavedBooks> {
                                       const SizedBox(
                                         height: 70,
                                       ),
-                                      _buildCategoryBox(capitalizeFirstLetter(
-                                          book.categories!)),
+                                      _buildCategoryBox(
+                                        capitalizeFirstLetter(book.categories!),
+                                      ),
                                     ],
                                   ),
                                 ),
                                 Padding(
                                   padding:
                                       const EdgeInsets.only(left: 25, top: 40),
-                                  child: IconButton(
-                                    onPressed: () async {
+                                  child: LikeButton(
+                                    bubblesColor: const BubblesColor(
+                                      dotPrimaryColor:
+                                          Color.fromARGB(255, 245, 88, 88),
+                                      dotSecondaryColor: Colors.white,
+                                    ),
+                                    isLiked: true, // Set initial liked status
+                                    onTap: (bool isLiked) async {
                                       int bookIdToDelete = book.id!;
 
                                       int? keyToDelete;
@@ -166,21 +205,24 @@ class _SavedBooksState extends State<SavedBooks> {
                                         // Update liked status map in the cubit and liked status box
                                         context
                                             .read<LikedStatusCubit>()
-                                            .removeLikedStatus(bookIdToDelete);
+                                            .removeLikedStatus(keyToDelete);
 
                                         // Notify BooksInsideShelf about the change in liked status
                                         context
                                             .read<LikedStatusCubit>()
-                                            .updateLikedStatusMap(likedBookss);
+                                            .updateLikedStatusMap(
+                                                likedStatusMap);
 
                                         _updateLikedStatus(
-                                            bookIdToDelete, false);
+                                            keyToDelete, false);
                                       }
                                     },
-                                    icon: const Icon(
-                                      Icons.delete_outline_rounded,
-                                      size: 32,
-                                    ),
+                                    likeBuilder: (bool isLiked) {
+                                      return const Icon(
+                                        Icons.delete_outline_rounded,
+                                        size: 32,
+                                      );
+                                    },
                                   ),
                                 ),
                               ],

@@ -86,6 +86,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
                       bookTitle: searchResults[index].name!,
                       bookDesc: searchResults[index].description!,
                       bookPrice: searchResults[index].price!,
+                      bookFavorite: searchResults[index].isFavorite,
                     ),
                   ),
                 );
@@ -163,6 +164,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
                       bookTitle: suggestionList[index].name!,
                       bookDesc: suggestionList[index].description!,
                       bookPrice: suggestionList[index].price!,
+                      bookFavorite: suggestionList[index].isFavorite,
                     ),
                   ),
                 );

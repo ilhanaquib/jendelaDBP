@@ -46,7 +46,7 @@ class HiveBookAPI {
   String? downloadUser;
 
   @HiveField(13)
-  bool? isFavorite = false;
+  bool? isFavorite;
 
   @HiveField(14)
   String? status;
