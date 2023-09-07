@@ -8,6 +8,7 @@ import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/notUsed/appearanceButtonBloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/notUsed/fontButtonBloc.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
+import 'package:jendela_dbp/stateManagement/blocs/postBloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
@@ -31,7 +32,6 @@ import 'dart:convert';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'hive/models/hiveBookModel.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:device_preview/device_preview.dart';
 
 final ValueNotifier<bool> showHomeNotifier = ValueNotifier<bool>(false);
@@ -56,46 +56,6 @@ class JendelaDBP extends StatelessWidget {
   JendelaDBP({Key? key, required this.showHomeNotifier}) : super(key: key);
   final bool showHomeNotifier;
 
-  // final _controller = PersistentTabController(initialIndex: 0);
-
-  // List<PersistentBottomNavBarItem> _navBarItems() {
-  //   return [
-  //     PersistentBottomNavBarItem(
-  //       icon: const Icon(Icons.home),
-  //       title: "Home",
-  //       activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
-  //       inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
-  //     ),
-  //     PersistentBottomNavBarItem(
-  //       icon: const Icon(Icons.book_rounded),
-  //       title: "Saved",
-  //       activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
-  //       inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
-  //     ),
-  //     PersistentBottomNavBarItem(
-  //       icon: const Icon(Icons.headphones_rounded),
-  //       title: "Audio",
-  //       activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
-  //       inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
-  //     ),
-  //     PersistentBottomNavBarItem(
-  //       icon: const Icon(Icons.person_rounded),
-  //       title: "Profile",
-  //       activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
-  //       inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
-  //     ),
-  //   ];
-  // }
-
-  // List<Widget> _buildScreens(context) {
-  //   return [
-  //     const Home(),
-  //     const SavedBooks(),
-  //     const Audiobooks(),
-  //     const Profile(),
-  //   ];
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -116,6 +76,9 @@ class JendelaDBP extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LikedStatusCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PostBloc(),
         ),
       ],
       child: MaterialApp(
@@ -152,7 +115,7 @@ class JendelaDBP extends StatelessWidget {
           '/createNewPassword': (context) => const CreateNewPassword()
         },
         home: 
-        //const OnboardScreen()
+        // const OnboardScreen()
         showHomeNotifier
             ? MyPersistentBottomNavBar(
                 selectedIndex: 0, // Initial selected index

@@ -30,7 +30,7 @@ class ApiService {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': 'Bearer $token' 
+            'Authorization': 'Bearer $token'
           });
 
       return response;
@@ -64,8 +64,7 @@ class ApiService {
   static Future<dynamic> getCategory(token, queryParameters) async {
     try {
       final response = await http.get(
-          Uri.parse(
-              'https://jendeladbp.my/wp-json/wp/v2/product_cat'),
+          Uri.parse('https://jendeladbp.my/wp-json/wp/v2/product_cat'),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -78,8 +77,6 @@ class ApiService {
       return null;
     }
   }
-
-  
 
   static Future<dynamic> getAllBooks() async {
     try {
@@ -217,6 +214,22 @@ class ApiService {
       final response = await http.get(
           Uri.parse(
               'https://${GlobalVar.BaseURLDomain}/wp-json/edbp/v1/artikel$q'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'Authorization': token == null ? null : 'Bearer $token',
+          });
+      return response;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<dynamic> getPosts(
+      String token, Map<String, dynamic> queryParameters) async {
+    try {
+      final response = await http.get(
+          Uri.parse('https://${GlobalVar.BaseURLDomain}/wp-json/wp/v2/posts'),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',

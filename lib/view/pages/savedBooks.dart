@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/noBooksLikedCard.dart';
+import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
@@ -213,8 +214,7 @@ class _SavedBooksState extends State<SavedBooks> {
                                             .updateLikedStatusMap(
                                                 likedStatusMap);
 
-                                        _updateLikedStatus(
-                                            keyToDelete, false);
+                                        _updateLikedStatus(keyToDelete, false);
                                       }
                                     },
                                     likeBuilder: (bool isLiked) {
