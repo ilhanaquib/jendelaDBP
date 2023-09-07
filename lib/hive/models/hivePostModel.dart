@@ -21,7 +21,8 @@ class Post {
       this.type,
       this.yoast_head,
       this.title,
-      this.featured_media_urls});
+      this.featured_media_urls,
+      this.content});
   @HiveField(0)
   int? author;
   @HiveField(1)
@@ -58,6 +59,8 @@ class Post {
   String? title;
   @HiveField(17)
   String? featured_media_urls;
+  @HiveField(18)
+  String? content;
 
   static Post fromJson(Map jsonString) {
     return Post(
@@ -78,7 +81,8 @@ class Post {
       type: jsonString['type'],
       yoast_head: jsonString['yoast_head'],
       title: jsonString['title']['rendered'],
-      featured_media_urls: jsonString['featured_media_urls']['post-thumbnail']
+      featured_media_urls: jsonString['featured_media_urls']['post-thumbnail'],
+      content: jsonString['content']['rendered']
     );
   }
 }

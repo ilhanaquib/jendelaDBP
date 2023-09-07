@@ -75,8 +75,9 @@ class _PostsState extends State<Posts> with TickerProviderStateMixin {
             elevation: 0.0,
             toolbarHeight: 0.01,
           ),
-          SliverFillRemaining(
-            child: GestureDetector(
+          SliverList(
+              delegate: SliverChildListDelegate([
+            GestureDetector(
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
               },
@@ -85,30 +86,7 @@ class _PostsState extends State<Posts> with TickerProviderStateMixin {
                   connectionCubit.checkConnection(context);
                   latestPostBloc.add(PostFetch());
                 },
-                child: _latestPostWidget(context),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _latestPostWidget(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        const SliverAppBar(
-          floating: true,
-          snap: true,
-          elevation: 0.0,
-          toolbarHeight: 0.01,
-        ),
-        SliverFillRemaining(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                BlocBuilder<PostBloc, PostState>(
+                child: BlocBuilder<PostBloc, PostState>(
                   bloc: latestPostBloc,
                   builder: (context, data) {
                     if (data is PostLoaded) {
@@ -122,12 +100,9 @@ class _PostsState extends State<Posts> with TickerProviderStateMixin {
                           ),
                         );
                       }
-                      return GridView.count(
+                      return ListView(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 4.0,
-                        mainAxisSpacing: 8.0,
                         children: List.generate(
                           posts.length,
                           (index) => PostCard(
@@ -156,16 +131,86 @@ class _PostsState extends State<Posts> with TickerProviderStateMixin {
                     );
                   },
                 ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ],
+          ])),
+        ],
+      ),
     );
   }
+
+  // Widget _latestPostWidget(BuildContext context) {
+  //   return CustomScrollView(
+  //     slivers: [
+  //       const SliverAppBar(
+  //         floating: true,
+  //         snap: true,
+  //         elevation: 0.0,
+  //         toolbarHeight: 0.01,
+  //       ),
+  //       SliverFillRemaining(
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(8.0),
+  //           child: Column(
+  //             children: [
+  //               BlocBuilder<PostBloc, PostState>(
+  //                 bloc: latestPostBloc,
+  //                 builder: (context, data) {
+  //                   if (data is PostLoaded) {
+  //                     List<Post> posts =
+  //                         data.listOfPost?.take(10).toList() ?? [];
+  //                     if (posts.isEmpty) {
+  //                       return const SizedBox(
+  //                         height: 300,
+  //                         child: Center(
+  //                           child: PostNotFoundCard(),
+  //                         ),
+  //                       );
+  //                     }
+  //                     return GridView.count(
+  //                       physics: const NeverScrollableScrollPhysics(),
+  //                       shrinkWrap: true,
+  //                       crossAxisCount: 1,
+  //                       crossAxisSpacing: 4.0,
+  //                       mainAxisSpacing: 8.0,
+  //                       children: List.generate(
+  //                         posts.length,
+  //                         (index) => PostCard(
+  //                           post: posts[index],
+  //                         ),
+  //                       ),
+  //                     );
+  //                   }
+  //                   if (data is PostError) {
+  //                     return ErrorCard(
+  //                       message: data.message ?? '',
+  //                     );
+  //                   }
+  //                   return SizedBox(
+  //                     height: 300,
+  //                     child: Center(
+  //                       child: LoadingAnimationWidget.discreteCircle(
+  //                         color: const Color.fromARGB(255, 123, 123, 123),
+  //                         secondRingColor:
+  //                             const Color.fromARGB(255, 144, 191, 63),
+  //                         thirdRingColor:
+  //                             const Color.fromARGB(255, 235, 127, 35),
+  //                         size: 70.0,
+  //                       ),
+  //                     ),
+  //                   );
+  //                 },
+  //               ),
+  //               const SizedBox(
+  //                 height: 5.0,
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }
 
 class BookPainter extends CustomPainter {
