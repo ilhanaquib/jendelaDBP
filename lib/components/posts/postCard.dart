@@ -5,7 +5,6 @@ import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-//import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class PostCard extends StatefulWidget {
@@ -36,62 +35,54 @@ class _PostCard extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GestureDetector(
-        // onTap: () async {
-        //   var postLink = Uri.parse(widget.post.link!);
-        //   setState(() {
-        //     launchUrl(postLink, mode: LaunchMode.inAppWebView);
-        //   });
-        // },
-        child: Stack(
-          children: [
-            SizedBox(
-              width: widget.mediaWidth,
-              // height: 200,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8, bottom: 16),
-                      child: Text(
-                        parse(widget.post.title).documentElement?.text ?? '',
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 5,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
+    return SizedBox(
+      child: Stack(
+        children: [
+          SizedBox(
+            width: widget.mediaWidth,
+            // height: 200,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 16),
+                    child: Text(
+                      parse(widget.post.title).documentElement?.text ?? '',
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 5,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
-                    HtmlWidget(widget.post.content!),
-                    const SizedBox(
-                      height: 5,
+                  ),
+                  HtmlWidget(widget.post.content!),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      DateFormat('d MMM yyyy')
+                          .format(DateTime.parse(widget.post.date ?? '')),
+                      style: const TextStyle(
+                          textBaseline: TextBaseline.alphabetic,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Text(
-                        DateFormat('d MMM yyyy')
-                            .format(DateTime.parse(widget.post.date ?? '')),
-                        style: const TextStyle(
-                            textBaseline: TextBaseline.alphabetic, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            const Divider(
-              thickness: 2,
-              color: Colors.black,
-              indent: 12,
-              endIndent: 12,
-            )
-          ],
-        ),
+          ),
+          const Divider(
+            thickness: 2,
+            color: Colors.black,
+            indent: 12,
+            endIndent: 12,
+          )
+        ],
       ),
     );
   }
