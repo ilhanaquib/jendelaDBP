@@ -23,7 +23,7 @@ class Post {
       this.yoast_head,
       this.title,
       this.featured_media_urls,
-      this.content});
+      this.content,});
   @HiveField(0)
   int? author;
   @HiveField(1)
@@ -83,7 +83,7 @@ class Post {
       yoast_head: jsonString['yoast_head'],
       title: jsonString['title']['rendered'],
       featured_media_urls: jsonString['featured_media_urls']['post-thumbnail'],
-      content: jsonString['content']['rendered']
+      content: jsonString['content']['rendered'],
     );
   }
 }

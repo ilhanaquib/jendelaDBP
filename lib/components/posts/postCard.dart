@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// ignore: file_names
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -57,15 +57,23 @@ class _PostCard extends State<PostCard> {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 5,
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
+                          fontWeight: FontWeight.bold, fontSize: 24),
                     ),
                   ),
-                  HtmlWidget(widget.post.content!),
-                  const SizedBox(
-                    height: 5,
+                  HtmlWidget(
+                    widget.post.content!,
+                    textStyle: const TextStyle(fontSize: 16),
+                    customStylesBuilder: ((element) {
+                      if (element.classes.contains('wp-caption-text')) {
+                        return {'color': 'gray'};
+                      }
+                      if (element.classes.contains('statement')) {
+                        return {'color': 'gray'};
+                      }
+                    }),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(top: 12),
                     child: Text(
                       DateFormat('d MMM yyyy')
                           .format(DateTime.parse(widget.post.date ?? '')),

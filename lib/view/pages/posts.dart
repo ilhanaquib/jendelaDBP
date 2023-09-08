@@ -63,67 +63,72 @@ class _PostsState extends State<Posts> {
           connectionCubit.checkConnection(context);
           latestPostBloc.add(PostFetch());
         },
-        child: CustomScrollView(
-          controller: scrollController,
-          slivers: [
-            const SliverAppBar(
-              floating: true,
-              snap: true,
-              elevation: 0.0,
-              toolbarHeight: 0.01,
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  BlocBuilder<PostBloc, PostState>(
-                    bloc: latestPostBloc,
-                    builder: (context, data) {
-                      if (data is PostLoaded) {
-                        List<Post> posts =
-                            data.listOfPost?.take(10).toList() ?? [];
-                        if (posts.isEmpty) {
-                          return const SizedBox(
-                            height: 300,
-                            child: Center(
-                              child: PostNotFoundCard(),
+        child: InteractiveViewer(
+          panEnabled: false, // Set it to false to prevent panning.
+          minScale: 0.5,
+          maxScale: 4,
+          child: CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              const SliverAppBar(
+                floating: true,
+                snap: true,
+                elevation: 0.0,
+                toolbarHeight: 0.01,
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    BlocBuilder<PostBloc, PostState>(
+                      bloc: latestPostBloc,
+                      builder: (context, data) {
+                        if (data is PostLoaded) {
+                          List<Post> posts =
+                              data.listOfPost?.take(10).toList() ?? [];
+                          if (posts.isEmpty) {
+                            return const SizedBox(
+                              height: 300,
+                              child: Center(
+                                child: PostNotFoundCard(),
+                              ),
+                            );
+                          }
+                          return ListView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            children: List.generate(
+                              posts.length,
+                              (index) => PostCard(
+                                post: posts[index],
+                              ),
                             ),
                           );
                         }
-                        return ListView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          children: List.generate(
-                            posts.length,
-                            (index) => PostCard(
-                              post: posts[index],
+                        if (data is PostError) {
+                          return ErrorCard(
+                            message: data.message ?? '',
+                          );
+                        }
+                        return SizedBox(
+                          height: 300,
+                          child: Center(
+                            child: LoadingAnimationWidget.discreteCircle(
+                              color: const Color.fromARGB(255, 123, 123, 123),
+                              secondRingColor:
+                                  const Color.fromARGB(255, 144, 191, 63),
+                              thirdRingColor:
+                                  const Color.fromARGB(255, 235, 127, 35),
+                              size: 70.0,
                             ),
                           ),
                         );
-                      }
-                      if (data is PostError) {
-                        return ErrorCard(
-                          message: data.message ?? '',
-                        );
-                      }
-                      return SizedBox(
-                        height: 300,
-                        child: Center(
-                          child: LoadingAnimationWidget.discreteCircle(
-                            color: const Color.fromARGB(255, 123, 123, 123),
-                            secondRingColor:
-                                const Color.fromARGB(255, 144, 191, 63),
-                            thirdRingColor:
-                                const Color.fromARGB(255, 235, 127, 35),
-                            size: 70.0,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
