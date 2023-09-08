@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
+
+import 'package:path/path.dart' as p;
+
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:path/path.dart' as p;
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
 
 part 'adapters/productModel.g.dart';
 

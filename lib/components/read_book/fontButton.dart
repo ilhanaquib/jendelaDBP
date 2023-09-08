@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:jendela_dbp/stateManagement/blocs/notUsed/fontButtonBloc.dart';
 import 'settings_buttons.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FontButtons extends StatelessWidget {
   const FontButtons({super.key});

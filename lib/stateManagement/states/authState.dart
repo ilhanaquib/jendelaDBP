@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:jendela_dbp/model/userModel.dart';
 
 // part of 'auth_cubit.dart';

@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
-import 'package:jendela_dbp/controllers/globalVar.dart';
-import 'package:jendela_dbp/model/userModel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:jendela_dbp/controllers/globalVar.dart';
+import 'package:jendela_dbp/model/userModel.dart';
 class UserRepository {
   User? _user;
   Box? _box;

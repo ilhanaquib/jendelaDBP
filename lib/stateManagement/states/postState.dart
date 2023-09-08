@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
 
 abstract class PostState extends Equatable {

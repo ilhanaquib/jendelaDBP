@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+
 part '../adapters/hivePostModel.g.dart';
 
 @HiveType(typeId: 4)

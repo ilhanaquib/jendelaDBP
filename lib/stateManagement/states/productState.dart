@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:jendela_dbp/model/productModel.dart';
 import 'package:hive/hive.dart';
+
+import 'package:jendela_dbp/model/productModel.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/model/epubSetting.dart';
 

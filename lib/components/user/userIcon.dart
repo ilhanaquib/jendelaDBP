@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
 
 class UserIcon extends StatelessWidget {
   final ImageProvider<Object>? imageProvider; // New parameter

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:jendela_dbp/components/read_book/paragraphs.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/components/read_book/slider.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BookRead extends StatelessWidget {
   const BookRead({super.key});

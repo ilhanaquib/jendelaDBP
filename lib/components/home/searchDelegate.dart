@@ -1,9 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/view/pages/bookDetails.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/view/pages/bookDetails.dart';
+
 
 class BookSearchDelegate extends SearchDelegate<String> {
   final Box<HiveBookAPI> apiBook;

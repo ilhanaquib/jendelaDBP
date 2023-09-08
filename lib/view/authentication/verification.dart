@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/view/authentication/popups/popupSignup.dart';
+
 import 'package:pin_code_fields/pin_code_fields.dart';
+
+import 'package:jendela_dbp/view/authentication/popups/popupSignup.dart';
 
 class Verification extends StatelessWidget {
   const Verification({super.key});

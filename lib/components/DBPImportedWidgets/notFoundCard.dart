@@ -1,5 +1,6 @@
-import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/material.dart';
+
+import 'package:empty_widget/empty_widget.dart';
 
 class NotFoundCard extends StatelessWidget {
   const NotFoundCard({super.key});

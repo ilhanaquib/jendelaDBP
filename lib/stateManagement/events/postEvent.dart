@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:jendela_dbp/hive/models/hivePostModel.dart';
 import 'package:meta/meta.dart';
+
+import 'package:jendela_dbp/hive/models/hivePostModel.dart';
 
 @immutable
 abstract class PostEvent extends Equatable {

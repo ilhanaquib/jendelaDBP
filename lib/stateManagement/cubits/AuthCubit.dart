@@ -1,18 +1,20 @@
 import 'dart:convert';
-// import 'dart:html'
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+
+import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
 import 'package:jendela_dbp/api-services.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(const AuthInitial());

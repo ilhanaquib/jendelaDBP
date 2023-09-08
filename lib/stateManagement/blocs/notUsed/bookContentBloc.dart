@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:jendela_dbp/model/bookContentModel.dart';
 
 class BookContentState {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:hive/hive.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
 import 'package:jendela_dbp/components/bookshelf/booksInsideShelf.dart';
 import 'package:jendela_dbp/view/pages/allBooks.dart';
 import 'carouselTitle.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 Widget bookShelf(
   context,

@@ -1,26 +1,30 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:bloc/bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart' as p;
+
 import 'package:jendela_dbp/api-services.dart';
-import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/components/bukuDibeli/getPurchase.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/model/epubSetting.dart';
 import 'package:jendela_dbp/model/productModel.dart';
 import 'package:jendela_dbp/model/userModel.dart';
+import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/events/productEvent.dart';
+import 'package:jendela_dbp/stateManagement/states/productState.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/stateManagement/states/productState.dart';
-import 'package:http/http.dart' as http;
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path/path.dart' as p;
+
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   // News Bloc

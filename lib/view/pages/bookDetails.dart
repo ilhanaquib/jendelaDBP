@@ -1,12 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:like_button/like_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
 import 'package:jendela_dbp/components/chapterList.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:like_button/like_button.dart';
 
 class BookDetail extends StatefulWidget {
   const BookDetail(

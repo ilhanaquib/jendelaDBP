@@ -1,16 +1,24 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
-import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/notUsed/appearanceButtonBloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/notUsed/fontButtonBloc.dart';
-import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/stateManagement/blocs/postBloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/authentication/createNewPassword.dart';
 import 'package:jendela_dbp/view/authentication/forgotPassword.dart';
@@ -24,15 +32,10 @@ import 'package:jendela_dbp/view/pages/bookRead.dart';
 import 'package:jendela_dbp/view/pages/home.dart';
 import 'package:jendela_dbp/view/pages/profile.dart';
 import 'package:jendela_dbp/view/pages/savedBooks.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'dart:convert';
+import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'hive/models/hiveBookModel.dart';
-import 'package:device_preview/device_preview.dart';
+import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 
 final ValueNotifier<bool> showHomeNotifier = ValueNotifier<bool>(false);
 

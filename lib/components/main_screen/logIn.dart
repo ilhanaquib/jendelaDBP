@@ -1,21 +1,24 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sentry/sentry.dart';
+
 import 'package:jendela_dbp/api-services.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/controllers/sizeConfig.dart';
 import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sentry/sentry.dart';
-//import 'package:connectivity/connectivity.dart';
+
 
 TextEditingController passwordController = TextEditingController();
 

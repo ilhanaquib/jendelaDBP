@@ -69,7 +69,6 @@ dependencies:
   like_button: ^2.0.5
   custom_refresh_indicator: ^2.2.1
   url_launcher: ^6.1.14
-  flutter_html: ^3.0.0-beta.2
   flutter_widget_from_html: ^0.10.4
 
 
