@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:jendela_dbp/components/authentication/authProvider.dart';
-import 'package:jendela_dbp/components/authentication/authCheckbox.dart';
+import 'package:custom_check_box/custom_check_box.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/view/authentication/popups/popupSigninError.dart';
 import 'package:jendela_dbp/main.dart';
+import 'package:msh_checkbox/msh_checkbox.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -19,6 +20,7 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  bool shouldCheck = false;
   bool _passwordVisible = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -118,6 +120,7 @@ class _SigninState extends State<Signin> {
               key: _formKey,
               child: Column(
                 children: [
+                  // email or username
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -125,7 +128,7 @@ class _SigninState extends State<Signin> {
                       controller: emailController,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 20),
+                            horizontal: 30, vertical: 12),
                         suffixIcon: const Icon(
                           Icons.email_rounded,
                           color: Color.fromARGB(255, 162, 162, 162),
@@ -156,6 +159,8 @@ class _SigninState extends State<Signin> {
                       ),
                     ),
                   ),
+
+                  // password
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -164,7 +169,7 @@ class _SigninState extends State<Signin> {
                       obscureText: !_passwordVisible,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 30, vertical: 20),
+                            horizontal: 30, vertical: 12),
                         suffixIcon: IconButton(
                           icon: Icon(
                             // Based on passwordVisible state choose the icon
@@ -210,15 +215,30 @@ class _SigninState extends State<Signin> {
                 ],
               ),
             ),
+
             Padding(
-              padding: const EdgeInsets.only(left: 7),
+              padding: const EdgeInsets.only(left: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Row(
+                  Row(
                     children: [
-                      AuthCheckbox(),
-                      Text(
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: MSHCheckbox(
+                          value: shouldCheck,
+                          style: MSHCheckboxStyle.fillScaleCheck,
+                          size: 20,
+                          checkedColor: const Color.fromARGB(255, 235, 127, 35),
+                          uncheckedColor: const Color.fromARGB(255, 235, 127, 35),
+                          onChanged: (val) {
+                            setState(() {
+                              shouldCheck = val;
+                            });
+                          },
+                        ),
+                      ),
+                      const Text(
                         'Remember me',
                         style: TextStyle(
                             color: Color.fromARGB(255, 123, 123, 123),

@@ -9,27 +9,21 @@ import 'package:jendela_dbp/view/pages/profile.dart';
 import 'package:jendela_dbp/view/pages/savedBooks.dart';
 
 class MyPersistentBottomNavBar extends StatelessWidget {
-  final int selectedIndex;
-  final ValueChanged<int> onItemSelected;
-
-  MyPersistentBottomNavBar({
-    required this.selectedIndex,
-    required this.onItemSelected,
+  const MyPersistentBottomNavBar({
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      controller: PersistentTabController(initialIndex: selectedIndex),
-      screens:  [
-        const Home(),
-        Posts(),
-        const SavedBooks(),
-        const Audiobooks(),
-        const Profile(),
-      ],
-      items: [
+    PersistentTabController controller =
+        PersistentTabController(initialIndex: 0);
+
+    List<Widget> buildScreens() {
+      return const [Home(), Posts(), SavedBooks(), Audiobooks(), Profile()];
+    }
+
+    List<PersistentBottomNavBarItem> navBarItems() {
+      return [
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.home),
           title: "Home",
@@ -60,7 +54,14 @@ class MyPersistentBottomNavBar extends StatelessWidget {
           activeColorPrimary: const Color.fromARGB(255, 235, 127, 35),
           inactiveColorPrimary: const Color.fromARGB(255, 123, 123, 123),
         ),
-      ],
+      ];
+    }
+
+    return PersistentTabView(
+      context,
+      controller: controller,
+      screens: buildScreens(),
+      items: navBarItems(),
       confineInSafeArea: true,
       backgroundColor: Colors.white,
       handleAndroidBackButtonPress: true,
@@ -72,7 +73,6 @@ class MyPersistentBottomNavBar extends StatelessWidget {
       ),
       popAllScreensOnTapOfSelectedTab: true,
       navBarStyle: NavBarStyle.style12,
-      // ... other configuration settings ...
     );
   }
 }

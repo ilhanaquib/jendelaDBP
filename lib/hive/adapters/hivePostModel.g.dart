@@ -30,11 +30,11 @@ class PostAdapter extends TypeAdapter<Post> {
       ping_status: fields[10] as String?,
       slug: fields[11] as String?,
       status: fields[12] as String?,
-      sticky: fields[13] as String?,
-      type: fields[14] as String?,
-      yoast_head: fields[15] as String?,
-      title: fields[16] as String?,
-      featured_media_urls: fields[17] as String?,
+      type: fields[13] as String?,
+      yoast_head: fields[14] as String?,
+      title: fields[15] as String?,
+      featured_media_urls: fields[16] as String?,
+      content: fields[17] as String?,
     );
   }
 
@@ -69,15 +69,15 @@ class PostAdapter extends TypeAdapter<Post> {
       ..writeByte(12)
       ..write(obj.status)
       ..writeByte(13)
-      ..write(obj.sticky)
-      ..writeByte(14)
       ..write(obj.type)
-      ..writeByte(15)
+      ..writeByte(14)
       ..write(obj.yoast_head)
-      ..writeByte(16)
+      ..writeByte(15)
       ..write(obj.title)
+      ..writeByte(16)
+      ..write(obj.featured_media_urls)
       ..writeByte(17)
-      ..write(obj.featured_media_urls);
+      ..write(obj.content);
   }
 
   @override

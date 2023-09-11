@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
@@ -21,7 +22,6 @@ import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
 import 'package:jendela_dbp/view/pages/user.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
-
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     allProduct = getAllProduct();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500), 
+      duration: const Duration(milliseconds: 500),
     );
   }
 

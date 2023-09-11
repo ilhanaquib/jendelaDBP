@@ -128,7 +128,7 @@ class _SignupState extends State<Signup> {
                     controller: usernameController,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 20),
+                          horizontal: 30, vertical: 12),
                       suffixIcon: const Icon(
                         Icons.person_rounded,
                         color: Color.fromARGB(255, 162, 162, 162),
@@ -167,7 +167,7 @@ class _SignupState extends State<Signup> {
                     controller: emailController,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 20),
+                          horizontal: 30, vertical: 12),
                       suffixIcon: const Icon(
                         Icons.email_rounded,
                         color: Color.fromARGB(255, 162, 162, 162),
@@ -207,7 +207,7 @@ class _SignupState extends State<Signup> {
                     obscureText: !_passwordVisible,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 20),
+                          horizontal: 30, vertical: 12),
                       suffixIcon: IconButton(
                         icon: Icon(
                           // Based on passwordVisible state choose the icon
@@ -259,7 +259,7 @@ class _SignupState extends State<Signup> {
                     obscureText: !_confirmPasswordVisible,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 20),
+                          horizontal: 30, vertical: 12),
                       suffixIcon: IconButton(
                         icon: Icon(
                           // Based on passwordVisible state choose the icon

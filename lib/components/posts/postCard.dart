@@ -8,6 +8,7 @@ import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PostCard extends StatefulWidget {
   PostCard({
@@ -62,13 +63,14 @@ class _PostCard extends State<PostCard> {
                   ),
                   HtmlWidget(
                     widget.post.content!,
+                    onTapUrl: (url) => launchUrl(Uri.parse(url), mode: LaunchMode.inAppWebView),
                     textStyle: const TextStyle(fontSize: 16),
                     customStylesBuilder: ((element) {
                       if (element.classes.contains('wp-caption-text')) {
-                        return {'color': 'gray'};
+                        return {'color': 'gray', 'font-size': 'smaller'};
                       }
                       if (element.classes.contains('statement')) {
-                        return {'color': 'gray'};
+                        return {'color': 'gray', 'font-size': 'smaller'};
                       }
                     }),
                   ),

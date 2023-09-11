@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/main.dart';
@@ -111,10 +112,11 @@ class AuthProvider extends StatelessWidget {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     showHomeNotifier.value = true;
-                    PersistentNavBarNavigator.pushNewScreen(
+                    Navigator.push(
                       context,
-                      withNavBar: true,
-                      screen: const Home(),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const MyPersistentBottomNavBar()),
                     );
                   },
                 text: guestAccount,

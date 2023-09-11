@@ -87,18 +87,14 @@ class JendelaDBP extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 123, 123, 123),
-            ),
-            textTheme: GoogleFonts.interTextTheme(),
-            unselectedWidgetColor: const Color.fromARGB(255, 123, 123, 123),
-            checkboxTheme: CheckboxThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-            ),
-            dividerColor: Colors.transparent),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 123, 123, 123),
+          ),
+          textTheme: GoogleFonts.interTextTheme(),
+          unselectedWidgetColor: const Color.fromARGB(255, 123, 123, 123),
+          dividerColor: Colors.transparent,
+        ),
         routes: {
           // bottom nav bar
           '/home': (context) => const Home(),
@@ -117,15 +113,8 @@ class JendelaDBP extends StatelessWidget {
           '/forgotPassword': (context) => const ForgotPassword(),
           '/createNewPassword': (context) => const CreateNewPassword()
         },
-        home: 
-        // const OnboardScreen()
-        showHomeNotifier
-            ? MyPersistentBottomNavBar(
-                selectedIndex: 0, // Initial selected index
-                onItemSelected: (index) {
-                  // Handle tab selection if needed
-                },
-              )
+        home: showHomeNotifier
+            ? const MyPersistentBottomNavBar()
             : const OnboardScreen(),
       ),
     );
