@@ -11,7 +11,7 @@ import 'package:jendela_dbp/hive/models/hivePostModel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PostCard extends StatefulWidget {
-  PostCard({
+  const PostCard({
     Key? key,
     this.mediaHeight = 100.0,
     this.mediaWidth = 400.0,

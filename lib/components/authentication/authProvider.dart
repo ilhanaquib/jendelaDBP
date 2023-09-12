@@ -3,10 +3,8 @@ import 'package:flutter/gestures.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/main.dart';
-import 'package:jendela_dbp/view/pages/home.dart';
 
 // ignore: must_be_immutable
 class AuthProvider extends StatelessWidget {

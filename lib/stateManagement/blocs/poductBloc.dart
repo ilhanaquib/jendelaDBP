@@ -29,9 +29,9 @@ import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   // News Bloc
   ProductBloc() : super(ProductInit());
-  final int _startIndex = 1;
-  final int _perPage = 10;
-  final bool _hasReachedMax = false;
+  // final int _startIndex = 1;
+  // final int _perPage = 10;
+  // final bool _hasReachedMax = false;
 
   // @override
   // Stream<Transition<ProductEvent, ProductState>> transformEvents(

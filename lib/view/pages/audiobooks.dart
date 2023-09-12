@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path/path.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 import 'package:jendela_dbp/components/audiobook/audioPlayer.dart';
 import 'package:jendela_dbp/components/audiobook/paragraph.dart';
@@ -10,11 +12,15 @@ class Audiobooks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Now Playing'),
         actions: [
+          Text(currentWidth.toStringAsFixed(2), style: TextStyle(color: Colors.red),),
+          Text(currentHeight.toStringAsFixed(2)),
           IconButton(
               onPressed: () {},
               icon: const Icon(FontAwesomeIcons.ellipsisVertical))
@@ -47,31 +53,69 @@ class Audiobooks extends StatelessWidget {
                             children: [
                               Image.asset(
                                 "assets/images/tiadakulitbuku.png",
-                                height: 250,
-                                width: 180,
+                                height: 200,
+                                width: 150,
                                 fit: BoxFit.fill,
                               ),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text('Book Title',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20)),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Page : 78/266',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 123, 123, 123)),
+                      Container(
+                        height: 100,
+                        margin:
+                            const EdgeInsets.only(left: 50, right: 50, top: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 20, right: 20),
+                                    child: TextScroll(
+                                      'Reprehenderit sint sint aute reprehenderit aliquip consectetur sint voluptate mollit.',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                      mode: TextScrollMode.endless,
+                                      velocity: Velocity(
+                                        pixelsPerSecond: Offset(30, 0),
+                                      ),
+                                      selectable: true,
+                                      pauseBetween: Duration(seconds: 5),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Page : 78/266',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 123, 123, 123),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(
-                            top: 50, left: 20, right: 20, bottom: 20),
+                        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
                         child: SizedBox(
                           height: 200,
                           child: SingleChildScrollView(
@@ -80,10 +124,8 @@ class Audiobooks extends StatelessWidget {
                         ),
                       ),
                       const Padding(
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        child: Column(
-                          children: [AudioPlayerWidget()],
-                        ),
+                        padding: EdgeInsets.only(left: 20, right: 20, top: 30),
+                        child: AudioPlayerWidget(),
                       ),
                     ],
                   ),
@@ -121,11 +163,11 @@ class CurvedBackgroundPainter extends CustomPainter {
     paint.color =
         const Color.fromARGB(255, 255, 246, 239); // Second background color
     final Path path = Path()
-      ..moveTo(0, size.height * 1.0) // Start point of the curve
-      ..quadraticBezierTo(size.width * 0.5, size.height * 1.5, size.width,
-          size.height * 1.0) // Control and end points of the curve
+      ..moveTo(0, size.height * 0.8) // Start point of the curve
+      ..quadraticBezierTo(size.width * 0.5, size.height * 1.2, size.width,
+          size.height * 0.8) // Control and end points of the curve
       ..lineTo(size.width, 0) // Line to the top right corner
-      ..lineTo(0, 0) // Line back to the top left corner
+      ..lineTo(1, 1) // Line back to the top left corner
       ..close(); // Close the path
     canvas.drawPath(path, paint);
   }

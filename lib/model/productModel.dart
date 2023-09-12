@@ -272,7 +272,7 @@ class WcProduct {
   });
 
   static WcProduct fromJson(Map json) {
-    if (json == null) {
+    if (json.isEmpty) {
       return WcProduct();
     }
     return WcProduct(
@@ -427,7 +427,7 @@ class WcFile {
   WcFile({this.name, this.file});
 
   static WcFile fromJson(Map json) {
-    if (json == null) {
+    if (json.isEmpty) {
       return WcFile();
     }
     return WcFile(name: json['name'], file: json['file']);

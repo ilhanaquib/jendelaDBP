@@ -71,8 +71,8 @@ dependencies:
   flutter_widget_from_html: ^0.10.4
   intl: ^0.18.1
   html: ^0.15.4
-  custom_check_box: ^0.0.4
   msh_checkbox: ^2.0.1
+  text_scroll: ^0.2.0
 
 
 
