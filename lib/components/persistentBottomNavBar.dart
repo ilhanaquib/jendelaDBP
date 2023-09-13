@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/view/pages/audiobooksHome.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -19,7 +20,7 @@ class MyPersistentBottomNavBar extends StatelessWidget {
         PersistentTabController(initialIndex: 0);
 
     List<Widget> buildScreens() {
-      return const [Home(), Posts(), SavedBooks(), Audiobooks(), Profile()];
+      return const [Home(), Posts(), SavedBooks(), AudiobooksHome(), Profile()];
     }
 
     List<PersistentBottomNavBarItem> navBarItems() {

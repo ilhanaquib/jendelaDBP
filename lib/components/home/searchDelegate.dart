@@ -6,7 +6,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
-
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class BookSearchDelegate extends SearchDelegate<String> {
   final Box<HiveBookAPI> apiBook;
@@ -80,17 +80,15 @@ class BookSearchDelegate extends SearchDelegate<String> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.push(
+                PersistentNavBarNavigator.pushNewScreen(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => BookDetail(
-                      bookId: searchResults[index].id!,
-                      bookImage: searchResults[index].images!,
-                      bookTitle: searchResults[index].name!,
-                      bookDesc: searchResults[index].description!,
-                      bookPrice: searchResults[index].price!,
-                      bookFavorite: searchResults[index].isFavorite,
-                    ),
+                  screen: BookDetail(
+                    bookId: searchResults[index].id!,
+                    bookImage: searchResults[index].images!,
+                    bookTitle: searchResults[index].name!,
+                    bookDesc: searchResults[index].description!,
+                    bookPrice: searchResults[index].price!,
+                    bookFavorite: searchResults[index].isFavorite,
                   ),
                 );
               },
@@ -158,17 +156,16 @@ class BookSearchDelegate extends SearchDelegate<String> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.push(
+                PersistentNavBarNavigator.pushNewScreen(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => BookDetail(
-                      bookId: suggestionList[index].id!,
-                      bookImage: suggestionList[index].images!,
-                      bookTitle: suggestionList[index].name!,
-                      bookDesc: suggestionList[index].description!,
-                      bookPrice: suggestionList[index].price!,
-                      bookFavorite: suggestionList[index].isFavorite,
-                    ),
+                  withNavBar: false,
+                  screen: BookDetail(
+                    bookId: suggestionList[index].id!,
+                    bookImage: suggestionList[index].images!,
+                    bookTitle: suggestionList[index].name!,
+                    bookDesc: suggestionList[index].description!,
+                    bookPrice: suggestionList[index].price!,
+                    bookFavorite: suggestionList[index].isFavorite,
                   ),
                 );
               },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:like_button/like_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,6 +10,7 @@ import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart
 import 'package:jendela_dbp/components/chapterList.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class BookDetail extends StatefulWidget {
   const BookDetail(
@@ -364,7 +366,15 @@ class _BookDetailState extends State<BookDetail> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/audiobooks');
+                                    PersistentNavBarNavigator.pushNewScreen(
+                                      context,
+                                      screen: Audiobooks(
+                                          bookId: widget.bookId,
+                                          bookImage: widget.bookImage,
+                                          bookTitle: widget.bookTitle,
+                                          bookDesc: widget.bookDesc,
+                                          bookPrice: widget.bookPrice),
+                                    );
                                   },
                                   child: const Padding(
                                     padding: EdgeInsets.symmetric(

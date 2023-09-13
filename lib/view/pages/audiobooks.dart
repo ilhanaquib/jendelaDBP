@@ -1,30 +1,33 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:path/path.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import 'package:jendela_dbp/components/audiobook/audioPlayer.dart';
 import 'package:jendela_dbp/components/audiobook/paragraph.dart';
 
 class Audiobooks extends StatelessWidget {
-  const Audiobooks({super.key});
+  const Audiobooks({
+    super.key,
+    required this.bookId,
+    required this.bookImage,
+    required this.bookTitle,
+    required this.bookDesc,
+    required this.bookPrice,
+  });
+
+  final int bookId;
+  final String bookTitle;
+  final String bookImage;
+  final String bookDesc;
+  final String bookPrice;
 
   @override
   Widget build(BuildContext context) {
-    final currentWidth = MediaQuery.of(context).size.width;
-    final currentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Now Playing'),
-        actions: [
-          Text(currentWidth.toStringAsFixed(2), style: TextStyle(color: Colors.red),),
-          Text(currentHeight.toStringAsFixed(2)),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(FontAwesomeIcons.ellipsisVertical))
-        ],
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
       ),
       body: CustomScrollView(
@@ -51,8 +54,8 @@ class Audiobooks extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10.0),
                           child: Stack(
                             children: [
-                              Image.asset(
-                                "assets/images/tiadakulitbuku.png",
+                              CachedNetworkImage(
+                                imageUrl: bookImage,
                                 height: 200,
                                 width: 150,
                                 fit: BoxFit.fill,
@@ -79,7 +82,7 @@ class Audiobooks extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Expanded(
@@ -87,22 +90,22 @@ class Audiobooks extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 20, right: 20),
+                                    padding: const EdgeInsets.only(
+                                        left: 20, right: 20),
                                     child: TextScroll(
-                                      'Reprehenderit sint sint aute reprehenderit aliquip consectetur sint voluptate mollit.',
-                                      style: TextStyle(
+                                      bookTitle,
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
                                       mode: TextScrollMode.endless,
-                                      velocity: Velocity(
+                                      velocity: const Velocity(
                                         pixelsPerSecond: Offset(30, 0),
                                       ),
                                       selectable: true,
-                                      pauseBetween: Duration(seconds: 5),
+                                      pauseBetween: const Duration(seconds: 5),
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Page : 78/266',
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 123, 123, 123),
@@ -114,12 +117,13 @@ class Audiobooks extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 30, left: 20, right: 20),
                         child: SizedBox(
                           height: 200,
                           child: SingleChildScrollView(
-                            child: Paragraph(),
+                            child: Text(bookDesc),
                           ),
                         ),
                       ),
