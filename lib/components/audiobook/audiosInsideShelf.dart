@@ -113,6 +113,7 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                                     ),
                                   ),
                                 ),
+                                Text('RM${bookSpecific.price!}'),
                                 const Padding(
                                   padding: EdgeInsets.only(top: 10),
                                   child: SizedBox(

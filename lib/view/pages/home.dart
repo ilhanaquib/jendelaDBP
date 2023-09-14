@@ -31,6 +31,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
+  //TODO
+  // add an expiry date to hive box for caching data
+  
   //-----custom refresh indicator----
 
   static const _circleSize = 70.0;

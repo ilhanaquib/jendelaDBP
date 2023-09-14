@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
+import 'package:jendela_dbp/view/pages/user.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -58,6 +62,12 @@ class _ProfileState extends State<Profile> {
         .toList();
   }
 
+  void _updateAppBar() {
+    setState(() {
+      // Rebuild the app bar to reflect the changes
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,13 +83,24 @@ class _ProfileState extends State<Profile> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () {},
-                    child: const CircleAvatar(
-                      radius: 50,
-                      child: Icon(
-                        Icons.person,
-                        size: 40,
-                      ),
+                    onTap: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        withNavBar: false,
+                        screen: BlocProvider.value(
+                          value: context.read<ImageBloc>(),
+                          child: UserHomeScreen(
+                            updateAppBar: _updateAppBar,
+                          ),
+                        ),
+                      );
+                    },
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: context
+                              .watch<ImageBloc>()
+                              .selectedImageProvider ??
+                          const AssetImage('assets/images/tiadakulitbuku.png'),
                     ),
                   ),
                   const Padding(
@@ -88,9 +109,9 @@ class _ProfileState extends State<Profile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Username'),
-                        Text('email'),
-                        Text('phone'),
-                        Text('address'),
+                        Text('Email'),
+                        Text('Phone'),
+                        Text('Address'),
                       ],
                     ),
                   )
