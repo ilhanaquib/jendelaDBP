@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,12 +57,28 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
               )
             : ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: widget.dataBooks.length >= 10
-                    ? 10
-                    : widget.dataBooks.length,
+                itemCount: widget.dataBooks.length,
                 itemBuilder: (context, index) {
                   final int key = widget.dataBooks[index];
                   final HiveBookAPI? bookSpecific = widget.bookBox.get(key);
+                  String woocommerceVariationsString =
+                      bookSpecific!.woocommerce_variations!;
+                  List<dynamic> variations =
+                      jsonDecode(woocommerceVariationsString);
+                  String format = '';
+
+                  // Check if the book has the format 'Buku Audio'
+                  bool hasBukuAudioFormat = variations.any((variation) {
+                    return variation['attribute_summary'] ==
+                        'Pilihan Format: Buku Audio';
+                  });
+
+                  // Skip books that don't have the 'Buku Audio' format
+                  if (!hasBukuAudioFormat) {
+                    return SizedBox
+                        .shrink(); // Return an empty SizedBox to hide the book
+                  }
+
                   return Padding(
                     padding: const EdgeInsets.only(left: 0),
                     child: GestureDetector(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
@@ -35,6 +36,11 @@ class AllBooks extends StatefulWidget {
 class _AllBooksState extends State<AllBooks> {
   late Map<int, bool> likedStatusMap;
   late Box<bool> likedStatusBox;
+  bool ascendingPrice = true;
+  bool ascendingAlphabet = true;
+  bool sortLatest = false;
+  bool sortPrice = false;
+  bool sortAlphabet = false;
 
 // sort books ----------------------------------------------
   SortingOrder selectedSortingOrder = SortingOrder.latest;
@@ -50,10 +56,28 @@ class _AllBooksState extends State<AllBooks> {
         final double priceB = double.tryParse(bookB.price!) ?? 0;
 
         if (selectedSortingOrder == SortingOrder.highToLow) {
-          return priceB.compareTo(priceA); // Sort high to low
+          return ascendingPrice
+              ? priceB.compareTo(priceA)
+              : priceA.compareTo(priceB);
         } else {
-          return priceA.compareTo(priceB); // Sort low to high
+          return ascendingPrice
+              ? priceA.compareTo(priceB)
+              : priceB.compareTo(priceA);
         }
+      });
+    });
+  }
+
+  void _sortBooksAlphabetically() {
+    setState(() {
+      widget.listBook.sort((a, b) {
+        final HiveBookAPI? bookA = widget.bookBox.get(a);
+        final HiveBookAPI? bookB = widget.bookBox.get(b);
+
+        if (bookA == null || bookB == null) return 0;
+
+        final comparison = bookA.name!.compareTo(bookB.name!);
+        return ascendingAlphabet ? comparison : -comparison;
       });
     });
   }
@@ -72,19 +96,6 @@ class _AllBooksState extends State<AllBooks> {
     });
   }
 
-  void _sortBooksAlphabetically(bool ascending) {
-    setState(() {
-      widget.listBook.sort((a, b) {
-        final HiveBookAPI? bookA = widget.bookBox.get(a);
-        final HiveBookAPI? bookB = widget.bookBox.get(b);
-
-        if (bookA == null || bookB == null) return 0;
-
-        final comparison = bookA.name!.compareTo(bookB.name!);
-        return ascending ? comparison : -comparison; // Sort alphabetically
-      });
-    });
-  }
   // sort books---------------------------------------------------------
 
   @override
@@ -145,20 +156,132 @@ class _AllBooksState extends State<AllBooks> {
         : Colors.white;
   }
 
+  // void bottomSheet(BuildContext context) {
+  //   showModalBottomSheet<void>(
+  //       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+  //       elevation: 0,
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return const Setting();
+  //       });
+  // }
+
   @override
   Widget build(BuildContext context) {
     Map<SortingOrder, void Function()> sortingFunctions = {
       SortingOrder.highToLow: _sortBooks,
       SortingOrder.lowToHigh: _sortBooks,
       SortingOrder.latest: _sortBooksByLatest,
-      SortingOrder.alphabeticallyAToZ: () => _sortBooksAlphabetically(true),
-      SortingOrder.alphabeticallyZToA: () => _sortBooksAlphabetically(false),
+      SortingOrder.alphabeticallyAToZ: _sortBooksAlphabetically,
+      SortingOrder.alphabeticallyZToA: _sortBooksAlphabetically,
     };
 
+    void _toggleSortingOrder(SortingOrder newSortingOrder) {
+      setState(() {
+        // Call the appropriate sorting function with the ascending parameter
+        if (newSortingOrder == SortingOrder.latest) {
+          _sortBooksByLatest();
+        } else if (newSortingOrder == SortingOrder.highToLow) {
+          _sortBooks(); // Pass the ascending parameter
+        } else if (newSortingOrder == SortingOrder.lowToHigh) {
+          _sortBooks(); // Reverse the ascending parameter
+        } else if (newSortingOrder == SortingOrder.alphabeticallyAToZ) {
+          _sortBooksAlphabetically();
+        } else if (newSortingOrder == SortingOrder.alphabeticallyZToA) {
+          _sortBooksAlphabetically(); // Reverse the ascending parameter
+        }
+      });
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.categoryTitle} Terkini'),
-        centerTitle: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(88.0),
+        child: Column(
+          children: [
+            AppBar(
+              title: Text('${widget.categoryTitle} Terkini'),
+              centerTitle: true,
+              // actions: [
+              //   IconButton(
+              //     onPressed: () {
+              //       bottomSheet(context);
+              //     },
+              //     icon: const Icon(Icons.filter_alt_rounded),
+              //   ),
+              // ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    _toggleSortingOrder(SortingOrder.latest);
+                    setState(() {
+                      sortLatest = true;
+                      sortAlphabet = false;
+                      sortPrice = false;
+                    });
+                  },
+                  child: Text(
+                    'Latest',
+                    style: TextStyle(
+                        color: sortLatest == true
+                            ? const Color.fromARGB(255, 235, 127, 35)
+                            : Colors.black),
+                  ),
+                ),
+                Text(' | '),
+                GestureDetector(
+                  onTap: () {
+                    if (ascendingPrice) {
+                      _toggleSortingOrder(SortingOrder.lowToHigh);
+                    } else {
+                      _toggleSortingOrder(SortingOrder.highToLow);
+                    }
+                    setState(() {
+                      ascendingPrice = !ascendingPrice;
+                      sortPrice = true;
+                      sortLatest = false;
+                      sortAlphabet = false;
+                    });
+                  },
+                  child: Text(
+                    'Price ${ascendingPrice ? '↑' : '↓'}',
+                    style: TextStyle(
+                      color: sortPrice
+                          ? const Color.fromARGB(255, 235, 127, 35)
+                          : Colors.black,
+                    ),
+                  ),
+                ),
+                Text(' | '),
+                GestureDetector(
+                  onTap: () {
+                    if (ascendingAlphabet) {
+                      _toggleSortingOrder(SortingOrder.alphabeticallyAToZ);
+                    } else {
+                      _toggleSortingOrder(SortingOrder.alphabeticallyZToA);
+                    }
+                    setState(() {
+                      ascendingAlphabet = !ascendingAlphabet;
+                      sortAlphabet = true;
+                      sortLatest = false;
+                      sortPrice = false;
+                    });
+                  },
+                  child: Text(
+                    'A-Z ${ascendingAlphabet ? '↑' : '↓'}',
+                    style: TextStyle(
+                      color: sortAlphabet
+                          ? const Color.fromARGB(255, 235, 127, 35)
+                          : Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -181,43 +304,6 @@ class _AllBooksState extends State<AllBooks> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Text('Sort by: '),
-                        DropdownButton<SortingOrder>(
-                          value: selectedSortingOrder,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedSortingOrder = newValue!;
-                              sortingFunctions[selectedSortingOrder]?.call();
-                            });
-                          },
-                          items: const [
-                            DropdownMenuItem(
-                              value: SortingOrder.latest,
-                              child: Text('Latest'),
-                            ),
-                            DropdownMenuItem(
-                              value: SortingOrder.highToLow,
-                              child: Text('Price High to Low'),
-                            ),
-                            DropdownMenuItem(
-                              value: SortingOrder.lowToHigh,
-                              child: Text('Price Low to High'),
-                            ),
-                            DropdownMenuItem(
-                              value: SortingOrder.alphabeticallyAToZ,
-                              child: Text('A-Z'),
-                            ),
-                            DropdownMenuItem(
-                              value: SortingOrder.alphabeticallyZToA,
-                              child: Text('Z-A'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
                     Expanded(
                       child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -344,7 +430,7 @@ class _AllBooksState extends State<AllBooks> {
                                     bookSpecific.name!,
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
-                                    style: TextStyle(fontSize: 10),
+                                    style: TextStyle(fontSize: 11),
                                   ),
                                 ),
                                 Text(
@@ -415,7 +501,7 @@ class _AllBooksState extends State<AllBooks> {
     // Calculate childAspectRatio based on screen width and crossAxisCount
     double screenWidth = constraints.maxWidth;
     if (screenWidth < 600) {
-      return 0.6; // For smaller screens
+      return 0.7; // For smaller screens
     } else if (screenWidth < 1200) {
       return 0.6; // For medium screens
     } else {
