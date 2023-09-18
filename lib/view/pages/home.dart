@@ -31,7 +31,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-  
   //-----custom refresh indicator----
 
   static const _circleSize = 70.0;
@@ -621,7 +620,7 @@ class BookPainter extends CustomPainter {
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
-    final double maxAngle = pi / 6; // Maximum angle for book closing
+    const double maxAngle = pi / 6; // Maximum angle for book closing
     final double angle = maxAngle * progress;
     final double offsetX = 20.0 * progress; // Offset for book closing
 

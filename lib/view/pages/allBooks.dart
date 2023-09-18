@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
@@ -36,11 +37,17 @@ class AllBooks extends StatefulWidget {
 class _AllBooksState extends State<AllBooks> {
   late Map<int, bool> likedStatusMap;
   late Box<bool> likedStatusBox;
+
   bool ascendingPrice = true;
   bool ascendingAlphabet = true;
   bool sortLatest = false;
   bool sortPrice = false;
   bool sortAlphabet = false;
+
+  bool pdfSelected = false;
+  bool printSelected = false;
+  bool audiobookSelected = false;
+  Set<String> selectedFormats = {'PDF', 'Buku Cetak', 'Buku Audio'};
 
 // sort books ----------------------------------------------
   SortingOrder selectedSortingOrder = SortingOrder.latest;
@@ -156,26 +163,90 @@ class _AllBooksState extends State<AllBooks> {
         : Colors.white;
   }
 
-  // void bottomSheet(BuildContext context) {
-  //   showModalBottomSheet<void>(
-  //       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-  //       elevation: 0,
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return const Setting();
-  //       });
-  // }
+  void bottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      elevation: 0,
+      context: context,
+      builder: (BuildContext context) {
+        //return const FormatSelection();
+        return SizedBox(
+          height: 170,
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 40, left: 20),
+                child: Row(
+                  children: [
+                    Text(
+                      'Format',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.white,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildFormatButton(
+                            Icons.picture_as_pdf_rounded,
+                            'PDF',
+                            () {
+                              setState(() {
+                                pdfSelected = !pdfSelected;
+                                Navigator.pop(context);
+                              });
+                            },
+                            pdfSelected,
+                          ),
+                          _buildFormatButton(
+                            Icons.library_books_rounded,
+                            'Print',
+                            () {
+                              setState(() {
+                                printSelected = !printSelected;
+                                Navigator.pop(context);
+                              });
+                            },
+                            printSelected,
+                          ),
+                          _buildFormatButton(
+                            Icons.graphic_eq_rounded,
+                            'Audiobook',
+                            () {
+                              setState(() {
+                                audiobookSelected = !audiobookSelected;
+                                Navigator.pop(context);
+                              });
+                            },
+                            audiobookSelected,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    Map<SortingOrder, void Function()> sortingFunctions = {
-      SortingOrder.highToLow: _sortBooks,
-      SortingOrder.lowToHigh: _sortBooks,
-      SortingOrder.latest: _sortBooksByLatest,
-      SortingOrder.alphabeticallyAToZ: _sortBooksAlphabetically,
-      SortingOrder.alphabeticallyZToA: _sortBooksAlphabetically,
-    };
-
     void _toggleSortingOrder(SortingOrder newSortingOrder) {
       setState(() {
         // Call the appropriate sorting function with the ascending parameter
@@ -201,14 +272,14 @@ class _AllBooksState extends State<AllBooks> {
             AppBar(
               title: Text('${widget.categoryTitle} Terkini'),
               centerTitle: true,
-              // actions: [
-              //   IconButton(
-              //     onPressed: () {
-              //       bottomSheet(context);
-              //     },
-              //     icon: const Icon(Icons.filter_alt_rounded),
-              //   ),
-              // ],
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    bottomSheet(context);
+                  },
+                  icon: const Icon(Icons.filter_alt_rounded),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -230,7 +301,7 @@ class _AllBooksState extends State<AllBooks> {
                             : Colors.black),
                   ),
                 ),
-                Text(' | '),
+                const Text(' | '),
                 GestureDetector(
                   onTap: () {
                     if (ascendingPrice) {
@@ -254,7 +325,7 @@ class _AllBooksState extends State<AllBooks> {
                     ),
                   ),
                 ),
-                Text(' | '),
+                const Text(' | '),
                 GestureDetector(
                   onTap: () {
                     if (ascendingAlphabet) {
@@ -322,129 +393,149 @@ class _AllBooksState extends State<AllBooks> {
                                   false;
                           //final isBookLikedMap = likedStatusMap[key] ?? false;
 
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BookDetail(
-                                    bookId: key,
-                                    bookImage: bookSpecific.images!,
-                                    bookTitle: bookSpecific.name!,
-                                    bookDesc: bookSpecific.description!,
-                                    bookPrice: bookSpecific.price!,
-                                    likedStatusBox: likedStatusBox,
-                                    bookBox: widget.bookBox,
+                          bool matchesSelectedFormats = true;
+                          if (pdfSelected && !_hasFormat(bookSpecific, 'PDF')) {
+                            matchesSelectedFormats = false;
+                          }
+                          if (printSelected &&
+                              !_hasFormat(bookSpecific, 'Buku Cetak')) {
+                            matchesSelectedFormats = false;
+                          }
+                          if (audiobookSelected &&
+                              !_hasFormat(bookSpecific, 'Buku Audio')) {
+                            matchesSelectedFormats = false;
+                          }
+
+                          // If the book matches the selected formats, display it
+                          if (matchesSelectedFormats) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetail(
+                                      bookId: key,
+                                      bookImage: bookSpecific.images!,
+                                      bookTitle: bookSpecific.name!,
+                                      bookDesc: bookSpecific.description!,
+                                      bookPrice: bookSpecific.price!,
+                                      likedStatusBox: likedStatusBox,
+                                      bookBox: widget.bookBox,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Card(
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Stack(
-                                    alignment: Alignment.topRight,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Stack(
-                                          children: [
-                                            CachedNetworkImage(
-                                              imageUrl: bookSpecific!.images!,
-                                              // height: 220,
-                                              width: 140,
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ],
+                                );
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Card(
+                                    elevation: 5,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Stack(
+                                      alignment: Alignment.topRight,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Stack(
+                                            children: [
+                                              CachedNetworkImage(
+                                                imageUrl: bookSpecific!.images!,
+                                                // height: 220,
+                                                width: 140,
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Positioned(
-                                        top: 4,
-                                        right: 4,
-                                        child: LikeButton(
-                                          isLiked: isBookLiked,
-                                          onTap: (bool isLiked) async {
-                                            final newLikedStatus = !isLiked;
+                                        Positioned(
+                                          top: 4,
+                                          right: 4,
+                                          child: LikeButton(
+                                            isLiked: isBookLiked,
+                                            onTap: (bool isLiked) async {
+                                              final newLikedStatus = !isLiked;
 
-                                            // Update liked status in the 'liked_status' box
-                                            await likedStatusBox.put(
-                                                key, newLikedStatus);
+                                              // Update liked status in the 'liked_status' box
+                                              await likedStatusBox.put(
+                                                  key, newLikedStatus);
 
-                                            // Update the liked status in the book model and in the main book storage box
-                                            final book =
-                                                widget.bookBox.get(key);
+                                              // Update the liked status in the book model and in the main book storage box
+                                              final book =
+                                                  widget.bookBox.get(key);
 
-                                            if (book != null) {
-                                              book.isFavorite = newLikedStatus;
-                                              widget.bookBox.put(key, book);
+                                              if (book != null) {
+                                                book.isFavorite =
+                                                    newLikedStatus;
+                                                widget.bookBox.put(key, book);
 
-                                              // Add or remove the book from the 'liked_books' box based on the liked status
-                                              if (newLikedStatus) {
-                                                widget.likedBooksBox
-                                                    .put(key, book);
-                                              } else {
-                                                widget.likedBooksBox.delete(
-                                                    key); // Remove the book from 'liked_books' box
+                                                // Add or remove the book from the 'liked_books' box based on the liked status
+                                                if (newLikedStatus) {
+                                                  widget.likedBooksBox
+                                                      .put(key, book);
+                                                } else {
+                                                  widget.likedBooksBox.delete(
+                                                      key); // Remove the book from 'liked_books' box
+                                                }
+
+                                                // Update liked status in LikedStatusManager
+                                                _updateLikedStatus(
+                                                    key, newLikedStatus);
                                               }
 
-                                              // Update liked status in LikedStatusManager
-                                              _updateLikedStatus(
-                                                  key, newLikedStatus);
-                                            }
-
-                                            return newLikedStatus;
-                                          },
-                                          likeBuilder: (bool isLiked) {
-                                            return Stack(
-                                              children: [
-                                                Icon(
-                                                  Icons.favorite,
-                                                  color: isLiked
-                                                      ? const Color.fromARGB(
-                                                          255, 245, 88, 88)
-                                                      : Colors.white,
-                                                  size: 30,
-                                                ),
-                                                const Icon(
-                                                  Icons.favorite_border,
-                                                  color: Color.fromARGB(
-                                                      255, 245, 88, 88),
-                                                  size: 30,
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                              return newLikedStatus;
+                                            },
+                                            likeBuilder: (bool isLiked) {
+                                              return Stack(
+                                                children: [
+                                                  Icon(
+                                                    Icons.favorite,
+                                                    color: isLiked
+                                                        ? const Color.fromARGB(
+                                                            255, 245, 88, 88)
+                                                        : Colors.white,
+                                                    size: 30,
+                                                  ),
+                                                  const Icon(
+                                                    Icons.favorite_border,
+                                                    color: Color.fromARGB(
+                                                        255, 245, 88, 88),
+                                                    size: 30,
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 0),
-                                  child: Text(
-                                    bookSpecific.name!,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    style: TextStyle(fontSize: 11),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 0),
+                                    child: Text(
+                                      bookSpecific.name!,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      style: const TextStyle(fontSize: 11),
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  bookSpecific.price == ''
-                                      ? 'Naskhah Ikhlas'
-                                      : 'RM ${bookSpecific.price!}',
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    color: Color.fromARGB(255, 123, 123, 123),
+                                  Text(
+                                    bookSpecific.price == ''
+                                        ? 'Naskhah Ikhlas'
+                                        : 'RM ${bookSpecific.price!}',
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      color: Color.fromARGB(255, 123, 123, 123),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
+                                ],
+                              ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
                         },
                       ),
                     ),
@@ -507,5 +598,56 @@ class _AllBooksState extends State<AllBooks> {
     } else {
       return 1.4; // For larger screens
     }
+  }
+
+  bool _hasFormat(HiveBookAPI? book, String format) {
+    if (book == null) return false;
+    String woocommerceVariationsString = book.woocommerce_variations!;
+    List<dynamic> variations = jsonDecode(woocommerceVariationsString);
+
+    return variations.any((variation) {
+      return variation['attribute_summary'] == 'Pilihan Format: $format';
+    });
+  }
+
+  Widget _buildFormatButton(
+    IconData icon,
+    String text,
+    VoidCallback onPressed,
+    bool isSelected,
+  ) {
+    return ElevatedButton(
+      onPressed: () {
+        onPressed(); // Call the onPressed callback first
+        setState(() {}); // Trigger a rebuild to update the button color
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor:
+            isSelected ? const Color.fromARGB(255, 144, 191, 63) : Colors.white,
+        foregroundColor: isSelected
+            ? Colors.white
+            : const Color.fromARGB(255, 123, 123, 132),
+        elevation: 0, // Set elevation to 0 to remove shadow
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: isSelected
+                ? Colors.white
+                : const Color.fromARGB(255, 123, 123, 132),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            text,
+            style: TextStyle(
+              color: isSelected
+                  ? Colors.white
+                  : const Color.fromARGB(255, 123, 123, 132),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

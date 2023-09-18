@@ -90,7 +90,7 @@ class _PostCard extends State<PostCard> {
           ),
           const Divider(
             thickness: 2,
-            color: Colors.black,
+            color: Colors.grey,
             indent: 12,
             endIndent: 12,
           )

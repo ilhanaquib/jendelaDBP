@@ -89,6 +89,9 @@ class HiveBookAPI {
   @HiveField(26)
   int? buyQuantity;
 
+  @HiveField(27)
+  DateTime? timestamp;
+
   HiveBookAPI(
       {this.id,
       this.name,
@@ -116,7 +119,8 @@ class HiveBookAPI {
       this.meta_data,
       this.external_url,
       this.toCheckout,
-      this.buyQuantity});
+      this.buyQuantity,
+      this.timestamp});
 
   static HiveBookAPI fromJson(Map jsonMap) {
     var imageCheck = "Tiada";
@@ -132,30 +136,30 @@ class HiveBookAPI {
           jsonMap['woocommerce']['category_ids'][0].toString();
     }
     return HiveBookAPI(
-      id: jsonMap['woocommerce']['id'],
-      name: jsonMap['woocommerce']['name'],
-      images: imageCheck,
-      description: removeAllHtmlTags(jsonMap['woocommerce']['description']),
-      categories: tempCategories,
-      regular_price: jsonMap['woocommerce']['regular_price'],
-      sale_price: jsonMap['woocommerce']['sale_price'],
-      average_rating: jsonMap['woocommerce']['average_rating'],
-      date_created: jsonMap['woocommerce']['date_created']['date'],
-      date_modified: jsonMap['woocommerce']['date_modified']['date'],
-      rating_count: jsonMap['woocommerce']['rating_count'],
-      status: jsonMap['status'],
-      type: jsonMap['type'],
-      woocommerce_variations: json.encode(jsonMap['woocommerce_variations']),
-      product_category: productCategoryCheck,
-      price: jsonMap['woocommerce']['price'],
-      sku: jsonMap['woocommerce']['sku'],
-      stock_status: jsonMap['woocommerce']['stock_status'],
-      meta_data: jsonMap['woocommerce']['meta_data'],
-      external_url: jsonMap['external_url'],
-    );
+        id: jsonMap['woocommerce']['id'],
+        name: jsonMap['woocommerce']['name'],
+        images: imageCheck,
+        description: removeAllHtmlTags(jsonMap['woocommerce']['description']),
+        categories: tempCategories,
+        regular_price: jsonMap['woocommerce']['regular_price'],
+        sale_price: jsonMap['woocommerce']['sale_price'],
+        average_rating: jsonMap['woocommerce']['average_rating'],
+        date_created: jsonMap['woocommerce']['date_created']['date'],
+        date_modified: jsonMap['woocommerce']['date_modified']['date'],
+        rating_count: jsonMap['woocommerce']['rating_count'],
+        status: jsonMap['status'],
+        type: jsonMap['type'],
+        woocommerce_variations: json.encode(jsonMap['woocommerce_variations']),
+        product_category: productCategoryCheck,
+        price: jsonMap['woocommerce']['price'],
+        sku: jsonMap['woocommerce']['sku'],
+        stock_status: jsonMap['woocommerce']['stock_status'],
+        meta_data: jsonMap['woocommerce']['meta_data'],
+        external_url: jsonMap['external_url'],
+        timestamp: DateTime.now());
   }
 
-    static HiveBookAPI fromProduct(Product product) {
+  static HiveBookAPI fromProduct(Product product) {
     String? productCategoryCheck;
     if (product.woocommerce!.categoryIds!.isNotEmpty) {
       productCategoryCheck = product.woocommerce!.categoryIds![0].toString();

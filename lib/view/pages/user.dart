@@ -67,19 +67,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     }
   }
 
-  void _updateProfilePicture(File imageFile) {
-    setState(() {
-      _imageProvider = FileImage(imageFile);
-      _isImageSelected = true;
-    });
-  }
-
-  void _updateImageProvider(File imageFile) {
-    setState(() {
-      _imageProvider = FileImage(imageFile);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

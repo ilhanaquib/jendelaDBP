@@ -44,13 +44,14 @@ class HiveBookAPIAdapter extends TypeAdapter<HiveBookAPI> {
       external_url: fields[24] as String?,
       toCheckout: fields[25] as bool?,
       buyQuantity: fields[26] as int?,
+      timestamp: fields[27] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveBookAPI obj) {
     writer
-      ..writeByte(27)
+      ..writeByte(28)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -104,7 +105,9 @@ class HiveBookAPIAdapter extends TypeAdapter<HiveBookAPI> {
       ..writeByte(25)
       ..write(obj.toCheckout)
       ..writeByte(26)
-      ..write(obj.buyQuantity);
+      ..write(obj.buyQuantity)
+      ..writeByte(27)
+      ..write(obj.timestamp);
   }
 
   @override
