@@ -15,7 +15,7 @@ class HomeDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-              child: Text('Drawer'),
+              child: Text('Username'),
             ),
             ListTile(
               title: const Text('Sign In'),

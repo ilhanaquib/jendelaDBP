@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/stateManagement/events/authEvent.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
-import 'package:jendela_dbp/userRepositories.dart';
+import 'package:jendela_dbp/controllers/userRepositories.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required this.userRepository}) : super(const AuthInitial());

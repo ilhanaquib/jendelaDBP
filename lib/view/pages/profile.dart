@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
-import 'package:jendela_dbp/view/pages/user.dart';
+import 'package:jendela_dbp/view/pages/userIcon.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,7 @@ class _ProfileState extends State<Profile> {
   Box<HiveBookAPI> APIBook = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
   List<int> kategori1Books = [];
   bool isLoading = true;
+  final User user = User();
 
   var allProduct;
 
@@ -73,6 +75,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Account'),
+        
         centerTitle: true,
       ),
       body: Column(
@@ -103,15 +106,15 @@ class _ProfileState extends State<Profile> {
                           const AssetImage('assets/images/tiadakulitbuku.png'),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Username'),
-                        Text('Email'),
-                        Text('Phone'),
-                        Text('Address'),
+                        Text(user.name!),
+                        Text(user.email!),
+                        Text(user.country!),
+                        Text(user.city!),
                       ],
                     ),
                   )

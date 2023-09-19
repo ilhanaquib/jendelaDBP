@@ -19,7 +19,7 @@ import 'package:jendela_dbp/components/home/searchDelegate.dart';
 import 'package:jendela_dbp/components/home/topHeaderHome.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
-import 'package:jendela_dbp/view/pages/user.dart';
+import 'package:jendela_dbp/view/pages/userIcon.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 
