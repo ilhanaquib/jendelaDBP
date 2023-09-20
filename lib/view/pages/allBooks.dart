@@ -45,9 +45,13 @@ class _AllBooksState extends State<AllBooks> {
   bool sortAlphabet = false;
 
   bool pdfSelected = false;
+  bool epubSelected = false;
   bool printSelected = false;
   bool audiobookSelected = false;
-  Set<String> selectedFormats = {'PDF', 'Buku Cetak', 'Buku Audio'};
+  Set<String> selectedFormats = {'PDF', 'EPUB', 'Buku Cetak', 'Buku Audio'};
+
+  bool bottomReached = false;
+  ScrollController scrollBottom = ScrollController();
 
 // sort books ----------------------------------------------
   SortingOrder selectedSortingOrder = SortingOrder.latest;
@@ -127,6 +131,8 @@ class _AllBooksState extends State<AllBooks> {
       //   likedStatusMap = state;
       // });
     });
+
+    scrollBottom.addListener(_scrollListener);
   }
 
   @override
@@ -171,7 +177,7 @@ class _AllBooksState extends State<AllBooks> {
       builder: (BuildContext context) {
         //return const FormatSelection();
         return SizedBox(
-          height: 170,
+          height: 220,
           child: Column(
             children: [
               const Padding(
@@ -191,36 +197,49 @@ class _AllBooksState extends State<AllBooks> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.white,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildFormatButton(
+                          Icons.picture_as_pdf_rounded,
+                          'PDF',
+                          () {
+                            setState(() {
+                              pdfSelected = !pdfSelected;
+                              Navigator.pop(context);
+                            });
+                          },
+                          pdfSelected,
+                        ),
+                        _buildFormatButton(
+                          Icons.article_rounded,
+                          'EPUB',
+                          () {
+                            setState(() {
+                              epubSelected = !epubSelected;
+                              Navigator.pop(context);
+                            });
+                          },
+                          epubSelected,
+                        ),
+                        _buildFormatButton(
+                          Icons.library_books_rounded,
+                          'Print',
+                          () {
+                            setState(() {
+                              printSelected = !printSelected;
+                              Navigator.pop(context);
+                            });
+                          },
+                          printSelected,
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 17),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          _buildFormatButton(
-                            Icons.picture_as_pdf_rounded,
-                            'PDF',
-                            () {
-                              setState(() {
-                                pdfSelected = !pdfSelected;
-                                Navigator.pop(context);
-                              });
-                            },
-                            pdfSelected,
-                          ),
-                          _buildFormatButton(
-                            Icons.library_books_rounded,
-                            'Print',
-                            () {
-                              setState(() {
-                                printSelected = !printSelected;
-                                Navigator.pop(context);
-                              });
-                            },
-                            printSelected,
-                          ),
                           _buildFormatButton(
                             Icons.graphic_eq_rounded,
                             'Audiobook',
@@ -243,6 +262,34 @@ class _AllBooksState extends State<AllBooks> {
         );
       },
     );
+  }
+
+  // void _scrollListener() {
+  //   if (scrollBottom.offset >= scrollBottom.position.maxScrollExtent &&
+  //       !scrollBottom.position.outOfRange) {
+  //     setState(() {
+  //       bottomReached = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       bottomReached = false;
+  //     });
+  //   }
+  // }
+
+  void _scrollListener() {
+    if (scrollBottom.offset >= scrollBottom.position.maxScrollExtent &&
+        !scrollBottom.position.outOfRange) {
+      // User has reached the bottom of the screen, you can display a message here.
+      // You can use a SnackBar, a modal dialog, or any other widget to display the message.
+      // For example, you can use a SnackBar:
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('You have reached the end of the screen.'),
+        ),
+      );
+    }
   }
 
   @override
@@ -364,6 +411,7 @@ class _AllBooksState extends State<AllBooks> {
           final childAspectRatio =
               _calculateChildAspectRatio(constraints, crossAxisCount);
           return CustomScrollView(
+            controller: scrollBottom,
             slivers: [
               const SliverAppBar(
                 floating: true,
@@ -395,6 +443,10 @@ class _AllBooksState extends State<AllBooks> {
 
                           bool matchesSelectedFormats = true;
                           if (pdfSelected && !_hasFormat(bookSpecific, 'PDF')) {
+                            matchesSelectedFormats = false;
+                          }
+                          if (epubSelected &&
+                              !_hasFormat(bookSpecific, 'EPUB')) {
                             matchesSelectedFormats = false;
                           }
                           if (printSelected &&
@@ -539,6 +591,20 @@ class _AllBooksState extends State<AllBooks> {
                         },
                       ),
                     ),
+                    // if (bottomReached)
+                    //   Container(
+                    //     alignment: Alignment.center,
+                    //     padding: const EdgeInsets.all(16.0),
+                    //     color: Colors
+                    //         .grey, // You can customize the background color
+                    //     child: const Text(
+                    //       'You have reached the end of the screen.',
+                    //       style: TextStyle(
+                    //         color: Colors
+                    //             .black, // You can customize the text color
+                    //       ),
+                    //     ),
+                    //   ),
                   ],
                 ),
               )

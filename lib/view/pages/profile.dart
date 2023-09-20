@@ -111,10 +111,10 @@ class _ProfileState extends State<Profile> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(user.name!),
-                        Text(user.email!),
-                        Text(user.country!),
-                        Text(user.city!),
+                        Text('user.name!'),
+                        Text('user.email!'),
+                        Text('user.country!'),
+                        Text('user.city!'),
                       ],
                     ),
                   )

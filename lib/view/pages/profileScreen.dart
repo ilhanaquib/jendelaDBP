@@ -1,4 +1,4 @@
-import 'package:empty_widget/empty_widget.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -11,8 +11,6 @@ import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/view/authentication/signin.dart';
 import 'package:jendela_dbp/model/userModel.dart';
-import 'package:jendela_dbp/view/authentication/signup.dart';
-import 'package:jendela_dbp/view/pages/profile.dart';
 import 'package:jendela_dbp/view/pages/userIcon.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -26,21 +24,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  TextEditingController _userNameController = TextEditingController();
-  TextEditingController _userFirstNameController = TextEditingController();
-  TextEditingController _userLastNameController = TextEditingController();
-  TextEditingController _userEmailController = TextEditingController();
-  TextEditingController _userNewPasswordController = TextEditingController();
-  TextEditingController _userConfirmPasswordController =
-      TextEditingController();
-  FocusNode _userNameFocusNode = FocusNode();
-  FocusNode _userFirstNameFocusNode = FocusNode();
-  FocusNode _userLastNameFocusNode = FocusNode();
-  FocusNode _userEmailFocusNode = FocusNode();
-  FocusNode _userNewPasswordFocusNode = FocusNode();
-  FocusNode _userConfirmPasswordFocusNode = FocusNode();
-  int runCount = 1;
-
   Box<HiveBookAPI> APIBook = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
   List<int> kategori1Books = [];
   bool isLoading = true;
@@ -88,24 +71,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     allProduct = getAllProduct();
-    _userNewPasswordController.text = '';
-    _userConfirmPasswordController.text = '';
   }
 
   @override
   void dispose() {
-    _userNameController.dispose();
-    _userFirstNameController.dispose();
-    _userLastNameController.dispose();
-    _userEmailController.dispose();
-    _userNewPasswordController.dispose();
-    _userConfirmPasswordController.dispose();
-    _userNameFocusNode.dispose();
-    _userFirstNameFocusNode.dispose();
-    _userLastNameFocusNode.dispose();
-    _userEmailFocusNode.dispose();
-    _userNewPasswordFocusNode.dispose();
-    _userConfirmPasswordFocusNode.dispose();
     super.dispose();
   }
 
@@ -118,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: RefreshIndicator(
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: BlocConsumer<AuthCubit, AuthState>(
@@ -126,12 +95,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 listener: (context, state) {
                   if (state is AuthError) {
                     if (state.message != null) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        width: 200,
-                        behavior: SnackBarBehavior.floating,
-                        content: Text(state.message ?? ''),
-                        duration: Duration(seconds: 5),
-                      ));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          width: 200,
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(state.message ?? ''),
+                          duration: const Duration(seconds: 5),
+                        ),
+                      );
                     }
                   }
                   if (state is AuthLoaded) {
@@ -148,11 +119,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 builder: (context, state) {
                   if (state is AuthLoaded) {
                     if (state.isAuthenticated == true) {
-                      _userNameController.text = state.user!.name ?? '';
-                      _userFirstNameController.text =
-                          state.user!.firstName ?? '';
-                      _userLastNameController.text = state.user!.lastName ?? '';
-                      _userEmailController.text = state.user!.email ?? '';
                       return _userProfileWidget(context);
                     }
                   }
@@ -239,11 +205,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SizedBox(
               child: Table(
                 border: const TableBorder(
-                    top: BorderSide(width: 1),
-                    right: BorderSide(width: 1),
-                    bottom: BorderSide(width: 1),
-                    left: BorderSide(width: 1),
-                    horizontalInside: BorderSide(width: 1)),
+                  top: BorderSide(width: 1),
+                  right: BorderSide(width: 1),
+                  bottom: BorderSide(width: 1),
+                  left: BorderSide(width: 1),
+                  horizontalInside: BorderSide(width: 1),
+                ),
                 children: const <TableRow>[
                   TableRow(
                     children: <Widget>[
@@ -307,44 +274,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Center(
         child: Column(
           children: [
-            EmptyWidget(
-              hideBackgroundAnimation: true,
-              image: null,
-              packageImage: PackageImage.Image_2,
-              title: 'Uh oh, you haven\'t signed in yet',
-              subTitle: 'Please sign in to continue',
-              titleTextStyle: const TextStyle(
-                fontSize: 22,
-                color: Color(0xff9da9c7),
-                fontWeight: FontWeight.w500,
-              ),
-              subtitleTextStyle: const TextStyle(
-                fontSize: 14,
-                color: Color(0xffabb8d6),
+            const Text('Uh oh, you haven\'t signed in yet'),
+            RichText(
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: 'Please ',
+                    style: TextStyle(
+                        color: Colors.black), // Customize the style if needed
+                  ),
+                  TextSpan(
+                    text: 'sign in',
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        PersistentNavBarNavigator.pushNewScreen(context,
+                            withNavBar: false, screen: const Signin());
+                      },
+                  ),
+                  const TextSpan(
+                    text: ' to continue',
+                    style: TextStyle(
+                        color: Colors.black), // Customize the style if needed
+                  ),
+                ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    PersistentNavBarNavigator.pushNewScreen(context,
-                        withNavBar: false, screen: const Signin());
-                  },
-                  child: const Text('Sign in'),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    PersistentNavBarNavigator.pushNewScreen(context,
-                        withNavBar: false, screen: const Signup());
-                  },
-                  child: const Text('Sign Up'),
-                ),
-              ],
-            )
           ],
         ),
       ),

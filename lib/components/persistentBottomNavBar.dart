@@ -4,10 +4,8 @@ import 'package:jendela_dbp/view/pages/profileScreen.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:jendela_dbp/view/pages/home.dart';
 import 'package:jendela_dbp/view/pages/posts.dart';
-import 'package:jendela_dbp/view/pages/profile.dart';
 import 'package:jendela_dbp/view/pages/savedBooks.dart';
 
 class MyPersistentBottomNavBar extends StatelessWidget {

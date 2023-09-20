@@ -110,11 +110,12 @@ class AuthProvider extends StatelessWidget {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     showHomeNotifier.value = true;
-                    Navigator.push(
-                      context,
+                    Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const MyPersistentBottomNavBar()),
+                        builder: (context) => const MyPersistentBottomNavBar(),
+                      ),
+                      (route) =>
+                          false, // Prevent going back to the previous page
                     );
                   },
                 text: guestAccount,
