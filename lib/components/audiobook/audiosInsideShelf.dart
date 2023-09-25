@@ -94,6 +94,7 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                               bookTitle: bookSpecific.name!,
                               bookDesc: bookSpecific.description!,
                               bookPrice: bookSpecific.price!,
+                              bookCategory: bookSpecific.product_category!,
                               bookBox: widget.bookBox,
                             ),
                           ),

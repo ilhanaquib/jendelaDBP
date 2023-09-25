@@ -471,6 +471,7 @@ class _AllBooksState extends State<AllBooks> {
                                       bookTitle: bookSpecific.name!,
                                       bookDesc: bookSpecific.description!,
                                       bookPrice: bookSpecific.price!,
+                                      bookCategory: bookSpecific.product_category!,
                                       likedStatusBox: likedStatusBox,
                                       bookBox: widget.bookBox,
                                     ),

@@ -19,7 +19,13 @@ class MyPersistentBottomNavBar extends StatelessWidget {
         PersistentTabController(initialIndex: 0);
 
     List<Widget> buildScreens() {
-      return const [Home(), Posts(), SavedBooks(), AudiobooksHome(), ProfileScreen()];
+      return const [
+        Home(),
+        Posts(),
+        SavedBooks(),
+        AudiobooksHome(),
+        ProfileScreen(),
+      ];
     }
 
     List<PersistentBottomNavBarItem> navBarItems() {
@@ -72,6 +78,13 @@ class MyPersistentBottomNavBar extends StatelessWidget {
         colorBehindNavBar: Colors.white,
       ),
       popAllScreensOnTapOfSelectedTab: true,
+      popAllScreensOnTapAnyTabs: true,
+      screenTransitionAnimation: const ScreenTransitionAnimation(
+        // Screen transition animation on change of selected tab.
+        animateTabTransition: true,
+        curve: Curves.ease,
+        duration: Duration(milliseconds: 500),
+      ),
       navBarStyle: NavBarStyle.style12,
     );
   }

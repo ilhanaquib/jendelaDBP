@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:like_button/like_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +21,7 @@ class BookDetail extends StatefulWidget {
       required this.bookTitle,
       required this.bookDesc,
       required this.bookPrice,
+      required this.bookCategory,
       this.bookFavorite,
       this.likedStatusBox,
       this.bookBox});
@@ -30,6 +32,7 @@ class BookDetail extends StatefulWidget {
   final String bookDesc;
   final String bookPrice;
   final bool? bookFavorite;
+  final String bookCategory;
   final Box<bool>? likedStatusBox;
   final Box<HiveBookAPI>? bookBox;
 
@@ -91,32 +94,54 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
+    String getCategory(String category) {
+      final categoryMap = {
+        GlobalVar.kategori1: GlobalVar.kategori1Title,
+        GlobalVar.kategori2: GlobalVar.kategori2Title,
+        GlobalVar.kategori3: GlobalVar.kategori3Title,
+        GlobalVar.kategori4: GlobalVar.kategori4Title,
+        GlobalVar.kategori5: GlobalVar.kategori5Title,
+        GlobalVar.kategori6: GlobalVar.kategori6Title,
+        GlobalVar.kategori7: GlobalVar.kategori7Title,
+        GlobalVar.kategori8: GlobalVar.kategori8Title,
+        GlobalVar.kategori9: GlobalVar.kategori9Title,
+        GlobalVar.kategori10: GlobalVar.kategori10Title,
+        GlobalVar.kategori11: GlobalVar.kategori11Title,
+        GlobalVar.kategori12: GlobalVar.kategori12Title,
+        GlobalVar.kategori13: GlobalVar.kategori13Title,
+        GlobalVar.kategori14: GlobalVar.kategori14Title,
+        GlobalVar.kategori15: GlobalVar.kategori15Title,
+        GlobalVar.kategori16: GlobalVar.kategori16Title,
+      };
+      return categoryMap[category] ?? 'Unknown Category';
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
-        actions: [
-          LikeButton(
-            size: 20,
-            bubblesColor: const BubblesColor(
-              dotPrimaryColor: Color.fromARGB(255, 245, 88, 88),
-              dotSecondaryColor: Colors.white,
-            ),
-            isLiked: _isBookLiked,
-            onTap: (isLiked) async {
-              _toggleLikedStatus(); // Toggle the liked status (void function)
-              return !_isBookLiked; // Return the new liked status
-            },
-            likeBuilder: (bool isLiked) {
-              return Icon(
-                isLiked
-                    ? Icons.favorite_rounded
-                    : Icons.favorite_border_rounded,
-                color: Color(0xfff55858),
-                size: 20,
-              );
-            },
-          ),
-        ],
+        // actions: [
+        //   LikeButton(
+        //     size: 20,
+        //     bubblesColor: const BubblesColor(
+        //       dotPrimaryColor: Color.fromARGB(255, 245, 88, 88),
+        //       dotSecondaryColor: Colors.white,
+        //     ),
+        //     isLiked: _isBookLiked,
+        //     onTap: (isLiked) async {
+        //       _toggleLikedStatus(); // Toggle the liked status (void function)
+        //       return !_isBookLiked; // Return the new liked status
+        //     },
+        //     likeBuilder: (bool isLiked) {
+        //       return Icon(
+        //         isLiked
+        //             ? Icons.favorite_rounded
+        //             : Icons.favorite_border_rounded,
+        //         color: Color(0xfff55858),
+        //         size: 20,
+        //       );
+        //     },
+        //   ),
+        // ],
       ),
       body: CustomScrollView(
         slivers: [
@@ -173,7 +198,8 @@ class _BookDetailState extends State<BookDetail> {
                         const Text(
                           'Book Author',
                           style: TextStyle(
-                              color: Color.fromARGB(255, 123, 123, 123)),
+                            color: Color.fromARGB(255, 123, 123, 123),
+                          ),
                         ),
                         Container(
                           height: 100,
@@ -193,21 +219,21 @@ class _BookDetailState extends State<BookDetail> {
                               ),
                             ],
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    'Page',
+                                  const Text(
+                                    'Category',
                                     style: TextStyle(
                                         color:
                                             Color.fromARGB(255, 123, 123, 123)),
                                   ),
                                   Text(
-                                    '244',
-                                    style: TextStyle(
+                                    getCategory(widget.bookCategory),
+                                    style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
                                         color:
@@ -215,7 +241,7 @@ class _BookDetailState extends State<BookDetail> {
                                   )
                                 ],
                               ),
-                              Column(
+                              const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
@@ -226,25 +252,6 @@ class _BookDetailState extends State<BookDetail> {
                                   ),
                                   Text(
                                     'Malay',
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(255, 123, 123, 123)),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Audio',
-                                    style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 123, 123, 123)),
-                                  ),
-                                  Text(
-                                    '3hr',
                                     style: TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
@@ -294,16 +301,16 @@ class _BookDetailState extends State<BookDetail> {
                     top: MediaQuery.of(context).size.height * 0.77,
                     left: MediaQuery.of(context).size.width * 0.03,
                     child: SafeArea(
-                        child: ButtonBar(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7.5),
-                              child: Row(
-                                children: [
-                                  TextButton(
+                      child: ButtonBar(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 7.5),
+                                child: Row(
+                                  children: [
+                                    TextButton(
                                       onPressed: () {
                                         bottomSheet(context);
                                       },
@@ -314,18 +321,21 @@ class _BookDetailState extends State<BookDetail> {
                                                 255, 235, 127, 35),
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15),
-                                      )),
-                                ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                OutlinedButton(
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  OutlinedButton(
                                     style: OutlinedButton.styleFrom(
-                                        side: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 235, 127, 35))),
+                                      side: const BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 235, 127, 35),
+                                      ),
+                                    ),
                                     onPressed: () {
                                       // 1. check if the book is purchased
                                       // 2. if book isnt purchased, should buy
@@ -353,55 +363,59 @@ class _BookDetailState extends State<BookDetail> {
                                           )
                                         ],
                                       ),
-                                    )),
-                                const SizedBox(
-                                  width: 29,
-                                ),
-                                OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 235, 127, 35),
-                                    side: const BorderSide(
-                                      color: Color.fromARGB(255, 235, 127, 35),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    PersistentNavBarNavigator.pushNewScreen(
-                                      context,
-                                      screen: Audiobooks(
-                                          bookId: widget.bookId,
-                                          bookImage: widget.bookImage,
-                                          bookTitle: widget.bookTitle,
-                                          bookDesc: widget.bookDesc,
-                                          bookPrice: widget.bookPrice),
-                                    );
-                                  },
-                                  child: const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 10),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.headphones_rounded,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Play Book',
-                                          style: TextStyle(color: Colors.white),
-                                        )
-                                      ],
+                                  const SizedBox(
+                                    width: 29,
+                                  ),
+                                  OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 235, 127, 35),
+                                      side: const BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 235, 127, 35),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      PersistentNavBarNavigator.pushNewScreen(
+                                        context,
+                                        screen: Audiobooks(
+                                            bookId: widget.bookId,
+                                            bookImage: widget.bookImage,
+                                            bookTitle: widget.bookTitle,
+                                            bookDesc: widget.bookDesc,
+                                            bookPrice: widget.bookPrice),
+                                      );
+                                    },
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 10),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.headphones_rounded,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            'Play Book',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    )),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
                   )
                 ],
               ),

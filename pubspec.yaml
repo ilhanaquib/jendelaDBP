@@ -73,6 +73,7 @@ dependencies:
   html: ^0.15.4
   msh_checkbox: ^2.0.1
   text_scroll: ^0.2.0
+  learning_language: ^0.0.4
 
 
 

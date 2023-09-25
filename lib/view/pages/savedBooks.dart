@@ -9,6 +9,7 @@ import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class SavedBooks extends StatefulWidget {
   const SavedBooks({super.key});
@@ -106,17 +107,17 @@ class _SavedBooksState extends State<SavedBooks> {
                             bottom: 25, left: 10, right: 10),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
+                            PersistentNavBarNavigator.pushNewScreen(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => BookDetail(
-                                  bookId: book.id!,
-                                  bookImage: book.images!,
-                                  bookTitle: book.name!,
-                                  bookDesc: book.description!,
-                                  bookPrice: book.price!,
-                                  bookFavorite: book.isFavorite,
-                                ),
+                              withNavBar: false,
+                              screen: BookDetail(
+                                bookId: book.id!,
+                                bookImage: book.images!,
+                                bookTitle: book.name!,
+                                bookDesc: book.description!,
+                                bookPrice: book.price!,
+                                bookCategory: book.product_category!,
+                                bookFavorite: book.isFavorite,
                               ),
                             );
                           },

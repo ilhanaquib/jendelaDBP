@@ -13,7 +13,6 @@ import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
 
-
 class BooksInsideShelf extends StatefulWidget {
   final List<dynamic> dataBooks;
   final Box<HiveBookAPI> bookBox;
@@ -127,6 +126,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                               bookTitle: bookSpecific.name!,
                               bookDesc: bookSpecific.description!,
                               bookPrice: bookSpecific.price!,
+                              bookCategory: bookSpecific.product_category!,
                               likedStatusBox: likedStatusBox,
                               bookBox: widget.bookBox,
                             ),
@@ -185,6 +185,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                           book.isFavorite = newLikedStatus;
                                           widget.bookBox.put(key, book);
 
+
                                           if (newLikedStatus) {
                                             widget.likedBooksBox.put(key, book);
                                           } else {
@@ -202,9 +203,9 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                           children: [
                                             Icon(
                                               Icons.favorite,
-                                              color:
-                                                  getCircleAvatarBackgroundColor(
-                                                      key),
+                                              color: 
+                                              getCircleAvatarBackgroundColor(
+                                                  key),
                                               size: 30,
                                             ),
                                             const Icon(
