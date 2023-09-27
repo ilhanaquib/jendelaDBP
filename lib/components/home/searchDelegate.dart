@@ -82,15 +82,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
               onTap: () {
                 PersistentNavBarNavigator.pushNewScreen(
                   context,
-                  screen: BookDetail(
-                    bookId: searchResults[index].id!,
-                    bookImage: searchResults[index].images!,
-                    bookTitle: searchResults[index].name!,
-                    bookDesc: searchResults[index].description!,
-                    bookPrice: searchResults[index].price!,
-                    bookCategory: searchResults[index].product_category!,
-                    bookFavorite: searchResults[index].isFavorite,
-                  ),
+                  screen: BookDetail(book: searchResults[index]),
                 );
               },
               child: Column(
@@ -161,13 +153,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
                   context,
                   withNavBar: false,
                   screen: BookDetail(
-                    bookId: suggestionList[index].id!,
-                    bookImage: suggestionList[index].images!,
-                    bookTitle: suggestionList[index].name!,
-                    bookDesc: suggestionList[index].description!,
-                    bookPrice: suggestionList[index].price!,
-                    bookCategory: suggestionList[index].product_category!,
-                    bookFavorite: suggestionList[index].isFavorite,
+                    book: suggestionList[index],
                   ),
                 );
               },

@@ -17,9 +17,9 @@ class LoadBookContentEvent extends BookContentEvent {
 class BookContentBloc extends Bloc<BookContentEvent, BookContentState> {
   BookContentBloc() : super(BookContentState([])) {
     on<LoadBookContentEvent>((event, emit) {
-      List<BookContentModel> bookContentList = BookContentModel.fetchBookContent();
+      List<BookContentModel> bookContentList =
+          BookContentModel.fetchBookContent();
       emit(BookContentState(bookContentList));
     });
   }
-
 }

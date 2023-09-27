@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 
 import 'package:text_scroll/text_scroll.dart';
 
@@ -7,20 +8,9 @@ import 'package:jendela_dbp/components/audiobook/audioPlayer.dart';
 import 'package:jendela_dbp/components/audiobook/paragraph.dart';
 
 class Audiobooks extends StatelessWidget {
-  const Audiobooks({
-    super.key,
-    required this.bookId,
-    required this.bookImage,
-    required this.bookTitle,
-    required this.bookDesc,
-    required this.bookPrice,
-  });
+  const Audiobooks({super.key, this.book});
 
-  final int bookId;
-  final String bookTitle;
-  final String bookImage;
-  final String bookDesc;
-  final String bookPrice;
+  final HiveBookAPI? book;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +45,7 @@ class Audiobooks extends StatelessWidget {
                           child: Stack(
                             children: [
                               CachedNetworkImage(
-                                imageUrl: bookImage,
+                                imageUrl: book!.images!,
                                 height: 200,
                                 width: 150,
                                 fit: BoxFit.fill,
@@ -93,7 +83,7 @@ class Audiobooks extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         left: 20, right: 20),
                                     child: TextScroll(
-                                      bookTitle,
+                                      book!.name!,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
@@ -123,7 +113,7 @@ class Audiobooks extends StatelessWidget {
                         child: SizedBox(
                           height: 200,
                           child: SingleChildScrollView(
-                            child: Text(bookDesc),
+                            child: Text(book!.description!),
                           ),
                         ),
                       ),

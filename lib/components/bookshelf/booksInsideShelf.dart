@@ -121,17 +121,13 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                           screen: BlocProvider.value(
                             value: context.read<LikedStatusCubit>(),
                             child: BookDetail(
-                              bookId: key,
-                              bookImage: bookSpecific.images!,
-                              bookTitle: bookSpecific.name!,
-                              bookDesc: bookSpecific.description!,
-                              bookPrice: bookSpecific.price!,
-                              bookCategory: bookSpecific.product_category!,
+                              book: bookSpecific,
                               likedStatusBox: likedStatusBox,
                               bookBox: widget.bookBox,
                             ),
                           ),
                         );
+                        print(bookSpecific.woocommerce_variations);
                       },
                       child: SizedBox(
                         //height: 250,
@@ -173,7 +169,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                       isLiked:
                                           isBookLiked, // Set initial liked status
                                       onTap: (bool isLiked) async {
-                                        // Toggle liked status and perform other necessary operations
+                                        //Toggle liked status and perform other necessary operations
                                         final newLikedStatus = !isLiked;
 
                                         await likedStatusBox.put(
@@ -184,7 +180,6 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                         if (book != null) {
                                           book.isFavorite = newLikedStatus;
                                           widget.bookBox.put(key, book);
-
 
                                           if (newLikedStatus) {
                                             widget.likedBooksBox.put(key, book);
@@ -203,9 +198,9 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                           children: [
                                             Icon(
                                               Icons.favorite,
-                                              color: 
-                                              getCircleAvatarBackgroundColor(
-                                                  key),
+                                              color:
+                                                  getCircleAvatarBackgroundColor(
+                                                      key),
                                               size: 30,
                                             ),
                                             const Icon(

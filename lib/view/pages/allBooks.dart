@@ -37,6 +37,7 @@ class AllBooks extends StatefulWidget {
 class _AllBooksState extends State<AllBooks> {
   late Map<int, bool> likedStatusMap;
   late Box<bool> likedStatusBox;
+  final HiveBookAPI book = HiveBookAPI();
 
   bool ascendingPrice = true;
   bool ascendingAlphabet = true;
@@ -131,8 +132,6 @@ class _AllBooksState extends State<AllBooks> {
       //   likedStatusMap = state;
       // });
     });
-
-    scrollBottom.addListener(_scrollListener);
   }
 
   @override
@@ -262,34 +261,6 @@ class _AllBooksState extends State<AllBooks> {
         );
       },
     );
-  }
-
-  // void _scrollListener() {
-  //   if (scrollBottom.offset >= scrollBottom.position.maxScrollExtent &&
-  //       !scrollBottom.position.outOfRange) {
-  //     setState(() {
-  //       bottomReached = true;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       bottomReached = false;
-  //     });
-  //   }
-  // }
-
-  void _scrollListener() {
-    if (scrollBottom.offset >= scrollBottom.position.maxScrollExtent &&
-        !scrollBottom.position.outOfRange) {
-      // User has reached the bottom of the screen, you can display a message here.
-      // You can use a SnackBar, a modal dialog, or any other widget to display the message.
-      // For example, you can use a SnackBar:
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('You have reached the end of the screen.'),
-        ),
-      );
-    }
   }
 
   @override
@@ -466,14 +437,9 @@ class _AllBooksState extends State<AllBooks> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => BookDetail(
-                                      bookId: key,
-                                      bookImage: bookSpecific.images!,
-                                      bookTitle: bookSpecific.name!,
-                                      bookDesc: bookSpecific.description!,
-                                      bookPrice: bookSpecific.price!,
-                                      bookCategory: bookSpecific.product_category!,
                                       likedStatusBox: likedStatusBox,
-                                      bookBox: widget.bookBox,
+                                      bookBox: widget.bookBox, 
+                                      book: bookSpecific,
                                     ),
                                   ),
                                 );

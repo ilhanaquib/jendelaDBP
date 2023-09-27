@@ -39,14 +39,16 @@ class AuthProvider extends StatelessWidget {
               GestureDetector(
                 onTap: () {},
                 child: const CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.black,
-                    child: Center(
-                        child: Icon(
+                  radius: 25,
+                  backgroundColor: Colors.black,
+                  child: Center(
+                    child: Icon(
                       FontAwesomeIcons.apple,
                       color: Colors.white,
                       size: 20,
-                    ))),
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(
                 width: 20,

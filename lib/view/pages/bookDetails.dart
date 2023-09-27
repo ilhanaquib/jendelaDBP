@@ -1,38 +1,32 @@
+import 'dart:convert';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/components/bookDetail/readBottomSheet.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:like_button/like_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
-import 'package:jendela_dbp/components/chapterList.dart';
+import 'package:jendela_dbp/components/bookDetail/chapterList.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class BookDetail extends StatefulWidget {
-  const BookDetail(
-      {super.key,
-      required this.bookId,
-      required this.bookImage,
-      required this.bookTitle,
-      required this.bookDesc,
-      required this.bookPrice,
-      required this.bookCategory,
-      this.bookFavorite,
-      this.likedStatusBox,
-      this.bookBox});
+  const BookDetail({
+    super.key,
+    this.book,
+    this.likedStatusBox,
+    this.bookBox,
+  });
 
-  final int bookId;
-  final String bookTitle;
-  final String bookImage;
-  final String bookDesc;
-  final String bookPrice;
-  final bool? bookFavorite;
-  final String bookCategory;
+  final HiveBookAPI? book;
   final Box<bool>? likedStatusBox;
   final Box<HiveBookAPI>? bookBox;
 
@@ -48,7 +42,7 @@ class _BookDetailState extends State<BookDetail> {
   void initState() {
     super.initState();
     _isBookLiked =
-        context.read<LikedStatusCubit>().state[widget.bookId] ?? false;
+        context.read<LikedStatusCubit>().state[widget.book!.id!] ?? false;
 
     // Listen to changes in liked status through the cubit
     context.read<LikedStatusCubit>().stream.listen((state) {
@@ -60,29 +54,29 @@ class _BookDetailState extends State<BookDetail> {
 
   void _toggleLikedStatus() async {
     final newLikedStatus = !_isBookLiked;
-    final book = widget.bookBox!.get(widget.bookId);
+    final book = widget.bookBox!.get(widget.book!.id);
 
     // Update liked status in the 'liked_status' box
-    await widget.likedStatusBox!.put(widget.bookId, newLikedStatus);
+    await widget.likedStatusBox!.put(widget.book!.id, newLikedStatus);
 
     // Update liked status in 'liked_books' box
     if (newLikedStatus) {
-      likedBooksBox.put(widget.bookId, book!);
+      likedBooksBox.put(widget.book!.id, book!);
     } else {
-      likedBooksBox.delete(widget.bookId);
+      likedBooksBox.delete(widget.book!.id);
     }
 
     // Update liked status through the cubit
     context
         .read<LikedStatusCubit>()
-        .updateLikedStatus(widget.bookId, newLikedStatus);
+        .updateLikedStatus(widget.book!.id!, newLikedStatus);
 
     // setState(() {
     //   _isBookLiked = newLikedStatus;
     // });
   }
 
-  void bottomSheet(BuildContext context) {
+  void bottomSheetChapter(BuildContext context) {
     showModalBottomSheet<void>(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 0,
@@ -90,6 +84,38 @@ class _BookDetailState extends State<BookDetail> {
         builder: (BuildContext context) {
           return const ChapterList();
         });
+  }
+
+  Future<void> buyItem(context) {
+    List toJSonVariation =
+        json.decode(widget.book!.woocommerce_variations ?? '[]');
+    toJSonVariation = toJSonVariation.where((variation) {
+      if (variation['status'].toString().toLowerCase() == "publish") {
+        return true;
+      }
+      return false;
+    }).toList();
+
+
+    return showModalBottomSheet(
+      useRootNavigator: true,
+      elevation: 2,
+      barrierColor: Colors.black.withOpacity(0.8),
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (builder) {
+        var formatType;
+
+        return SizedBox(
+          height: 320,
+          child: readBottomSheet(
+            book: widget.book,
+            toJSonVariation: toJSonVariation,
+            formatType: formatType,
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -172,7 +198,7 @@ class _BookDetailState extends State<BookDetail> {
                             child: Stack(
                               children: [
                                 CachedNetworkImage(
-                                  imageUrl: widget.bookImage,
+                                  imageUrl: widget.book!.images!,
                                   width: 150,
                                   fit: BoxFit.fill,
                                 ),
@@ -186,7 +212,7 @@ class _BookDetailState extends State<BookDetail> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
-                            widget.bookTitle,
+                            widget.book!.name!,
                             textAlign:
                                 TextAlign.center, // Center-aligns the text
                             style: const TextStyle(
@@ -196,7 +222,7 @@ class _BookDetailState extends State<BookDetail> {
                           ),
                         ),
                         const Text(
-                          'Book Author',
+                          'book author',
                           style: TextStyle(
                             color: Color.fromARGB(255, 123, 123, 123),
                           ),
@@ -207,8 +233,9 @@ class _BookDetailState extends State<BookDetail> {
                               left: 50, right: 50, top: 20),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12)),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(12),
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.2),
@@ -228,16 +255,16 @@ class _BookDetailState extends State<BookDetail> {
                                   const Text(
                                     'Category',
                                     style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 123, 123, 123)),
+                                      color: Color.fromARGB(255, 123, 123, 123),
+                                    ),
                                   ),
                                   Text(
-                                    getCategory(widget.bookCategory),
+                                    getCategory(widget.book!.product_category!),
                                     style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(255, 123, 123, 123)),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 123, 123, 123),
+                                    ),
                                   )
                                 ],
                               ),
@@ -247,16 +274,16 @@ class _BookDetailState extends State<BookDetail> {
                                   Text(
                                     'Language',
                                     style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 123, 123, 123)),
+                                      color: Color.fromARGB(255, 123, 123, 123),
+                                    ),
                                   ),
                                   Text(
                                     'Malay',
                                     style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(255, 123, 123, 123)),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 123, 123, 123),
+                                    ),
                                   )
                                 ],
                               ),
@@ -267,10 +294,11 @@ class _BookDetailState extends State<BookDetail> {
                           padding: EdgeInsets.only(top: 30, left: 20),
                           child: Row(
                             children: [
-                              Text('What\'s it about?',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17)),
+                              Text(
+                                'What\'s it about?',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 17),
+                              ),
                             ],
                           ),
                         ),
@@ -280,10 +308,10 @@ class _BookDetailState extends State<BookDetail> {
                           child: SizedBox(
                             height: 175,
                             child: SingleChildScrollView(
-                              child: widget.bookDesc.isEmpty
+                              child: widget.book!.description!.isEmpty
                                   ? const NoDescriptionCard()
                                   : Text(
-                                      widget.bookDesc,
+                                      widget.book!.description!,
                                       style: const TextStyle(
                                         fontSize: 15,
                                         color:
@@ -312,7 +340,7 @@ class _BookDetailState extends State<BookDetail> {
                                   children: [
                                     TextButton(
                                       onPressed: () {
-                                        bottomSheet(context);
+                                        bottomSheetChapter(context);
                                       },
                                       child: const Text(
                                         'Chapter >',
@@ -340,7 +368,9 @@ class _BookDetailState extends State<BookDetail> {
                                       // 1. check if the book is purchased
                                       // 2. if book isnt purchased, should buy
                                       // 3. if book is purhcaesd, open the book pdf/epub
-                                      Navigator.pushNamed(context, '/bookRead');
+                                      // Navigator.pushNamed(context, '/bookRead');
+                                      //bottomSheetRead(context);
+                                      buyItem(context);
                                     },
                                     child: const Padding(
                                       padding: EdgeInsets.symmetric(
@@ -381,11 +411,8 @@ class _BookDetailState extends State<BookDetail> {
                                       PersistentNavBarNavigator.pushNewScreen(
                                         context,
                                         screen: Audiobooks(
-                                            bookId: widget.bookId,
-                                            bookImage: widget.bookImage,
-                                            bookTitle: widget.bookTitle,
-                                            bookDesc: widget.bookDesc,
-                                            bookPrice: widget.bookPrice),
+                                          book: widget.book,
+                                        ),
                                       );
                                     },
                                     child: const Padding(
@@ -424,6 +451,16 @@ class _BookDetailState extends State<BookDetail> {
         ],
       ),
     );
+  }
+
+  bool _hasFormat(HiveBookAPI? book, String format) {
+    if (book == null) return false;
+    String woocommerceVariationsString = book.woocommerce_variations!;
+    List<dynamic> variations = jsonDecode(woocommerceVariationsString);
+
+    return variations.any((variation) {
+      return variation['attribute_summary'] == 'Pilihan Format: $format';
+    });
   }
 }
 

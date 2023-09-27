@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/components/bookshelf/booksInsideShelf.dart';
 import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -89,12 +90,7 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                           screen: BlocProvider.value(
                             value: context.read<LikedStatusCubit>(),
                             child: BookDetail(
-                              bookId: key,
-                              bookImage: bookSpecific.images!,
-                              bookTitle: bookSpecific.name!,
-                              bookDesc: bookSpecific.description!,
-                              bookPrice: bookSpecific.price!,
-                              bookCategory: bookSpecific.product_category!,
+                              book: bookSpecific,
                               bookBox: widget.bookBox,
                             ),
                           ),
@@ -160,11 +156,7 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                                         context,
                                         withNavBar: false,
                                         screen: Audiobooks(
-                                          bookDesc: bookSpecific.description!,
-                                          bookId: bookSpecific.id!,
-                                          bookImage: bookSpecific.images!,
-                                          bookPrice: bookSpecific.price!,
-                                          bookTitle: bookSpecific.name!,
+                                         book: bookSpecific,
                                         ),
                                       );
                                     },

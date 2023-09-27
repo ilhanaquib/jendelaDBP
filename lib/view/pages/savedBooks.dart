@@ -111,13 +111,7 @@ class _SavedBooksState extends State<SavedBooks> {
                               context,
                               withNavBar: false,
                               screen: BookDetail(
-                                bookId: book.id!,
-                                bookImage: book.images!,
-                                bookTitle: book.name!,
-                                bookDesc: book.description!,
-                                bookPrice: book.price!,
-                                bookCategory: book.product_category!,
-                                bookFavorite: book.isFavorite,
+                                book: book,
                               ),
                             );
                           },

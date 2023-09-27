@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,8 @@ import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/view/authentication/popups/popupSignup.dart';
 import 'package:jendela_dbp/view/authentication/popups/popupSignupError.dart';
+import 'package:jendela_dbp/view/authentication/popups/popupTerms.dart';
+import 'package:msh_checkbox/msh_checkbox.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -16,12 +19,17 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  bool isToLogin = false;
+  bool shouldCheck = false;
+  bool enableButton = false;
 
   @override
   void initState() {
@@ -62,6 +70,23 @@ class _SignupState extends State<Signup> {
     );
   }
 
+  void _showTerms() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          content: SizedBox(
+            height: 500,
+            width: 400,
+            child: PopupTerms(),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     void goToSignin() {
@@ -80,7 +105,7 @@ class _SignupState extends State<Signup> {
               padding: const EdgeInsets.only(),
               child: Center(
                 child: SizedBox(
-                  height: 170,
+                  height: 120,
                   child: Image.asset('assets/images/logo.png'),
                 ),
               ),
@@ -118,222 +143,280 @@ class _SignupState extends State<Signup> {
             ),
             // form
 
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // username
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: TextFormField(
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 12),
-                      suffixIcon: const Icon(
-                        Icons.person_rounded,
-                        color: Color.fromARGB(255, 162, 162, 162),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+            Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // username
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: TextFormField(
+                      controller: usernameController,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return "Please enter a username";
+                        } else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 12),
+                        suffixIcon: const Icon(
+                          Icons.person_rounded,
+                          color: Color.fromARGB(255, 162, 162, 162),
                         ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      labelText: 'Username',
-                      labelStyle: const TextStyle(
-                        color: Color.fromARGB(255, 123, 123, 123),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        labelText: 'Username',
+                        labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 123, 123, 123),
                         ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
                     ),
                   ),
-                ),
 
-                // email
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                  child: TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 12),
-                      suffixIcon: const Icon(
-                        Icons.email_rounded,
-                        color: Color.fromARGB(255, 162, 162, 162),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                  // email
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    child: TextFormField(
+                      controller: emailController,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return "Please enter an email";
+                        } else if (!RegExp(
+                                r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
+                            .hasMatch(value)) {
+                          return "Please enter a valid email";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 12),
+                        suffixIcon: const Icon(
+                          Icons.email_rounded,
+                          color: Color.fromARGB(255, 162, 162, 162),
                         ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      labelText: 'Email',
-                      labelStyle: const TextStyle(
-                        color: Color.fromARGB(255, 123, 123, 123),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        labelText: 'Email',
+                        labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 123, 123, 123),
                         ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
                     ),
                   ),
-                ),
 
-                // password
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                  child: TextFormField(
-                    controller: passwordController,
-                    obscureText: !_passwordVisible,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 12),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: const Color.fromARGB(255, 162, 162, 162),
+                  // password
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    child: TextFormField(
+                      controller: passwordController,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return "Please enter a password";
+                        } else
+                          return null;
+                      },
+                      obscureText: !_passwordVisible,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 12),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            // Based on passwordVisible state choose the icon
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: const Color.fromARGB(255, 162, 162, 162),
+                          ),
+                          onPressed: () {
+                            print(_passwordVisible);
+                            // Update the state i.e. toogle the state of passwordVisible variable
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
                         ),
-                        onPressed: () {
-                          print(_passwordVisible);
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _passwordVisible = !_passwordVisible;
-                          });
-                        },
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      labelText: 'Password',
-                      labelStyle: const TextStyle(
-                        color: Color.fromARGB(255, 123, 123, 123),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        labelText: 'Password',
+                        labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 123, 123, 123),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
                     ),
                   ),
-                ),
 
-                // confirm password
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                  child: TextFormField(
-                    controller: confirmPasswordController,
-                    obscureText: !_confirmPasswordVisible,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 12),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _confirmPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: const Color.fromARGB(255, 162, 162, 162),
+                  // confirm password
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    child: TextFormField(
+                      controller: confirmPasswordController,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return "Please repeat your password";
+                        } else
+                          return null;
+                      },
+                      obscureText: !_confirmPasswordVisible,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 12),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            // Based on passwordVisible state choose the icon
+                            _confirmPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: const Color.fromARGB(255, 162, 162, 162),
+                          ),
+                          onPressed: () {
+                            // Update the state i.e. toogle the state of passwordVisible variable
+                            setState(() {
+                              _confirmPasswordVisible =
+                                  !_confirmPasswordVisible;
+                            });
+                          },
                         ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _confirmPasswordVisible = !_confirmPasswordVisible;
-                          });
-                        },
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      labelText: 'Confirm Password',
-                      labelStyle: const TextStyle(
-                        color: Color.fromARGB(255, 123, 123, 123),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        labelText: 'Confirm Password',
+                        labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 123, 123, 123),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 185, 185, 185),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 185, 185, 185),
+                          ),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
 
-            // checkbox
-            // Padding(
-            //   padding: const EdgeInsets.only(left: 7),
-            //   child: Row(
-            //     children: [
-            //       const AuthCheckbox(),
-            //       RichText(
-            //         text: TextSpan(
-            //           children: [
-            //             const TextSpan(
-            //               text: 'I agree to the',
-            //               style: TextStyle(
-            //                   color: Color.fromARGB(255, 123, 123, 123),
-            //                   fontSize: 17,
-            //                   fontWeight: FontWeight.normal),
-            //             ),
-            //             TextSpan(
-            //               recognizer: TapGestureRecognizer()..onTap = () {},
-            //               text: ' Terms & Conditions',
-            //               style: const TextStyle(
-            //                   color: Color.fromARGB(255, 235, 127, 35),
-            //                   fontSize: 17,
-            //                   fontWeight: FontWeight.normal),
-            //             )
-            //           ],
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: MSHCheckbox(
+                          value: shouldCheck,
+                          style: MSHCheckboxStyle.fillScaleCheck,
+                          size: 20,
+                          checkedColor: const Color.fromARGB(255, 235, 127, 35),
+                          uncheckedColor:
+                              const Color.fromARGB(255, 235, 127, 35),
+                          onChanged: (val) {
+                            setState(() {
+                              shouldCheck = val;
+                              enableButton = !enableButton;
+                            });
+                          },
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'I agree to the',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 123, 123, 123),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            TextSpan(
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  _showTerms();
+                                },
+                              text: ' Terms & Conditions',
+                              style: const TextStyle(
+                                  color: Color.fromARGB(255, 235, 127, 35),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.normal),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
 
             // create account button
             Padding(
@@ -345,29 +428,52 @@ class _SignupState extends State<Signup> {
                     width: 100,
                     height: 50,
                     child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        side: const BorderSide(
-                          color: Color.fromARGB(255, 235, 127, 35),
-                        ),
-                        backgroundColor:
-                            const Color.fromARGB(255, 235, 127, 35),
-                        minimumSize: const Size.fromHeight(70),
-                      ),
-                      onPressed: () {
-                        // Check if the state is AuthLoading before proceeding
-                        if (state is AuthLoading) {
-                          return;
-                        }
+                      style: enableButton
+                          ? OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(
+                                color: Color.fromARGB(255, 235, 127, 35),
+                              ),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 235, 127, 35),
+                              minimumSize: const Size.fromHeight(70),
+                            )
+                          : OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(
+                                color: Colors.grey,
+                              ),
+                              backgroundColor: Colors.grey,
+                              minimumSize: const Size.fromHeight(70)),
+                      onPressed: enableButton
+                          ? () {
+                              setState(() {
+                                isToLogin = true;
+                              });
+                              final form = _formKey.currentState;
+                              if (!form!.validate()) {
+                                // _autoValidate = AutovalidateMode.onUserInteraction;
+                                setState(() {
+                                  isToLogin = false;
+                                });
+                              } else {
+                                // Check if the state is AuthLoading before proceeding
+                                if (state is AuthLoading) {
+                                  return;
+                                }
 
-                        // Call the signup function from the AuthCubit
-                        context.read<AuthCubit>().signup(
-                              usernameController.text,
-                              emailController.text,
-                              passwordController.text,
-                              confirmPasswordController.text,
-                            );
-                      },
+                                // Call the signup function from the AuthCubit
+                                context.read<AuthCubit>().signup(
+                                      usernameController.text,
+                                      emailController.text,
+                                      passwordController.text,
+                                      confirmPasswordController.text,
+                                    );
+                              }
+                            }
+                          : () {
+                              null;
+                            },
                       child: const Text(
                         'Create Account',
                         style: TextStyle(
@@ -383,7 +489,7 @@ class _SignupState extends State<Signup> {
                   if (state is AuthLoaded) {
                     _showSuccessPopup();
                   } else if (state is AuthError) {
-                    _showErrorPopup(state.message ?? 'An error occurred');
+                    _showErrorPopup(state.message ?? 'An error occured');
                   }
                 },
               ),

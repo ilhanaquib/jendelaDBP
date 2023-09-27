@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Enum for the button types
 // ignore: constant_identifier_names
-enum FontButtonType { Small, Normal, Medium}
+enum FontButtonType { Small, Normal, Medium }
 
 // Event class for button press
 abstract class FontButtonPressEvent {}
@@ -19,7 +19,8 @@ class FontBloc extends Bloc<FontButtonPressEvent, FontButtonType> {
     on<FontSelectButtonEvent>(_onSelectButtonEvent);
   }
 
-  void _onSelectButtonEvent(FontSelectButtonEvent event, Emitter<FontButtonType> emit) {
+  void _onSelectButtonEvent(
+      FontSelectButtonEvent event, Emitter<FontButtonType> emit) {
     emit(event.type);
   }
 

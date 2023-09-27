@@ -7,7 +7,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:jendela_dbp/components/chapterList.dart';
+import 'package:jendela_dbp/components/bookDetail/chapterList.dart';
 
 
 class AudioPlayerWidget extends StatefulWidget {
