@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -30,15 +31,15 @@ class Onboard_two extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const Text(
+           Text(
             'Discover your favorite ',
             style: TextStyle(
-                fontSize: 15, color: Color.fromARGB(255, 123, 123, 123)),
+                fontSize: 15, color: DbpColor().jendelaGray,),
           ),
-          const Text(
+           Text(
             'book in one place ',
             style: TextStyle(
-                fontSize: 15, color: Color.fromARGB(255, 123, 123, 123)),
+                fontSize: 15, color: DbpColor().jendelaGray,),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 60),
@@ -46,9 +47,9 @@ class Onboard_two extends StatelessWidget {
               child: SmoothPageIndicator(
                 controller: controller,
                 count: 3,
-                effect: const ExpandingDotsEffect(
-                    activeDotColor: Color.fromARGB(255, 235, 127, 35),
-                    dotColor: Color.fromARGB(255, 123, 123, 123),
+                effect:  ExpandingDotsEffect(
+                    activeDotColor: DbpColor().jendelaOrange,
+                    dotColor: DbpColor().jendelaGray,
                     dotHeight: 8,
                     dotWidth: 8),
                 onDotClicked: (index) => controller.animateToPage(index,

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/view/pages/allBooks.dart';
 import 'package:jendela_dbp/view/pages/audiobooksHome.dart';
 import 'package:path_provider/path_provider.dart';
@@ -92,10 +93,10 @@ class JendelaDBP extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 123, 123, 123),
+            seedColor: DbpColor().jendelaGray,
           ),
           textTheme: GoogleFonts.interTextTheme(),
-          unselectedWidgetColor: const Color.fromARGB(255, 123, 123, 123),
+          unselectedWidgetColor: DbpColor().jendelaGray,
           dividerColor: Colors.transparent,
         ),
         routes: {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class PopupSignupError extends StatelessWidget {
   PopupSignupError({super.key, required this.errorMessage});
@@ -28,15 +29,15 @@ class PopupSignupError extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-            const Text(
+             Text(
               'Your account failed to be created.',
               style: TextStyle(
-                  color: Color.fromARGB(255, 123, 123, 123), fontSize: 15),
+                  color: DbpColor().jendelaGray, fontSize: 15),
             ),
-            const Text(
+             Text(
               'please try again',
               style: TextStyle(
-                  color: Color.fromARGB(255, 123, 123, 123), fontSize: 15),
+                  color: DbpColor().jendelaGray, fontSize: 15),
             ),
             const SizedBox(
               height: 20,
@@ -44,18 +45,18 @@ class PopupSignupError extends StatelessWidget {
             Text(
               'Error : $errorMessage',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: Color.fromARGB(255, 123, 123, 123), fontSize: 15),
+              style:  TextStyle(
+                  color: DbpColor().jendelaGray, fontSize: 15),
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  side: const BorderSide(
-                    color: Color.fromARGB(255, 235, 127, 35),
+                  side:  BorderSide(
+                    color: DbpColor().jendelaOrange,
                   ),
-                  backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                  backgroundColor: DbpColor().jendelaOrange,
                 ),
                 onPressed: () {
                   Navigator.pop(context);

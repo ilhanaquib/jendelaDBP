@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -226,15 +227,15 @@ class _AudiobooksHomeState extends State<AudiobooksHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Column(
+        title:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Let\'s read something'),
+            const Text('Let\'s read something'),
             Text(
               'We collected and distilled the knowledge',
               style: TextStyle(
                 fontSize: 14,
-                color: Color.fromARGB(255, 123, 123, 123),
+                color: DbpColor().jendelaGray,
               ),
             )
           ],

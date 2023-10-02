@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
 import 'package:jendela_dbp/components/authentication/form.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});
@@ -25,27 +26,27 @@ class ForgotPassword extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Forgot Password',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
                     'No worries, we\'ll send you reset instructions. ',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
                   Text(
                     'Enter your email to reset password',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
                 ],
@@ -66,13 +67,14 @@ class ForgotPassword extends StatelessWidget {
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      side: const BorderSide(
-                        color: Color.fromARGB(255, 235, 127, 35),
+                      side: BorderSide(
+                        color: DbpColor().jendelaOrange,
                       ),
-                      backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                      backgroundColor: DbpColor().jendelaOrange,
                       minimumSize: const Size.fromHeight(70)),
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/verificationPassword');
+                    Navigator.pushReplacementNamed(
+                        context, '/verificationPassword');
                   },
                   child: const Text(
                     'Send',
@@ -88,20 +90,21 @@ class ForgotPassword extends StatelessWidget {
               child: RichText(
                 text: TextSpan(
                   children: [
-                    const TextSpan(
+                    TextSpan(
                       text: 'Back to ',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 123, 123, 123),
+                          color: DbpColor().jendelaGray,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
                     ),
                     TextSpan(
-                      recognizer: TapGestureRecognizer()..onTap = () {
-                        Navigator.pushReplacementNamed(context, '/signin');
-                      },
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushReplacementNamed(context, '/signin');
+                        },
                       text: 'Sign In',
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 235, 127, 35),
+                      style: TextStyle(
+                          color: DbpColor().jendelaOrange,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
                     )

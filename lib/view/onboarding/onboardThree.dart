@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,15 +33,15 @@ class Onboard_three extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const Text(
+           Text(
             'All in your pocket, access any ',
             style: TextStyle(
-                fontSize: 15, color: Color.fromARGB(255, 123, 123, 123)),
+                fontSize: 15, color: DbpColor().jendelaGray,),
           ),
-          const Text(
+           Text(
             'devices, anywhere ',
             style: TextStyle(
-                fontSize: 15, color: Color.fromARGB(255, 123, 123, 123)),
+                fontSize: 15, color: DbpColor().jendelaGray,),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 60),
@@ -48,9 +49,9 @@ class Onboard_three extends StatelessWidget {
               child: SmoothPageIndicator(
                 controller: controller,
                 count: 3,
-                effect: const ExpandingDotsEffect(
-                    activeDotColor: Color.fromARGB(255, 235, 127, 35),
-                    dotColor: Color.fromARGB(255, 123, 123, 123),
+                effect:  ExpandingDotsEffect(
+                    activeDotColor: DbpColor().jendelaOrange,
+                    dotColor: DbpColor().jendelaGray,
                     dotHeight: 8,
                     dotWidth: 8),
                 onDotClicked: (index) => controller.animateToPage(index,
@@ -67,10 +68,10 @@ class Onboard_three extends StatelessWidget {
                 child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        side: const BorderSide(
-                          color: Color.fromARGB(255, 235, 127, 35),
+                        side:  BorderSide(
+                          color: DbpColor().jendelaOrange,
                         ),
-                        backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                        backgroundColor: DbpColor().jendelaOrange,
                         minimumSize: const Size.fromHeight(50)),
                     onPressed: () async {
                       final prefs = await SharedPreferences.getInstance();

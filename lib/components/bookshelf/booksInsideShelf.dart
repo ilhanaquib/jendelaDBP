@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:like_button/like_button.dart';
 
@@ -226,9 +227,9 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                     capitalizeEachWord(
                                         bookSpecific.name!.toLowerCase()),
                                     maxLines: 2,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 15,
-                                      color: Color.fromARGB(255, 51, 51, 51),
+                                      color: DbpColor().jendelaBlack,
                                       overflow: TextOverflow.visible,
                                     ),
                                   ),
@@ -236,9 +237,9 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                     bookSpecific.price == ''
                                         ? 'Naskhah Ikhlas'
                                         : 'RM ${bookSpecific.price!}',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromARGB(255, 123, 123, 123),
+                                      color: DbpColor().jendelaGray,
                                     ),
                                   ),
                                 ],

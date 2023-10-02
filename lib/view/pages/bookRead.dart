@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jendela_dbp/components/read_book/paragraphs.dart';
 import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/components/read_book/slider.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class BookRead extends StatelessWidget {
   const BookRead({super.key});
@@ -48,12 +49,12 @@ class BookRead extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            const Row(
+             Row(
               children: [
                 Text(
                   'Chapter 1: Perjuangan Yang Belum Selesai',
                   style: TextStyle(
-                    color: Color.fromARGB(255, 123, 123, 123),
+                    color: DbpColor().jendelaGray,
                   ),
                 ),
               ],
@@ -67,15 +68,15 @@ class BookRead extends StatelessWidget {
               children: [
                 IconButton(
                     onPressed: () {},
-                    icon: const Icon(
+                    icon:  Icon(
                       Icons.arrow_left_outlined,
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                       size: 40,
                     )),
                 RichText(
-                  text: const TextSpan(
+                  text:  TextSpan(
                     children: [
-                      TextSpan(
+                      const TextSpan(
                         text: 'Page 22',
                         style: TextStyle(
                             color: Colors.black,
@@ -85,7 +86,7 @@ class BookRead extends StatelessWidget {
                       TextSpan(
                         text: ' of 240',
                         style: TextStyle(
-                            color: Color.fromARGB(255, 123, 123, 123),
+                            color: DbpColor().jendelaGray,
                             fontSize: 17,
                             fontWeight: FontWeight.normal),
                       )
@@ -94,31 +95,31 @@ class BookRead extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(
+                  icon:  Icon(
                     Icons.arrow_right_outlined,
-                    color: Color.fromARGB(255, 123, 123, 123),
+                    color: DbpColor().jendelaGray,
                     size: 40,
                   ),
                 ),
               ],
             ),
             const SliderWidget(),
-            const Row(
+             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
                   'Chapter 1',
                   style: TextStyle(
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 127,
                 ),
                 Text(
                   'Completed 19%',
                   style: TextStyle(
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                       fontWeight: FontWeight.bold),
                 )
               ],

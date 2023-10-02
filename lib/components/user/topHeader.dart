@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(left: 20),
+    return  Padding(
+      padding: const EdgeInsets.only(left: 20),
       child: SizedBox(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Upload Photo,',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
             ),
@@ -20,7 +21,7 @@ class Header extends StatelessWidget {
               'User',
               style: TextStyle(
                 fontSize: 20,
-                color: Color.fromARGB(255, 123, 123, 123),
+                color: DbpColor().jendelaGray,
               ),
             ),
           ],

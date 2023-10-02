@@ -9,6 +9,7 @@ import 'package:http/http.dart';
 import 'package:jendela_dbp/api-services.dart';
 
 import 'package:jendela_dbp/components/authentication/authProvider.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
@@ -99,29 +100,29 @@ class _SigninState extends State<Signin> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
+             Padding(
+              padding: const EdgeInsets.only(top: 10),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Welcome Back',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
                     'We are happy to see you here again.',
                     style: TextStyle(
                       fontSize: 15,
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
                   Text(
                     'Enter your email and password',
                     style: TextStyle(
                       fontSize: 15,
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
                 ],
@@ -166,8 +167,8 @@ class _SigninState extends State<Signin> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         labelText: 'Email',
-                        labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 123, 123, 123),
+                        labelStyle:  TextStyle(
+                          color: DbpColor().jendelaGray,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
@@ -225,8 +226,8 @@ class _SigninState extends State<Signin> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         labelText: 'Password',
-                        labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 123, 123, 123),
+                        labelStyle:  TextStyle(
+                          color: DbpColor().jendelaGray,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
@@ -261,9 +262,9 @@ class _SigninState extends State<Signin> {
                           value: shouldCheck,
                           style: MSHCheckboxStyle.fillScaleCheck,
                           size: 20,
-                          checkedColor: const Color.fromARGB(255, 235, 127, 35),
+                          checkedColor: DbpColor().jendelaOrange,
                           uncheckedColor:
-                              const Color.fromARGB(255, 235, 127, 35),
+                              DbpColor().jendelaOrange,
                           onChanged: (val) {
                             setState(() {
                               shouldCheck = val;
@@ -271,10 +272,10 @@ class _SigninState extends State<Signin> {
                           },
                         ),
                       ),
-                      const Text(
+                       Text(
                         'Remember me',
                         style: TextStyle(
-                            color: Color.fromARGB(255, 123, 123, 123),
+                            color: DbpColor().jendelaGray,
                             fontSize: 13,
                             fontWeight: FontWeight.normal),
                       ),
@@ -287,10 +288,10 @@ class _SigninState extends State<Signin> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/forgotPassword');
                     },
-                    child: const Text(
+                    child:  Text(
                       'Forgot Password?',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 123, 123, 123),
+                          color: DbpColor().jendelaOrange,
                           fontSize: 13,
                           fontWeight: FontWeight.normal),
                     ),
@@ -306,10 +307,10 @@ class _SigninState extends State<Signin> {
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    side: const BorderSide(
-                      color: Color.fromARGB(255, 235, 127, 35),
+                    side:  BorderSide(
+                      color: DbpColor().jendelaOrange,
                     ),
-                    backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                    backgroundColor: DbpColor().jendelaOrange,
                     minimumSize: const Size.fromHeight(70),
                   ),
                   onPressed: () async {

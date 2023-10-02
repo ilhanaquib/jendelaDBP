@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class PopupPassword extends StatelessWidget {
   const PopupPassword({super.key});
@@ -29,15 +30,15 @@ class PopupPassword extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const Text(
+             Text(
               'Your new password has been',
               style: TextStyle(
-                  color: Color.fromARGB(255, 123, 123, 123), fontSize: 15),
+                  color: DbpColor().jendelaGray, fontSize: 15),
             ),
-            const Text(
+             Text(
               'successfully changed',
               style: TextStyle(
-                  color: Color.fromARGB(255, 123, 123, 123), fontSize: 15),
+                  color: DbpColor().jendelaGray, fontSize: 15),
             ),
             const SizedBox(
               height: 20,
@@ -45,10 +46,10 @@ class PopupPassword extends StatelessWidget {
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  side: const BorderSide(
-                    color: Color.fromARGB(255, 235, 127, 35),
+                  side:  BorderSide(
+                    color: DbpColor().jendelaOrange,
                   ),
-                  backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                  backgroundColor: DbpColor().jendelaOrange,
                   minimumSize: const Size.fromHeight(50)),
               onPressed: () {
                 Navigator.pushReplacementNamed(context, '/signin');

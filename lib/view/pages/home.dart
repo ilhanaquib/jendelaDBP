@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
@@ -293,9 +294,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             onPressed: () {
               _scaffoldKey.currentState?.openDrawer();
             },
-            icon: const Icon(
+            icon:  Icon(
               Icons.menu_rounded,
-              color: Color.fromARGB(255, 123, 123, 123),
+              color: DbpColor().jendelaGray,
               size: 40,
             ),
           ),
@@ -412,14 +413,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                               child: Center(
                                                 child: LoadingAnimationWidget
                                                     .discreteCircle(
-                                                  color: const Color.fromARGB(
-                                                      255, 123, 123, 123),
+                                                  color: DbpColor().jendelaGray,
                                                   secondRingColor:
-                                                      const Color.fromARGB(
-                                                          255, 144, 191, 63),
+                                                      DbpColor().jendelaGreen,
                                                   thirdRingColor:
-                                                      const Color.fromARGB(
-                                                          255, 235, 127, 35),
+                                                      DbpColor().jendelaOrange,
                                                   size: 70.0,
                                                 ),
                                               ),
@@ -576,12 +574,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   child: Center(
                                     child:
                                         LoadingAnimationWidget.discreteCircle(
-                                      color: const Color.fromARGB(
-                                          255, 123, 123, 123),
-                                      secondRingColor: const Color.fromARGB(
-                                          255, 144, 191, 63),
-                                      thirdRingColor: const Color.fromARGB(
-                                          255, 235, 127, 35),
+                                      color: DbpColor().jendelaGray,
+                                      secondRingColor: DbpColor().jendelaGreen,
+                                      thirdRingColor: DbpColor().jendelaOrange,
                                       size: 50.0,
                                     ),
                                   ),

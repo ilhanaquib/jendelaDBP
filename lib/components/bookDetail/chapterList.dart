@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class ChapterList extends StatelessWidget {
   const ChapterList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       children: [
         const Padding(
           padding: EdgeInsets.only(top: 15, left: 15),
@@ -25,7 +26,7 @@ class ChapterList extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(context, '/bookRead');
           },
-          leading: const Column(
+          leading: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,7 +35,7 @@ class ChapterList extends StatelessWidget {
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
                   fontSize: 13,
-                  color: Color.fromARGB(255, 123, 123, 123),
+                  color: DbpColor().jendelaGray,
                 ),
               ),
               Text(
@@ -42,16 +43,16 @@ class ChapterList extends StatelessWidget {
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
                   fontSize: 13,
-                  color: Color.fromARGB(255, 123, 123, 123),
+                  color: DbpColor().jendelaGray,
                 ),
               ),
             ],
           ),
-          trailing: const Text(
+          trailing: Text(
             '38min 45sec',
             style: TextStyle(
               fontSize: 13,
-              color: Color.fromARGB(255, 123, 123, 123),
+              color: DbpColor().jendelaGray,
             ),
           ),
           title: const Text(

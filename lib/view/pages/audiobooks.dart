@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 
 import 'package:text_scroll/text_scroll.dart';
@@ -95,10 +96,10 @@ class Audiobooks extends StatelessWidget {
                                       pauseBetween: const Duration(seconds: 5),
                                     ),
                                   ),
-                                  const Text(
+                                   Text(
                                     'Page : 78/266',
                                     style: TextStyle(
-                                      color: Color.fromARGB(255, 123, 123, 123),
+                                      color: DbpColor().jendelaGray,
                                     ),
                                   ),
                                 ],

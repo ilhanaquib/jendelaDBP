@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:jendela_dbp/components/authentication/authProvider.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/view/authentication/popups/popupSignup.dart';
@@ -110,29 +111,29 @@ class _SignupState extends State<Signup> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Let\'s Get Started',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
                     'Create your account,',
                     style: TextStyle(
                       fontSize: 15,
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
                   Text(
                     'it takes less than a minute',
                     style: TextStyle(
                       fontSize: 15,
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
                 ],
@@ -173,8 +174,8 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         labelText: 'Username',
-                        labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 123, 123, 123),
+                        labelStyle: TextStyle(
+                          color: DbpColor().jendelaGray,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
@@ -223,8 +224,8 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         labelText: 'Email',
-                        labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 123, 123, 123),
+                        labelStyle: TextStyle(
+                          color: DbpColor().jendelaGray,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
@@ -282,8 +283,8 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         labelText: 'Password',
-                        labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 123, 123, 123),
+                        labelStyle: TextStyle(
+                          color: DbpColor().jendelaGray,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
@@ -341,8 +342,8 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         labelText: 'Confirm Password',
-                        labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 123, 123, 123),
+                        labelStyle: TextStyle(
+                          color: DbpColor().jendelaGray,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
@@ -377,9 +378,8 @@ class _SignupState extends State<Signup> {
                           value: shouldCheck,
                           style: MSHCheckboxStyle.fillScaleCheck,
                           size: 20,
-                          checkedColor: const Color.fromARGB(255, 235, 127, 35),
-                          uncheckedColor:
-                              const Color.fromARGB(255, 235, 127, 35),
+                          checkedColor: DbpColor().jendelaOrange,
+                          uncheckedColor: DbpColor().jendelaOrange,
                           onChanged: (val) {
                             setState(() {
                               shouldCheck = val;
@@ -391,10 +391,10 @@ class _SignupState extends State<Signup> {
                       RichText(
                         text: TextSpan(
                           children: [
-                            const TextSpan(
+                            TextSpan(
                               text: 'I agree to the',
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 123, 123, 123),
+                                  color: DbpColor().jendelaGray,
                                   fontSize: 17,
                                   fontWeight: FontWeight.normal),
                             ),
@@ -404,8 +404,8 @@ class _SignupState extends State<Signup> {
                                   _showTerms();
                                 },
                               text: ' Terms & Conditions',
-                              style: const TextStyle(
-                                  color: Color.fromARGB(255, 235, 127, 35),
+                              style: TextStyle(
+                                  color: DbpColor().jendelaOrange,
                                   fontSize: 17,
                                   fontWeight: FontWeight.normal),
                             )
@@ -431,19 +431,18 @@ class _SignupState extends State<Signup> {
                       style: enableButton
                           ? OutlinedButton.styleFrom(
                               foregroundColor: Colors.white,
-                              side: const BorderSide(
-                                color: Color.fromARGB(255, 235, 127, 35),
+                              side: BorderSide(
+                                color: DbpColor().jendelaOrange,
                               ),
-                              backgroundColor:
-                                  const Color.fromARGB(255, 235, 127, 35),
+                              backgroundColor: DbpColor().jendelaOrange,
                               minimumSize: const Size.fromHeight(70),
                             )
                           : OutlinedButton.styleFrom(
                               foregroundColor: Colors.white,
-                              side: const BorderSide(
-                                color: Colors.grey,
+                              side: BorderSide(
+                                color: DbpColor().jendelaGray,
                               ),
-                              backgroundColor: Colors.grey,
+                              backgroundColor: DbpColor().jendelaGray,
                               minimumSize: const Size.fromHeight(70)),
                       onPressed: enableButton
                           ? () {

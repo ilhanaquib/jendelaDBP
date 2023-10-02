@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
@@ -74,14 +75,14 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 20),
+           Padding(
+            padding: const EdgeInsets.only(left: 20),
             child: SizedBox(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Upload Photo,',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
@@ -89,7 +90,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     'User',
                     style: TextStyle(
                       fontSize: 20,
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
                 ],
@@ -117,11 +118,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ),
                         if (_isSaving)
                           LoadingAnimationWidget.discreteCircle(
-                            color: Colors.white,
-                            secondRingColor:
-                                const Color.fromARGB(255, 144, 191, 63),
-                            thirdRingColor:
-                                const Color.fromARGB(255, 235, 127, 35),
+                            color: DbpColor().jendelaGray,
+                            secondRingColor: DbpColor().jendelaGreen,
+                            thirdRingColor: DbpColor().jendelaOrange,
                             size: 50.0,
                           ) // Show this when saving
                       ],
@@ -146,10 +145,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       onPressed: _saveImage,
                       style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          side: const BorderSide(
-                              color: Color.fromARGB(255, 235, 127, 35)),
+                          side:  BorderSide(
+                              color: DbpColor().jendelaOrange,),
                           backgroundColor:
-                              const Color.fromARGB(255, 235, 127, 35),
+                              DbpColor().jendelaOrange,
                           minimumSize: const Size.fromHeight(40)),
                       child: const Text('Save'),
                     ),
@@ -160,7 +159,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       onPressed: () {},
                       style: OutlinedButton.styleFrom(
                           foregroundColor:
-                              const Color.fromARGB(255, 123, 123, 123),
+                              DbpColor().jendelaGray,
                           side: const BorderSide(
                               color: Color.fromARGB(255, 206, 206, 206)),
                           backgroundColor:

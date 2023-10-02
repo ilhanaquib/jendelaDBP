@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -26,24 +27,24 @@ class verificationPassword extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
+             Padding(
+              padding:const EdgeInsets.only(top: 10),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'You\'ve Got Mail',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
                     'We have sent a verification code to your email.',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
-                  Text(
+                  const Text(
                     'Check your email and enter the code',
                     style: TextStyle(
                       color: Colors.black,
@@ -63,9 +64,9 @@ class verificationPassword extends StatelessWidget {
                   fieldHeight: 50,
                   fieldWidth: 50,
                   activeFillColor: Colors.white,
-                  selectedColor: const Color(0xFFEB7F23),
-                  inactiveColor: const Color(0xFFB9B9B9),
-                  activeColor: const Color(0xFF90BF3F),
+                  selectedColor: DbpColor().jendelaOrange,
+                  inactiveColor: DbpColor().jendelaGray,
+                  activeColor: DbpColor().jendelaGreen,
                 ),
               ),
             ),
@@ -77,10 +78,10 @@ class verificationPassword extends StatelessWidget {
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      side: const BorderSide(
-                        color: Color.fromARGB(255, 235, 127, 35),
+                      side:  BorderSide(
+                        color: DbpColor().jendelaOrange,
                       ),
-                      backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                      backgroundColor: DbpColor().jendelaOrange,
                       minimumSize: const Size.fromHeight(70)),
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/createNewPassword');
@@ -97,18 +98,18 @@ class verificationPassword extends StatelessWidget {
               child: RichText(
                 text: TextSpan(
                   children: [
-                    const TextSpan(
+                     TextSpan(
                       text: 'Didn\'t receive code?',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 123, 123, 123),
+                          color: DbpColor().jendelaGray,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
                     ),
                     TextSpan(
                       recognizer: TapGestureRecognizer()..onTap = () {},
                       text: ' Resend',
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 235, 127, 35),
+                      style:  TextStyle(
+                          color: DbpColor().jendelaOrange,
                           fontSize: 17,
                           fontWeight: FontWeight.normal),
                     )

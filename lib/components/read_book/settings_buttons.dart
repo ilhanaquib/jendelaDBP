@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class SettingButton extends StatefulWidget {
   final IconData icon;
@@ -26,12 +27,12 @@ class _SettingButtonState extends State<SettingButton> {
       style: ButtonStyle(
         side: MaterialStateProperty.all(BorderSide(
           color: widget.isSelected
-              ? const Color(0xFF90BF3F)
+              ? DbpColor().jendelaGreen
               : const Color.fromARGB(255, 248, 248, 248),
         )),
         backgroundColor: MaterialStateProperty.all(
           widget.isSelected
-              ? const Color(0xFF90BF3F)
+              ? DbpColor().jendelaGreen
               : const Color.fromARGB(255, 248, 248, 248),
         ),
         foregroundColor: MaterialStateProperty.all(

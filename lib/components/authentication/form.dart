@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 // ignore: must_be_immutable
 class AuthForm extends StatelessWidget {
@@ -30,8 +31,8 @@ class AuthForm extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50),
                 ),
                 labelText: fieldName,
-                labelStyle: const TextStyle(
-                  color: Color.fromARGB(255, 123, 123, 123),
+                labelStyle:  TextStyle(
+                  color: DbpColor().jendelaGray,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50),

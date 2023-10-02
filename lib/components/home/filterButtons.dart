@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class FilterButton extends StatelessWidget {
   final String text;
@@ -20,12 +21,12 @@ class FilterButton extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color.fromARGB(255, 144, 191, 63)
+              ? DbpColor().jendelaGreen
               : Colors.transparent,
           border: Border.all(
               color: isSelected
-                  ? const Color.fromARGB(255, 144, 191, 63)
-                  : Colors.grey),
+                  ? DbpColor().jendelaGreen
+                  : DbpColor().jendelaGray),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(

@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 import 'package:jendela_dbp/main.dart';
 
@@ -79,16 +80,16 @@ class AuthProvider extends StatelessWidget {
             children: [
               TextSpan(
                 text: account,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 123, 123, 123),
+                style:  TextStyle(
+                    color: DbpColor().jendelaGray,
                     fontSize: 17,
                     fontWeight: FontWeight.normal),
               ),
               TextSpan(
                 recognizer: TapGestureRecognizer()..onTap = pageNavigator,
                 text: orangeAccount,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 235, 127, 35),
+                style:  TextStyle(
+                    color: DbpColor().jendelaOrange,
                     fontSize: 17,
                     fontWeight: FontWeight.normal),
               )
@@ -103,8 +104,8 @@ class AuthProvider extends StatelessWidget {
             children: [
               TextSpan(
                 text: guest,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 123, 123, 123),
+                style:  TextStyle(
+                    color: DbpColor().jendelaGray,
                     fontSize: 17,
                     fontWeight: FontWeight.normal),
               ),
@@ -121,8 +122,8 @@ class AuthProvider extends StatelessWidget {
                     );
                   },
                 text: guestAccount,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 235, 127, 35),
+                style:  TextStyle(
+                    color: DbpColor().jendelaOrange,
                     fontSize: 17,
                     fontWeight: FontWeight.normal),
               )

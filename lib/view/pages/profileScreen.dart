@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
@@ -128,11 +129,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: 400,
                       child: Center(
                         child: LoadingAnimationWidget.discreteCircle(
-                          color: const Color.fromARGB(255, 123, 123, 123),
+                          color: DbpColor().jendelaGray,
                           secondRingColor:
-                              const Color.fromARGB(255, 144, 191, 63),
+                              DbpColor().jendelaGreen,
                           thirdRingColor:
-                              const Color.fromARGB(255, 235, 127, 35),
+                              DbpColor().jendelaOrange,
                           size: 30.0,
                         ),
                       ),

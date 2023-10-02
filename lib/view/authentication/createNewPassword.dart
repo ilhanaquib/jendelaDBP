@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:jendela_dbp/components/authentication/passwordForm.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/view/authentication/popups/popupPassword.dart';
 
 class CreateNewPassword extends StatelessWidget {
@@ -25,27 +26,27 @@ class CreateNewPassword extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
+             Padding(
+              padding: const EdgeInsets.only(top: 10),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Create New Password',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
                     'Your new password has to be different',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
                   Text(
                     'from previously used password',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 123, 123, 123),
+                      color: DbpColor().jendelaGray,
                     ),
                   ),
                 ],
@@ -68,10 +69,10 @@ class CreateNewPassword extends StatelessWidget {
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    side: const BorderSide(
-                      color: Color.fromARGB(255, 235, 127, 35),
+                    side:  BorderSide(
+                      color: DbpColor().jendelaOrange,
                     ),
-                    backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                    backgroundColor: DbpColor().jendelaOrange,
                     minimumSize: const Size.fromHeight(70),
                   ),
                   onPressed: () {

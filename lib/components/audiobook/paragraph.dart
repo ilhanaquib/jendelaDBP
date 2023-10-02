@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class Paragraph extends StatelessWidget {
   const Paragraph({super.key});
-  
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
       child: Column(
         children: [
           Text(
@@ -19,9 +19,7 @@ class Paragraph extends StatelessWidget {
 
     “Bagaimana pula dengan tanda-tanda radiasi di permukaan bumi?” Bertanya Komander Zarnoush, masih menaruh harapan yang tinggi. ''',
             style: TextStyle(
-                color: Color.fromARGB(255, 123, 123, 123),
-                fontSize: 15,
-                height: 1.5),
+                color: DbpColor().jendelaGray, fontSize: 15, height: 1.5),
           )
         ],
       ),

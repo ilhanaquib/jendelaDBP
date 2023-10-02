@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/bookDetail/readBottomSheet.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:like_button/like_button.dart';
@@ -221,10 +222,10 @@ class _BookDetailState extends State<BookDetail> {
                             ),
                           ),
                         ),
-                        const Text(
+                         Text(
                           'book author',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 123, 123, 123),
+                            color: DbpColor().jendelaGray,
                           ),
                         ),
                         Container(
@@ -252,29 +253,29 @@ class _BookDetailState extends State<BookDetail> {
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text(
+                                   Text(
                                     'Category',
                                     style: TextStyle(
-                                      color: Color.fromARGB(255, 123, 123, 123),
+                                      color: DbpColor().jendelaGray,
                                     ),
                                   ),
                                   Text(
                                     getCategory(widget.book!.product_category!),
-                                    style: const TextStyle(
+                                    style:  TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 123, 123, 123),
+                                      color: DbpColor().jendelaGray,
                                     ),
                                   )
                                 ],
                               ),
-                              const Column(
+                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     'Language',
                                     style: TextStyle(
-                                      color: Color.fromARGB(255, 123, 123, 123),
+                                      color: DbpColor().jendelaGray,
                                     ),
                                   ),
                                   Text(
@@ -282,7 +283,7 @@ class _BookDetailState extends State<BookDetail> {
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 123, 123, 123),
+                                      color: DbpColor().jendelaGray,
                                     ),
                                   )
                                 ],
@@ -312,10 +313,10 @@ class _BookDetailState extends State<BookDetail> {
                                   ? const NoDescriptionCard()
                                   : Text(
                                       widget.book!.description!,
-                                      style: const TextStyle(
+                                      style:  TextStyle(
                                         fontSize: 15,
                                         color:
-                                            Color.fromARGB(255, 123, 123, 123),
+                                            DbpColor().jendelaBlack,
                                         height: 1.5,
                                       ),
                                     ),
@@ -342,11 +343,10 @@ class _BookDetailState extends State<BookDetail> {
                                       onPressed: () {
                                         bottomSheetChapter(context);
                                       },
-                                      child: const Text(
+                                      child:  Text(
                                         'Chapter >',
                                         style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 235, 127, 35),
+                                            color: DbpColor().jendelaOrange,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15),
                                       ),
@@ -359,9 +359,9 @@ class _BookDetailState extends State<BookDetail> {
                                 children: [
                                   OutlinedButton(
                                     style: OutlinedButton.styleFrom(
-                                      side: const BorderSide(
+                                      side:  BorderSide(
                                         color:
-                                            Color.fromARGB(255, 235, 127, 35),
+                                            DbpColor().jendelaOrange,
                                       ),
                                     ),
                                     onPressed: () {
@@ -372,24 +372,22 @@ class _BookDetailState extends State<BookDetail> {
                                       //bottomSheetRead(context);
                                       buyItem(context);
                                     },
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(
+                                    child:  Padding(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 10),
                                       child: Row(
                                         children: [
                                           Icon(
                                             Icons.import_contacts_rounded,
-                                            color: Color.fromARGB(
-                                                255, 235, 127, 35),
+                                            color: DbpColor().jendelaOrange,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           Text(
                                             'Read Book',
                                             style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 235, 127, 35)),
+                                                color: DbpColor().jendelaOrange,),
                                           )
                                         ],
                                       ),
@@ -400,11 +398,10 @@ class _BookDetailState extends State<BookDetail> {
                                   ),
                                   OutlinedButton(
                                     style: OutlinedButton.styleFrom(
-                                      backgroundColor: const Color.fromARGB(
-                                          255, 235, 127, 35),
-                                      side: const BorderSide(
+                                      backgroundColor: DbpColor().jendelaOrange,
+                                      side:  BorderSide(
                                         color:
-                                            Color.fromARGB(255, 235, 127, 35),
+                                            DbpColor().jendelaOrange,
                                       ),
                                     ),
                                     onPressed: () {

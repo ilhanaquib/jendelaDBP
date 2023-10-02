@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
+
 class CarouselTitle extends StatelessWidget {
   final String? title;
   final Function()? seeAllOnTap;
   final String? seeAllText;
   final Color? color;
-  const CarouselTitle({super.key, this.title, this.seeAllOnTap, this.seeAllText, this.color});
+  const CarouselTitle(
+      {super.key, this.title, this.seeAllOnTap, this.seeAllText, this.color});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +38,9 @@ class CarouselTitle extends StatelessWidget {
                   onTap: seeAllOnTap,
                   child: Text(
                     seeAllText ?? 'See All',
-                    style: const TextStyle(color: Color.fromARGB(255, 123, 123, 123)),
+                    style: TextStyle(
+                      color: DbpColor().jendelaGray,
+                    ),
                   ),
                 ),
               )

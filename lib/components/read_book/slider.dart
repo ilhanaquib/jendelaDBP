@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class SliderWidget extends StatefulWidget {
   const SliderWidget({super.key});
@@ -25,7 +26,7 @@ class _SliderWidgetState extends State<SliderWidget> {
         onChanged: _onSliderChanged,
         min: 1,
         max: 100,
-        activeColor: const Color.fromARGB(255, 235, 127, 35),
+        activeColor: DbpColor().jendelaOrange,
         
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -39,6 +40,7 @@ class _readBottomSheetState extends State<readBottomSheet> {
                   padding: const EdgeInsets.only(
                       top: 24, left: 24, right: 24, bottom: 24),
                   child: SizedBox(
+                    height: 120,
                     width: 100,
                     child: widget.book!.images == "Tiada"
                         ? Image.asset(
@@ -55,11 +57,11 @@ class _readBottomSheetState extends State<readBottomSheet> {
                                 alignment: Alignment.center,
                                 child: LoadingAnimationWidget.discreteCircle(
                                   color:
-                                      const Color.fromARGB(255, 123, 123, 123),
+                                      DbpColor().jendelaGray,
                                   secondRingColor:
-                                      const Color.fromARGB(255, 144, 191, 63),
+                                      DbpColor().jendelaGreen,
                                   thirdRingColor:
-                                      const Color.fromARGB(255, 235, 127, 35),
+                                      DbpColor().jendelaOrange,
                                   size: 50.0,
                                 ),
                               ),
@@ -69,13 +71,7 @@ class _readBottomSheetState extends State<readBottomSheet> {
                           ),
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('RM ${widget.book!.price!}'),
-                  ],
-                ),
+                Text('RM ${widget.book!.price!}'),
               ],
             ),
             const Divider(
@@ -172,7 +168,7 @@ class _readBottomSheetState extends State<readBottomSheet> {
                               border: Border.all(color: Colors.red),
                             ),
                             child: const Text(
-                              'Batal',
+                              'Cancel',
                               style: TextStyle(color: Colors.red),
                             )),
                       ),
@@ -186,9 +182,9 @@ class _readBottomSheetState extends State<readBottomSheet> {
                             //     toJSonVariation[activeNow]
                             //         ['external_url']);
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                               behavior: SnackBarBehavior.floating,
-                              content: Text('Memerlukan penggunaan internet'),
+                              content: Text('Internet Acccess Needed'),
                               duration: Duration(seconds: 3),
                             ));
                           }
@@ -198,13 +194,13 @@ class _readBottomSheetState extends State<readBottomSheet> {
                           width: (MediaQuery.of(context).size.width / 2) - 20,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 144, 191, 63),
+                            color: DbpColor().jendelaGreen,
                             border: Border.all(
-                              color: const Color.fromARGB(255, 144, 191, 63),
+                              color: DbpColor().jendelaGreen,
                             ),
                           ),
                           child: const Text(
-                            'Beli Sekarang',
+                            'Buy Now',
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
@@ -221,8 +217,9 @@ class _readBottomSheetState extends State<readBottomSheet> {
                             Navigator.of(context).pop();
                           },
                           child: const Text(
-                            'Batal',
-                            style: TextStyle(color: Colors.red),
+                            'Cancel',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const SizedBox(
@@ -231,12 +228,25 @@ class _readBottomSheetState extends State<readBottomSheet> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                const Color.fromARGB(255, 144, 191, 63),
+                                DbpColor().jendelaGreen,
                             elevation: 0, // Set elevation to 0 to remove shadow
                           ),
-                          child: const Text(
-                            'Tambah ke Troli',
-                            style: TextStyle(color: Colors.white),
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.shopping_cart_rounded,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                'Add to cart',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
                           onPressed: () async {
                             var connectivityResult =

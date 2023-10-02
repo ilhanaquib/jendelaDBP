@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class Button extends StatelessWidget {
   const Button({super.key});
@@ -17,9 +18,9 @@ class Button extends StatelessWidget {
                 onPressed: () {},
                 style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    side: const BorderSide(
-                        color: Color.fromARGB(255, 235, 127, 35)),
-                    backgroundColor: const Color.fromARGB(255, 235, 127, 35),
+                    side:  BorderSide(
+                        color: DbpColor().jendelaOrange,),
+                    backgroundColor: DbpColor().jendelaOrange,
                     minimumSize: const Size.fromHeight(40)),
                 child: const Text('Save'),
               ),
@@ -27,7 +28,7 @@ class Button extends StatelessWidget {
               OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color.fromARGB(255, 123, 123, 123),
+                      foregroundColor: DbpColor().jendelaGray,
                       side: const BorderSide(
                           color: Color.fromARGB(255, 206, 206, 206)),
                       backgroundColor: const Color.fromARGB(255, 206, 206, 206),

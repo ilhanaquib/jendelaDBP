@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/components/posts/errorCard.dart';
@@ -121,11 +122,11 @@ class _PostsState extends State<Posts> {
                             height: 300,
                             child: Center(
                               child: LoadingAnimationWidget.discreteCircle(
-                                color: const Color.fromARGB(255, 123, 123, 123),
+                                color: DbpColor().jendelaGray,
                                 secondRingColor:
-                                    const Color.fromARGB(255, 144, 191, 63),
+                                    DbpColor().jendelaGreen,
                                 thirdRingColor:
-                                    const Color.fromARGB(255, 235, 127, 35),
+                                    DbpColor().jendelaOrange,
                                 size: 70.0,
                               ),
                             ),

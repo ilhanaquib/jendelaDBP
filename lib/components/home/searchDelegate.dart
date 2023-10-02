@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
@@ -58,9 +59,9 @@ class BookSearchDelegate extends SearchDelegate<String> {
         if (!snapshot.hasData) {
           return Center(
             child: LoadingAnimationWidget.discreteCircle(
-              color: const Color.fromARGB(255, 123, 123, 123),
-              secondRingColor: const Color.fromARGB(255, 144, 191, 63),
-              thirdRingColor: const Color.fromARGB(255, 235, 127, 35),
+              color: DbpColor().jendelaGray,
+              secondRingColor: DbpColor().jendelaGreen,
+              thirdRingColor: DbpColor().jendelaOrange,
               size: 50.0,
             ),
           );
@@ -127,9 +128,9 @@ class BookSearchDelegate extends SearchDelegate<String> {
         if (!snapshot.hasData) {
           return Center(
             child: LoadingAnimationWidget.discreteCircle(
-              color: const Color.fromARGB(255, 123, 123, 123),
-              secondRingColor: const Color.fromARGB(255, 144, 191, 63),
-              thirdRingColor: const Color.fromARGB(255, 235, 127, 35),
+              color: DbpColor().jendelaGray,
+              secondRingColor: DbpColor().jendelaGreen,
+              thirdRingColor: DbpColor().jendelaOrange,
               size: 50.0,
             ),
           );

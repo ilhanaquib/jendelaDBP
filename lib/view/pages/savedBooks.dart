@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:like_button/like_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -247,7 +248,7 @@ Widget _buildCategoryBox(String category) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
     decoration: BoxDecoration(
-      color: const Color.fromARGB(255, 144, 191, 63),
+      color: DbpColor().jendelaGreen,
       borderRadius: BorderRadius.circular(50),
     ),
     child: Text(
@@ -258,3 +259,4 @@ Widget _buildCategoryBox(String category) {
     ),
   );
 }
+

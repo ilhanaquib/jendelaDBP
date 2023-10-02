@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
@@ -315,7 +316,7 @@ class _AllBooksState extends State<AllBooks> {
                     'Latest',
                     style: TextStyle(
                         color: sortLatest == true
-                            ? const Color.fromARGB(255, 235, 127, 35)
+                            ? DbpColor().jendelaOrange
                             : Colors.black),
                   ),
                 ),
@@ -362,7 +363,7 @@ class _AllBooksState extends State<AllBooks> {
                     'A-Z ${ascendingAlphabet ? '↑' : '↓'}',
                     style: TextStyle(
                       color: sortAlphabet
-                          ? const Color.fromARGB(255, 235, 127, 35)
+                          ? DbpColor().jendelaOrange
                           : Colors.black,
                     ),
                   ),
@@ -438,7 +439,7 @@ class _AllBooksState extends State<AllBooks> {
                                   MaterialPageRoute(
                                     builder: (context) => BookDetail(
                                       likedStatusBox: likedStatusBox,
-                                      bookBox: widget.bookBox, 
+                                      bookBox: widget.bookBox,
                                       book: bookSpecific,
                                     ),
                                   ),
@@ -544,9 +545,9 @@ class _AllBooksState extends State<AllBooks> {
                                     bookSpecific.price == ''
                                         ? 'Naskhah Ikhlas'
                                         : 'RM ${bookSpecific.price!}',
-                                    style: const TextStyle(
+                                    style:  TextStyle(
                                       fontSize: 13,
-                                      color: Color.fromARGB(255, 123, 123, 123),
+                                      color: DbpColor().jendelaGray,
                                     ),
                                   ),
                                 ],
@@ -655,11 +656,10 @@ class _AllBooksState extends State<AllBooks> {
         setState(() {}); // Trigger a rebuild to update the button color
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor:
-            isSelected ? const Color.fromARGB(255, 144, 191, 63) : Colors.white,
+        backgroundColor: isSelected ? DbpColor().jendelaGreen : Colors.white,
         foregroundColor: isSelected
             ? Colors.white
-            : const Color.fromARGB(255, 123, 123, 132),
+            : DbpColor().jendelaGray,
         elevation: 0, // Set elevation to 0 to remove shadow
       ),
       child: Row(
@@ -668,7 +668,7 @@ class _AllBooksState extends State<AllBooks> {
             icon,
             color: isSelected
                 ? Colors.white
-                : const Color.fromARGB(255, 123, 123, 132),
+                :  DbpColor().jendelaGray,
           ),
           const SizedBox(width: 10),
           Text(
@@ -676,7 +676,7 @@ class _AllBooksState extends State<AllBooks> {
             style: TextStyle(
               color: isSelected
                   ? Colors.white
-                  : const Color.fromARGB(255, 123, 123, 132),
+                  : DbpColor().jendelaGray,
             ),
           ),
         ],
