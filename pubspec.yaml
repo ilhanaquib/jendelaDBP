@@ -74,6 +74,9 @@ dependencies:
   msh_checkbox: ^2.0.1
   text_scroll: ^0.2.0
   learning_language: ^0.0.4
+  syncfusion_flutter_pdfviewer: ^23.1.38
+  vocsy_epub_viewer: ^2.0.0
+
 
 
 
@@ -106,6 +109,7 @@ flutter:
   assets:
     - assets/images/
     - assets/audio/
+    - assets/books/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/components/pdfViewer.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 
 class ChapterList extends StatelessWidget {
-  const ChapterList({super.key});
+  const ChapterList({super.key, this.book});
+
+  final HiveBookAPI? book;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,10 @@ class ChapterList extends StatelessWidget {
         ),
         ListTile(
           onTap: () {
-            Navigator.pushNamed(context, '/bookRead');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PdfViewerPage(book: book,)),
+            );
           },
           leading: Column(
             mainAxisAlignment: MainAxisAlignment.center,

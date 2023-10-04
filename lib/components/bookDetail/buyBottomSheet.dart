@@ -5,8 +5,8 @@ import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class readBottomSheet extends StatefulWidget {
-  readBottomSheet({
+class buyBottomSheet extends StatefulWidget {
+  buyBottomSheet({
     super.key,
     this.book,
     this.toJSonVariation,
@@ -18,10 +18,10 @@ class readBottomSheet extends StatefulWidget {
   var formatType;
 
   @override
-  State<readBottomSheet> createState() => _readBottomSheetState();
+  State<buyBottomSheet> createState() => _buyBottomSheetState();
 }
 
-class _readBottomSheetState extends State<readBottomSheet> {
+class _buyBottomSheetState extends State<buyBottomSheet> {
   var productPrice = '0';
   var activeNow = 0;
   Color buttonActive = const Color.fromARGB(255, 235, 127, 35);

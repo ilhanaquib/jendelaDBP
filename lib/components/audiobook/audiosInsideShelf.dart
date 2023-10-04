@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/bookshelf/booksInsideShelf.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -130,12 +129,12 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                                   ),
                                 ),
                                 Text('RM${bookSpecific.price!}'),
-                                 Padding(
-                                  padding: const EdgeInsets.only(top: 10),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 10),
                                   child: SizedBox(
                                     width: 150,
                                     child: LinearProgressIndicator(
-                                      color: DbpColor().jendelaOrange,
+                                      color: Color.fromARGB(255, 235, 127, 35),
                                       value: 2,
                                     ),
                                   ),
@@ -144,7 +143,7 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                             ),
                             CircleAvatar(
                               backgroundColor:
-                                  DbpColor().jendelaGray,
+                                  const Color.fromARGB(255, 123, 123, 123),
                               radius: 22,
                               child: Center(
                                 // Center widget to center the IconButton
@@ -161,9 +160,9 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                                         ),
                                       );
                                     },
-                                    icon:  Icon(
+                                    icon: const Icon(
                                       Icons.play_arrow_rounded,
-                                      color: DbpColor().jendelaGray,
+                                      color: Color.fromARGB(255, 123, 123, 123),
                                     ),
                                   ),
                                 ),
