@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
-import 'package:jendela_dbp/view/pages/userIcon.dart';
+import 'package:jendela_dbp/view/pages/profile/userIcon.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';

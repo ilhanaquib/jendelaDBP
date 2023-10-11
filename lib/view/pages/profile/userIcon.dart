@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({

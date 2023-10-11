@@ -1,15 +1,16 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:jendela_dbp/api-services.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/view/pages/checkoutScreen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jendela_dbp/view/pages/purchasing/checkoutScreen.dart';
 
 class CartScreen extends StatefulWidget {
   @override

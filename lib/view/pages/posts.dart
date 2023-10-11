@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jendela_dbp/components/posts/errorCard.dart';
 import 'package:jendela_dbp/components/posts/postCard.dart';
@@ -12,7 +13,6 @@ import 'package:jendela_dbp/stateManagement/blocs/postBloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/connectionCubit.dart';
 import 'package:jendela_dbp/stateManagement/events/postEvent.dart';
 import 'package:jendela_dbp/stateManagement/states/postState.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Posts extends StatefulWidget {
   const Posts({Key? key}) : super(key: key);

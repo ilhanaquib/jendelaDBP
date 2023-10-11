@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:text_scroll/text_scroll.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:text_scroll/text_scroll.dart';
+
+import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 
 class PdfViewerPage extends StatefulWidget {
   const PdfViewerPage({super.key, this.book, this.pdfFile});

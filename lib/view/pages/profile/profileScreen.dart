@@ -1,7 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
@@ -12,10 +17,8 @@ import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/view/authentication/signin.dart';
 import 'package:jendela_dbp/model/userModel.dart';
-import 'package:jendela_dbp/view/pages/userIcon.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jendela_dbp/view/pages/profile/userIcon.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

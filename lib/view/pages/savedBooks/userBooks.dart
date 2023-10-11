@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import 'package:jendela_dbp/components/DBPImportedWidgets/notFoundCard.dart';
 import 'package:jendela_dbp/components/bukuDibeli/getPurchase.dart';
 import 'package:jendela_dbp/components/bukuDibeli/purchasedBookCover.dart';
@@ -13,8 +17,6 @@ import 'package:jendela_dbp/stateManagement/events/productEvent.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/stateManagement/states/productState.dart';
 import 'package:jendela_dbp/view/authentication/signin.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class UserBooks extends StatefulWidget {
   const UserBooks({super.key, this.controller});

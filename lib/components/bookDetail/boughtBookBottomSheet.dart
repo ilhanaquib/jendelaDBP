@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/view/pages/userBooks.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
+import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/view/pages/savedBooks/userBooks.dart';
 
 class boughtBookBottomSheet extends StatefulWidget {
   boughtBookBottomSheet({

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/view/pages/likedBooks.dart';
-import 'package:jendela_dbp/view/pages/userBooks.dart';
+
+import 'package:jendela_dbp/view/pages/savedBooks/likedBooks.dart';
+import 'package:jendela_dbp/view/pages/savedBooks/userBooks.dart';
 
 class SavedBooksHome extends StatefulWidget {
   const SavedBooksHome({super.key});

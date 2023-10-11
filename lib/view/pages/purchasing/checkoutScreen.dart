@@ -1,18 +1,21 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:strings/strings.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:jendela_dbp/api-services.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/view/pages/customerDetail.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:strings/strings.dart';
-import 'package:http/http.dart' as http;
+import 'package:jendela_dbp/view/pages/purchasing/customerDetail.dart';
+
+
 
 class CheckoutScreen extends StatefulWidget {
   @override

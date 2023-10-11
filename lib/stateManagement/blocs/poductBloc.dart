@@ -16,7 +16,6 @@ import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/events/productEvent.dart';
 import 'package:jendela_dbp/stateManagement/states/productState.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:sentry_flutter/sentry_flutter.dart';

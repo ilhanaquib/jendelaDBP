@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class BookSearchDelegate extends SearchDelegate<String> {
   final Box<HiveBookAPI> apiBook;

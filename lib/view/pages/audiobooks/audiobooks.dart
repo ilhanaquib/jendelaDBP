@@ -1,13 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 
 import 'package:text_scroll/text_scroll.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:jendela_dbp/components/audiobook/audioPlayer.dart';
-import 'package:jendela_dbp/components/audiobook/paragraph.dart';
+import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 
 class Audiobooks extends StatelessWidget {
   const Audiobooks({super.key, this.book, this.audioFile});

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/view/pages/audiobooksHome.dart';
+import 'package:jendela_dbp/view/pages/audiobooks/audiobooksHome.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -29,11 +29,9 @@ import 'package:jendela_dbp/view/authentication/signup.dart';
 import 'package:jendela_dbp/view/authentication/verification.dart';
 import 'package:jendela_dbp/view/authentication/verificationPassword.dart';
 import 'package:jendela_dbp/view/onboarding/onboardScreen.dart';
-import 'package:jendela_dbp/view/pages/audiobooks.dart';
-import 'package:jendela_dbp/view/pages/bookRead.dart';
 import 'package:jendela_dbp/view/pages/home.dart';
-import 'package:jendela_dbp/view/pages/profile.dart';
-import 'package:jendela_dbp/view/pages/likedBooks.dart';
+import 'package:jendela_dbp/view/pages/profile/profile.dart';
+import 'package:jendela_dbp/view/pages/savedBooks/likedBooks.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
@@ -104,9 +102,6 @@ class JendelaDBP extends StatelessWidget {
           '/savedBooks': (context) => const LikedBooks(),
           '/audiobooks': (context) => const AudiobooksHome(),
           '/profile': (context) => const Profile(),
-
-          //pages
-          '/bookRead': (context) => const BookRead(),
 
           //authentication
           '/signup': (context) => const Signup(),

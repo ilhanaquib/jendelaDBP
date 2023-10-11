@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/components/pdfViewer.dart';
+
+import 'package:jendela_dbp/components/bookReader/pdfViewer.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 

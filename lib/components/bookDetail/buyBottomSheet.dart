@@ -1,10 +1,12 @@
+import 'package:flutter/material.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class buyBottomSheet extends StatefulWidget {
   buyBottomSheet({
@@ -24,6 +26,7 @@ class buyBottomSheet extends StatefulWidget {
   State<buyBottomSheet> createState() => _buyBottomSheetState();
 }
 
+// ignore: camel_case_types
 class _buyBottomSheetState extends State<buyBottomSheet> {
   var productPrice = '0';
   var activeNow = 0;
@@ -85,63 +88,65 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                   padding: const EdgeInsets.only(left: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children:
-                        List.generate(widget.toJSonVariation!.length, (index) {
-                      widget.formatType = '';
+                    children: List.generate(
+                      widget.toJSonVariation!.length,
+                      (index) {
+                        widget.formatType = '';
 
-                      widget.formatType = widget.toJSonVariation![index]
-                              ['attributes']!["pa_pilihan-format"] is String
-                          ? "Pilihan Format: " +
-                              widget.toJSonVariation![index]
-                                  ['attributes']!["pa_pilihan-format"]
-                          : "Pilihan Format: Buku Cetak";
+                        widget.formatType = widget.toJSonVariation![index]
+                                ['attributes']!["pa_pilihan-format"] is String
+                            ? "Pilihan Format: ${widget.toJSonVariation![index]['attributes']!["pa_pilihan-format"]}"
+                            : "Pilihan Format: Buku Cetak";
 
-                      widget.formatType = widget.formatType.split(":")[1];
-                      if (widget.formatType.toLowerCase().contains('cetak')) {
-                        widget.formatType = widget.formatType
-                            .toUpperCase()
-                            .replaceAll(RegExp(r'(_|-)+'), ' ');
-                      } else if (widget.formatType
-                          .toLowerCase()
-                          .contains('pdf')) {
-                        widget.formatType = "PDF";
-                      } else if (widget.formatType
-                          .toLowerCase()
-                          .contains('epub')) {
-                        widget.formatType = "EPUB";
-                      } else if (widget.formatType
-                              .toLowerCase()
-                              .contains('audio') ||
-                          widget.formatType.toLowerCase().contains('MP3')) {
-                        widget.formatType = "Audio";
-                      }
+                        widget.formatType = widget.formatType.split(":")[1];
+                        if (widget.formatType.toLowerCase().contains('cetak')) {
+                          widget.formatType = widget.formatType
+                              .toUpperCase()
+                              .replaceAll(RegExp(r'(_|-)+'), ' ');
+                        } else if (widget.formatType
+                            .toLowerCase()
+                            .contains('pdf')) {
+                          widget.formatType = "PDF";
+                        } else if (widget.formatType
+                            .toLowerCase()
+                            .contains('epub')) {
+                          widget.formatType = "EPUB";
+                        } else if (widget.formatType
+                                .toLowerCase()
+                                .contains('audio') ||
+                            widget.formatType.toLowerCase().contains('MP3')) {
+                          widget.formatType = "Audio";
+                        }
 
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: activeNow == index
-                              ? buttonActive
-                              : buttonDeactive,
-                          foregroundColor: activeNow == index
-                              ? buttonActive
-                              : buttonDeactive,
-                          elevation: 0, // Set elevation to 0 to remove shadow
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            productPrice =
-                                widget.toJSonVariation![index]['price'];
-                            activeNow = index;
-                          });
-                        },
-                        child: Text(
-                          widget.formatType,
-                          style: TextStyle(
-                              color: activeNow == index
-                                  ? textActive
-                                  : textDeactive),
-                        ),
-                      );
-                    }),
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: activeNow == index
+                                ? buttonActive
+                                : buttonDeactive,
+                            foregroundColor: activeNow == index
+                                ? buttonActive
+                                : buttonDeactive,
+                            elevation: 0, // Set elevation to 0 to remove shadow
+                          ),
+                          onPressed: () {
+                            setState(
+                              () {
+                                productPrice =
+                                    widget.toJSonVariation![index]['price'];
+                                activeNow = index;
+                              },
+                            );
+                          },
+                          child: Text(
+                            widget.formatType,
+                            style: TextStyle(
+                                color: activeNow == index
+                                    ? textActive
+                                    : textDeactive),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 )
               ],
@@ -162,16 +167,17 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                           Navigator.of(context).pop();
                         },
                         child: Container(
-                            alignment: Alignment.center,
-                            width: (MediaQuery.of(context).size.width / 2) - 20,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.red),
-                            ),
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(color: Colors.red),
-                            )),
+                          alignment: Alignment.center,
+                          width: (MediaQuery.of(context).size.width / 2) - 20,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red),
+                          ),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
                       ),
                       InkWell(
                         onTap: () async {
@@ -183,12 +189,14 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                             //     toJSonVariation[activeNow]
                             //         ['external_url']);
                           } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              behavior: SnackBarBehavior.floating,
-                              content: Text('Internet Acccess Needed'),
-                              duration: Duration(seconds: 3),
-                            ));
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: Text('Internet Acccess Needed'),
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
                           }
                         },
                         child: Container(
@@ -282,26 +290,29 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                                       widget.book!.woocommerce_variations,
                                   toCheckout: false);
 
-                              await widget.toCartBook!
-                                  .add(addToCart)
-                                  .then((value) {
-                                Navigator.of(context).pop();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  width: 200,
-                                  behavior: SnackBarBehavior.floating,
-                                  content: Text('Ditambah ke troli'),
-                                  duration: Duration(seconds: 1),
-                                ));
-                              });
+                              await widget.toCartBook!.add(addToCart).then(
+                                (value) {
+                                  Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      width: 200,
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text('Ditambah ke troli'),
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                },
+                              );
                             } else {
                               // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                content: Text('Memerlukan penggunaan internet'),
-                                duration: Duration(seconds: 2),
-                              ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  content:
+                                      Text('Memerlukan penggunaan internet'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
                             }
                           },
                         ),

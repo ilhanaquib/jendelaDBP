@@ -1,28 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
-import 'package:jendela_dbp/api-services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
-import 'package:jendela_dbp/components/authentication/authProvider.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/model/userModel.dart';
-import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
-import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/view/authentication/popups/popupSigninError.dart';
-import 'package:jendela_dbp/main.dart';
-import 'package:jendela_dbp/view/authentication/popups/popupTerms.dart';
-import 'package:jendela_dbp/view/authentication/signup.dart';
-import 'package:msh_checkbox/msh_checkbox.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jendela_dbp/api-services.dart';
 
 class PurchaseSignIn extends StatefulWidget {
   const PurchaseSignIn({super.key});

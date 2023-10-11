@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/view/pages/audiobooksHome.dart';
-import 'package:jendela_dbp/view/pages/profileScreen.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/view/pages/home.dart';
 import 'package:jendela_dbp/view/pages/posts.dart';
-import 'package:jendela_dbp/view/pages/likedBooks.dart';
-import 'package:jendela_dbp/view/pages/savedBooksHome.dart';
+import 'package:jendela_dbp/view/pages/savedBooks/savedBooksHome.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/view/pages/audiobooks/audiobooksHome.dart';
+import 'package:jendela_dbp/view/pages/profile/profileScreen.dart';
 
 class MyPersistentBottomNavBar extends StatelessWidget {
   const MyPersistentBottomNavBar({

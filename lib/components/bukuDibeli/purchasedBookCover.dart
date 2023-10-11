@@ -1,6 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:jendela_dbp/components/bukuDibeli/bookInformation.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/poductBloc.dart';

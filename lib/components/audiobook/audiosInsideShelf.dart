@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jendela_dbp/components/bookshelf/booksInsideShelf.dart';
-import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/notFoundCard.dart';
@@ -18,7 +16,7 @@ class AudiosInsideShelf extends StatefulWidget {
   final List<dynamic> dataBooks;
   final Box<HiveBookAPI> bookBox;
 
-  AudiosInsideShelf({required this.dataBooks, required this.bookBox});
+  AudiosInsideShelf({super.key, required this.dataBooks, required this.bookBox});
 
   @override
   _AudiosInsideShelfState createState() => _AudiosInsideShelfState();
@@ -66,7 +64,6 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                       bookSpecific!.woocommerce_variations!;
                   List<dynamic> variations =
                       jsonDecode(woocommerceVariationsString);
-                  String format = '';
 
                   // Check if the book has the format 'Buku Audio'
                   bool hasBukuAudioFormat = variations.any((variation) {
@@ -76,7 +73,7 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
 
                   // Skip books that don't have the 'Buku Audio' format
                   if (!hasBukuAudioFormat) {
-                    return SizedBox
+                    return const SizedBox
                         .shrink(); // Return an empty SizedBox to hide the book
                   }
 

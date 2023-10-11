@@ -1,36 +1,22 @@
 import 'dart:convert' as convert;
-import 'dart:io';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jendela_dbp/components/bookDetail/buyBottomSheet.dart';
-import 'package:jendela_dbp/components/bukuDibeli/downloadButton.dart';
-import 'package:jendela_dbp/components/pdfViewer.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/controllers/encryptFile.dart';
-import 'package:jendela_dbp/controllers/globalVar.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
-import 'package:jendela_dbp/view/pages/audiobooks.dart';
-import 'package:jendela_dbp/view/pages/userBooks.dart';
-import 'package:like_button/like_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/controllers/constants.dart';
-import 'package:jendela_dbp/components/bookDetail/boughtBookBottomSheet.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
 import 'package:jendela_dbp/components/bookDetail/chapterList.dart';
+import 'package:jendela_dbp/components/bookDetail/buyBottomSheet.dart';
+import 'package:jendela_dbp/components/bookDetail/boughtBookBottomSheet.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:jendela_dbp/components/epubViewer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vocsy_epub_viewer/epub_viewer.dart';
+import 'package:jendela_dbp/view/pages/audiobooks/audiobooks.dart';
 
 class BookDetail extends StatefulWidget {
   BookDetail(

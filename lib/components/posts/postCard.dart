@@ -1,15 +1,14 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:jendela_dbp/controllers/dbpColor.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:encrypt/encrypt.dart';
+
 import 'package:jendela_dbp/controllers/globalVar.dart';
 
 class EncryptFile {

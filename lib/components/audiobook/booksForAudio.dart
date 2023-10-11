@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:hive/hive.dart';
-import 'package:jendela_dbp/components/audiobook/audiosInsideShelf.dart';
-import 'package:jendela_dbp/components/bookshelf/carouselTitle.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import 'package:jendela_dbp/components/bookshelf/booksInsideShelf.dart';
-import 'package:jendela_dbp/view/pages/allBooks.dart';
+import 'package:jendela_dbp/components/audiobook/audiosInsideShelf.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 
 Widget AudiobookShelf(
@@ -14,8 +10,8 @@ Widget AudiobookShelf(
   List listBook,
   Box<HiveBookAPI> APIBook,
 ) {
-  return Container(
-    child: Container(
+  return SizedBox(
+    child: SizedBox(
       child: Column(
         children: [
           SizedBox(

@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:jendela_dbp/stateManagement/states/userState.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserCubit extends Cubit<UserState> {
   UserCubit() : super(UserInitial());
@@ -16,7 +14,7 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
 
-      emit(UserSuccess(message: 'Saved'));
+      emit(const UserSuccess(message: 'Saved'));
       return true;
     } catch (error) {
       emit(UserError(message: error.toString()));
