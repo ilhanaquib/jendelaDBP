@@ -109,7 +109,7 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                                 elevation: 4,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(bookSpecific!.images!,
+                                  child: Image.network(bookSpecific.images!,
                                       fit: BoxFit.cover),
                                 ),
                               ),
@@ -129,45 +129,35 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                                   ),
                                 ),
                                 Text('RM${bookSpecific.price!}'),
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: SizedBox(
-                                    width: 150,
-                                    child: LinearProgressIndicator(
-                                      color: Color.fromARGB(255, 235, 127, 35),
-                                      value: 2,
-                                    ),
-                                  ),
-                                )
                               ],
                             ),
-                            CircleAvatar(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 123, 123, 123),
-                              radius: 22,
-                              child: Center(
-                                // Center widget to center the IconButton
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 20,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      PersistentNavBarNavigator.pushNewScreen(
-                                        context,
-                                        withNavBar: false,
-                                        screen: Audiobooks(
-                                         book: bookSpecific,
-                                        ),
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.play_arrow_rounded,
-                                      color: Color.fromARGB(255, 123, 123, 123),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // CircleAvatar(
+                            //   backgroundColor:
+                            //       const Color.fromARGB(255, 123, 123, 123),
+                            //   radius: 22,
+                            //   child: Center(
+                            //     // Center widget to center the IconButton
+                            //     child: CircleAvatar(
+                            //       backgroundColor: Colors.white,
+                            //       radius: 20,
+                            //       child: IconButton(
+                            //         onPressed: () {
+                            //           PersistentNavBarNavigator.pushNewScreen(
+                            //             context,
+                            //             withNavBar: false,
+                            //             screen: Audiobooks(
+                            //              book: bookSpecific,
+                            //             ),
+                            //           );
+                            //         },
+                            //         icon: const Icon(
+                            //           Icons.play_arrow_rounded,
+                            //           color: Color.fromARGB(255, 123, 123, 123),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),

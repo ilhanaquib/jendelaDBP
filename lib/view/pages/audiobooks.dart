@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 
 import 'package:text_scroll/text_scroll.dart';
 
@@ -9,9 +10,10 @@ import 'package:jendela_dbp/components/audiobook/audioPlayer.dart';
 import 'package:jendela_dbp/components/audiobook/paragraph.dart';
 
 class Audiobooks extends StatelessWidget {
-  const Audiobooks({super.key, this.book});
+  const Audiobooks({super.key, this.book, this.audioFile});
 
-  final HiveBookAPI? book;
+  final HivePurchasedBook? book;
+  final String? audioFile;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class Audiobooks extends StatelessWidget {
                           child: Stack(
                             children: [
                               CachedNetworkImage(
-                                imageUrl: book!.images!,
+                                imageUrl: book!.featured_media_url!,
                                 height: 200,
                                 width: 150,
                                 fit: BoxFit.fill,
@@ -84,7 +86,7 @@ class Audiobooks extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         left: 20, right: 20),
                                     child: TextScroll(
-                                      book!.name!,
+                                      book!.product_name!,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
@@ -94,12 +96,6 @@ class Audiobooks extends StatelessWidget {
                                       ),
                                       selectable: true,
                                       pauseBetween: const Duration(seconds: 5),
-                                    ),
-                                  ),
-                                   Text(
-                                    'Page : 78/266',
-                                    style: TextStyle(
-                                      color: DbpColor().jendelaGray,
                                     ),
                                   ),
                                 ],
@@ -114,7 +110,7 @@ class Audiobooks extends StatelessWidget {
                         child: SizedBox(
                           height: 200,
                           child: SingleChildScrollView(
-                            child: Text(book!.description!),
+                            child: Text(book!.descriptionParent!),
                           ),
                         ),
                       ),

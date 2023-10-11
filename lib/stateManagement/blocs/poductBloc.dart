@@ -1,55 +1,52 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:bloc/bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart' as http;
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path/path.dart' as p;
-
 import 'package:jendela_dbp/api-services.dart';
 import 'package:jendela_dbp/components/bukuDibeli/getPurchase.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
+import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/model/epubSetting.dart';
 import 'package:jendela_dbp/model/productModel.dart';
 import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/events/productEvent.dart';
 import 'package:jendela_dbp/stateManagement/states/productState.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-
+import 'package:path_provider/path_provider.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:http/http.dart' as http;
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart' as p;
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   // News Bloc
   ProductBloc() : super(ProductInit());
-  // final int _startIndex = 1;
-  // final int _perPage = 10;
-  // final bool _hasReachedMax = false;
+  int _startIndex = 1;
+  int _perPage = 10;
+  bool _hasReachedMax = false;
 
-  // @override
-  // Stream<Transition<ProductEvent, ProductState>> transformEvents(
-  //     Stream<ProductEvent> events,
-  //     //TransitionFunction<ProductEvent, ProductState> transitionFn) {
-  //   // TODO: implement transformEvents
-  //   // return super.transformEvents(events, transitionFn);
-  //   // events
-  //   //     .debounceTime(Duration(milliseconds: 500))
-  //   //     .switchMap((value) => null);
-  //   final nonDebounceStream = events.where((event) => event is! ProductFetch);
+  @override
+  Stream<Transition<ProductEvent, ProductState>> transformEvents(
+      Stream<ProductEvent> events,
+      TransitionFunction<ProductEvent, ProductState> transitionFn) {
+    // TODO: implement transformEvents
+    // return super.transformEvents(events, transitionFn);
+    // events
+    //     .debounceTime(Duration(milliseconds: 500))
+    //     .switchMap((value) => null);
+    final nonDebounceStream = events.where((event) => event is! ProductFetch);
 
-  //   final debounceStream = events
-  //       .where((event) => event is ProductFetch)
-  //       .debounceTime(Duration(milliseconds: 500));
-  //   return super.transformEvents(
-  //       MergeStream([nonDebounceStream, debounceStream]), transitionFn);
-  // }
+    final debounceStream = events
+        .where((event) => event is ProductFetch)
+        .debounceTime(Duration(milliseconds: 500));
+    return super.transformEvents(
+        MergeStream([nonDebounceStream, debounceStream]), transitionFn);
+  }
 
   @override
   // TODO: implement initialState
@@ -97,7 +94,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           'wp-json/edbp/v1/ujana-buku', {"per_page": "25"}));
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List<dynamic>;
-        if (data.isNotEmpty) {
+        if (data.length > 0) {
           products = data.map((rawBlog) {
             return Product.fromJson(rawBlog);
           }).toList();
@@ -222,7 +219,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             .where((key) => bookPurchaseBox.get(key)!.IDUser == userID)
             .toList();
         dataBooks = dataBooks.reversed.toList();
-        if (dataBooks.isNotEmpty) {
+        if (dataBooks.length > 0) {
           yield ProductLoaded(dataBooks: dataBooks);
         }
 
@@ -307,7 +304,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   //write to app path
   Future<File> _writeToFile(ByteData data, String path) {
     final buffer = data.buffer;
-    return File(path).writeAsBytes(
+    return new File(path).writeAsBytes(
         buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }
 

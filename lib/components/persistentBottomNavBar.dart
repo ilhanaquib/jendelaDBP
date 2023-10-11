@@ -7,7 +7,8 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/view/pages/home.dart';
 import 'package:jendela_dbp/view/pages/posts.dart';
-import 'package:jendela_dbp/view/pages/savedBooks.dart';
+import 'package:jendela_dbp/view/pages/likedBooks.dart';
+import 'package:jendela_dbp/view/pages/savedBooksHome.dart';
 
 class MyPersistentBottomNavBar extends StatelessWidget {
   const MyPersistentBottomNavBar({
@@ -23,7 +24,7 @@ class MyPersistentBottomNavBar extends StatelessWidget {
       return const [
         Home(),
         Posts(),
-        SavedBooks(),
+        SavedBooksHome(),
         AudiobooksHome(),
         ProfileScreen(),
       ];

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -11,11 +12,13 @@ class buyBottomSheet extends StatefulWidget {
     this.book,
     this.toJSonVariation,
     this.formatType,
+    this.toCartBook,
   });
 
   final HiveBookAPI? book;
   final List? toJSonVariation;
   var formatType;
+  final Box<HiveBookAPI>? toCartBook;
 
   @override
   State<buyBottomSheet> createState() => _buyBottomSheetState();
@@ -28,6 +31,7 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
   Color buttonDeactive = Colors.transparent;
   Color textActive = Colors.white;
   Color textDeactive = Colors.black;
+
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
@@ -56,12 +60,9 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                                   (context, url, downloadProgress) => Container(
                                 alignment: Alignment.center,
                                 child: LoadingAnimationWidget.discreteCircle(
-                                  color:
-                                      DbpColor().jendelaGray,
-                                  secondRingColor:
-                                      DbpColor().jendelaGreen,
-                                  thirdRingColor:
-                                      DbpColor().jendelaOrange,
+                                  color: DbpColor().jendelaGray,
+                                  secondRingColor: DbpColor().jendelaGreen,
+                                  thirdRingColor: DbpColor().jendelaOrange,
                                   size: 50.0,
                                 ),
                               ),
@@ -182,7 +183,8 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                             //     toJSonVariation[activeNow]
                             //         ['external_url']);
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
                               behavior: SnackBarBehavior.floating,
                               content: Text('Internet Acccess Needed'),
                               duration: Duration(seconds: 3),
@@ -227,8 +229,7 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                DbpColor().jendelaGreen,
+                            backgroundColor: DbpColor().jendelaGreen,
                             elevation: 0, // Set elevation to 0 to remove shadow
                           ),
                           child: const Row(
@@ -253,8 +254,55 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                                 await (Connectivity().checkConnectivity());
                             if (connectivityResult ==
                                     ConnectivityResult.mobile ||
-                                connectivityResult ==
-                                    ConnectivityResult.wifi) {}
+                                connectivityResult == ConnectivityResult.wifi) {
+                              HiveBookAPI addToCart = HiveBookAPI(
+                                  id: widget.toJSonVariation![activeNow]['id'],
+                                  name: widget.toJSonVariation![activeNow]
+                                      ['name'],
+                                  images: widget.book!.images,
+                                  description:
+                                      widget.toJSonVariation![activeNow]
+                                          ['description'],
+                                  categories: widget.book!.categories,
+                                  regular_price: widget
+                                      .toJSonVariation![activeNow]['price'],
+                                  sale_price: widget.toJSonVariation![activeNow]
+                                      ['sale_price'],
+                                  price: widget.toJSonVariation![activeNow]
+                                      ['price'],
+                                  average_rating: widget.book!.average_rating,
+                                  quantity: 1,
+                                  type: widget.toJSonVariation![activeNow]
+                                              ['attributes']![
+                                          "pa_pilihan-format"] is String
+                                      ? widget.toJSonVariation![activeNow]
+                                          ['attributes']!["pa_pilihan-format"]
+                                      : "Buku Cetak",
+                                  woocommerce_variations:
+                                      widget.book!.woocommerce_variations,
+                                  toCheckout: false);
+
+                              await widget.toCartBook!
+                                  .add(addToCart)
+                                  .then((value) {
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  width: 200,
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text('Ditambah ke troli'),
+                                  duration: Duration(seconds: 1),
+                                ));
+                              });
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: Text('Memerlukan penggunaan internet'),
+                                duration: Duration(seconds: 2),
+                              ));
+                            }
                           },
                         ),
                       ],

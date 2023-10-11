@@ -4,11 +4,13 @@ import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:text_scroll/text_scroll.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class PdfViewerPage extends StatefulWidget {
-  const PdfViewerPage({super.key, this.book});
+  const PdfViewerPage({super.key, this.book, this.pdfFile});
 
   final HiveBookAPI? book;
+  final String? pdfFile;
 
   @override
   State<PdfViewerPage> createState() => _PdfViewerPageState();
@@ -19,7 +21,66 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
 
   int? lastRead = 0;
   final PdfViewerController _pdfViewerController = PdfViewerController();
+  PdfTextSearchResult _searchResult = PdfTextSearchResult();
+  TextEditingController _searchController = TextEditingController();
+
   bool showAppBar = true;
+
+  void showSearchDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Search PDF'),
+          content: TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              hintText: 'Enter search query',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                String searchQuery = _searchController.text;
+                if (searchQuery.isNotEmpty) {
+                  _searchResult = _pdfViewerController.searchText(searchQuery,
+                      searchOption: TextSearchOption.caseSensitive);
+                }
+                Navigator.of(context).pop();
+              },
+              child: Text('Search'),
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.keyboard_arrow_up,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                _searchResult.previousInstance();
+                setState(() {}); // Update the UI to reflect the new instance
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                _searchResult.nextInstance();
+                setState(() {}); // Update the UI to reflect the new instance
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -48,7 +109,16 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
                     _pdfViewerKey.currentState?.openBookmarkView();
                   },
                   icon: const Icon(Icons.bookmark_outline_rounded),
-                )
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    showSearchDialog(context);
+                  },
+                ),
               ],
             )
           : null,

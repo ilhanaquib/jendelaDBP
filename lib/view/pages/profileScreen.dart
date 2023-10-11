@@ -182,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       backgroundImage: context
                               .watch<ImageBloc>()
                               .selectedImageProvider ??
-                          const AssetImage('assets/images/tiadakulitbuku.png'),
+                          const AssetImage('assets/images/logo.png'),
                     ),
                   ),
                   Padding(

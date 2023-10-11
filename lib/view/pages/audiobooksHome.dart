@@ -313,7 +313,7 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
               child: CircleAvatar(
                 backgroundImage:
                     context.watch<ImageBloc>().selectedImageProvider ??
-                        const AssetImage('assets/images/tiadakulitbuku.png'),
+                        const AssetImage('assets/images/logo.png'),
               ),
             ),
           ),

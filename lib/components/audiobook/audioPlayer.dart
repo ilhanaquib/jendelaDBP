@@ -12,7 +12,9 @@ import 'package:jendela_dbp/components/bookDetail/chapterList.dart';
 
 
 class AudioPlayerWidget extends StatefulWidget {
-  const AudioPlayerWidget({Key? key}) : super(key: key);
+  const AudioPlayerWidget({super.key, this.audioFile});
+
+  final String? audioFile;
 
   @override
   State<AudioPlayerWidget> createState() => _AudioPlayerWidgetState();
@@ -126,7 +128,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   Future<String> _loadAudioFromAsset() async {
     final ByteData data =
-        await rootBundle.load('assets/audio/audiobook.wav');
+        await rootBundle.load(widget.audioFile!);
     final Directory tempDir = await getTemporaryDirectory();
     final File tempFile = File('${tempDir.path}/audiobook.wav');
     await tempFile.writeAsBytes(data.buffer.asUint8List());

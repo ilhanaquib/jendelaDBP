@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/view/pages/allBooks.dart';
 import 'package:jendela_dbp/view/pages/audiobooksHome.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
@@ -34,7 +33,7 @@ import 'package:jendela_dbp/view/pages/audiobooks.dart';
 import 'package:jendela_dbp/view/pages/bookRead.dart';
 import 'package:jendela_dbp/view/pages/home.dart';
 import 'package:jendela_dbp/view/pages/profile.dart';
-import 'package:jendela_dbp/view/pages/savedBooks.dart';
+import 'package:jendela_dbp/view/pages/likedBooks.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
@@ -102,7 +101,7 @@ class JendelaDBP extends StatelessWidget {
         routes: {
           // bottom nav bar
           '/home': (context) => const Home(),
-          '/savedBooks': (context) => const SavedBooks(),
+          '/savedBooks': (context) => const LikedBooks(),
           '/audiobooks': (context) => const AudiobooksHome(),
           '/profile': (context) => const Profile(),
 
@@ -132,6 +131,7 @@ Future<void> registerHive() async {
   Hive.registerAdapter(HiveBookAPIAdapter());
   await Hive.openBox<HiveBookAPI>(GlobalVar.APIBook);
   await Hive.openBox<HivePurchasedBook>(GlobalVar.PuchasedBook);
+  await Hive.openBox<HiveBookAPI>(GlobalVar.ToCartBook);
   await Hive.openBox<bool>('liked_status');
   await Hive.openBox<HiveBookAPI>('liked_books');
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();

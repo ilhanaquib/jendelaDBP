@@ -100,7 +100,7 @@ class _SigninState extends State<Signin> {
                 ),
               ),
             ),
-             Padding(
+            Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Column(
                 children: [
@@ -145,11 +145,7 @@ class _SigninState extends State<Signin> {
                       controller: emailController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return "Please enter an email";
-                        } else if (!RegExp(
-                                r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
-                            .hasMatch(value)) {
-                          return "Please enter a valid email";
+                          return "Please enter an email or username";
                         }
                         return null;
                       },
@@ -166,8 +162,8 @@ class _SigninState extends State<Signin> {
                           ),
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        labelText: 'Email',
-                        labelStyle:  TextStyle(
+                        labelText: 'Email or Username',
+                        labelStyle: TextStyle(
                           color: DbpColor().jendelaGray,
                         ),
                         border: OutlineInputBorder(
@@ -226,7 +222,7 @@ class _SigninState extends State<Signin> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         labelText: 'Password',
-                        labelStyle:  TextStyle(
+                        labelStyle: TextStyle(
                           color: DbpColor().jendelaGray,
                         ),
                         border: OutlineInputBorder(
@@ -263,8 +259,7 @@ class _SigninState extends State<Signin> {
                           style: MSHCheckboxStyle.fillScaleCheck,
                           size: 20,
                           checkedColor: DbpColor().jendelaOrange,
-                          uncheckedColor:
-                              DbpColor().jendelaOrange,
+                          uncheckedColor: DbpColor().jendelaOrange,
                           onChanged: (val) {
                             setState(() {
                               shouldCheck = val;
@@ -272,7 +267,7 @@ class _SigninState extends State<Signin> {
                           },
                         ),
                       ),
-                       Text(
+                      Text(
                         'Remember me',
                         style: TextStyle(
                             color: DbpColor().jendelaGray,
@@ -288,7 +283,7 @@ class _SigninState extends State<Signin> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/forgotPassword');
                     },
-                    child:  Text(
+                    child: Text(
                       'Forgot Password?',
                       style: TextStyle(
                           color: DbpColor().jendelaOrange,
@@ -307,7 +302,7 @@ class _SigninState extends State<Signin> {
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    side:  BorderSide(
+                    side: BorderSide(
                       color: DbpColor().jendelaOrange,
                     ),
                     backgroundColor: DbpColor().jendelaOrange,

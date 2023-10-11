@@ -11,15 +11,17 @@ import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:jendela_dbp/view/pages/bookDetails.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class SavedBooks extends StatefulWidget {
-  const SavedBooks({super.key});
+class LikedBooks extends StatefulWidget {
+  const LikedBooks({super.key, this.controller});
+  final controller;
 
   @override
-  _SavedBooksState createState() => _SavedBooksState();
+  _LikedBooksState createState() => _LikedBooksState();
 }
 
-class _SavedBooksState extends State<SavedBooks> {
+class _LikedBooksState extends State<LikedBooks> {
   late Box<bool> likedStatusBox;
   late Box<HiveBookAPI> likedBooksBox;
   late Map<int, bool> likedStatusMap = {};
@@ -78,9 +80,33 @@ class _SavedBooksState extends State<SavedBooks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Saved Books'),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(88.0),
+        child: Column(
+          children: [
+            AppBar(
+              title: const Text('Liked Books'),
+              centerTitle: true,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SmoothPageIndicator(
+                  controller: widget.controller,
+                  count: 2,
+                  effect: ExpandingDotsEffect(
+                      activeDotColor: DbpColor().jendelaOrange,
+                      dotColor: DbpColor().jendelaGray,
+                      dotHeight: 8,
+                      dotWidth: 8),
+                  onDotClicked: (index) => widget.controller.animateToPage(index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       body: ValueListenableBuilder(
         valueListenable: likedBooksBox.listenable(),

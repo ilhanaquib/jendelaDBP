@@ -30,7 +30,7 @@ class UserIcon extends StatelessWidget {
           child: CircleAvatar(
             radius: 170,
             backgroundImage:
-                imageProvider ?? const AssetImage('assets/images/tiadakulitbuku.png'),
+                imageProvider ?? const AssetImage('assets/images/logo.png'),
           ),
         );
       },

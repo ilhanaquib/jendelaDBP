@@ -1,38 +1,49 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/bookDetail/buyBottomSheet.dart';
+import 'package:jendela_dbp/components/bukuDibeli/downloadButton.dart';
 import 'package:jendela_dbp/components/pdfViewer.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/controllers/encryptFile.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
+import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/view/pages/audiobooks.dart';
+import 'package:jendela_dbp/view/pages/userBooks.dart';
 import 'package:like_button/like_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/controllers/constants.dart';
+import 'package:jendela_dbp/components/bookDetail/boughtBookBottomSheet.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
 import 'package:jendela_dbp/components/bookDetail/chapterList.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:jendela_dbp/components/epubViewer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocsy_epub_viewer/epub_viewer.dart';
 
 class BookDetail extends StatefulWidget {
-  const BookDetail({
-    super.key,
-    this.book,
-    this.likedStatusBox,
-    this.bookBox,
-  });
+  BookDetail(
+      {super.key,
+      this.book,
+      this.likedStatusBox,
+      this.bookBox,
+      this.bookIdentification});
 
   final HiveBookAPI? book;
   final Box<bool>? likedStatusBox;
   final Box<HiveBookAPI>? bookBox;
+  HivePurchasedBook? bookIdentification;
 
   @override
   State<BookDetail> createState() => _BookDetailState();
@@ -41,8 +52,21 @@ class BookDetail extends StatefulWidget {
 class _BookDetailState extends State<BookDetail> {
   bool _isBookLiked = false;
   final likedBooksBox = Hive.box<HiveBookAPI>('liked_books');
-  bool isBookAvailable = true;
-  bool isPdf = false;
+  bool isBookAvailable = false;
+  bool isPdf = true;
+  final controller = PageController();
+  HivePurchasedBook? myDetailsBook;
+  bool isDownloadingFile = false;
+  bool isDownloadFile = false;
+  bool isLoadingBook = true;
+  String localPathPermanent = "Tiada";
+  String? currentUserID;
+  String currentUser = "";
+  Box<HivePurchasedBook> PurchasedBook =
+      Hive.box<HivePurchasedBook>(GlobalVar.PuchasedBook);
+  List<int> myBook = [];
+  bool isCompleteLoading = false;
+  Box<HiveBookAPI> toCartBook = Hive.box<HiveBookAPI>(GlobalVar.ToCartBook);
 
   @override
   void initState() {
@@ -108,7 +132,7 @@ class _BookDetailState extends State<BookDetail> {
 
   Future<void> buyItem(context) {
     List toJSonVariation =
-        json.decode(widget.book!.woocommerce_variations ?? '[]');
+        convert.json.decode(widget.book!.woocommerce_variations ?? '[]');
     toJSonVariation = toJSonVariation.where((variation) {
       if (variation['status'].toString().toLowerCase() == "publish") {
         return true;
@@ -131,7 +155,24 @@ class _BookDetailState extends State<BookDetail> {
             book: widget.book,
             toJSonVariation: toJSonVariation,
             formatType: formatType,
+            toCartBook: toCartBook,
           ),
+        );
+      },
+    );
+  }
+
+  Future<void> boughtBook(context) {
+    return showModalBottomSheet(
+      useRootNavigator: true,
+      elevation: 2,
+      barrierColor: Colors.black.withOpacity(0.8),
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (builder) {
+        return SizedBox(
+          height: 150,
+          child: boughtBookBottomSheet(),
         );
       },
     );
@@ -240,12 +281,12 @@ class _BookDetailState extends State<BookDetail> {
                             ),
                           ),
                         ),
-                        Text(
-                          'book author',
-                          style: TextStyle(
-                            color: DbpColor().jendelaGray,
-                          ),
-                        ),
+                        // Text(
+                        //   'book author',
+                        //   style: TextStyle(
+                        //     color: DbpColor().jendelaGray,
+                        //   ),
+                        // ),
                         Container(
                           height: 100,
                           margin: const EdgeInsets.only(
@@ -325,7 +366,7 @@ class _BookDetailState extends State<BookDetail> {
                           padding: const EdgeInsets.only(
                               left: 20, right: 20, top: 10, bottom: 10),
                           child: SizedBox(
-                            height: 175,
+                            height: 208,
                             child: SingleChildScrollView(
                               child: widget.book!.description!.isEmpty
                                   ? const NoDescriptionCard()
@@ -344,165 +385,143 @@ class _BookDetailState extends State<BookDetail> {
                     ),
                   ),
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.77,
+                    top: MediaQuery.of(context).size.height * 0.82,
                     left: MediaQuery.of(context).size.width * 0.03,
                     child: SafeArea(
-                      child: ButtonBar(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 7.5),
-                                child: Row(
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        bottomSheetChapter(context);
-                                      },
-                                      child: Text(
-                                        'Chapter >',
-                                        style: TextStyle(
-                                            color: DbpColor().jendelaOrange,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              side: BorderSide(
+                                color: DbpColor().jendelaOrange,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      side: BorderSide(
-                                        color: DbpColor().jendelaOrange,
-                                      ),
-                                    ),
-                                    // 1. check if the book is purchased
-                                    // 2. if book isnt purchased, should buy
-                                    // 3. if book is purhcaesd, open the book pdf/epub
-                                    onPressed: isBookAvailable
-                                        ? () {
-                                            isPdf
-                                                ? Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          PdfViewerPage(
-                                                        book: widget.book,
-                                                      ),
-                                                    ),
-                                                  )
-                                                :
-                                                // Navigator.push(
-                                                //     context,
-                                                //     MaterialPageRoute(
-                                                //       builder: (context) =>
-                                                //           EpubViewerPage(
-                                                //         book: widget.book,
-                                                //       ),
-                                                //     ),
-                                                //   );
+                            ),
+                            // 1. check if the book is purchased
+                            // 2. if book isnt purchased, should buy
+                            // 3. if book is purhcaesd, open the book pdf/epub
+                            onPressed: isBookAvailable
+                                ? () {
+                                    // 1. check if book is downloaded
+                                    // 2. if book isnt downloaded, open a popup that asks user to download book/
+                                    boughtBook(context);
+                                  }
+                                : () {
+                                    buyItem(context);
+                                  },
 
-                                                VocsyEpub.setConfig(
-                                                    identifier: "iosBook",
-                                                    scrollDirection:
-                                                        EpubScrollDirection
-                                                            .HORIZONTAL,
-                                                    allowSharing: true,
-                                                    enableTts: true,
-                                                    nightMode: false,
-                                                    
-                                                  );
-                                            // get current locator
-                                            VocsyEpub.locatorStream
-                                                .listen((locator) {
-                                              print('LOCATOR: $locator');
-                                            });
-                                            VocsyEpub.openAsset(
-                                              'assets/books/accessible_epub_3.epub',
-                                              lastLocation:
-                                                  EpubLocator.fromJson({
-                                                "bookId": "2239",
-                                                "href": "/OEBPS/ch06.xhtml",
-                                                "created": 1539934158390,
-                                                "locations": {
-                                                  "cfi":
-                                                      "epubcfi(/0!/4/4[simple_book]/2/2/6)"
-                                                }
-                                              }),
-                                            );
-                                          }
-                                        : () {
-                                            buyItem(context);
-                                          },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.import_contacts_rounded,
-                                            color: DbpColor().jendelaOrange,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            'Read Book',
-                                            style: TextStyle(
-                                              color: DbpColor().jendelaOrange,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                            // isPdf
+                            //     ? Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               PdfViewerPage(
+                            //             book: widget.book,
+                            //           ),
+                            //         ),
+                            //       )
+                            //     :
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) =>
+                            //           EpubViewerPage(
+                            //         book: widget.book,
+                            //       ),
+                            //     ),
+                            //   );
+
+                            //       VocsyEpub.setConfig(
+                            //           identifier: "iosBook",
+                            //           scrollDirection:
+                            //               EpubScrollDirection
+                            //                   .HORIZONTAL,
+                            //           allowSharing: true,
+                            //           enableTts: true,
+                            //           nightMode: false,
+
+                            //         );
+                            //   // get current locator
+                            //   VocsyEpub.locatorStream
+                            //       .listen((locator) {
+                            //     print('LOCATOR: $locator');
+                            //   });
+                            //   VocsyEpub.openAsset(
+                            //     'assets/books/accessible_epub_3.epub',
+                            //     lastLocation:
+                            //         EpubLocator.fromJson({
+                            //       "bookId": "2239",
+                            //       "href": "/OEBPS/ch06.xhtml",
+                            //       "created": 1539934158390,
+                            //       "locations": {
+                            //         "cfi":
+                            //             "epubcfi(/0!/4/4[simple_book]/2/2/6)"
+                            //       }
+                            //     }),
+                            //   );
+                            // }
+
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.import_contacts_rounded,
+                                    color: DbpColor().jendelaOrange,
                                   ),
                                   const SizedBox(
-                                    width: 29,
+                                    width: 10,
                                   ),
-                                  OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      backgroundColor: DbpColor().jendelaOrange,
-                                      side: BorderSide(
-                                        color: DbpColor().jendelaOrange,
-                                      ),
+                                  Text(
+                                    'Read Book',
+                                    style: TextStyle(
+                                      color: DbpColor().jendelaOrange,
                                     ),
-                                    onPressed: () {
-                                      PersistentNavBarNavigator.pushNewScreen(
-                                        context,
-                                        screen: Audiobooks(
-                                          book: widget.book,
-                                        ),
-                                      );
-                                    },
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.headphones_rounded,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            'Play Audio',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                  )
                                 ],
                               ),
-                            ],
-                          )
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 29,
+                          ),
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: DbpColor().jendelaOrange,
+                              side: BorderSide(
+                                color: DbpColor().jendelaOrange,
+                              ),
+                            ),
+                            onPressed: () {
+                              PersistentNavBarNavigator.pushNewScreen(
+                                context,
+                                screen: Audiobooks(
+                                    // book: widget.book,
+                                    ),
+                              );
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.headphones_rounded,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Play Audio',
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -519,7 +538,7 @@ class _BookDetailState extends State<BookDetail> {
   bool _hasFormat(HiveBookAPI? book, String format) {
     if (book == null) return false;
     String woocommerceVariationsString = book.woocommerce_variations!;
-    List<dynamic> variations = jsonDecode(woocommerceVariationsString);
+    List<dynamic> variations = convert.jsonDecode(woocommerceVariationsString);
 
     return variations.any((variation) {
       return variation['attribute_summary'] == 'Pilihan Format: $format';

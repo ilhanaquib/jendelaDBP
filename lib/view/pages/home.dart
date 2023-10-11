@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/components/cart/cartIcon.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -290,42 +291,29 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         appBar: AppBar(
           backgroundColor: Colors.white,
           key: appBarKey,
-          leading: IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState?.openDrawer();
-            },
-            icon:  Icon(
-              Icons.menu_rounded,
-              color: DbpColor().jendelaGray,
-              size: 40,
+          leading: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: GestureDetector(
+              onTap: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+              child: CircleAvatar(
+                backgroundImage:
+                    context.watch<ImageBloc>().selectedImageProvider ??
+                        const AssetImage('assets/images/logo.png'),
+              ),
             ),
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: GestureDetector(
-                onTap: () {
-                  PersistentNavBarNavigator.pushNewScreen(
-                    context,
-                    withNavBar: false,
-                    screen: BlocProvider.value(
-                      value: context.read<ImageBloc>(),
-                      child: UserHomeScreen(
-                        updateAppBar: _updateAppBar,
-                      ),
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  backgroundImage:
-                      context.watch<ImageBloc>().selectedImageProvider ??
-                          const AssetImage('assets/images/tiadakulitbuku.png'),
-                ),
-              ),
-            ),
+              padding: const EdgeInsets.only(right: 5),
+              child: CartIcon(),
+            )
           ],
         ),
-        drawer: const HomeDrawer(),
+        drawer: HomeDrawer(
+          updateAppBar: _updateAppBar,
+        ),
         body: CustomScrollView(
           slivers: [
             const SliverAppBar(

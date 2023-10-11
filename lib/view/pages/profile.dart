@@ -103,7 +103,7 @@ class _ProfileState extends State<Profile> {
                       backgroundImage: context
                               .watch<ImageBloc>()
                               .selectedImageProvider ??
-                          const AssetImage('assets/images/tiadakulitbuku.png'),
+                          const AssetImage('assets/images/logo.png'),
                     ),
                   ),
                   Padding(
