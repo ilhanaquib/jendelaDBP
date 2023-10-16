@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/notFoundCard.dart';
@@ -16,7 +17,8 @@ class AudiosInsideShelf extends StatefulWidget {
   final List<dynamic> dataBooks;
   final Box<HiveBookAPI> bookBox;
 
-  AudiosInsideShelf({super.key, required this.dataBooks, required this.bookBox});
+  AudiosInsideShelf(
+      {super.key, required this.dataBooks, required this.bookBox});
 
   @override
   _AudiosInsideShelfState createState() => _AudiosInsideShelfState();
@@ -47,6 +49,17 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
 
   @override
   Widget build(BuildContext context) {
+    double imageWidth;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      imageWidth = 250;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      imageWidth = 200;
+    } else {
+      // Use the default padding for phones and other devices
+      imageWidth = 100;
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -96,18 +109,20 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                       child: Card(
                         elevation: 0,
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.18,
-                              width: MediaQuery.of(context).size.width * 0.27,
-                              child: Card(
-                                elevation: 4,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(bookSpecific.images!,
-                                      fit: BoxFit.cover),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20, right: 20),
+                              child: SizedBox(
+                                width: imageWidth,
+                                child: Card(
+                                  elevation: 4,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(bookSpecific.images!,
+                                        fit: BoxFit.cover),
+                                  ),
                                 ),
                               ),
                             ),

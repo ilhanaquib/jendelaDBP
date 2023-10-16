@@ -204,7 +204,7 @@ class ApiService {
     }
   }
 
-  static Future<dynamic> getArtikel(
+  static Future<dynamic> getArticle(
       String token, Map<String, dynamic> queryParameters) async {
     try {
       String q = '?';

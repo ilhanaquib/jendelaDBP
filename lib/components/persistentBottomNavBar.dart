@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/view/pages/postAndArticles/articles/articleScreen.dart';
+import 'package:jendela_dbp/view/pages/home.dart';
+import 'package:jendela_dbp/view/pages/postAndArticles/postAndArticle.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import 'package:jendela_dbp/view/pages/home.dart';
-import 'package:jendela_dbp/view/pages/posts.dart';
+import 'package:jendela_dbp/view/pages/ujana.dart';
+import 'package:jendela_dbp/view/pages/postAndArticles/posts/posts.dart';
 import 'package:jendela_dbp/view/pages/savedBooks/savedBooksHome.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/view/pages/audiobooks/audiobooksHome.dart';
@@ -22,9 +25,10 @@ class MyPersistentBottomNavBar extends StatelessWidget {
     List<Widget> buildScreens() {
       return const [
         Home(),
-        Posts(),
-        SavedBooksHome(),
+        PostAndArticle(),
+        Ujana(),
         AudiobooksHome(),
+        SavedBooksHome(),
         ProfileScreen(),
       ];
     }
@@ -32,7 +36,9 @@ class MyPersistentBottomNavBar extends StatelessWidget {
     List<PersistentBottomNavBarItem> navBarItems() {
       return [
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.home),
+          icon: const Icon(
+            Icons.home,
+          ),
           title: "Home",
           activeColorPrimary: DbpColor().jendelaOrange,
           inactiveColorPrimary: DbpColor().jendelaGray,
@@ -44,14 +50,22 @@ class MyPersistentBottomNavBar extends StatelessWidget {
           inactiveColorPrimary: DbpColor().jendelaGray,
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.book_rounded),
-          title: "Saved",
+          icon: const Icon(
+            Icons.local_library_outlined,
+          ),
+          title: "Ujana",
           activeColorPrimary: DbpColor().jendelaOrange,
           inactiveColorPrimary: DbpColor().jendelaGray,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.headphones_rounded),
           title: "Audio",
+          activeColorPrimary: DbpColor().jendelaOrange,
+          inactiveColorPrimary: DbpColor().jendelaGray,
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(Icons.book_rounded),
+          title: "Saved",
           activeColorPrimary: DbpColor().jendelaOrange,
           inactiveColorPrimary: DbpColor().jendelaGray,
         ),

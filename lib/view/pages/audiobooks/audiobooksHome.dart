@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/components/audiobook/audiosInsideShelf.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 
-import 'package:jendela_dbp/components/audiobook/booksForAudio.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
@@ -428,9 +428,9 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
               ),
               onRefresh: _handleRefresh,
               child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: AudiobookShelf(context, allKategoriBooks, APIBook),
-              ),
+                  padding: const EdgeInsets.only(top: 10),
+                  child: AudiosInsideShelf(
+                      dataBooks: allKategoriBooks, bookBox: APIBook)),
             ),
           )
         ],

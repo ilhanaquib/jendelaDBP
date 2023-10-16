@@ -162,21 +162,17 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      InkWell(
-                        onTap: () {
+                      OutlinedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            side: const BorderSide(color: Colors.red),
+                            elevation: 0),
+                        onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: (MediaQuery.of(context).size.width / 2) - 20,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.red),
-                          ),
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.red),
-                          ),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.red),
                         ),
                       ),
                       InkWell(
@@ -222,22 +218,26 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        ElevatedButton(
+                        OutlinedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              side: const BorderSide(color: Colors.red),
+                              elevation: 0),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
                           child: const Text(
                             'Cancel',
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                           ),
                         ),
                         const SizedBox(
                           width: 12,
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
+                        OutlinedButton(
+                          style: OutlinedButton.styleFrom(
                             backgroundColor: DbpColor().jendelaGreen,
+                            side: BorderSide(color: DbpColor().jendelaGreen),
                             elevation: 0, // Set elevation to 0 to remove shadow
                           ),
                           child: const Row(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jendela_dbp/controllers/screenSize.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -261,11 +262,22 @@ class _CustomerDetailsState extends State<CustomerDetails> {
 
   Widget inputTextField(title, controller, hint, typeInput, isRequired,
       {bool? enabled = true}) {
+    double textFieldWidth;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      textFieldWidth = MediaQuery.of(context).size.width / 1.1;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      textFieldWidth = MediaQuery.of(context).size.width / 1.2;
+    } else {
+      // Use the default padding for phones and other devices
+      textFieldWidth = MediaQuery.of(context).size.width / 1.5;
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 10),
       child: SizedBox(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
@@ -294,7 +306,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
               ],
             ),
             SizedBox(
-                width: MediaQuery.of(context).size.width / 1.4,
+                width: textFieldWidth,
                 child: TextField(
                   enabled: enabled,
                   keyboardType: typeInput,

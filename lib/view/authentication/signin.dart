@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
 import 'package:jendela_dbp/api-services.dart';
@@ -12,13 +11,10 @@ import 'package:jendela_dbp/components/authentication/authProvider.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
 import 'package:jendela_dbp/controllers/globalVar.dart';
+import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/model/userModel.dart';
-import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
-import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/view/authentication/popups/popupSigninError.dart';
-import 'package:jendela_dbp/main.dart';
-import 'package:jendela_dbp/view/authentication/popups/popupTerms.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,6 +62,17 @@ class _SigninState extends State<Signin> {
 
   @override
   Widget build(BuildContext context) {
+    EdgeInsetsGeometry padding;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      padding = const EdgeInsets.only(left: 600, right: 600, top: 20);
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      padding = const EdgeInsets.only(left: 150, right: 150, top: 20);
+    } else {
+      // Use the default padding for phones and other devices
+      padding = const EdgeInsets.only(left: 20, right: 20, top: 20);
+    }
     void goToSignup() {
       Navigator.pushReplacementNamed(context, '/signup');
     }
@@ -139,8 +146,7 @@ class _SigninState extends State<Signin> {
                 children: [
                   // email or username
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding: padding,
                     child: TextFormField(
                       controller: emailController,
                       validator: (String? value) {
@@ -185,8 +191,7 @@ class _SigninState extends State<Signin> {
 
                   // password
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding: padding,
                     child: TextFormField(
                       controller: passwordController,
                       validator: (String? value) {
@@ -245,57 +250,57 @@ class _SigninState extends State<Signin> {
               ),
             ),
 
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Row(
+            //         children: [
+            //           Padding(
+            //             padding: const EdgeInsets.only(right: 8),
+            //             child: MSHCheckbox(
+            //               value: shouldCheck,
+            //               style: MSHCheckboxStyle.fillScaleCheck,
+            //               size: 20,
+            //               checkedColor: DbpColor().jendelaOrange,
+            //               uncheckedColor: DbpColor().jendelaOrange,
+            //               onChanged: (val) {
+            //                 setState(() {
+            //                   shouldCheck = val;
+            //                 });
+            //               },
+            //             ),
+            //           ),
+            //           Text(
+            //             'Remember me',
+            //             style: TextStyle(
+            //                 color: DbpColor().jendelaGray,
+            //                 fontSize: 13,
+            //                 fontWeight: FontWeight.normal),
+            //           ),
+            //         ],
+            //       ),
+            //       const SizedBox(
+            //         width: 100,
+            //       ),
+            //       TextButton(
+            //         onPressed: () {
+            //           Navigator.pushNamed(context, '/forgotPassword');
+            //         },
+            //         child: Text(
+            //           'Forgot Password?',
+            //           style: TextStyle(
+            //               color: DbpColor().jendelaOrange,
+            //               fontSize: 13,
+            //               fontWeight: FontWeight.normal),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
             Padding(
-              padding: const EdgeInsets.only(left: 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: MSHCheckbox(
-                          value: shouldCheck,
-                          style: MSHCheckboxStyle.fillScaleCheck,
-                          size: 20,
-                          checkedColor: DbpColor().jendelaOrange,
-                          uncheckedColor: DbpColor().jendelaOrange,
-                          onChanged: (val) {
-                            setState(() {
-                              shouldCheck = val;
-                            });
-                          },
-                        ),
-                      ),
-                      Text(
-                        'Remember me',
-                        style: TextStyle(
-                            color: DbpColor().jendelaGray,
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 100,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/forgotPassword');
-                    },
-                    child: Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                          color: DbpColor().jendelaOrange,
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: padding,
               child: SizedBox(
                 width: 100,
                 height: 50,

@@ -27,7 +27,7 @@ class TopHeader extends StatelessWidget {
           Text(
             'We have some awesome books for you',
             style: TextStyle(
-                fontSize: 30,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: DbpColor().jendelaBlack,),
           )

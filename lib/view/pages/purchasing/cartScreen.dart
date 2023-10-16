@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jendela_dbp/api-services.dart';
@@ -176,18 +177,28 @@ class _CartScreenState extends State<CartScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Checkbox(
-                                              value: specificBook!.toCheckout ??
-                                                  false,
-                                              onChanged: (state) {
-                                                if (state == false) {
-                                                  setState(() {
-                                                    selectAll = false;
-                                                  });
-                                                }
-                                                updateBookCheckBox(
-                                                    specificBook, key, state);
-                                              }),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 18),
+                                            child: MSHCheckbox(
+                                                style: MSHCheckboxStyle
+                                                    .fillScaleCheck,
+                                                size: 20,
+                                                checkedColor:
+                                                    DbpColor().jendelaGreen,
+                                                uncheckedColor:
+                                                    DbpColor().jendelaGreen,
+                                                value: specificBook!.toCheckout ??
+                                                    false,
+                                                onChanged: (state) {
+                                                  if (state == false) {
+                                                    setState(() {
+                                                      selectAll = false;
+                                                    });
+                                                  }
+                                                  updateBookCheckBox(
+                                                      specificBook, key, state);
+                                                }),
+                                          ),
                                           SizedBox(
                                             height: 150,
                                             child: specificBook.images ==
@@ -459,14 +470,25 @@ class _CartScreenState extends State<CartScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Checkbox(
-                                        value: selectAll,
-                                        onChanged: (state) {
-                                          selectAllProduct(state);
-                                          setState(() {
-                                            selectAll = state ?? false;
-                                          });
-                                        }),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 19, right: 10),
+                                      child: MSHCheckbox(
+                                          style:
+                                              MSHCheckboxStyle.fillScaleCheck,
+                                          size: 20,
+                                          checkedColor:
+                                              DbpColor().jendelaGreen,
+                                          uncheckedColor:
+                                              DbpColor().jendelaGreen,
+                                          value: selectAll,
+                                          onChanged: (state) {
+                                            selectAllProduct(state);
+                                            setState(() {
+                                              selectAll = state;
+                                            });
+                                          }),
+                                    ),
                                     const Text(
                                       'Semua',
                                       style: TextStyle(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/noDescriptionCard.dart';
@@ -41,17 +42,6 @@ class _BookDetailState extends State<BookDetail> {
   bool isBookAvailable = false;
   bool isPdf = true;
   final controller = PageController();
-  HivePurchasedBook? myDetailsBook;
-  bool isDownloadingFile = false;
-  bool isDownloadFile = false;
-  bool isLoadingBook = true;
-  String localPathPermanent = "Tiada";
-  String? currentUserID;
-  String currentUser = "";
-  Box<HivePurchasedBook> PurchasedBook =
-      Hive.box<HivePurchasedBook>(GlobalVar.PuchasedBook);
-  List<int> myBook = [];
-  bool isCompleteLoading = false;
   Box<HiveBookAPI> toCartBook = Hive.box<HiveBookAPI>(GlobalVar.ToCartBook);
 
   @override
@@ -128,7 +118,7 @@ class _BookDetailState extends State<BookDetail> {
 
     return showModalBottomSheet(
       useRootNavigator: true,
-      elevation: 2,
+      elevation: 0,
       barrierColor: Colors.black.withOpacity(0.8),
       backgroundColor: Colors.white,
       context: context,
@@ -136,7 +126,7 @@ class _BookDetailState extends State<BookDetail> {
         var formatType;
 
         return SizedBox(
-          height: 320,
+          height: 300,
           child: buyBottomSheet(
             book: widget.book,
             toJSonVariation: toJSonVariation,
@@ -166,6 +156,17 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
+    double containerWidth;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      containerWidth = 500;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      containerWidth = 400;
+    } else {
+      // Use the default padding for phones and other devices
+      containerWidth = 300;
+    }
     String getCategory(String category) {
       final categoryMap = {
         GlobalVar.kategori1: GlobalVar.kategori1Title,
@@ -232,286 +233,420 @@ class _BookDetailState extends State<BookDetail> {
                 children: [
                   const CurvedBackground(),
                   Center(
-                    child: Column(
-                      children: [
-                        Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Stack(
-                              children: [
-                                CachedNetworkImage(
-                                  imageUrl: widget.book!.images!,
-                                  width: 150,
-                                  fit: BoxFit.fill,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            widget.book!.name!,
-                            textAlign:
-                                TextAlign.center, // Center-aligns the text
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                        // Text(
-                        //   'book author',
-                        //   style: TextStyle(
-                        //     color: DbpColor().jendelaGray,
-                        //   ),
-                        // ),
-                        Container(
-                          height: 100,
-                          margin: const EdgeInsets.only(
-                              left: 50, right: 50, top: 20),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: const Offset(
-                                    0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Category',
-                                    style: TextStyle(
-                                      color: DbpColor().jendelaGray,
-                                    ),
-                                  ),
-                                  Text(
-                                    getCategory(widget.book!.product_category!),
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: DbpColor().jendelaGray,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Language',
-                                    style: TextStyle(
-                                      color: DbpColor().jendelaGray,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Malay',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: DbpColor().jendelaGray,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 30, left: 20),
-                          child: Row(
-                            children: [
-                              Text(
-                                'What\'s it about?',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 17),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10, bottom: 10),
-                          child: SizedBox(
-                            height: 208,
-                            child: SingleChildScrollView(
-                              child: widget.book!.description!.isEmpty
-                                  ? const NoDescriptionCard()
-                                  : Text(
-                                      widget.book!.description!,
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: DbpColor().jendelaBlack,
-                                        height: 1.5,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * 0.82,
-                    left: MediaQuery.of(context).size.width * 0.03,
-                    child: SafeArea(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    child: SingleChildScrollView(
+                      child: Column(
                         children: [
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              side: BorderSide(
-                                color: DbpColor().jendelaOrange,
-                              ),
+                          Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            // 1. check if the book is purchased
-                            // 2. if book isnt purchased, should buy
-                            // 3. if book is purhcaesd, open the book pdf/epub
-                            onPressed: isBookAvailable
-                                ? () {
-                                    // 1. check if book is downloaded
-                                    // 2. if book isnt downloaded, open a popup that asks user to download book/
-                                    boughtBook(context);
-                                  }
-                                : () {
-                                    buyItem(context);
-                                  },
-
-                            // isPdf
-                            //     ? Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //           builder: (context) =>
-                            //               PdfViewerPage(
-                            //             book: widget.book,
-                            //           ),
-                            //         ),
-                            //       )
-                            //     :
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           EpubViewerPage(
-                            //         book: widget.book,
-                            //       ),
-                            //     ),
-                            //   );
-
-                            //       VocsyEpub.setConfig(
-                            //           identifier: "iosBook",
-                            //           scrollDirection:
-                            //               EpubScrollDirection
-                            //                   .HORIZONTAL,
-                            //           allowSharing: true,
-                            //           enableTts: true,
-                            //           nightMode: false,
-
-                            //         );
-                            //   // get current locator
-                            //   VocsyEpub.locatorStream
-                            //       .listen((locator) {
-                            //     print('LOCATOR: $locator');
-                            //   });
-                            //   VocsyEpub.openAsset(
-                            //     'assets/books/accessible_epub_3.epub',
-                            //     lastLocation:
-                            //         EpubLocator.fromJson({
-                            //       "bookId": "2239",
-                            //       "href": "/OEBPS/ch06.xhtml",
-                            //       "created": 1539934158390,
-                            //       "locations": {
-                            //         "cfi":
-                            //             "epubcfi(/0!/4/4[simple_book]/2/2/6)"
-                            //       }
-                            //     }),
-                            //   );
-                            // }
-
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Row(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Stack(
                                 children: [
-                                  Icon(
-                                    Icons.import_contacts_rounded,
-                                    color: DbpColor().jendelaOrange,
+                                  CachedNetworkImage(
+                                    imageUrl: widget.book!.images!,
+                                    width: 150,
+                                    fit: BoxFit.fill,
                                   ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    'Read Book',
-                                    style: TextStyle(
-                                      color: DbpColor().jendelaOrange,
-                                    ),
-                                  )
                                 ],
                               ),
                             ),
                           ),
                           const SizedBox(
-                            width: 29,
+                            height: 20,
                           ),
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: DbpColor().jendelaOrange,
-                              side: BorderSide(
-                                color: DbpColor().jendelaOrange,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              widget.book!.name!,
+                              textAlign:
+                                  TextAlign.center, // Center-aligns the text
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
                               ),
                             ),
-                            onPressed: () {
-                              PersistentNavBarNavigator.pushNewScreen(
-                                context,
-                                screen: Audiobooks(
-                                    // book: widget.book,
+                          ),
+                          // Text(
+                          //   'book author',
+                          //   style: TextStyle(
+                          //     color: DbpColor().jendelaGray,
+                          //   ),
+                          // ),
+                          Container(
+                            height: 100,
+                            width: containerWidth,
+                            margin: const EdgeInsets.only(
+                                left: 50, right: 50, top: 20),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Category',
+                                      style: TextStyle(
+                                        color: DbpColor().jendelaGray,
+                                      ),
                                     ),
-                              );
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Row(
+                                    Text(
+                                      getCategory(
+                                          widget.book!.product_category!),
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: DbpColor().jendelaGray,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Language',
+                                      style: TextStyle(
+                                        color: DbpColor().jendelaGray,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Malay',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: DbpColor().jendelaGray,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (ResponsiveLayout.isDesktop(context))
+                            Padding(
+                              padding: const EdgeInsets.only(left: 400, right: 400),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    Icons.headphones_rounded,
-                                    color: Colors.white,
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 30),
+                                    child: Text(
+                                      'What\'s it about?',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17),
+                                    ),
                                   ),
-                                  SizedBox(
-                                    width: 10,
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10, bottom: 100),
+                                    child: SizedBox(
+                                      height: 212,
+                                      child: widget.book!.description!.isEmpty
+                                          ? const NoDescriptionCard()
+                                          : Text(
+                                              widget.book!.description!,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: DbpColor().jendelaBlack,
+                                                height: 1.5,
+                                              ),
+                                            ),
+                                    ),
                                   ),
-                                  Text(
-                                    'Play Audio',
-                                    style: TextStyle(color: Colors.white),
-                                  )
                                 ],
                               ),
-                            ),
-                          ),
+                            )
+                          else
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 30),
+                                    child: Text(
+                                      'What\'s it about?',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10, bottom: 100),
+                                    child: SizedBox(
+                                      height: 212,
+                                      child: widget.book!.description!.isEmpty
+                                          ? const NoDescriptionCard()
+                                          : Text(
+                                              widget.book!.description!,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: DbpColor().jendelaBlack,
+                                                height: 1.5,
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
                         ],
                       ),
                     ),
-                  )
+                  ),
+                  if (ResponsiveLayout.isDesktop(context) ||
+                      ResponsiveLayout.isTablet(context))
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: 70,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  side: BorderSide(
+                                    color: DbpColor().jendelaOrange,
+                                  ),
+                                ),
+                                // 1. check if the book is purchased
+                                // 2. if book isnt purchased, should buy
+                                // 3. if book is purhcaesd, open the book pdf/epub
+                                onPressed: isBookAvailable
+                                    ? () {
+                                        // 1. check if book is downloaded
+                                        // 2. if book isnt downloaded, open a popup that asks user to download book/
+                                        boughtBook(context);
+                                      }
+                                    : () {
+                                        buyItem(context);
+                                      },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.import_contacts_rounded,
+                                        color: DbpColor().jendelaOrange,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Read Book',
+                                            style: TextStyle(
+                                              color: DbpColor().jendelaOrange,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 24,
+                              ),
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: DbpColor().jendelaOrange,
+                                  side: BorderSide(
+                                    color: DbpColor().jendelaOrange,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  PersistentNavBarNavigator.pushNewScreen(
+                                    context,
+                                    screen: Audiobooks(
+                                        // book: widget.book,
+                                        ),
+                                  );
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.headphones_rounded,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Play Audio',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: 70,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  side: BorderSide(
+                                    color: DbpColor().jendelaOrange,
+                                  ),
+                                ),
+                                // 1. check if the book is purchased
+                                // 2. if book isnt purchased, should buy
+                                // 3. if book is purhcaesd, open the book pdf/epub
+                                onPressed: isBookAvailable
+                                    ? () {
+                                        // 1. check if book is downloaded
+                                        // 2. if book isnt downloaded, open a popup that asks user to download book/
+                                        boughtBook(context);
+                                      }
+                                    : () {
+                                        buyItem(context);
+                                      },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.import_contacts_rounded,
+                                        color: DbpColor().jendelaOrange,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Read',
+                                            style: TextStyle(
+                                              color: DbpColor().jendelaOrange,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Book',
+                                            style: TextStyle(
+                                              color: DbpColor().jendelaOrange,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: DbpColor().jendelaOrange,
+                                  side: BorderSide(
+                                    color: DbpColor().jendelaOrange,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  PersistentNavBarNavigator.pushNewScreen(
+                                    context,
+                                    screen: Audiobooks(
+                                        // book: widget.book,
+                                        ),
+                                  );
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.headphones_rounded,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Play',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          Text(
+                                            'Audio',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
                 ],
               ),
             ),

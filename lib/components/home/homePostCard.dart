@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:jendela_dbp/view/pages/postAndArticles/posts/readPost.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
 
-class PostCard extends StatefulWidget {
-  const PostCard({
+class HomePostCard extends StatefulWidget {
+  const HomePostCard({
     Key? key,
     this.mediaHeight = 100.0,
     this.mediaWidth = 400.0,
@@ -25,7 +24,7 @@ class PostCard extends StatefulWidget {
   _PostCard createState() => _PostCard();
 }
 
-class _PostCard extends State<PostCard> {
+class _PostCard extends State<HomePostCard> {
   @override
   void initState() {
     super.initState();
@@ -45,67 +44,50 @@ class _PostCard extends State<PostCard> {
           MaterialPageRoute(builder: (context) => readPost(post: widget.post)),
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(
-              color: DbpColor().jendelaGreen,
-            ),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(
+            color: DbpColor().jendelaGreen,
           ),
-          color: Colors.white,
-          elevation: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8, right: 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.post.featured_media_urls!,
-                    width: ResponsiveLayout.isDesktop(context)
-                        ? 200
-                        : ResponsiveLayout.isTablet(context)
-                            ? 170
-                            : ResponsiveLayout.isPhone(context)
-                                ? 120
-                                : 120,
-                    fit: BoxFit.fill,
-                  ),
+        ),
+        color: Colors.white,
+        elevation: 0,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(
+                  imageUrl: widget.post.featured_media_urls!,
+                  width: 150,
+                  fit: BoxFit.fill,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      child: Text(
-                        widget.post.title!,
-                        maxLines: 4,
-                        softWrap: true,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      DateFormat('d MMM yyyy')
-                          .format(DateTime.parse(widget.post.date ?? '')),
-                      style: const TextStyle(
-                        textBaseline: TextBaseline.alphabetic,
-                      ),
-                    ),
-                  ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 150,
+                  child: Text(
+                    widget.post.title!,
+                    maxLines: 4,
+                    softWrap: true,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              )
-            ],
-          ),
+                Text(
+                  DateFormat('d MMM yyyy')
+                      .format(DateTime.parse(widget.post.date ?? '')),
+                  style: const TextStyle(
+                    textBaseline: TextBaseline.alphabetic,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

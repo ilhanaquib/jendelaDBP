@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jendela_dbp/controllers/screenSize.dart';
 
 import 'package:jendela_dbp/view/pages/savedBooks/likedBooks.dart';
+import 'package:jendela_dbp/view/pages/savedBooks/likedBooksGrid.dart';
 import 'package:jendela_dbp/view/pages/savedBooks/userBooks.dart';
 
 class SavedBooksHome extends StatefulWidget {
@@ -22,9 +24,18 @@ class _SavedBooksHomeState extends State<SavedBooksHome> {
         UserBooks(
           controller: controller,
         ),
-        LikedBooks(
-          controller: controller,
-        ),
+        if (ResponsiveLayout.isDesktop(context))
+          LikedBooksGrid(
+            controller: controller,
+          )
+        else if (ResponsiveLayout.isTablet(context))
+          LikedBooksGrid(
+            controller: controller,
+          )
+        else
+          LikedBooks(
+            controller: controller,
+          )
       ],
     );
   }

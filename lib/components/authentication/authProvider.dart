@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/main.dart';
+import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
+import 'package:path/path.dart';
 
 // ignore: must_be_immutable
 class AuthProvider extends StatelessWidget {
@@ -26,6 +29,8 @@ class AuthProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
+
     return Column(
       children: [
         const Text('or Connect with'),
@@ -38,7 +43,9 @@ class AuthProvider extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  await authCubit.appleSignUp(context);
+                },
                 child: const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
@@ -51,24 +58,24 @@ class AuthProvider extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 20,
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: const CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.black,
-                    child: Center(
-                        child: Icon(
-                      FontAwesomeIcons.google,
-                      color: Colors.white,
-                      size: 20,
-                    ))),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
+              // const SizedBox(
+              //   width: 20,
+              // ),
+              // GestureDetector(
+              //   onTap: () {},
+              //   child: const CircleAvatar(
+              //       radius: 25,
+              //       backgroundColor: Colors.black,
+              //       child: Center(
+              //           child: Icon(
+              //         FontAwesomeIcons.google,
+              //         color: Colors.white,
+              //         size: 20,
+              //       ))),
+              // ),
+              // const SizedBox(
+              //   width: 20,
+              // ),
             ],
           ),
         ),
@@ -80,7 +87,7 @@ class AuthProvider extends StatelessWidget {
             children: [
               TextSpan(
                 text: account,
-                style:  TextStyle(
+                style: TextStyle(
                     color: DbpColor().jendelaGray,
                     fontSize: 17,
                     fontWeight: FontWeight.normal),
@@ -88,7 +95,7 @@ class AuthProvider extends StatelessWidget {
               TextSpan(
                 recognizer: TapGestureRecognizer()..onTap = pageNavigator,
                 text: orangeAccount,
-                style:  TextStyle(
+                style: TextStyle(
                     color: DbpColor().jendelaOrange,
                     fontSize: 17,
                     fontWeight: FontWeight.normal),
@@ -104,7 +111,7 @@ class AuthProvider extends StatelessWidget {
             children: [
               TextSpan(
                 text: guest,
-                style:  TextStyle(
+                style: TextStyle(
                     color: DbpColor().jendelaGray,
                     fontSize: 17,
                     fontWeight: FontWeight.normal),
@@ -122,7 +129,7 @@ class AuthProvider extends StatelessWidget {
                     );
                   },
                 text: guestAccount,
-                style:  TextStyle(
+                style: TextStyle(
                     color: DbpColor().jendelaOrange,
                     fontSize: 17,
                     fontWeight: FontWeight.normal),

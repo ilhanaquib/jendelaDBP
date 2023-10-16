@@ -28,21 +28,21 @@ class _HomeDrawerState extends State<HomeDrawer> {
           const DrawerHeader(
             child: Text('Username'),
           ),
-          ListTile(
-            title: const Text('Avatar'),
-            onTap: () {
-              PersistentNavBarNavigator.pushNewScreen(
-                context,
-                withNavBar: false,
-                screen: BlocProvider.value(
-                  value: context.read<ImageBloc>(),
-                  child: UserHomeScreen(
-                    updateAppBar: widget.updateAppBar,
-                  ),
-                ),
-              );
-            },
-          ),
+          // ListTile(
+          //   title: const Text('Avatar'),
+          //   onTap: () {
+          //     PersistentNavBarNavigator.pushNewScreen(
+          //       context,
+          //       withNavBar: false,
+          //       screen: BlocProvider.value(
+          //         value: context.read<ImageBloc>(),
+          //         child: UserHomeScreen(
+          //           updateAppBar: widget.updateAppBar,
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // ),
           ListTile(
             title: const Text('Sign In'),
             onTap: () {

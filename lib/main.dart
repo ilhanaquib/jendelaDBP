@@ -29,7 +29,7 @@ import 'package:jendela_dbp/view/authentication/signup.dart';
 import 'package:jendela_dbp/view/authentication/verification.dart';
 import 'package:jendela_dbp/view/authentication/verificationPassword.dart';
 import 'package:jendela_dbp/view/onboarding/onboardScreen.dart';
-import 'package:jendela_dbp/view/pages/home.dart';
+import 'package:jendela_dbp/view/pages/ujana.dart';
 import 'package:jendela_dbp/view/pages/profile/profile.dart';
 import 'package:jendela_dbp/view/pages/savedBooks/likedBooks.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
@@ -47,11 +47,11 @@ void main() async {
   await LikedStatusManager.initLikedStatusBox();
   final prefs = await SharedPreferences.getInstance();
   final showHomeNotifier = prefs.getBool('showHome') ?? false;
-  runApp(JendelaDBP(showHomeNotifier: showHomeNotifier)
-      // DevicePreview(
-      //   enabled: true,
-      //   builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
-      // ),
+  runApp(//JendelaDBP(showHomeNotifier: showHomeNotifier)
+      DevicePreview(
+        enabled: false,
+        builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
+      ),
       );
 }
 
@@ -98,7 +98,7 @@ class JendelaDBP extends StatelessWidget {
         ),
         routes: {
           // bottom nav bar
-          '/home': (context) => const Home(),
+          '/home': (context) => const Ujana(),
           '/savedBooks': (context) => const LikedBooks(),
           '/audiobooks': (context) => const AudiobooksHome(),
           '/profile': (context) => const Profile(),

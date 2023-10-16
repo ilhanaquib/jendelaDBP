@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
+import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -33,6 +34,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
   bool isToLogin = false;
   bool isLoading = false;
   bool TestInternetAccess = false;
+  bool isDesktop = true;
 
   @override
   void initState() {
@@ -58,17 +60,16 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
 
   @override
   Widget build(BuildContext context) {
-    void navigateToHome(BuildContext context) {
-      // This function will navigate to the '/home' route using popUntil
-
-      // Create a predicate to check if a route's name is '/home'
-      isHomeRoute(route) => route.settings.name == '/home';
-
-      // Pop routes until the desired route is reached (if it exists)
-      Navigator.popUntil(context, isHomeRoute);
-
-      // Push the '/home' route onto the stack
-      Navigator.pushNamed(context, '/home');
+    EdgeInsetsGeometry padding;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      padding = const EdgeInsets.only(left: 600, right: 600, top: 20);
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      padding = const EdgeInsets.only(left: 150, right: 150, top: 20);
+    } else {
+      // Use the default padding for phones and other devices
+      padding = const EdgeInsets.only(left: 20, right: 20, top: 20);
     }
 
     return GestureDetector(
@@ -107,7 +108,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
               children: [
                 // email or username
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  padding: padding,
                   child: TextFormField(
                     controller: emailController,
                     validator: (String? value) {
@@ -152,7 +153,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
 
                 // password
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  padding: padding,
                   child: TextFormField(
                     controller: passwordController,
                     validator: (String? value) {
@@ -211,60 +212,60 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
             ),
           ),
 
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.end,
+          //     children: [
+          //       // Row(
+          //       //   children: [
+          //       //     Padding(
+          //       //       padding: const EdgeInsets.only(right: 8),
+          //       //       child: MSHCheckbox(
+          //       //         value: shouldCheck,
+          //       //         style: MSHCheckboxStyle.fillScaleCheck,
+          //       //         size: 20,
+          //       //         checkedColor: DbpColor().jendelaOrange,
+          //       //         uncheckedColor: DbpColor().jendelaOrange,
+          //       //         onChanged: (val) {
+          //       //           setState(() {
+          //       //             shouldCheck = val;
+          //       //           });
+          //       //         },
+          //       //       ),
+          //       //     ),
+          //       //     Text(
+          //       //       'Remember me',
+          //       //       style: TextStyle(
+          //       //           color: DbpColor().jendelaGray,
+          //       //           fontSize: 13,
+          //       //           fontWeight: FontWeight.normal),
+          //       //     ),
+          //       //   ],
+          //       // ),
+          //       // const SizedBox(
+          //       //   width: 100,
+          //       // ),
+          //       Padding(
+          //         padding: const EdgeInsets.only(right: 20),
+          //         child: TextButton(
+          //           onPressed: () {
+          //             Navigator.pushNamed(context, '/forgotPassword');
+          //           },
+          //           child: Text(
+          //             'Forgot Password?',
+          //             style: TextStyle(
+          //                 color: DbpColor().jendelaOrange,
+          //                 fontSize: 13,
+          //                 fontWeight: FontWeight.normal),
+          //           ),
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
           Padding(
-            padding: const EdgeInsets.only(left: 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                // Row(
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsets.only(right: 8),
-                //       child: MSHCheckbox(
-                //         value: shouldCheck,
-                //         style: MSHCheckboxStyle.fillScaleCheck,
-                //         size: 20,
-                //         checkedColor: DbpColor().jendelaOrange,
-                //         uncheckedColor: DbpColor().jendelaOrange,
-                //         onChanged: (val) {
-                //           setState(() {
-                //             shouldCheck = val;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //     Text(
-                //       'Remember me',
-                //       style: TextStyle(
-                //           color: DbpColor().jendelaGray,
-                //           fontSize: 13,
-                //           fontWeight: FontWeight.normal),
-                //     ),
-                //   ],
-                // ),
-                // const SizedBox(
-                //   width: 100,
-                // ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/forgotPassword');
-                    },
-                    child: Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                          color: DbpColor().jendelaOrange,
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: padding,
             child: SizedBox(
               width: 100,
               height: 50,

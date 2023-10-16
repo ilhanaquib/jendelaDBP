@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:jendela_dbp/components/authentication/authProvider.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/view/authentication/popups/popupSignup.dart';
@@ -90,6 +91,18 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
+    EdgeInsetsGeometry padding;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      padding = const EdgeInsets.only(left: 600, right: 600, top: 20);
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      padding = const EdgeInsets.only(left: 150, right: 150, top: 20);
+    } else {
+      // Use the default padding for phones and other devices
+      padding = const EdgeInsets.only(left: 20, right: 20, top: 20);
+    }
+
     void goToSignin() {
       Navigator.pushReplacementNamed(context, '/signin');
     }
@@ -151,7 +164,7 @@ class _SignupState extends State<Signup> {
                 children: [
                   // username
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    padding: padding,
                     child: TextFormField(
                       controller: usernameController,
                       validator: (String? value) {
@@ -196,8 +209,7 @@ class _SignupState extends State<Signup> {
 
                   // email
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding: padding,
                     child: TextFormField(
                       controller: emailController,
                       validator: (String? value) {
@@ -246,8 +258,7 @@ class _SignupState extends State<Signup> {
 
                   // password
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding: padding,
                     child: TextFormField(
                       controller: passwordController,
                       validator: (String? value) {
@@ -305,8 +316,7 @@ class _SignupState extends State<Signup> {
 
                   // confirm password
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding: padding,
                     child: TextFormField(
                       controller: confirmPasswordController,
                       validator: (String? value) {
@@ -366,7 +376,7 @@ class _SignupState extends State<Signup> {
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 20),
+              padding: padding,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -420,7 +430,7 @@ class _SignupState extends State<Signup> {
 
             // create account button
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: padding,
               child: BlocConsumer<AuthCubit, AuthState>(
                 // Use BlocConsumer to interact with the AuthCubit
                 builder: (context, state) {

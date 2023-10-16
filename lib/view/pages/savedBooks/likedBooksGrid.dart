@@ -16,15 +16,15 @@ import 'package:jendela_dbp/view/pages/bookDetails.dart';
 
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 
-class LikedBooks extends StatefulWidget {
-  const LikedBooks({super.key, this.controller});
+class LikedBooksGrid extends StatefulWidget {
+  const LikedBooksGrid({super.key, this.controller});
   final controller;
 
   @override
-  _LikedBooksState createState() => _LikedBooksState();
+  _LikedBooksGridState createState() => _LikedBooksGridState();
 }
 
-class _LikedBooksState extends State<LikedBooks> {
+class _LikedBooksGridState extends State<LikedBooksGrid> {
   late Box<bool> likedStatusBox;
   late Box<HiveBookAPI> likedBooksBox;
   late Map<int, bool> likedStatusMap = {};
@@ -107,10 +107,10 @@ class _LikedBooksState extends State<LikedBooks> {
     double imageWidth;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
-      imageWidth = 250;
+      imageWidth = 200;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      imageWidth = 200;
+      imageWidth = 150;
     } else {
       // Use the default padding for phones and other devices
       imageWidth = 100;
@@ -125,6 +125,22 @@ class _LikedBooksState extends State<LikedBooks> {
     } else {
       // Use the default padding for phones and other devices
       padding = const EdgeInsets.only(top: 50);
+    }
+    double mainAxisSpacing;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      mainAxisSpacing = 50;
+    } else {
+      // Increase left and right padding for tablets
+      mainAxisSpacing = 10;
+    }
+    double crossAxisSpacing;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      crossAxisSpacing = 50;
+    } else {
+      // Increase left and right padding for tablets
+      crossAxisSpacing = 10;
     }
     return Scaffold(
       appBar: PreferredSize(
@@ -171,16 +187,18 @@ class _LikedBooksState extends State<LikedBooks> {
               .toList();
 
           return likedBooks.isNotEmpty
-              ? ListView.builder(
+              ? GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: ResponsiveLayout.isDesktop(context) ? 3 : 2,
+                    mainAxisSpacing: mainAxisSpacing,
+                    crossAxisSpacing: crossAxisSpacing,
+                    childAspectRatio:
+                        ResponsiveLayout.isDesktop(context) ? 1.32 : 1,
+                  ),
                   itemCount: likedBooks.length,
                   itemBuilder: (context, index) {
                     HiveBookAPI book = likedBooks[index];
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.94,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 25, left: 10, right: 10),
-                        child: GestureDetector(
+                    return GestureDetector(
                           onTap: () {
                             PersistentNavBarNavigator.pushNewScreen(
                               context,
@@ -191,9 +209,10 @@ class _LikedBooksState extends State<LikedBooks> {
                             );
                           },
                           child: Card(
+                            
                             elevation: 0,
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 SizedBox(
                                   width: imageWidth,
@@ -210,6 +229,7 @@ class _LikedBooksState extends State<LikedBooks> {
                                   padding:
                                       const EdgeInsets.only(left: 25, top: 10),
                                   child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -217,7 +237,7 @@ class _LikedBooksState extends State<LikedBooks> {
                                         width: 170,
                                         child: Text(
                                           book.name!,
-                                          maxLines: 2,
+                                          maxLines: 3,
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
@@ -231,68 +251,72 @@ class _LikedBooksState extends State<LikedBooks> {
                                         capitalizeFirstLetter(getCategory(
                                             book.product_category!)),
                                       ),
+                                      Padding(
+                                        padding: padding,
+                                        child: LikeButton(
+                                          bubblesColor: const BubblesColor(
+                                            dotPrimaryColor: Color.fromARGB(
+                                                255, 245, 88, 88),
+                                            dotSecondaryColor: Colors.white,
+                                          ),
+                                          isLiked:
+                                              true, // Set initial liked status
+                                          onTap: (bool isLiked) async {
+                                            int bookIdToDelete = book.id!;
+
+                                            int? keyToDelete;
+
+                                            for (var entry in likedBooksBox
+                                                .toMap()
+                                                .entries) {
+                                              if (entry.value.id ==
+                                                  bookIdToDelete) {
+                                                keyToDelete = entry.key;
+                                                break;
+                                              }
+                                            }
+
+                                            if (keyToDelete != null) {
+                                              // Remove from likedBooksBox using the key
+                                              likedBooksBox.delete(keyToDelete);
+
+                                              // Update likedBooks list
+                                              likedBooks.removeWhere((book) =>
+                                                  book.id == bookIdToDelete);
+
+                                              // Update liked status map in the cubit and liked status box
+                                              context
+                                                  .read<LikedStatusCubit>()
+                                                  .removeLikedStatus(
+                                                      keyToDelete);
+
+                                              // Notify BooksInsideShelf about the change in liked status
+                                              context
+                                                  .read<LikedStatusCubit>()
+                                                  .updateLikedStatusMap(
+                                                      likedStatusMap);
+
+                                              _updateLikedStatus(
+                                                  keyToDelete, false);
+                                            }
+                                          },
+                                          likeBuilder: (bool isLiked) {
+                                            return const Icon(
+                                              Icons.delete_outline_rounded,
+                                              size: 32,
+                                            );
+                                          },
+                                        ),
+                                      ),
                                     ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: padding,
-                                  child: LikeButton(
-                                    bubblesColor: const BubblesColor(
-                                      dotPrimaryColor:
-                                          Color.fromARGB(255, 245, 88, 88),
-                                      dotSecondaryColor: Colors.white,
-                                    ),
-                                    isLiked: true, // Set initial liked status
-                                    onTap: (bool isLiked) async {
-                                      int bookIdToDelete = book.id!;
-
-                                      int? keyToDelete;
-
-                                      for (var entry
-                                          in likedBooksBox.toMap().entries) {
-                                        if (entry.value.id == bookIdToDelete) {
-                                          keyToDelete = entry.key;
-                                          break;
-                                        }
-                                      }
-
-                                      if (keyToDelete != null) {
-                                        // Remove from likedBooksBox using the key
-                                        likedBooksBox.delete(keyToDelete);
-
-                                        // Update likedBooks list
-                                        likedBooks.removeWhere((book) =>
-                                            book.id == bookIdToDelete);
-
-                                        // Update liked status map in the cubit and liked status box
-                                        context
-                                            .read<LikedStatusCubit>()
-                                            .removeLikedStatus(keyToDelete);
-
-                                        // Notify BooksInsideShelf about the change in liked status
-                                        context
-                                            .read<LikedStatusCubit>()
-                                            .updateLikedStatusMap(
-                                                likedStatusMap);
-
-                                        _updateLikedStatus(keyToDelete, false);
-                                      }
-                                    },
-                                    likeBuilder: (bool isLiked) {
-                                      return const Icon(
-                                        Icons.delete_outline_rounded,
-                                        size: 32,
-                                        color: Colors.red,
-                                      );
-                                    },
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ),
-                    );
+                        );
+                      
+                    
                   },
                 )
               : const Center(

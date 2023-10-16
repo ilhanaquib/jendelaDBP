@@ -89,17 +89,6 @@ class _UserBooksState extends State<UserBooks> {
           bloc: _authCubit,
           listener: (context, state) {},
           builder: (context, state) {
-            if (state is AuthError) {
-              return TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Signin()),
-                  );
-                },
-                child: const Text('Sign in'),
-              );
-            }
             if (state is AuthLoaded) {
               if (state.isAuthenticated == true) {
                 return BlocConsumer<ProductBloc, ProductState>(
@@ -128,7 +117,8 @@ class _UserBooksState extends State<UserBooks> {
                         // return
                         return GridView(
                           physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics(),),
+                            parent: AlwaysScrollableScrollPhysics(),
+                          ),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
