@@ -13,33 +13,49 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   int _pageCount = 1;
 
   PostBloc() : super(PostInit()) {
-    on<PostFetch>((event, emit) async {
-      _pageCount = 1;
-      emit(PostLoading());
-      try {
-        List<Post> listOfPost = await fetchPostFromCacheOrApi();
-        emit(PostLoaded(listOfPost: listOfPost));
-      } catch (e) {
-        emit(PostError(message: e.toString()));
-      }
-    });
-
-    on<PostFetchMore>((event, emit) async {
-      try {
-        List<Post> respData =
-            await fetchPost(page: _pageCount + 1, perPage: event.perPage);
-        if (respData.length > 0) {
-          _pageCount++;
+    on<PostFetch>(
+      (event, emit) async {
+        _pageCount = 1;
+        emit(
+          PostLoading(),
+        );
+        try {
+          List<Post> listOfPost = await fetchPostFromCacheOrApi();
+          emit(
+            PostLoaded(listOfPost: listOfPost),
+          );
+        } catch (e) {
+          emit(
+            PostError(
+              message: e.toString(),
+            ),
+          );
         }
-        List<Post> combinedList = [];
-        combinedList.addAll(state.listOfPost ?? []);
-        combinedList.addAll(respData);
-        emit(PostLoading());
-        emit(PostLoaded(listOfPost: combinedList));
-      } catch (err) {
-        emit(PostError(message: err.toString()));
-      }
-    });
+      },
+    );
+
+    on<PostFetchMore>(
+      (event, emit) async {
+        try {
+          List<Post> respData =
+              await fetchPost(page: _pageCount + 1, perPage: event.perPage);
+          if (respData.isNotEmpty) {
+            _pageCount++;
+          }
+          List<Post> combinedList = [];
+          combinedList.addAll(state.listOfPost ?? []);
+          combinedList.addAll(respData);
+          emit(PostLoading());
+          emit(PostLoaded(listOfPost: combinedList));
+        } catch (err) {
+          emit(
+            PostError(
+              message: err.toString(),
+            ),
+          );
+        }
+      },
+    );
   }
 
   Future<List<Post>> fetchPostFromCacheOrApi() async {

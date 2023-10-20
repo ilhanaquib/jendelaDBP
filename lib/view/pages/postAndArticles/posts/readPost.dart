@@ -30,53 +30,68 @@ class _readPostState extends State<readPost> {
           pauseBetween: const Duration(seconds: 20),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 16),
-                  child: Text(
-                    parse(widget.post.title).documentElement?.text ?? '',
-                    textAlign: TextAlign.start,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 5,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 24),
-                  ),
-                ),
-                HtmlWidget(
-                  widget.post.content!,
-                  onTapUrl: (url) =>
-                      launchUrl(Uri.parse(url), mode: LaunchMode.inAppWebView),
-                  textStyle: const TextStyle(fontSize: 16),
-                  customStylesBuilder: ((element) {
-                    if (element.classes.contains('wp-caption-text')) {
-                      return {'color': 'gray', 'font-size': 'smaller'};
-                    }
-                    if (element.classes.contains('statement')) {
-                      return {'color': 'gray', 'font-size': 'smaller'};
-                    }
-                  }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Text(
-                    DateFormat('d MMM yyyy')
-                        .format(DateTime.parse(widget.post.date ?? '')),
-                    style: const TextStyle(
-                        textBaseline: TextBaseline.alphabetic,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
+      body: CustomScrollView(
+        slivers: [
+          const SliverAppBar(
+            floating: true,
+            snap: true,
+            elevation: 0.0,
+            toolbarHeight: 0.01,
           ),
-        ),
+          SliverFillRemaining(
+            child: InteractiveViewer(
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, bottom: 16),
+                          child: Text(
+                            parse(widget.post.title).documentElement?.text ??
+                                '',
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24),
+                          ),
+                        ),
+                        HtmlWidget(
+                          widget.post.content!,
+                          onTapUrl: (url) => launchUrl(Uri.parse(url),
+                              mode: LaunchMode.inAppWebView),
+                          textStyle: const TextStyle(fontSize: 16),
+                          customStylesBuilder: ((element) {
+                            if (element.classes.contains('wp-caption-text')) {
+                              return {'color': 'gray', 'font-size': 'smaller'};
+                            }
+                            if (element.classes.contains('statement')) {
+                              return {'color': 'gray', 'font-size': 'smaller'};
+                            }
+                          }),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text(
+                            DateFormat('d MMM yyyy')
+                                .format(DateTime.parse(widget.post.date ?? '')),
+                            style: const TextStyle(
+                                textBaseline: TextBaseline.alphabetic,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

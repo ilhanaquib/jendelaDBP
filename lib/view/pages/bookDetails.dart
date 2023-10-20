@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/components/cart/cartIcon.dart';
 import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -192,6 +193,12 @@ class _BookDetailState extends State<BookDetail> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: CartIcon(),
+          )
+        ],
         // actions: [
         //   LikeButton(
         //     size: 20,
@@ -342,7 +349,8 @@ class _BookDetailState extends State<BookDetail> {
                           ),
                           if (ResponsiveLayout.isDesktop(context))
                             Padding(
-                              padding: const EdgeInsets.only(left: 400, right: 400),
+                              padding:
+                                  const EdgeInsets.only(left: 400, right: 400),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -380,7 +388,6 @@ class _BookDetailState extends State<BookDetail> {
                               padding: const EdgeInsets.all(20.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                
                                 children: [
                                   const Padding(
                                     padding: EdgeInsets.only(top: 30),

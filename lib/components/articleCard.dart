@@ -80,12 +80,10 @@ class _ArticleCard extends State<ArticleCard> {
                       child: Text(
                         parse(widget.article.postTitle).body?.text ?? '',
                         maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
                         softWrap: true,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
                     ),
                     Text(
                       DateFormat('d MMM yyyy').format(

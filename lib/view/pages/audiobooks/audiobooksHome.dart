@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jendela_dbp/components/audiobook/audiosInsideShelf.dart';
+import 'package:jendela_dbp/components/cart/cartIcon.dart';
+import 'package:jendela_dbp/components/ujana/homeDrawer.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +30,8 @@ class AudiobooksHome extends StatefulWidget {
 
 class _AudiobooksHomeState extends State<AudiobooksHome>
     with TickerProviderStateMixin {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   //-----custom refresh indicator----
 
   static const _circleSize = 70.0;
@@ -280,6 +284,7 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
       15: kategori15Books,
     };
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,31 +299,29 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
             )
           ],
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: GestureDetector(
-              onTap: () {
-                PersistentNavBarNavigator.pushNewScreen(
-                  context,
-                  withNavBar: false,
-                  screen: BlocProvider.value(
-                    value: context.read<ImageBloc>(),
-                    child: UserHomeScreen(
-                      updateAppBar: _updateAppBar,
-                    ),
-                  ),
-                );
-              },
-              child: CircleAvatar(
-                backgroundImage:
-                    context.watch<ImageBloc>().selectedImageProvider ??
-                        const AssetImage('assets/images/logo.png'),
-              ),
+        leading: Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: GestureDetector(
+            onTap: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+            child: CircleAvatar(
+              backgroundImage:
+                  context.watch<ImageBloc>().selectedImageProvider ??
+                      const AssetImage('assets/images/logo.png'),
             ),
           ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: CartIcon(),
+          )
         ],
       ),
+      drawer: HomeDrawer(updateAppBar: () {
+        setState(() {});
+      }),
       body: CustomScrollView(
         slivers: [
           const SliverAppBar(

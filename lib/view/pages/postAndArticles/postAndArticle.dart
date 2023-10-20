@@ -2,22 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/notFoundCard.dart';
 import 'package:jendela_dbp/components/articleCard.dart';
+import 'package:jendela_dbp/components/bookshelf/carouselTitle.dart';
+import 'package:jendela_dbp/components/cart/cartIcon.dart';
 import 'package:jendela_dbp/components/posts/errorCard.dart';
 import 'package:jendela_dbp/components/posts/postCard.dart';
 import 'package:jendela_dbp/components/posts/postNotFoundCard.dart';
+import 'package:jendela_dbp/components/ujana/homeDrawer.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/articleBloc.dart';
+import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/postBloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/connectionCubit.dart';
 import 'package:jendela_dbp/stateManagement/events/articleEvent.dart';
 import 'package:jendela_dbp/stateManagement/events/postEvent.dart';
 import 'package:jendela_dbp/stateManagement/states/articleState.dart';
 import 'package:jendela_dbp/stateManagement/states/postState.dart';
-import 'package:jendela_dbp/view/pages/postAndArticles/articles/articleScreen.dart';
-import 'package:jendela_dbp/view/pages/postAndArticles/posts/posts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class PostAndArticle extends StatefulWidget {
@@ -33,19 +36,26 @@ class _PostAndArticleState extends State<PostAndArticle> {
   ConnectionCubit connectionCubit = ConnectionCubit();
   final _scrollController = ScrollController();
   final int _perPage = 25;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     latestPostBloc.add(PostFetch());
-    latestArticleBloc.add(ArticleFetch(perPage: _perPage));
-    _scrollController.addListener(() {
-      if (_scrollController.offset >=
-              _scrollController.position.maxScrollExtent &&
-          !_scrollController.position.outOfRange) {
-        // Reach the bottom.
-        latestArticleBloc.add(ArticleFetchMore(perPage: 25));
-      }
-    });
+    latestArticleBloc.add(
+      ArticleFetch(perPage: _perPage),
+    );
+    _scrollController.addListener(
+      () {
+        if (_scrollController.offset >=
+                _scrollController.position.maxScrollExtent &&
+            !_scrollController.position.outOfRange) {
+          // Reach the bottom.
+          latestArticleBloc.add(
+            ArticleFetchMore(perPage: 25),
+          );
+        }
+      },
+    );
     super.initState();
   }
 
@@ -60,11 +70,34 @@ class _PostAndArticleState extends State<PostAndArticle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Post And Article'),
+        leading: Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: GestureDetector(
+            onTap: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+            child: CircleAvatar(
+              backgroundImage:
+                  context.watch<ImageBloc>().selectedImageProvider ??
+                      const AssetImage('assets/images/logo.png'),
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: CartIcon(),
+          )
+        ],
       ),
+      drawer: HomeDrawer(updateAppBar: () {
+        setState(() {});
+      }),
       body: CustomScrollView(
         slivers: [
           const SliverAppBar(
@@ -77,7 +110,7 @@ class _PostAndArticleState extends State<PostAndArticle> {
             child: RefreshIndicator(
               onRefresh: () async {
                 connectionCubit.checkConnection(context);
-                await Future.delayed(Duration(milliseconds: 100));
+                await Future.delayed(const Duration(milliseconds: 100));
                 latestPostBloc.add(PostFetch());
                 latestArticleBloc.add(ArticleFetch());
               },
@@ -131,16 +164,14 @@ class _PostAndArticleState extends State<PostAndArticle> {
           bloc: latestPostBloc,
           builder: (context, data) {
             if (data is PostLoading) {
-              print('post is loading');
-              // return SizedBox(
-              //   height: size.height,
-              //   child: LoadingAnimationWidget.discreteCircle(
-              //     color: DbpColor().jendelaGray,
-              //     secondRingColor: DbpColor().jendelaGreen,
-              //     thirdRingColor: DbpColor().jendelaOrange,
-              //     size: 50.0,
-              //   ),
-              // );
+              return SizedBox(
+                child: LoadingAnimationWidget.discreteCircle(
+                  color: DbpColor().jendelaGray,
+                  secondRingColor: DbpColor().jendelaGreen,
+                  thirdRingColor: DbpColor().jendelaOrange,
+                  size: 50.0,
+                ),
+              );
             }
             if (data is PostLoaded) {
               List<Post> posts = data.listOfPost?.toList() ?? [];
@@ -152,7 +183,8 @@ class _PostAndArticleState extends State<PostAndArticle> {
                   ),
                 );
               }
-              return ResponsiveLayout.isDesktop(context)
+              return ResponsiveLayout.isDesktop(context) ||
+                      ResponsiveLayout.isTablet(context)
                   ? GridView(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
@@ -168,44 +200,16 @@ class _PostAndArticleState extends State<PostAndArticle> {
                         ),
                       ),
                     )
-                  : ResponsiveLayout.isTablet(context)
-                      ? GridView(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: crossAxisCount,
-                                  mainAxisSpacing: 5,
-                                  crossAxisSpacing: 5,
-                                  childAspectRatio: childAspectRatio),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          children: List.generate(
-                            posts.length,
-                            (index) => PostCard(
-                              post: posts[index],
-                            ),
-                          ),
-                        )
-                      : ResponsiveLayout.isPhone(context)
-                          ? ListView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              children: List.generate(
-                                posts.length,
-                                (index) => PostCard(
-                                  post: posts[index],
-                                ),
-                              ),
-                            )
-                          : ListView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              children: List.generate(
-                                posts.length,
-                                (index) => PostCard(
-                                  post: posts[index],
-                                ),
-                              ),
-                            );
+                  : ListView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: List.generate(
+                        posts.length,
+                        (index) => PostCard(
+                          post: posts[index],
+                        ),
+                      ),
+                    );
             }
             if (data is PostError) {
               return ErrorCard(
@@ -268,7 +272,7 @@ class _PostAndArticleState extends State<PostAndArticle> {
                   ).toList();
                   return Column(children: listWidget);
                 }
-                return NotFoundCard();
+                return const NotFoundCard();
               },
             ),
           ),

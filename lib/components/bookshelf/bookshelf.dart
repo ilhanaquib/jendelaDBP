@@ -15,32 +15,31 @@ Widget bookShelf(
   List<int> listBook,
   Box<HiveBookAPI> APIBook,
 ) {
-  return Container(
-    child: Container(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20),
-            child: CarouselTitle(
-              title: categoryTitle + ' Terkini',
-              seeAllText: "View All",
-              seeAllOnTap: () {
-                PersistentNavBarNavigator.pushNewScreen(
-                  context,
-                  withNavBar: false,
-                  screen: AllBooks(
-                      categoryTitle: categoryTitle,
-                      listBook: listBook,
-                      bookBox: APIBook),
-                );
-              },
-            ),
+  return SizedBox(
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: CarouselTitle(
+            title: categoryTitle + ' Terkini',
+            seeAllText: "View All",
+            seeAllOnTap: () {
+              PersistentNavBarNavigator.pushNewScreen(
+                context,
+                withNavBar: false,
+                screen: AllBooks(
+                    categoryTitle: categoryTitle,
+                    listBook: listBook,
+                    bookBox: APIBook),
+              );
+            },
           ),
-          SizedBox(
-              height: 320,
-              child: BooksInsideShelf(dataBooks: listBook, bookBox: APIBook))
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 320,
+          child: BooksInsideShelf(dataBooks: listBook, bookBox: APIBook),
+        )
+      ],
     ),
   );
 }

@@ -33,9 +33,10 @@ class _ArticleCard extends State<HomeArticleCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ArticleDetailScreen(
-                    article: widget.article,
-                  )),
+            builder: (context) => ArticleDetailScreen(
+              article: widget.article,
+            ),
+          ),
         );
       },
       child: Card(
@@ -62,30 +63,32 @@ class _ArticleCard extends State<HomeArticleCard> {
                 ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(
-                  width: 150,
-                  child: Text(
-                    parse(widget.article.postTitle).body?.text ?? '',
-                    maxLines: 4,
-                    softWrap: true,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    //width: 100,
+                    child: Text(
+                      parse(widget.article.postTitle).body?.text ?? '',
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  DateFormat('d MMM yyyy')
-                      .format(DateTime.parse(widget.article.postDate ?? '')),
-                  style: const TextStyle(
-                    textBaseline: TextBaseline.alphabetic,
+                  Text(
+                    DateFormat('d MMM yyyy').format(
+                      DateTime.parse(widget.article.postDate ?? ''),
+                    ),
+                    style: const TextStyle(
+                      textBaseline: TextBaseline.alphabetic,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             )
           ],
         ),

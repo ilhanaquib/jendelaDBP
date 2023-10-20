@@ -22,12 +22,14 @@ Future<Box<HiveBookAPI>> getKategori(context, generateToken, kategori) async {
     var data = json.decode(response.body);
     print(data);
     if (response.statusCode == 401) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        width: 200,
-        behavior: SnackBarBehavior.floating,
-        content: Text('Session Expired. Please login again'),
-        duration: Duration(seconds: 1),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          width: 200,
+          behavior: SnackBarBehavior.floating,
+          content: Text('Session Expired. Please login again'),
+          duration: Duration(seconds: 1),
+        ),
+      );
       Navigator.of(context)
           .pushNamedAndRemoveUntil('/Logout', (Route<dynamic> route) => false);
     } else if (response.statusCode == 200) {

@@ -240,15 +240,15 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
           await getKategori(context, token, GlobalVar.kategori14);
           await getKategori(context, token, GlobalVar.kategori15);
         }
-      } catch (exception, stackTrace) {
+      } catch (exception) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text(exception.toString()),
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         ));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Text('Internet access required'),
         duration: Duration(seconds: 3),

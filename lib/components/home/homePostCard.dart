@@ -66,26 +66,29 @@ class _PostCard extends State<HomePostCard> {
                 ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 150,
-                  child: Text(
-                    widget.post.title!,
-                    maxLines: 4,
-                    softWrap: true,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.only(left: 5, right:  5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    child: Text(
+                      widget.post.title!,
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                Text(
-                  DateFormat('d MMM yyyy')
-                      .format(DateTime.parse(widget.post.date ?? '')),
-                  style: const TextStyle(
-                    textBaseline: TextBaseline.alphabetic,
+                  Text(
+                    DateFormat('d MMM yyyy')
+                        .format(DateTime.parse(widget.post.date ?? '')),
+                    style: const TextStyle(
+                      textBaseline: TextBaseline.alphabetic,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

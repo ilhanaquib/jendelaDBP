@@ -69,9 +69,7 @@ class _PostCard extends State<PostCard> {
                         ? 200
                         : ResponsiveLayout.isTablet(context)
                             ? 170
-                            : ResponsiveLayout.isPhone(context)
-                                ? 120
-                                : 120,
+                            : 120,
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -90,9 +88,6 @@ class _PostCard extends State<PostCard> {
                         softWrap: true,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
                     ),
                     Text(
                       DateFormat('d MMM yyyy')

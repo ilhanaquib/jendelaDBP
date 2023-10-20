@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:jendela_dbp/components/DBPImportedWidgets/notFoundCard.dart';
+import 'package:jendela_dbp/components/articleCard.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
+import 'package:jendela_dbp/components/bookshelf/carouselTitle.dart';
 import 'package:jendela_dbp/components/cart/cartIcon.dart';
 import 'package:jendela_dbp/components/home/homeArticleCard.dart';
 import 'package:jendela_dbp/components/home/homePostCard.dart';
@@ -70,6 +72,7 @@ class _HomeState extends State<Home> {
     List<int> bookList = bookAPIBox.keys.cast<int>().toList();
     return Scaffold(
       backgroundColor: Colors.white,
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         key: appBarKey,
@@ -112,10 +115,15 @@ class _HomeState extends State<Home> {
                 connectionCubit.checkConnection(context);
                 latestPostBloc.add(PostFetch());
                 latestArticleBloc.add(ArticleFetch());
+                setState(() {});
               },
               child: ListView(
                 children: [
                   _postWidget(context),
+                  const Divider(
+                    indent: 12,
+                    endIndent: 12,
+                  ),
                   _articleWidget(context),
                   bookShelf(
                     context,
@@ -136,43 +144,37 @@ class _HomeState extends State<Home> {
   Widget _postWidget(BuildContext context) {
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       childAspectRatio = 1.1;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       childAspectRatio = 1;
     } else {
-      // Use the default padding for phones and other devices
       childAspectRatio = 0.6;
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 5;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 3;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 2;
     }
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       numOfPost = 10;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       numOfPost = 6;
     } else {
-      // Use the default padding for phones and other devices
       numOfPost = 4;
     }
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Posts',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        const Padding(
+          padding: EdgeInsets.only(left: 24),
+          child: Text(
+            'Posts',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
         ),
         BlocBuilder<PostBloc, PostState>(
           bloc: latestPostBloc,
@@ -263,14 +265,18 @@ class _HomeState extends State<Home> {
       // Use the default padding for phones and other devices
       numOfPost = 4;
     }
+
     return Padding(
-      padding: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Articles',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          const Padding(
+            padding: EdgeInsets.only(left: 24),
+            child: Text(
+              'Articles',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
           ),
           BlocBuilder<ArticleBloc, ArticleState>(
             bloc: latestArticleBloc,
@@ -326,57 +332,65 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _bookWidget(BuildContext context) {
-    return SizedBox(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Container(
-              height: 300,
-              child: BlocBuilder<ProductBloc, ProductState>(
-                bloc: latestBookBloc,
-                builder: (context, data) {
-                  if (data is ProductError) {
-                    return ErrorCard(message: data.message);
-                  }
-                  if (data is ProductLoaded) {
-                    List<int> majalahList =
-                        bookAPIBox.keys.cast<int>().toList();
-                    return bookShelf(
-                      context,
-                      "Buku",
-                      0,
-                      majalahList,
-                      bookAPIBox,
-                    );
-                  }
-                  return Container(
-                    height: 300,
-                    child: LoadingAnimationWidget.discreteCircle(
-                      color: DbpColor().jendelaGray,
-                      secondRingColor: DbpColor().jendelaGreen,
-                      thirdRingColor: DbpColor().jendelaOrange,
-                      size: 70.0,
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            //Padding(
-            // padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            // child: Divider(
-            //color: colors.btnPrimaryColor,
-            //thickness: 0.2,
-            // height: 10,
-            // ),
-            // ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _dewanBahasaWidget(BuildContext context) {
+  //   Size size = MediaQuery.maybeOf(context)!.size;
+  //   return Container(
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(8.0),
+  //       child: Column(
+  //         children: [
+  //           CarouselTitle(
+  //             title: 'Artikel',
+  //             seeAllText: "",
+  //             seeAllOnTap: () {},
+  //           ),
+  //           Container(
+  //             child: BlocBuilder<ArticleBloc, ArticleState>(
+  //               bloc: artikelTerkiniDewanBahasaBloc,
+  //               builder: (context, data) {
+  //                 if (data is ArticleError) {
+  //                   return ErrorCard(message: data.message);
+  //                 }
+  //                 if (data is ArticleLoaded) {
+  //                   List<Article> artikels = data.listOfArtikel
+  //                           ?.where((e) {
+  //                             if (e.blogId == GlobalVar.DewanBahasaId) {
+  //                               return true;
+  //                             }
+  //                             return false;
+  //                           })
+  //                           .take(10)
+  //                           .toList() ??
+  //                       [];
+  //                   if (artikels.length == 0) {
+  //                     return Container(height: 300, child: NotFoundCard());
+  //                   }
+  //                   return GridView.count(
+  //                       physics: NeverScrollableScrollPhysics(),
+  //                       shrinkWrap: true,
+  //                       crossAxisCount: 2,
+  //                       crossAxisSpacing: 0.0,
+  //                       mainAxisSpacing: 0.0,
+  //                       padding: EdgeInsets.all(0),
+  //                       children: List.generate(
+  //                           artikels.length,
+  //                           (index) =>
+  //                               NewArtikelCard(artikel: artikels[index])));
+  //                 }
+  //                 return Center(
+  //                   child: LoadingAnimationWidget.discreteCircle(
+  //                     color: DbpColor().jendelaGray,
+  //                     secondRingColor: DbpColor().jendelaGreen,
+  //                     thirdRingColor: DbpColor().jendelaOrange,
+  //                     size: 70.0,
+  //                   ),
+  //                 );
+  //               },
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
