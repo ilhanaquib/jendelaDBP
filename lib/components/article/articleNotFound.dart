@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:empty_widget/empty_widget.dart';
 
-class PostNotFoundCard extends StatelessWidget {
-  const PostNotFoundCard({super.key});
+class ArticleNotFoundCard extends StatelessWidget {
+  const ArticleNotFoundCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +12,8 @@ class PostNotFoundCard extends StatelessWidget {
       hideBackgroundAnimation: true,
       image: null,
       packageImage: PackageImage.Image_4,
-      title: 'Missing Posts',
-      subTitle: 'Sorry, The Posts You\'re Looking for Are Not Here.',
+      title: 'Missing Articles',
+      subTitle: 'Sorry, The Artivles You\'re Looking for Are Not Here.',
       titleTextStyle: const TextStyle(
         fontSize: 22,
         color: Color(0xff9da9c7),

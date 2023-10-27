@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/view/pages/postAndArticles/posts/readPost.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
 
@@ -39,9 +40,10 @@ class _PostCard extends State<HomePostCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
-          MaterialPageRoute(builder: (context) => readPost(post: widget.post)),
+          withNavBar: false,
+          screen: readPost(post: widget.post),
         );
       },
       child: Card(
@@ -67,7 +69,7 @@ class _PostCard extends State<HomePostCard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 5, right:  5),
+              padding: const EdgeInsets.only(left: 5, right: 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -81,8 +83,9 @@ class _PostCard extends State<HomePostCard> {
                     ),
                   ),
                   Text(
-                    DateFormat('d MMM yyyy')
-                        .format(DateTime.parse(widget.post.date ?? '')),
+                    DateFormat('d MMM yyyy').format(
+                      DateTime.parse(widget.post.date ?? ''),
+                    ),
                     style: const TextStyle(
                       textBaseline: TextBaseline.alphabetic,
                     ),

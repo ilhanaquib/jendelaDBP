@@ -5,8 +5,9 @@ import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
-import 'package:jendela_dbp/view/pages/postAndArticles/articleDetailScreen.dart';
+import 'package:jendela_dbp/view/pages/postAndArticles/articles/articleDetailScreen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class HomeArticleCard extends StatefulWidget {
   HomeArticleCard(
@@ -30,12 +31,11 @@ class _ArticleCard extends State<HomeArticleCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
-          MaterialPageRoute(
-            builder: (context) => ArticleDetailScreen(
-              article: widget.article,
-            ),
+          withNavBar: false,
+          screen: ArticleDetailScreen(
+            article: widget.article,
           ),
         );
       },
@@ -131,7 +131,7 @@ class _ArticleCard extends State<HomeArticleCard> {
         ),
       );
     } else {
-      theWidget = SizedBox();
+      theWidget = const SizedBox();
     }
     return theWidget;
   }

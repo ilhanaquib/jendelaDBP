@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/components/article/articleNotFound.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 import 'package:jendela_dbp/components/DBPImportedWidgets/notFoundCard.dart';
-import 'package:jendela_dbp/components/articleCard.dart';
-import 'package:jendela_dbp/components/bookshelf/carouselTitle.dart';
+import 'package:jendela_dbp/components/article/articleCard.dart';
 import 'package:jendela_dbp/components/cart/cartIcon.dart';
 import 'package:jendela_dbp/components/posts/errorCard.dart';
 import 'package:jendela_dbp/components/posts/postCard.dart';
 import 'package:jendela_dbp/components/posts/postNotFoundCard.dart';
 import 'package:jendela_dbp/components/ujana/homeDrawer.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/controllers/globalVar.dart';
 import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
@@ -21,7 +23,6 @@ import 'package:jendela_dbp/stateManagement/events/articleEvent.dart';
 import 'package:jendela_dbp/stateManagement/events/postEvent.dart';
 import 'package:jendela_dbp/stateManagement/states/articleState.dart';
 import 'package:jendela_dbp/stateManagement/states/postState.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class PostAndArticle extends StatefulWidget {
   const PostAndArticle({super.key});
@@ -272,7 +273,7 @@ class _PostAndArticleState extends State<PostAndArticle> {
                   ).toList();
                   return Column(children: listWidget);
                 }
-                return const NotFoundCard();
+                return const ArticleNotFoundCard();
               },
             ),
           ),
@@ -323,7 +324,7 @@ class _PostAndArticleState extends State<PostAndArticle> {
                     return const SizedBox(
                       height: 300,
                       child: Center(
-                        child: NotFoundCard(),
+                        child: ArticleNotFoundCard(),
                       ),
                     );
                   }

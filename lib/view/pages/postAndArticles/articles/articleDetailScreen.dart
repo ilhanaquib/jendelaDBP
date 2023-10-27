@@ -43,8 +43,12 @@ class _ArticleDetailScreen extends State<ArticleDetailScreen> {
     _authCubit.setHideNavigationBar(hideNavBar: true);
     Uri uri =
         Uri.parse(widget.article!.guid ?? "https://{GlobalVar.BaseURLDomain}");
-    Map<String, dynamic> queryParam = uri.queryParameters
-        .map((key, value) => MapEntry(key, value.toString()));
+    Map<String, dynamic> queryParam = uri.queryParameters.map(
+      (key, value) => MapEntry(
+        key,
+        value.toString(),
+      ),
+    );
     queryParam.addAll({'_fromApp': 'y'});
     return SafeArea(
       child: WebviewScaffold(
@@ -65,7 +69,7 @@ class _ArticleDetailScreen extends State<ArticleDetailScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          iconTheme: IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.black),
           backgroundColor: colors.bgPrimaryColor,
         ),
         withJavascript: true,

@@ -8,7 +8,6 @@ import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/main.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
-import 'package:path/path.dart';
 
 // ignore: must_be_immutable
 class AuthProvider extends StatelessWidget {

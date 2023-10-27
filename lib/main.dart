@@ -58,6 +58,7 @@ void main() async {
 class JendelaDBP extends StatelessWidget {
   const JendelaDBP({Key? key, required this.showHomeNotifier})
       : super(key: key);
+
   final bool showHomeNotifier;
 
   @override

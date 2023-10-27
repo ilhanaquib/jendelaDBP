@@ -322,6 +322,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
               elevation: 0.0,
               toolbarHeight: 0.01,
             ),
+            
             SliverFillRemaining(
               child: GestureDetector(
                 onTap: () {

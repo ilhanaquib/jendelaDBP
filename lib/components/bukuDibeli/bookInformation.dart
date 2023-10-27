@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:convert' as convert;
 import 'dart:io' as io;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -34,7 +32,7 @@ import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 // const String localBook = "LocalBook";
 
 class BookInformation extends StatefulWidget {
-  BookInformation({Key? key, required this.bookIdentification}) : super();
+  BookInformation({super.key, required this.bookIdentification});
 
   HivePurchasedBook bookIdentification;
 
@@ -80,7 +78,7 @@ class _BookInformationState extends State<BookInformation> {
   var myEpub;
   var myPdf;
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool isCompleteLoading = false;
   final DbpColor colors = DbpColor();
@@ -773,11 +771,11 @@ class _BookInformationState extends State<BookInformation> {
 
   Future<void> OpenEpubReader() async {
     // print('ini data history: ' + (myDetailsBook!.bookHistory ?? ''));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var epubHistory = prefs
-        .getString("${myDetailsBook!.product_id}USER${currentUserID ?? ''}");
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+    // var epubHistory = prefs
+    //     .getString("${myDetailsBook!.product_id}USER${currentUserID ?? ''}");
 
-    Map<dynamic, dynamic?> myyy = Map();
+   // Map<dynamic, dynamic> myyy = Map();
 
     VocsyEpub.setConfig(
         themeColor: Theme.of(context).primaryColor,
@@ -815,7 +813,7 @@ class _BookInformationState extends State<BookInformation> {
     });
     VocsyEpub.locatorStream.listen((event) async {
       // Get locator here
-      Map json = convert.jsonDecode(event);
+      //Map json = convert.jsonDecode(event);
       // print('data event');
       // print(event.toString());
       // print('data here');
@@ -835,7 +833,7 @@ class _BookInformationState extends State<BookInformation> {
     var epubHistory = prefs
         .getString("${myDetailsBook!.product_id}USER${currentUserID ?? ''}");
 
-    Map<dynamic, dynamic?> myyy = Map();
+    //Map<dynamic, dynamic> myyy = Map();
 
     // EpubViewer.setConfig(
     //     themeColor: Theme.of(context).primaryColor,

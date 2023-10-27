@@ -9,6 +9,7 @@ import 'package:jendela_dbp/view/pages/postAndArticles/posts/readPost.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class PostCard extends StatefulWidget {
   const PostCard({
@@ -40,9 +41,10 @@ class _PostCard extends State<PostCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
-          MaterialPageRoute(builder: (context) => readPost(post: widget.post)),
+          withNavBar: false,
+          screen: readPost(post: widget.post),
         );
       },
       child: Padding(

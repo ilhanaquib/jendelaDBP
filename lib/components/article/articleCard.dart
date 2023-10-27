@@ -6,8 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
-import 'package:jendela_dbp/view/pages/postAndArticles/articleDetailScreen.dart';
+import 'package:jendela_dbp/view/pages/postAndArticles/articles/articleDetailScreen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ArticleCard extends StatefulWidget {
   ArticleCard(
@@ -31,12 +32,12 @@ class _ArticleCard extends State<ArticleCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
-          MaterialPageRoute(
-              builder: (context) => ArticleDetailScreen(
-                    article: widget.article,
-                  )),
+          withNavBar: false,
+          screen: ArticleDetailScreen(
+            article: widget.article,
+          ),
         );
       },
       child: Padding(

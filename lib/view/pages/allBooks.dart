@@ -56,7 +56,7 @@ class _AllBooksState extends State<AllBooks> {
   bool bottomReached = false;
   ScrollController scrollBottom = ScrollController();
 
-// sort books ----------------------------------------------
+// sort books ----------------------------------------------------------
   SortingOrder selectedSortingOrder = SortingOrder.latest;
   void _sortBooks() {
     setState(() {
@@ -505,7 +505,6 @@ class _AllBooksState extends State<AllBooks> {
                                                 _updateLikedStatus(
                                                     key, newLikedStatus);
                                               }
-
                                               return newLikedStatus;
                                             },
                                             likeBuilder: (bool isLiked) {
@@ -560,20 +559,6 @@ class _AllBooksState extends State<AllBooks> {
                         },
                       ),
                     ),
-                    // if (bottomReached)
-                    //   Container(
-                    //     alignment: Alignment.center,
-                    //     padding: const EdgeInsets.all(16.0),
-                    //     color: Colors
-                    //         .grey, // You can customize the background color
-                    //     child: const Text(
-                    //       'You have reached the end of the screen.',
-                    //       style: TextStyle(
-                    //         color: Colors
-                    //             .black, // You can customize the text color
-                    //       ),
-                    //     ),
-                    //   ),
                   ],
                 ),
               )

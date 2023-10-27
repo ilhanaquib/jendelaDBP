@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:jendela_dbp/components/DBPImportedWidgets/notFoundCard.dart';
-import 'package:jendela_dbp/components/articleCard.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import 'package:jendela_dbp/components/article/articleNotFound.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
-import 'package:jendela_dbp/components/bookshelf/carouselTitle.dart';
 import 'package:jendela_dbp/components/cart/cartIcon.dart';
 import 'package:jendela_dbp/components/home/homeArticleCard.dart';
 import 'package:jendela_dbp/components/home/homePostCard.dart';
@@ -26,8 +27,6 @@ import 'package:jendela_dbp/stateManagement/events/articleEvent.dart';
 import 'package:jendela_dbp/stateManagement/events/postEvent.dart';
 import 'package:jendela_dbp/stateManagement/states/articleState.dart';
 import 'package:jendela_dbp/stateManagement/states/postState.dart';
-import 'package:jendela_dbp/stateManagement/states/productState.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -39,10 +38,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey appBarKey = GlobalKey();
-  PostBloc latestPostBloc = PostBloc();
-  ArticleBloc latestArticleBloc = ArticleBloc();
-  ProductBloc latestBookBloc = ProductBloc();
-
+  PostBloc postBloc = PostBloc();
+  ArticleBloc articleBloc = ArticleBloc();
+  ProductBloc bookBloc = ProductBloc();
   Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
   ConnectionCubit connectionCubit = ConnectionCubit();
 
@@ -55,15 +53,15 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     connectionCubit.checkConnection(context);
-    latestPostBloc.add(PostFetch());
-    latestArticleBloc.add(ArticleFetch());
+    postBloc.add(PostFetch());
+    articleBloc.add(ArticleFetch());
     super.initState();
   }
 
   @override
   void dispose() {
-    latestPostBloc.close();
-    latestArticleBloc.close();
+    postBloc.close();
+    articleBloc.close();
     super.dispose();
   }
 
@@ -95,7 +93,7 @@ class _HomeState extends State<Home> {
           Padding(
             padding: const EdgeInsets.only(right: 5),
             child: CartIcon(),
-          )
+          ),
         ],
       ),
       drawer: HomeDrawer(
@@ -113,18 +111,15 @@ class _HomeState extends State<Home> {
             child: RefreshIndicator(
               onRefresh: () async {
                 connectionCubit.checkConnection(context);
-                latestPostBloc.add(PostFetch());
-                latestArticleBloc.add(ArticleFetch());
+                postBloc.add(PostFetch());
+                articleBloc.add(ArticleFetch());
                 setState(() {});
               },
               child: ListView(
                 children: [
-                  _postWidget(context),
-                  const Divider(
-                    indent: 12,
-                    endIndent: 12,
-                  ),
-                  _articleWidget(context),
+                  _post(context),
+                  _article(context),
+                  for (int i = 1; i < 9; i++) _articleCategory(context, i),
                   bookShelf(
                     context,
                     "Buku",
@@ -141,7 +136,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _postWidget(BuildContext context) {
+  Widget _post(BuildContext context) {
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
       childAspectRatio = 1.1;
@@ -177,7 +172,7 @@ class _HomeState extends State<Home> {
           ),
         ),
         BlocBuilder<PostBloc, PostState>(
-          bloc: latestPostBloc,
+          bloc: postBloc,
           builder: (context, data) {
             if (data is PostLoaded) {
               List<Post> posts =
@@ -231,7 +226,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _articleWidget(BuildContext context) {
+  Widget _article(BuildContext context) {
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
@@ -279,7 +274,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           BlocBuilder<ArticleBloc, ArticleState>(
-            bloc: latestArticleBloc,
+            bloc: articleBloc,
             builder: (context, data) {
               if (data is ArticleLoaded) {
                 List<Article> articles =
@@ -288,7 +283,7 @@ class _HomeState extends State<Home> {
                   return const SizedBox(
                     height: 300,
                     child: Center(
-                      child: NotFoundCard(),
+                      child: ArticleNotFoundCard(),
                     ),
                   );
                 }
@@ -332,65 +327,129 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // Widget _dewanBahasaWidget(BuildContext context) {
-  //   Size size = MediaQuery.maybeOf(context)!.size;
-  //   return Container(
-  //     child: Padding(
-  //       padding: const EdgeInsets.all(8.0),
-  //       child: Column(
-  //         children: [
-  //           CarouselTitle(
-  //             title: 'Artikel',
-  //             seeAllText: "",
-  //             seeAllOnTap: () {},
-  //           ),
-  //           Container(
-  //             child: BlocBuilder<ArticleBloc, ArticleState>(
-  //               bloc: artikelTerkiniDewanBahasaBloc,
-  //               builder: (context, data) {
-  //                 if (data is ArticleError) {
-  //                   return ErrorCard(message: data.message);
-  //                 }
-  //                 if (data is ArticleLoaded) {
-  //                   List<Article> artikels = data.listOfArtikel
-  //                           ?.where((e) {
-  //                             if (e.blogId == GlobalVar.DewanBahasaId) {
-  //                               return true;
-  //                             }
-  //                             return false;
-  //                           })
-  //                           .take(10)
-  //                           .toList() ??
-  //                       [];
-  //                   if (artikels.length == 0) {
-  //                     return Container(height: 300, child: NotFoundCard());
-  //                   }
-  //                   return GridView.count(
-  //                       physics: NeverScrollableScrollPhysics(),
-  //                       shrinkWrap: true,
-  //                       crossAxisCount: 2,
-  //                       crossAxisSpacing: 0.0,
-  //                       mainAxisSpacing: 0.0,
-  //                       padding: EdgeInsets.all(0),
-  //                       children: List.generate(
-  //                           artikels.length,
-  //                           (index) =>
-  //                               NewArtikelCard(artikel: artikels[index])));
-  //                 }
-  //                 return Center(
-  //                   child: LoadingAnimationWidget.discreteCircle(
-  //                     color: DbpColor().jendelaGray,
-  //                     secondRingColor: DbpColor().jendelaGreen,
-  //                     thirdRingColor: DbpColor().jendelaOrange,
-  //                     size: 70.0,
-  //                   ),
-  //                 );
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _articleCategory(BuildContext context, int i) {
+    Map<int, dynamic> categoryId = {
+      1: GlobalVar.DewanBahasaId,
+      2: GlobalVar.DewanSasteraId,
+      3: GlobalVar.DewanMasyarakatId,
+      4: GlobalVar.DewanBudayaId,
+      5: GlobalVar.DewanEkonomiId,
+      6: GlobalVar.DewanKosmikiId,
+      7: GlobalVar.DewanTamadunIslamId,
+      8: GlobalVar.TunasCiptaId,
+    };
+    Map<int, String> categoryName = {
+      1: 'Dewan Bahasa',
+      2: 'Dewan Sastera',
+      3: 'Dewan Masyarakat',
+      4: 'Dewan Budaya',
+      5: 'Dewan Ekonomi',
+      6: 'Dewan Kosmik',
+      7: 'Dewan Tamadun Islam',
+      8: 'Tunas Cipta',
+    };
+
+    double childAspectRatio;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      childAspectRatio = 1;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      childAspectRatio = 1;
+    } else {
+      // Use the default padding for phones and other devices
+      childAspectRatio = 0.6;
+    }
+    int crossAxisCount;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      crossAxisCount = 5;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      crossAxisCount = 3;
+    } else {
+      // Use the default padding for phones and other devices
+      crossAxisCount = 2;
+    }
+    int numOfPost;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      numOfPost = 10;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      numOfPost = 6;
+    } else {
+      // Use the default padding for phones and other devices
+      numOfPost = 4;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 24),
+            child: Text(
+              categoryName[i]!,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+          ),
+          BlocBuilder<ArticleBloc, ArticleState>(
+            bloc: articleBloc,
+            builder: (context, data) {
+              if (data is ArticleLoaded) {
+                List<Article> articles = data.listOfArticle
+                        ?.where((e) => e.blogId == categoryId[i])
+                        .take(numOfPost)
+                        .toList() ??
+                    [];
+                if (articles.isEmpty) {
+                  return const SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: ArticleNotFoundCard(),
+                    ),
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: GridView(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5,
+                        childAspectRatio: childAspectRatio),
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    children: List.generate(
+                      articles.length,
+                      (index) => HomeArticleCard(
+                        article: articles[index],
+                      ),
+                    ),
+                  ),
+                );
+              } // /
+
+              if (data is ArticleError) {
+                return ErrorCard(message: 'error');
+              }
+              return SizedBox(
+                height: 300,
+                child: Center(
+                  child: LoadingAnimationWidget.discreteCircle(
+                    color: DbpColor().jendelaGray,
+                    secondRingColor: DbpColor().jendelaGreen,
+                    thirdRingColor: DbpColor().jendelaOrange,
+                    size: 70.0,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }
