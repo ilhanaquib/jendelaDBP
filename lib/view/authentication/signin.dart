@@ -36,7 +36,7 @@ class _SigninState extends State<Signin> {
 
   bool isToLogin = false;
   bool isLoading = false;
-  bool TestInternetAccess = false;
+  bool testInternetAccess = false;
 
   @override
   void initState() {
@@ -75,19 +75,6 @@ class _SigninState extends State<Signin> {
     }
     void goToSignup() {
       Navigator.pushReplacementNamed(context, '/signup');
-    }
-
-    void navigateToHome(BuildContext context) {
-      // This function will navigate to the '/home' route using popUntil
-
-      // Create a predicate to check if a route's name is '/home'
-      isHomeRoute(route) => route.settings.name == '/home';
-
-      // Pop routes until the desired route is reached (if it exists)
-      Navigator.popUntil(context, isHomeRoute);
-
-      // Push the '/home' route onto the stack
-      Navigator.pushNamed(context, '/home');
     }
 
     return Scaffold(
@@ -197,8 +184,9 @@ class _SigninState extends State<Signin> {
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return "Please enter a password";
-                        } else
+                        } else {
                           return null;
+                        }
                       },
                       obscureText: !_passwordVisible,
                       decoration: InputDecoration(
@@ -213,7 +201,7 @@ class _SigninState extends State<Signin> {
                             color: const Color.fromARGB(255, 162, 162, 162),
                           ),
                           onPressed: () {
-                            print(_passwordVisible);
+                            // print(_passwordVisible);
                             // Update the state i.e. toogle the state of passwordVisible variable
                             setState(() {
                               _passwordVisible = !_passwordVisible;
@@ -299,6 +287,7 @@ class _SigninState extends State<Signin> {
             //     ],
             //   ),
             // ),
+
             Padding(
               padding: padding,
               child: SizedBox(
@@ -318,7 +307,7 @@ class _SigninState extends State<Signin> {
                     FocusScopeNode currentFocus = FocusScope.of(context);
                     currentFocus.unfocus();
                     setState(() {
-                      TestInternetAccess = true;
+                      testInternetAccess = true;
                     });
                     try {
                       final result = await InternetAddress.lookup('google.com')
@@ -326,26 +315,28 @@ class _SigninState extends State<Signin> {
                       if (result.isNotEmpty &&
                           result[0].rawAddress.isNotEmpty) {
                         setState(() {
-                          TestInternetAccess = false;
+                          testInternetAccess = false;
                         });
                         _login();
                       }
                     } catch (exception, stackTrace) {
                       setState(() {
-                        TestInternetAccess = false;
+                        testInternetAccess = false;
                       });
                       await Sentry.captureException(
                         exception,
                         stackTrace: stackTrace,
                       );
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        content: Text('Tiada Akses Internet'),
-                        duration: Duration(seconds: 3),
-                      ));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text('Tiada Akses Internet'),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
                     }
                     setState(() {
-                      TestInternetAccess = false;
+                      testInternetAccess = false;
                     });
                   },
                   child: const Text(
@@ -367,6 +358,7 @@ class _SigninState extends State<Signin> {
               //     _showErrorPopup(state.message ?? 'An error occurred');
               //   }
               // },
+
             ),
             const SizedBox(
               height: 40,
@@ -397,7 +389,7 @@ class _SigninState extends State<Signin> {
     } else {
       form.save();
 
-      var data = new Map();
+      var data = {}; // Map
       data["username"] = emailController.text;
       data["password"] = passwordController.text;
 
@@ -479,11 +471,11 @@ class _SigninState extends State<Signin> {
             if (await wait1 == true && await wait2 == true) {
               isToLogin = false;
 
-              Future.delayed(Duration(seconds: 1)).then((value) {
+              Future.delayed(const Duration(seconds: 1)).then((value) {
                 Navigator.of(context).pushReplacementNamed('/Home');
               });
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 behavior: SnackBarBehavior.floating,
                 content: Text('Something Happen'),
                 duration: Duration(seconds: 3),
@@ -519,3 +511,6 @@ class _SigninState extends State<Signin> {
     }
   }
 }
+
+// ilhanaquib03
+// Ilhannkz1

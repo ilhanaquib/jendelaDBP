@@ -26,7 +26,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
         padding: EdgeInsets.zero,
         children: [
           const DrawerHeader(
-            child: Text('Username'),
+            child: Text('Menu'),
           ),
           // ListTile(
           //   title: const Text('Avatar'),

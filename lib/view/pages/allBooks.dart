@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:like_button/like_button.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
@@ -40,6 +41,9 @@ class _AllBooksState extends State<AllBooks> {
   late Map<int, bool> likedStatusMap;
   late Box<bool> likedStatusBox;
   final HiveBookAPI book = HiveBookAPI();
+  List<String> filteredBooks = [];
+  Set<String> selectedFormats = {};
+  bool hasSelectedFormats = false;
 
   bool ascendingPrice = true;
   bool ascendingAlphabet = true;
@@ -51,66 +55,75 @@ class _AllBooksState extends State<AllBooks> {
   bool epubSelected = false;
   bool printSelected = false;
   bool audiobookSelected = false;
-  Set<String> selectedFormats = {'PDF', 'EPUB', 'Buku Cetak', 'Buku Audio'};
 
-  bool bottomReached = false;
   ScrollController scrollBottom = ScrollController();
 
 // sort books ----------------------------------------------------------
   SortingOrder selectedSortingOrder = SortingOrder.latest;
-  void _sortBooks() {
-    setState(() {
-      widget.listBook.sort((a, b) {
-        final HiveBookAPI? bookA = widget.bookBox.get(a);
-        final HiveBookAPI? bookB = widget.bookBox.get(b);
+  void _sortBooksPrice() {
+    setState(
+      () {
+        widget.listBook.sort(
+          (a, b) {
+            final HiveBookAPI? bookA = widget.bookBox.get(a);
+            final HiveBookAPI? bookB = widget.bookBox.get(b);
 
-        if (bookA == null || bookB == null) return 0;
+            if (bookA == null || bookB == null) return 0;
 
-        final double priceA = double.tryParse(bookA.price!) ?? 0;
-        final double priceB = double.tryParse(bookB.price!) ?? 0;
+            final double priceA = double.tryParse(bookA.price!) ?? 0;
+            final double priceB = double.tryParse(bookB.price!) ?? 0;
 
-        if (selectedSortingOrder == SortingOrder.highToLow) {
-          return ascendingPrice
-              ? priceB.compareTo(priceA)
-              : priceA.compareTo(priceB);
-        } else {
-          return ascendingPrice
-              ? priceA.compareTo(priceB)
-              : priceB.compareTo(priceA);
-        }
-      });
-    });
+            if (selectedSortingOrder == SortingOrder.highToLow) {
+              return ascendingPrice
+                  ? priceB.compareTo(priceA)
+                  : priceA.compareTo(priceB);
+            } else {
+              return ascendingPrice
+                  ? priceA.compareTo(priceB)
+                  : priceB.compareTo(priceA);
+            }
+          },
+        );
+      },
+    );
   }
 
   void _sortBooksAlphabetically() {
-    setState(() {
-      widget.listBook.sort((a, b) {
-        final HiveBookAPI? bookA = widget.bookBox.get(a);
-        final HiveBookAPI? bookB = widget.bookBox.get(b);
+    setState(
+      () {
+        widget.listBook.sort(
+          (a, b) {
+            final HiveBookAPI? bookA = widget.bookBox.get(a);
+            final HiveBookAPI? bookB = widget.bookBox.get(b);
 
-        if (bookA == null || bookB == null) return 0;
+            if (bookA == null || bookB == null) return 0;
 
-        final comparison = bookA.name!.compareTo(bookB.name!);
-        return ascendingAlphabet ? comparison : -comparison;
-      });
-    });
+            final comparison = bookA.name!.compareTo(bookB.name!);
+            return ascendingAlphabet ? comparison : -comparison;
+          },
+        );
+      },
+    );
   }
 
   void _sortBooksByLatest() {
-    setState(() {
-      widget.listBook.sort((a, b) {
-        final HiveBookAPI? bookA = widget.bookBox.get(a);
-        final HiveBookAPI? bookB = widget.bookBox.get(b);
+    setState(
+      () {
+        widget.listBook.sort(
+          (a, b) {
+            final HiveBookAPI? bookA = widget.bookBox.get(a);
+            final HiveBookAPI? bookB = widget.bookBox.get(b);
 
-        if (bookA == null || bookB == null) return 0;
+            if (bookA == null || bookB == null) return 0;
 
-        return bookB.date_created!
-            .compareTo(bookA.date_created!); // Sort by latest
-      });
-    });
+            return bookB.date_created!
+                .compareTo(bookA.date_created!); // Sort by latest
+          },
+        );
+      },
+    );
   }
-
-  // sort books---------------------------------------------------------
+// sort books---------------------------------------------------------
 
   @override
   void initState() {
@@ -205,34 +218,49 @@ class _AllBooksState extends State<AllBooks> {
                           Icons.picture_as_pdf_rounded,
                           'PDF',
                           () {
-                            setState(() {
-                              pdfSelected = !pdfSelected;
-                              Navigator.pop(context);
-                            });
+                            // Toggle the 'PDF' format in filteredBooks
+                            if (selectedFormats.contains('PDF')) {
+                              selectedFormats.remove('PDF');
+                            } else {
+                              selectedFormats.add('PDF');
+                            }
+                            hasSelectedFormats = selectedFormats.isNotEmpty;
+                            filterBooks();
+                            Navigator.pop(context);
                           },
-                          pdfSelected,
+                          selectedFormats.contains('PDF'),
                         ),
                         _buildFormatButton(
-                          Icons.article_rounded,
+                          Symbols.auto_stories_rounded,
                           'EPUB',
                           () {
-                            setState(() {
-                              epubSelected = !epubSelected;
-                              Navigator.pop(context);
-                            });
+                            // Toggle the 'EPUB' format in filteredBooks
+                            if (selectedFormats.contains('EPUB')) {
+                              selectedFormats.remove('EPUB');
+                            } else {
+                              selectedFormats.add('EPUB');
+                            }
+                            hasSelectedFormats = selectedFormats.isNotEmpty;
+                            filterBooks();
+                            Navigator.pop(context);
                           },
-                          epubSelected,
+                          selectedFormats.contains('EPUB'),
                         ),
                         _buildFormatButton(
                           Icons.library_books_rounded,
                           'Print',
                           () {
-                            setState(() {
-                              printSelected = !printSelected;
-                              Navigator.pop(context);
-                            });
+                            // Toggle the 'Buku Cetak' format in filteredBooks
+                            if (selectedFormats.contains('Buku Cetak')) {
+                              selectedFormats.remove('Buku Cetak');
+                            } else {
+                              selectedFormats.add('Buku Cetak');
+                            }
+                            hasSelectedFormats = selectedFormats.isNotEmpty;
+                            filterBooks();
+                            Navigator.pop(context);
                           },
-                          printSelected,
+                          selectedFormats.contains('Buku Cetak'),
                         ),
                       ],
                     ),
@@ -243,14 +271,19 @@ class _AllBooksState extends State<AllBooks> {
                         children: [
                           _buildFormatButton(
                             Icons.graphic_eq_rounded,
-                            'Audiobook',
+                            'Buku Audio',
                             () {
-                              setState(() {
-                                audiobookSelected = !audiobookSelected;
-                                Navigator.pop(context);
-                              });
+                              // Toggle the 'Buku Audio' format in filteredBooks
+                              if (selectedFormats.contains('Buku Audio')) {
+                                selectedFormats.remove('Buku Audio');
+                              } else {
+                                selectedFormats.add('Buku Audio');
+                              }
+                              hasSelectedFormats = selectedFormats.isNotEmpty;
+                              filterBooks();
+                              Navigator.pop(context);
                             },
-                            audiobookSelected,
+                            selectedFormats.contains('Buku Audio'),
                           ),
                         ],
                       ),
@@ -265,6 +298,24 @@ class _AllBooksState extends State<AllBooks> {
     );
   }
 
+  void filterBooks() {
+    // Clear the filteredBooks list
+    filteredBooks.clear();
+
+    // Iterate through all books and filter based on selected formats
+    for (int key in widget.listBook) {
+      final HiveBookAPI? bookSpecific = widget.bookBox.get(key);
+
+      // Check if the book matches any of the selected formats
+      if (selectedFormats.isEmpty ||
+          selectedFormats.any(
+            (format) => _hasFormat(bookSpecific, format),
+          )) {
+        filteredBooks.add(key.toString());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     void _toggleSortingOrder(SortingOrder newSortingOrder) {
@@ -273,9 +324,9 @@ class _AllBooksState extends State<AllBooks> {
         if (newSortingOrder == SortingOrder.latest) {
           _sortBooksByLatest();
         } else if (newSortingOrder == SortingOrder.highToLow) {
-          _sortBooks(); // Pass the ascending parameter
+          _sortBooksPrice(); // Pass the ascending parameter
         } else if (newSortingOrder == SortingOrder.lowToHigh) {
-          _sortBooks(); // Reverse the ascending parameter
+          _sortBooksPrice(); // Reverse the ascending parameter
         } else if (newSortingOrder == SortingOrder.alphabeticallyAToZ) {
           _sortBooksAlphabetically();
         } else if (newSortingOrder == SortingOrder.alphabeticallyZToA) {
@@ -404,9 +455,13 @@ class _AllBooksState extends State<AllBooks> {
                           crossAxisSpacing: crossAxisSpacing,
                           childAspectRatio: childAspectRatio,
                         ),
-                        itemCount: widget.listBook.length,
+                        itemCount: hasSelectedFormats
+                            ? filteredBooks.length
+                            : widget.listBook.length,
                         itemBuilder: (context, index) {
-                          final int key = widget.listBook[index];
+                          final int key = hasSelectedFormats
+                              ? int.parse(filteredBooks[index])
+                              : widget.listBook[index]; // Convert back to int
                           final HiveBookAPI? bookSpecific =
                               widget.bookBox.get(key);
                           var isBookLiked =
@@ -414,148 +469,126 @@ class _AllBooksState extends State<AllBooks> {
                                   false;
                           //final isBookLikedMap = likedStatusMap[key] ?? false;
 
-                          bool matchesSelectedFormats = true;
-                          if (pdfSelected && !_hasFormat(bookSpecific, 'PDF')) {
-                            matchesSelectedFormats = false;
-                          }
-                          if (epubSelected &&
-                              !_hasFormat(bookSpecific, 'EPUB')) {
-                            matchesSelectedFormats = false;
-                          }
-                          if (printSelected &&
-                              !_hasFormat(bookSpecific, 'Buku Cetak')) {
-                            matchesSelectedFormats = false;
-                          }
-                          if (audiobookSelected &&
-                              !_hasFormat(bookSpecific, 'Buku Audio')) {
-                            matchesSelectedFormats = false;
-                          }
-
                           // If the book matches the selected formats, display it
-                          if (matchesSelectedFormats) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BookDetail(
-                                      likedStatusBox: likedStatusBox,
-                                      bookBox: widget.bookBox,
-                                      book: bookSpecific,
-                                    ),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookDetail(
+                                    likedStatusBox: likedStatusBox,
+                                    bookBox: widget.bookBox,
+                                    book: bookSpecific,
                                   ),
-                                );
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Card(
-                                    elevation: 5,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Stack(
-                                      alignment: Alignment.topRight,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Stack(
-                                            children: [
-                                              CachedNetworkImage(
-                                                imageUrl: bookSpecific!.images!,
-                                                // height: 220,
-                                                width: 140,
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ],
-                                          ),
+                                ),
+                              );
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Stack(
+                                          children: [
+                                            CachedNetworkImage(
+                                              imageUrl: bookSpecific!.images!,
+                                              // height: 220,
+                                              width: 140,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ],
                                         ),
-                                        Positioned(
-                                          top: 4,
-                                          right: 4,
-                                          child: LikeButton(
-                                            isLiked: isBookLiked,
-                                            onTap: (bool isLiked) async {
-                                              final newLikedStatus = !isLiked;
+                                      ),
+                                      Positioned(
+                                        top: 4,
+                                        right: 4,
+                                        child: LikeButton(
+                                          isLiked: isBookLiked,
+                                          onTap: (bool isLiked) async {
+                                            final newLikedStatus = !isLiked;
 
-                                              // Update liked status in the 'liked_status' box
-                                              await likedStatusBox.put(
-                                                  key, newLikedStatus);
+                                            // Update liked status in the 'liked_status' box
+                                            await likedStatusBox.put(
+                                                key, newLikedStatus);
 
-                                              // Update the liked status in the book model and in the main book storage box
-                                              final book =
-                                                  widget.bookBox.get(key);
+                                            // Update the liked status in the book model and in the main book storage box
+                                            final book =
+                                                widget.bookBox.get(key);
 
-                                              if (book != null) {
-                                                book.isFavorite =
-                                                    newLikedStatus;
-                                                widget.bookBox.put(key, book);
+                                            if (book != null) {
+                                              book.isFavorite = newLikedStatus;
+                                              widget.bookBox.put(key, book);
 
-                                                // Add or remove the book from the 'liked_books' box based on the liked status
-                                                if (newLikedStatus) {
-                                                  widget.likedBooksBox
-                                                      .put(key, book);
-                                                } else {
-                                                  widget.likedBooksBox.delete(
-                                                      key); // Remove the book from 'liked_books' box
-                                                }
-
-                                                // Update liked status in LikedStatusManager
-                                                _updateLikedStatus(
-                                                    key, newLikedStatus);
+                                              // Add or remove the book from the 'liked_books' box based on the liked status
+                                              if (newLikedStatus) {
+                                                widget.likedBooksBox
+                                                    .put(key, book);
+                                              } else {
+                                                widget.likedBooksBox.delete(
+                                                    key); // Remove the book from 'liked_books' box
                                               }
-                                              return newLikedStatus;
-                                            },
-                                            likeBuilder: (bool isLiked) {
-                                              return Stack(
-                                                children: [
-                                                  Icon(
-                                                    Icons.favorite,
-                                                    color: isLiked
-                                                        ? const Color.fromARGB(
-                                                            255, 245, 88, 88)
-                                                        : Colors.white,
-                                                    size: 30,
-                                                  ),
-                                                  const Icon(
-                                                    Icons.favorite_border,
-                                                    color: Color.fromARGB(
-                                                        255, 245, 88, 88),
-                                                    size: 30,
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          ),
+
+                                              // Update liked status in LikedStatusManager
+                                              _updateLikedStatus(
+                                                  key, newLikedStatus);
+                                            }
+                                            return newLikedStatus;
+                                          },
+                                          likeBuilder: (bool isLiked) {
+                                            return Stack(
+                                              children: [
+                                                Icon(
+                                                  Icons.favorite,
+                                                  color: isLiked
+                                                      ? const Color.fromARGB(
+                                                          255, 245, 88, 88)
+                                                      : Colors.white,
+                                                  size: 30,
+                                                ),
+                                                const Icon(
+                                                  Icons.favorite_border,
+                                                  color: Color.fromARGB(
+                                                      255, 245, 88, 88),
+                                                  size: 30,
+                                                ),
+                                                
+                                              ],
+                                            );
+                                          },
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 0),
-                                    child: Text(
-                                      bookSpecific.name!,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      style: const TextStyle(fontSize: 11),
-                                    ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 0),
+                                  child: Text(
+                                    bookSpecific.name!,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    style: const TextStyle(fontSize: 11),
                                   ),
-                                  Text(
-                                    bookSpecific.price == ''
-                                        ? 'Naskhah Ikhlas'
-                                        : 'RM ${bookSpecific.price!}',
-                                    style:  TextStyle(
-                                      fontSize: 13,
-                                      color: DbpColor().jendelaGray,
-                                    ),
+                                ),
+                                Text(
+                                  bookSpecific.price == ''
+                                      ? 'Naskhah Ikhlas'
+                                      : 'RM ${bookSpecific.price!}',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: DbpColor().jendelaGray,
                                   ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            return const SizedBox.shrink();
-                          }
+                                ),
+                              ],
+                            ),
+                          );
                         },
                       ),
                     ),
@@ -643,26 +676,20 @@ class _AllBooksState extends State<AllBooks> {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: isSelected ? DbpColor().jendelaGreen : Colors.white,
-        foregroundColor: isSelected
-            ? Colors.white
-            : DbpColor().jendelaGray,
+        foregroundColor: isSelected ? Colors.white : DbpColor().jendelaGray,
         elevation: 0, // Set elevation to 0 to remove shadow
       ),
       child: Row(
         children: [
           Icon(
             icon,
-            color: isSelected
-                ? Colors.white
-                :  DbpColor().jendelaGray,
+            color: isSelected ? Colors.white : DbpColor().jendelaGray,
           ),
           const SizedBox(width: 10),
           Text(
             text,
             style: TextStyle(
-              color: isSelected
-                  ? Colors.white
-                  : DbpColor().jendelaGray,
+              color: isSelected ? Colors.white : DbpColor().jendelaGray,
             ),
           ),
         ],

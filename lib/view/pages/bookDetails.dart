@@ -499,8 +499,8 @@ class _BookDetailState extends State<BookDetail> {
                                   PersistentNavBarNavigator.pushNewScreen(
                                     context,
                                     screen: Audiobooks(
-                                        // book: widget.book,
-                                        ),
+                                      //book: widget.book,
+                                    ),
                                   );
                                 },
                                 child: const Padding(
@@ -611,7 +611,7 @@ class _BookDetailState extends State<BookDetail> {
                                 onPressed: () {
                                   PersistentNavBarNavigator.pushNewScreen(
                                     context,
-                                    screen: Audiobooks(
+                                    screen: const Audiobooks(
                                         // book: widget.book,
                                         ),
                                   );
@@ -643,7 +643,7 @@ class _BookDetailState extends State<BookDetail> {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                        ],
+                                        ],  
                                       ),
                                     ],
                                   ),

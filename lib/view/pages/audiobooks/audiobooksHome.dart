@@ -286,6 +286,8 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -300,23 +302,24 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
           ],
         ),
         leading: Padding(
-          padding: const EdgeInsets.only(right: 10),
+          padding: const EdgeInsets.only(left: 10),
           child: GestureDetector(
-            onTap: () {
-              _scaffoldKey.currentState?.openDrawer();
-            },
-            child: CircleAvatar(
-              backgroundImage:
-                  context.watch<ImageBloc>().selectedImageProvider ??
-                      const AssetImage('assets/images/logo.png'),
-            ),
-          ),
+              onTap: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+              child: Image.asset('assets/images/logo.png')
+              // CircleAvatar(
+              //   backgroundImage:
+              //       context.watch<ImageBloc>().selectedImageProvider ??
+              //           const AssetImage('assets/images/logo.png'),
+              // ),
+              ),
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 5),
+            padding: const EdgeInsets.only(right: 10),
             child: CartIcon(),
-          )
+          ),
         ],
       ),
       drawer: HomeDrawer(updateAppBar: () {
