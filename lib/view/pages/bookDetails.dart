@@ -1,10 +1,10 @@
 import 'dart:convert' as convert;
-
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/components/bookDetail/noFormat.dart';
 import 'package:jendela_dbp/components/cart/cartIcon.dart';
 import 'package:jendela_dbp/controllers/screenSize.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -44,6 +44,18 @@ class _BookDetailState extends State<BookDetail> {
   bool isPdf = true;
   final controller = PageController();
   Box<HiveBookAPI> toCartBook = Hive.box<HiveBookAPI>(GlobalVar.ToCartBook);
+  Box<HivePurchasedBook> purchasedBooks =
+      Hive.box<HivePurchasedBook>(GlobalVar.PuchasedBook);
+  Set<String> selectedFormats = {};
+  var format;
+
+  bool isBookPurchased(int bookId) {
+    return purchasedBooks.containsKey(bookId);
+  }
+
+  HivePurchasedBook getBook(int bookId) {
+    return HivePurchasedBook();
+  }
 
   @override
   void initState() {
@@ -155,6 +167,22 @@ class _BookDetailState extends State<BookDetail> {
     );
   }
 
+  Future<void> noFormat(context) {
+    return showModalBottomSheet(
+      useRootNavigator: true,
+      elevation: 2,
+      barrierColor: Colors.black.withOpacity(0.8),
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (builder) {
+        return SizedBox(
+          height: 150,
+          child: noFormatSheet(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double containerWidth;
@@ -195,7 +223,7 @@ class _BookDetailState extends State<BookDetail> {
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 5),
+            padding: const EdgeInsets.only(right: 10),
             child: CartIcon(),
           )
         ],
@@ -496,12 +524,16 @@ class _BookDetailState extends State<BookDetail> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  PersistentNavBarNavigator.pushNewScreen(
-                                    context,
-                                    screen: Audiobooks(
-                                      //book: widget.book,
-                                    ),
-                                  );
+                                  if (isBookPurchased(widget.book!.id!)) {
+                                    PersistentNavBarNavigator.pushNewScreen(
+                                      context,
+                                      screen: Audiobooks(
+                                        book: widget.bookIdentification,
+                                      ),
+                                    );
+                                  } else {
+                                    buyItem(context);
+                                  }
                                 },
                                 child: const Padding(
                                   padding: EdgeInsets.symmetric(
@@ -547,6 +579,7 @@ class _BookDetailState extends State<BookDetail> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
+                              // read book button
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                   backgroundColor: Colors.white,
@@ -560,7 +593,7 @@ class _BookDetailState extends State<BookDetail> {
                                 onPressed: isBookAvailable
                                     ? () {
                                         // 1. check if book is downloaded
-                                        // 2. if book isnt downloaded, open a popup that asks user to download book/
+                                        // 2. if book isnt downloaded, open a popup that asks user to download book
                                         boughtBook(context);
                                       }
                                     : () {
@@ -601,6 +634,7 @@ class _BookDetailState extends State<BookDetail> {
                                   ),
                                 ),
                               ),
+                              // play audio button
                               OutlinedButton(
                                 style: OutlinedButton.styleFrom(
                                   backgroundColor: DbpColor().jendelaOrange,
@@ -609,12 +643,49 @@ class _BookDetailState extends State<BookDetail> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  PersistentNavBarNavigator.pushNewScreen(
-                                    context,
-                                    screen: const Audiobooks(
-                                        // book: widget.book,
+                                  List toJSonVariation = convert.json.decode(
+                                      widget.book!.woocommerce_variations ??
+                                          '[]');
+
+                                  toJSonVariation =
+                                      toJSonVariation.where((variation) {
+                                    return variation['status']
+                                            .toString()
+                                            .toLowerCase() ==
+                                        "publish";
+                                  }).toList();
+
+                                  List<String> format = List.generate(
+                                      toJSonVariation.length, (index) {
+                                    return toJSonVariation[index]
+                                                ['attributes']![
+                                            "pa_pilihan-format"] is String
+                                        ? "Pilihan Format: ${toJSonVariation[index]['attributes']!["pa_pilihan-format"]}"
+                                        : "Pilihan Format: Buku Cetak";
+                                  });
+
+                                  String joinedFormat = format.join(", ");
+                                  joinedFormat = joinedFormat.split(":")[1];
+
+                                  if (joinedFormat
+                                          .toLowerCase()
+                                          .contains('audio') ||
+                                      joinedFormat
+                                          .toLowerCase()
+                                          .contains('mp3')) {
+                                    if (isBookPurchased(widget.book!.id!)) {
+                                      PersistentNavBarNavigator.pushNewScreen(
+                                        context,
+                                        screen: Audiobooks(
+                                          book: widget.bookIdentification,
                                         ),
-                                  );
+                                      );
+                                    } else {
+                                      buyItem(context);
+                                    }
+                                  } else {
+                                    noFormat(context);
+                                  } 
                                 },
                                 child: const Padding(
                                   padding: EdgeInsets.symmetric(
@@ -643,7 +714,7 @@ class _BookDetailState extends State<BookDetail> {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
-                                        ],  
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -667,6 +738,7 @@ class _BookDetailState extends State<BookDetail> {
     if (book == null) return false;
     String woocommerceVariationsString = book.woocommerce_variations!;
     List<dynamic> variations = convert.jsonDecode(woocommerceVariationsString);
+    print(variations);
 
     return variations.any((variation) {
       return variation['attribute_summary'] == 'Pilihan Format: $format';
