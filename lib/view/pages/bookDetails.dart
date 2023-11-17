@@ -475,7 +475,7 @@ class _BookDetailState extends State<BookDetail> {
                                 // 1. check if the book is purchased
                                 // 2. if book isnt purchased, should buy
                                 // 3. if book is purhcaesd, open the book pdf/epub
-                                onPressed: isBookAvailable
+                                onPressed: isBookPurchased(widget.book!.id!)
                                     ? () {
                                         // 1. check if book is downloaded
                                         // 2. if book isnt downloaded, open a popup that asks user to download book/
@@ -524,15 +524,48 @@ class _BookDetailState extends State<BookDetail> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (isBookPurchased(widget.book!.id!)) {
-                                    PersistentNavBarNavigator.pushNewScreen(
-                                      context,
-                                      screen: Audiobooks(
-                                        book: widget.bookIdentification,
-                                      ),
-                                    );
+                                  List toJSonVariation = convert.json.decode(
+                                      widget.book!.woocommerce_variations ??
+                                          '[]');
+
+                                  toJSonVariation =
+                                      toJSonVariation.where((variation) {
+                                    return variation['status']
+                                            .toString()
+                                            .toLowerCase() ==
+                                        "publish";
+                                  }).toList();
+
+                                  List<String> format = List.generate(
+                                      toJSonVariation.length, (index) {
+                                    return toJSonVariation[index]
+                                                ['attributes']![
+                                            "pa_pilihan-format"] is String
+                                        ? "Pilihan Format: ${toJSonVariation[index]['attributes']!["pa_pilihan-format"]}"
+                                        : "Pilihan Format: Buku Cetak";
+                                  });
+
+                                  String joinedFormat = format.join(", ");
+                                  joinedFormat = joinedFormat.split(":")[1];
+
+                                  if (joinedFormat
+                                          .toLowerCase()
+                                          .contains('audio') ||
+                                      joinedFormat
+                                          .toLowerCase()
+                                          .contains('mp3')) {
+                                    if (isBookPurchased(widget.book!.id!)) {
+                                      PersistentNavBarNavigator.pushNewScreen(
+                                        context,
+                                        screen: Audiobooks(
+                                          book: widget.bookIdentification,
+                                        ),
+                                      );
+                                    } else {
+                                      buyItem(context);
+                                    }
                                   } else {
-                                    buyItem(context);
+                                    noFormat(context);
                                   }
                                 },
                                 child: const Padding(
@@ -590,7 +623,7 @@ class _BookDetailState extends State<BookDetail> {
                                 // 1. check if the book is purchased
                                 // 2. if book isnt purchased, should buy
                                 // 3. if book is purhcaesd, open the book pdf/epub
-                                onPressed: isBookAvailable
+                                onPressed: isBookPurchased(widget.book!.id!)
                                     ? () {
                                         // 1. check if book is downloaded
                                         // 2. if book isnt downloaded, open a popup that asks user to download book
@@ -672,7 +705,7 @@ class _BookDetailState extends State<BookDetail> {
                                           .contains('audio') ||
                                       joinedFormat
                                           .toLowerCase()
-                                          .contains('mp3')) {
+                                           .contains('mp3')) {
                                     if (isBookPurchased(widget.book!.id!)) {
                                       PersistentNavBarNavigator.pushNewScreen(
                                         context,
@@ -685,7 +718,7 @@ class _BookDetailState extends State<BookDetail> {
                                     }
                                   } else {
                                     noFormat(context);
-                                  } 
+                                  }
                                 },
                                 child: const Padding(
                                   padding: EdgeInsets.symmetric(
