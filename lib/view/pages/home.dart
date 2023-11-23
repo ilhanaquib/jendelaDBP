@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:jendela_dbp/stateManagement/blocs/newPostBloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/components/article/articleNotFound.dart';
@@ -39,6 +40,7 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey appBarKey = GlobalKey();
   PostBloc postBloc = PostBloc();
+  NewPostBloc newPostBloc = NewPostBloc();
   ArticleBloc articleBloc = ArticleBloc();
   ProductBloc bookBloc = ProductBloc();
   Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
@@ -54,6 +56,7 @@ class _HomeState extends State<Home> {
   void initState() {
     connectionCubit.checkConnection(context);
     postBloc.add(PostFetch());
+    newPostBloc.add(PostFetch());
     articleBloc.add(ArticleFetch());
     super.initState();
   }
@@ -61,6 +64,7 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     postBloc.close();
+    newPostBloc.close();
     articleBloc.close();
     super.dispose();
   }
@@ -113,6 +117,7 @@ class _HomeState extends State<Home> {
               onRefresh: () async {
                 connectionCubit.checkConnection(context);
                 postBloc.add(PostFetch());
+                newPostBloc.add(PostFetch());
                 articleBloc.add(ArticleFetch());
                 setState(() {});
               },
@@ -172,8 +177,8 @@ class _HomeState extends State<Home> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
-        BlocBuilder<PostBloc, PostState>(
-          bloc: postBloc,
+        BlocBuilder<NewPostBloc, PostState>(
+          bloc: newPostBloc,
           builder: (context, data) {
             if (data is PostLoaded) {
               List<Post> posts =

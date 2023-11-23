@@ -705,7 +705,7 @@ class _BookDetailState extends State<BookDetail> {
                                           .contains('audio') ||
                                       joinedFormat
                                           .toLowerCase()
-                                           .contains('mp3')) {
+                                          .contains('mp3')) {
                                     if (isBookPurchased(widget.book!.id!)) {
                                       PersistentNavBarNavigator.pushNewScreen(
                                         context,
