@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'package:jendela_dbp/components/read_book/setting.dart';
 import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
@@ -41,18 +43,24 @@ final ValueNotifier<bool> showHomeNotifier = ValueNotifier<bool>(false);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+  if (Platform.isWindows) {
+    WindowManager.instance.setSize(const Size(1500, 800));
+    WindowManager.instance.setMinimumSize(const Size(800, 650));
+  }
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await registerHive();
   await LikedStatusManager.initLikedStatusBox();
   final prefs = await SharedPreferences.getInstance();
   final showHomeNotifier = prefs.getBool('showHome') ?? false;
-  runApp(//JendelaDBP(showHomeNotifier: showHomeNotifier)
-      DevicePreview(
-        enabled: false,
-        builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
-      ),
-      );
+  runApp(
+    //JendelaDBP(showHomeNotifier: showHomeNotifier)
+    DevicePreview(
+      enabled: true,
+      builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
+    ),
+  );
 }
 
 class JendelaDBP extends StatelessWidget {
