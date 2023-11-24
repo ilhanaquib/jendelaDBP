@@ -43,24 +43,32 @@ final ValueNotifier<bool> showHomeNotifier = ValueNotifier<bool>(false);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
-  if (Platform.isWindows) {
-    WindowManager.instance.setSize(const Size(1500, 800));
-    WindowManager.instance.setMinimumSize(const Size(800, 650));
-  }
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   await registerHive();
   await LikedStatusManager.initLikedStatusBox();
   final prefs = await SharedPreferences.getInstance();
   final showHomeNotifier = prefs.getBool('showHome') ?? false;
-  runApp(
-    //JendelaDBP(showHomeNotifier: showHomeNotifier)
-    DevicePreview(
-      enabled: true,
-      builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
-    ),
-  );
+
+  if (Platform.isWindows) {
+    // Code specific to Windows
+    await windowManager.ensureInitialized();
+    WindowManager.instance.setSize(const Size(1500, 800));
+    WindowManager.instance.setMinimumSize(const Size(800, 650));
+    runApp(JendelaDBP(showHomeNotifier: showHomeNotifier));
+  } else {
+    // Code for other platforms (e.g., Android)
+    runApp(
+      DevicePreview(
+        enabled: false,
+        builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
+      ),
+    );
+  }
 }
 
 class JendelaDBP extends StatelessWidget {

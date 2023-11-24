@@ -9,96 +9,93 @@ import 'package:jendela_dbp/stateManagement/states/postState.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
-  // News Bloc
+  PostBloc() : super(PostInit());
   int _pageCount = 1;
 
-  PostBloc() : super(PostInit()) {
-    on<PostFetch>(
-      (event, emit) async {
-        _pageCount = 1;
-        emit(
-          PostLoading(),
-        );
-        try {
-          List<Post> listOfPost = await fetchPostFromCacheOrApi();
-          emit(
-            PostLoaded(listOfPost: listOfPost),
-          );
-        } catch (e) {
-          emit(
-            PostError(
-              message: e.toString(),
-            ),
-          );
-        }
-      },
-    );
-
-    on<PostFetchMore>(
-      (event, emit) async {
-        try {
-          List<Post> respData =
-              await fetchPost(page: _pageCount + 1, perPage: event.perPage);
-          if (respData.isNotEmpty) {
-            _pageCount++;
-          }
-          List<Post> combinedList = [];
-          combinedList.addAll(state.listOfPost ?? []);
-          combinedList.addAll(respData);
-          emit(PostLoading());
-          emit(PostLoaded(listOfPost: combinedList));
-        } catch (err) {
-          emit(
-            PostError(
-              message: err.toString(),
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  Future<List<Post>> fetchPostFromCacheOrApi() async {
-    final prefs = await SharedPreferences.getInstance();
-    final cachedData = prefs.getString('posts_cache');
-    final cachedTimestamp = prefs.getInt('posts_cache_timestamp');
-
-    if (cachedData != null && cachedTimestamp != null) {
-      final currentTime = DateTime.now().millisecondsSinceEpoch;
-      const maxCacheAge = 86400000; // 1 day in milliseconds
-
-      if (currentTime - cachedTimestamp <= maxCacheAge) {
-        // Data is still valid, parse and return it
-        List<dynamic> listOfData = json.decode(cachedData) as List<dynamic>;
-        return listOfData.map((rawBlog) {
-          return Post.fromJsonCache(rawBlog);
-        }).toList();
+  @override
+  Stream<PostState> mapEventToState(PostEvent event) async* {
+    if (event is PostInit) {
+      _pageCount = 1;
+      if (await hasCachedPosts()) {
+        final cachedPosts = await loadCachedPosts();
+        yield PostLoaded(listOfPost: cachedPosts);
       }
     }
 
-    // If cached data is expired or not available, fetch from API and cache it
-    List<Post> listOfPost = await fetchPost();
+    if (event is PostFetch) {
+      yield PostLoading();
+      _pageCount = 1;
+      try {
+        List<Post> listOfPost = await fetchPost();
+        yield PostLoaded(listOfPost: listOfPost);
+        await cachePosts(listOfPost);
+      } catch (e) {
+        yield PostError(message: e.toString());
+      }
+    }
 
-    // Store the new data and current timestamp in SharedPreferences
-    prefs.setString('posts_cache', json.encode(listOfPost));
-    prefs.setInt(
-        'posts_cache_timestamp', DateTime.now().millisecondsSinceEpoch);
+    if (event is PostFetchMore) {
+      try {
+        List<Post> respData =
+            await fetchPost(page: _pageCount + 1, perPage: event.perPage);
+        if (respData.length > 0) {
+          _pageCount++;
+        }
+        List<Post> combinedList = [];
+        combinedList.addAll(state.listOfPost ?? []);
+        combinedList.addAll(respData);
+        yield PostLoading();
+        yield PostLoaded(listOfPost: combinedList);
+        await cachePosts(combinedList);
+      } catch (err) {
+        yield PostError(message: err.toString());
+      }
+    }
+  }
 
-    return listOfPost;
+  Future<void> cachePosts(List<Post> posts) async {
+    final prefs = await SharedPreferences.getInstance();
+    final encodedData =
+        jsonEncode(posts.map((posts) => posts.toJson()).toList());
+    await prefs.setString('cached_posts', encodedData);
+    await prefs.setInt(
+        'cached_posts_timestamp', DateTime.now().millisecondsSinceEpoch);
   }
-}
 
-Future<List<Post>> fetchPost({int perPage = 25, int page = 1}) async {
-  dynamic posts = await ApiService.getPosts(
-      '', {"per_page": perPage.toString(), "page": page.toString()});
-  if (posts == null) {
-    return [];
+  Future<List<Post>?> loadCachedPosts() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cachedData = prefs.getString('cached_posts');
+    if (cachedData != null) {
+      return (jsonDecode(cachedData) as List<dynamic>).map((rawBlog) {
+        return Post.fromJson(rawBlog);
+      }).toList();
+    }
+    return null;
   }
-  List<dynamic> listOfData = json.decode(posts.body) as List<dynamic>;
-  if (listOfData.length == 0) {
-    return [];
+
+  Future<bool> hasCachedPosts() async {
+    final prefs = await SharedPreferences.getInstance();
+    final timestamp = prefs.getInt('cached_posts_timestamp');
+    if (timestamp != null) {
+      final currentTime = DateTime.now().millisecondsSinceEpoch;
+      final difference = currentTime - timestamp;
+      return difference <= 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
+    }
+    return false;
   }
-  return listOfData.map((rawBlog) {
-    return Post.fromJson(rawBlog);
-  }).toList();
+
+  Future<List<Post>> fetchPost({int perPage = 25, int page = 1}) async {
+    dynamic posts = await ApiService.getPosts(
+        '', {"per_page": perPage.toString(), "page": page.toString()});
+    if (posts == null) {
+      return [];
+    }
+    List<dynamic> listOfData = json.decode(posts.body) as List<dynamic>;
+    if (listOfData.length == 0) {
+      return [];
+    }
+    return listOfData.map((rawBlog) {
+      return Post.fromJson(rawBlog);
+    }).toList();
+  }
 }

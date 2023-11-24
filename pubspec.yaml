@@ -82,6 +82,7 @@ dependencies:
   webview_flutter: ^4.4.1
   material_symbols_icons: ^4.2706.0
   window_manager: ^0.3.7
+  another_flutter_splash_screen: ^1.2.0
 
 
 

@@ -40,7 +40,6 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey appBarKey = GlobalKey();
   PostBloc postBloc = PostBloc();
-  NewPostBloc newPostBloc = NewPostBloc();
   ArticleBloc articleBloc = ArticleBloc();
   ProductBloc bookBloc = ProductBloc();
   Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
@@ -56,7 +55,6 @@ class _HomeState extends State<Home> {
   void initState() {
     connectionCubit.checkConnection(context);
     postBloc.add(PostFetch());
-    newPostBloc.add(PostFetch());
     articleBloc.add(ArticleFetch());
     super.initState();
   }
@@ -64,7 +62,6 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     postBloc.close();
-    newPostBloc.close();
     articleBloc.close();
     super.dispose();
   }
@@ -117,7 +114,6 @@ class _HomeState extends State<Home> {
               onRefresh: () async {
                 connectionCubit.checkConnection(context);
                 postBloc.add(PostFetch());
-                newPostBloc.add(PostFetch());
                 articleBloc.add(ArticleFetch());
                 setState(() {});
               },
@@ -177,8 +173,8 @@ class _HomeState extends State<Home> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
-        BlocBuilder<NewPostBloc, PostState>(
-          bloc: newPostBloc,
+        BlocBuilder<PostBloc, PostState>(
+          bloc: postBloc,
           builder: (context, data) {
             if (data is PostLoaded) {
               List<Post> posts =
