@@ -31,20 +31,20 @@ class ForgotPassword extends StatelessWidget {
               child: Column(
                 children: [
                   const Text(
-                    'Forgot Password',
+                    'Lupa Kata Laluan',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    'No worries, we\'ll send you reset instructions. ',
+                    'Jangan risau, kami akan hantar arahan untuk set semula kata laluan ',
                     style: TextStyle(
                       color: DbpColor().jendelaGray,
                     ),
                   ),
                   Text(
-                    'Enter your email to reset password',
+                    'Masukkan emel untuk set semula kata laluan',
                     style: TextStyle(
                       color: DbpColor().jendelaGray,
                     ),
@@ -56,7 +56,7 @@ class ForgotPassword extends StatelessWidget {
               height: 50,
             ),
             AuthForm(
-              fieldName: 'Email',
+              fieldName: 'Emel',
               fieldIcon: Icons.alternate_email_rounded,
             ),
             Padding(
@@ -77,7 +77,7 @@ class ForgotPassword extends StatelessWidget {
                         context, '/verificationPassword');
                   },
                   child: const Text(
-                    'Send',
+                    'Hantar',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -91,7 +91,7 @@ class ForgotPassword extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Back to ',
+                      text: 'Kembali ke ',
                       style: TextStyle(
                           color: DbpColor().jendelaGray,
                           fontSize: 17,
@@ -102,7 +102,7 @@ class ForgotPassword extends StatelessWidget {
                         ..onTap = () {
                           Navigator.pushReplacementNamed(context, '/signin');
                         },
-                      text: 'Sign In',
+                      text: 'Log Masuk',
                       style: TextStyle(
                           color: DbpColor().jendelaOrange,
                           fontSize: 17,

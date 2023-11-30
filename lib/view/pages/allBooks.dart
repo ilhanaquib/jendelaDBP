@@ -365,7 +365,7 @@ class _AllBooksState extends State<AllBooks> {
                     });
                   },
                   child: Text(
-                    'Latest',
+                    'Terkini',
                     style: TextStyle(
                         color: sortLatest == true
                             ? DbpColor().jendelaOrange
@@ -388,7 +388,7 @@ class _AllBooksState extends State<AllBooks> {
                     });
                   },
                   child: Text(
-                    'Price ${ascendingPrice ? '↑' : '↓'}',
+                    'Harga ${ascendingPrice ? '↑' : '↓'}',
                     style: TextStyle(
                       color: sortPrice
                           ? const Color.fromARGB(255, 235, 127, 35)

@@ -87,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Profile'),
+        title: const Text('Akaun Anda'),
       ),
       body: RefreshIndicator(
         child: SingleChildScrollView(
@@ -157,7 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _userProfileWidget(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Account'),
+        title: const Text('Akaun Anda'),
         centerTitle: true,
       ),
       body: Column(
@@ -278,17 +278,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Center(
         child: Column(
           children: [
-            const Text('Uh oh, you haven\'t signed in yet'),
+            const Text('Anda belum log masuk'),
             RichText(
               text: TextSpan(
                 children: [
                   const TextSpan(
-                    text: 'Please ',
+                    text: 'Sila ',
                     style: TextStyle(
                         color: Colors.black), // Customize the style if needed
                   ),
                   TextSpan(
-                    text: 'sign in',
+                    text: 'log masuk',
                     style: const TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
@@ -300,7 +300,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                   ),
                   const TextSpan(
-                    text: ' to continue',
+                    text: ' untuk teruskan',
                     style: TextStyle(
                         color: Colors.black), // Customize the style if needed
                   ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:jendela_dbp/stateManagement/blocs/newPostBloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/components/article/articleNotFound.dart';
@@ -76,7 +75,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.white,
         key: appBarKey,
         centerTitle: true,
-        title: const Text('Home'),
+        title: const Text('Laman Utama'),
         leading: Padding(
           padding: const EdgeInsets.only(left: 10),
           child: GestureDetector(
@@ -169,7 +168,7 @@ class _HomeState extends State<Home> {
         const Padding(
           padding: EdgeInsets.only(left: 24),
           child: Text(
-            'Posts',
+            'Siaran Terkini',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
@@ -271,7 +270,7 @@ class _HomeState extends State<Home> {
           const Padding(
             padding: EdgeInsets.only(left: 24),
             child: Text(
-              'Articles',
+              'Artikel Terkini',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),

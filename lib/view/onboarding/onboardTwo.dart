@@ -25,19 +25,19 @@ class Onboard_two extends StatelessWidget {
             ),
           ),
           const Text(
-            'Find Your Book',
+            'Cari Buku Anda',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
           const SizedBox(
             height: 20,
           ),
            Text(
-            'Discover your favorite ',
+            'Temui buku kegemaran ',
             style: TextStyle(
                 fontSize: 15, color: DbpColor().jendelaGray,),
           ),
            Text(
-            'book in one place ',
+            'anda di satu tempat ',
             style: TextStyle(
                 fontSize: 15, color: DbpColor().jendelaGray,),
           ),

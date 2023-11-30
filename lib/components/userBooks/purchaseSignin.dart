@@ -84,14 +84,14 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
             child: Column(
               children: [
                 const Text(
-                  'You\'re not signed in yet',
+                  'Anda belum log masuk',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 Text(
-                  'Please sign in to view your purchased books',
+                  'Sila log masuk untuk lihat buku yang telah dibeli',
                   style: TextStyle(
                     fontSize: 15,
                     color: DbpColor().jendelaGray,
@@ -113,7 +113,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
                     controller: emailController,
                     validator: (String? value) {
                       if (value!.isEmpty) {
-                        return "Please enter an email or username";
+                        return "Sila masukkan emel atau nama pengguna";
                       }
                       return null;
                     },
@@ -130,7 +130,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
                         ),
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      labelText: 'Email or Username',
+                      labelText: 'Emel atau nama pengguna',
                       labelStyle: TextStyle(
                         color: DbpColor().jendelaGray,
                       ),
@@ -158,7 +158,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
                     controller: passwordController,
                     validator: (String? value) {
                       if (value!.isEmpty) {
-                        return "Please enter a password";
+                        return "Sila masukkan kata laluan";
                       } else
                         return null;
                     },
@@ -188,7 +188,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
                         ),
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      labelText: 'Password',
+                      labelText: 'Kata Laluan',
                       labelStyle: TextStyle(
                         color: DbpColor().jendelaGray,
                       ),
@@ -315,7 +315,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
                   });
                 },
                 child: const Text(
-                  'Sign In',
+                  'Log Masuk',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -375,7 +375,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
           final int statusCode = response.statusCode;
 
           if (response.statusCode == 401) {
-            _showErrorPopup('An error occurred');
+            _showErrorPopup('Ralat berlaku');
             // Navigator.of(context).pushNamedAndRemoveUntil(
             //     '/Logout', (Route<dynamic> route) => false);
           } else if (response.statusCode == 200) {
@@ -387,7 +387,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 width: 200,
                 behavior: SnackBarBehavior.floating,
-                content: Text('Session Expired. Please login again'),
+                content: Text('Sesi tamat tempoh, sila log masuk sekali lagi'),
                 duration: Duration(seconds: 1),
               ));
               // Navigator.of(context).pushNamedAndRemoveUntil(

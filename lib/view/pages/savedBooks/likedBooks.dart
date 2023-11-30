@@ -132,7 +132,7 @@ class _LikedBooksState extends State<LikedBooks> {
         child: Column(
           children: [
             AppBar(
-              title: const Text('Liked Books'),
+              title: const Text('Buku Kegemaran'),
               centerTitle: true,
             ),
             Row(

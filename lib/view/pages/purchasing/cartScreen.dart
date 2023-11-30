@@ -62,7 +62,7 @@ class _CartScreenState extends State<CartScreen> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           width: 200,
           behavior: SnackBarBehavior.floating,
-          content: Text('Session Expired. Please login again'),
+          content: Text('Sesi Tamat Tempoh, Sila Log Masuk'),
           duration: Duration(seconds: 1),
         ));
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -83,10 +83,10 @@ class _CartScreenState extends State<CartScreen> {
     ApiService.getListOfBookInCart(token, queryParameters).then((response) {
       var data;
       if (response.statusCode == 401) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           width: 200,
           behavior: SnackBarBehavior.floating,
-          content: Text('Session Expired. Please login again'),
+          content: Text('Sesi Tamat Tempoh, Sila Log Masuk'),
           duration: Duration(seconds: 1),
         ));
         Navigator.of(context).pushNamedAndRemoveUntil(

@@ -99,21 +99,21 @@ class _SigninState extends State<Signin> {
               child: Column(
                 children: [
                   const Text(
-                    'Welcome Back',
+                    'Selamat Kembali',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    'We are happy to see you here again.',
+                    'Kami gembira untuk bertemu kembali',
                     style: TextStyle(
                       fontSize: 15,
                       color: DbpColor().jendelaGray,
                     ),
                   ),
                   Text(
-                    'Enter your email and password',
+                    'Masukkan emel dan kata laluan anda',
                     style: TextStyle(
                       fontSize: 15,
                       color: DbpColor().jendelaGray,
@@ -138,7 +138,7 @@ class _SigninState extends State<Signin> {
                       controller: emailController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return "Please enter an email or username";
+                          return "Sila masukkan emel atau nama pengguna";
                         }
                         return null;
                       },
@@ -155,7 +155,7 @@ class _SigninState extends State<Signin> {
                           ),
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        labelText: 'Email or Username',
+                        labelText: 'Email atau Nama Pengguna',
                         labelStyle: TextStyle(
                           color: DbpColor().jendelaGray,
                         ),
@@ -183,7 +183,7 @@ class _SigninState extends State<Signin> {
                       controller: passwordController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return "Please enter a password";
+                          return "Sila masukkan kata laluan";
                         } else {
                           return null;
                         }
@@ -214,7 +214,7 @@ class _SigninState extends State<Signin> {
                           ),
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        labelText: 'Password',
+                        labelText: 'Kata Laluan',
                         labelStyle: TextStyle(
                           color: DbpColor().jendelaGray,
                         ),
@@ -340,7 +340,7 @@ class _SigninState extends State<Signin> {
                     });
                   },
                   child: const Text(
-                    'Sign In',
+                    'Log Masuk',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -364,10 +364,10 @@ class _SigninState extends State<Signin> {
               height: 40,
             ),
             AuthProvider(
-              account: 'Don\'t have an account? ',
-              orangeAccount: ' Sign Up',
-              guest: 'You can also continue as',
-              guestAccount: ' Guest',
+              account: 'Tidak mempunyai akaun?',
+              orangeAccount: ' Daftar Akaun',
+              guest: 'Anda juga boleh teruskan sebagai',
+              guestAccount: ' Tetamu',
               pageNavigator: goToSignup,
             )
           ],

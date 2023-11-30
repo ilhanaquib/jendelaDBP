@@ -430,7 +430,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                   onRefresh: _handleRefresh,
                   child: ListView(
                     children: [
-                      const TopHeader(),
+                       TopHeader(),
                       //search bar
                       Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -459,7 +459,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                                     width:
                                         10), // Add spacing between icon and text
                                 Text(
-                                  'Search your favourite book...',
+                                  'Cari buku kegemaran anda...',
                                   style: TextStyle(
                                     fontStyle: FontStyle.italic,
                                     color: Color.fromARGB(255, 184, 184, 184),
@@ -484,7 +484,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: FilterButton(
-                                  text: 'All',
+                                  text: 'Semua',
                                   isSelected: selectedFilters.isEmpty,
                                   onTap: () {
                                     setState(() {

@@ -27,19 +27,19 @@ class Onboard_three extends StatelessWidget {
             ),
           ),
           const Text(
-            'Easy to listen',
+            'Mudah untuk didengar',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
           const SizedBox(
             height: 20,
           ),
            Text(
-            'All in your pocket, access any ',
+            'Semua di poket, capai pelbagai ',
             style: TextStyle(
                 fontSize: 15, color: DbpColor().jendelaGray,),
           ),
            Text(
-            'devices, anywhere ',
+            'peranti, di mana-mana ',
             style: TextStyle(
                 fontSize: 15, color: DbpColor().jendelaGray,),
           ),
@@ -81,7 +81,7 @@ class Onboard_three extends StatelessWidget {
                       Navigator.pushReplacementNamed(context, '/signup');
                     },
                     child: const Text(
-                      'Get Started',
+                      'Mari Mulakan',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),),
               ),

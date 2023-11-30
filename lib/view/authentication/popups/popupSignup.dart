@@ -20,24 +20,24 @@ class PopupSignup extends StatelessWidget {
               height: 20,
             ),
             const Text(
-              'Sign Up Successful!',
+              'Daftar Akaun Berjaya!',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             const SizedBox(
               height: 40,
             ),
              Text(
-              'Your account has been created.',
+              'Akaun anda telah dicipta',
               style: TextStyle(
                   color: DbpColor().jendelaGray, fontSize: 15),
             ),
              Text(
-              'Please wait a moment, we are',
+              'Sila tunggu sebentar, kami sedang',
               style: TextStyle(
                   color: DbpColor().jendelaGray, fontSize: 15),
             ),
              Text(
-              'preparing for you',
+              'menyediakan akaun untuk anda',
               style: TextStyle(
                   color: DbpColor().jendelaGray, fontSize: 15),
             ),
@@ -54,7 +54,7 @@ class PopupSignup extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: const Text(
-                'Dismiss',
+                'Baik',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,

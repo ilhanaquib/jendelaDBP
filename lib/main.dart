@@ -58,16 +58,16 @@ void main() async {
     // Code specific to Windows
     await windowManager.ensureInitialized();
     WindowManager.instance.setSize(const Size(1500, 800));
-    WindowManager.instance.setMinimumSize(const Size(800, 650));
-    runApp(JendelaDBP(showHomeNotifier: showHomeNotifier));
-  } else {
-    // Code for other platforms (e.g., Android)
+    WindowManager.instance.setMinimumSize(const Size(850, 650));
     runApp(
       DevicePreview(
         enabled: false,
         builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
       ),
     );
+  } else {
+    // Code for other platforms (e.g., Android)
+    runApp(JendelaDBP(showHomeNotifier: showHomeNotifier));
   }
 }
 

@@ -12,8 +12,8 @@ class NoBooksLikedCard extends StatelessWidget {
       hideBackgroundAnimation: true,
       image: null,
       packageImage: PackageImage.Image_1,
-      title: 'You Have No Liked Books',
-      subTitle: 'Go and like some books you enjoy reading.',
+      title: 'Anda tiada buku kegemaran',
+      subTitle: 'Tekan butang hati di buku kegemaran anda untuk tambah buku di halaman ini',
       titleTextStyle: const TextStyle(
         fontSize: 22,
         color: Color(0xff9da9c7),

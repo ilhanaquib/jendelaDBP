@@ -20,23 +20,23 @@ class PopupPassword extends StatelessWidget {
               height: 20,
             ),
             const Text(
-              'Reset Password',
+              'Set semula kata laluan',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             const Text(
-              'Successful!',
+              'Berjaya!',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             const SizedBox(
               height: 20,
             ),
              Text(
-              'Your new password has been',
+              'Kata laluan anda telah',
               style: TextStyle(
                   color: DbpColor().jendelaGray, fontSize: 15),
             ),
              Text(
-              'successfully changed',
+              'berjaya ditukar',
               style: TextStyle(
                   color: DbpColor().jendelaGray, fontSize: 15),
             ),
@@ -55,7 +55,7 @@ class PopupPassword extends StatelessWidget {
                 Navigator.pushReplacementNamed(context, '/signin');
               },
               child: const Text(
-                'Sign In',
+                'Log Masuk',
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,

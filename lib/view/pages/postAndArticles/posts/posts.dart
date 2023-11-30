@@ -44,7 +44,7 @@ class _PostScreenState extends State<PostScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text(
-          'Posts',
+          'Siaran',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         BlocBuilder<PostBloc, PostState>(

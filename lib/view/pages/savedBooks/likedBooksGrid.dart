@@ -148,7 +148,7 @@ class _LikedBooksGridState extends State<LikedBooksGrid> {
         child: Column(
           children: [
             AppBar(
-              title: const Text('Liked Books'),
+              title: const Text('Buku Kegemaran'),
               centerTitle: true,
             ),
             Row(

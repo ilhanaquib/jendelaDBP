@@ -288,19 +288,20 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Let\'s read something'),
-            Text(
-              'We collected and distilled the knowledge',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color.fromARGB(255, 123, 123, 123),
-              ),
-            )
-          ],
-        ),
+        title: const Text('Buku Audio'),
+        //  const Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     Text('Let\'s read something'),
+        //     Text(
+        //       'We collected and distilled the knowledge',
+        //       style: TextStyle(
+        //         fontSize: 14,
+        //         color: Color.fromARGB(255, 123, 123, 123),
+        //       ),
+        //     )
+        //   ],
+        // ),
         leading: Padding(
           padding: const EdgeInsets.only(left: 10),
           child: GestureDetector(

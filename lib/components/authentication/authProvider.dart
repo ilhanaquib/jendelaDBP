@@ -32,7 +32,7 @@ class AuthProvider extends StatelessWidget {
 
     return Column(
       children: [
-        const Text('or Connect with'),
+        const Text('atau log masuk menggunakan'),
         const SizedBox(
           height: 10,
         ),

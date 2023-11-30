@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
 import 'package:jendela_dbp/view/pages/postAndArticles/articles/articleDetailScreen.dart';
@@ -27,17 +31,31 @@ class HomeArticleCard extends StatefulWidget {
 }
 
 class _ArticleCard extends State<HomeArticleCard> {
+  void _launchURL() async {
+    if (await canLaunchUrl(Uri.parse(
+        widget.article!.guid ?? "https://{GlobalVar.BaseURLDomain}"))) {
+      await launchUrl(Uri.parse(
+          widget.article!.guid ?? "https://{GlobalVar.BaseURLDomain}"));
+    } else {
+      throw 'Could not show this article';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        PersistentNavBarNavigator.pushNewScreen(
-          context,
-          withNavBar: false,
-          screen: ArticleDetailScreen(
-            article: widget.article,
-          ),
-        );
+        if (Platform.isWindows) {
+          _launchURL();
+        } else {
+          PersistentNavBarNavigator.pushNewScreen(
+            context,
+            withNavBar: false,
+            screen: ArticleDetailScreen(
+              article: widget.article,
+            ),
+          );
+        }
       },
       child: Card(
         shape: RoundedRectangleBorder(

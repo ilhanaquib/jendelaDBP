@@ -129,21 +129,21 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   const Text(
-                    'Let\'s Get Started',
+                    'Mari kita mulakan',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    'Create your account,',
+                    'Cipta akaun baru anda',
                     style: TextStyle(
                       fontSize: 15,
                       color: DbpColor().jendelaGray,
                     ),
                   ),
                   Text(
-                    'it takes less than a minute',
+                    'Ia hanya mengambil masa yang singkat',
                     style: TextStyle(
                       fontSize: 15,
                       color: DbpColor().jendelaGray,
@@ -169,9 +169,10 @@ class _SignupState extends State<Signup> {
                       controller: usernameController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return "Please enter a username";
-                        } else
+                          return "Sila masukkan nama pengguna";
+                        } else {
                           return null;
+                        }
                       },
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(
@@ -186,7 +187,7 @@ class _SignupState extends State<Signup> {
                           ),
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        labelText: 'Username',
+                        labelText: 'Nama Pengguna',
                         labelStyle: TextStyle(
                           color: DbpColor().jendelaGray,
                         ),
@@ -214,7 +215,7 @@ class _SignupState extends State<Signup> {
                       controller: emailController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return "Please enter an email";
+                          return "Sila masukkan emel anda";
                         } else if (!RegExp(
                                 r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
                             .hasMatch(value)) {
@@ -235,7 +236,7 @@ class _SignupState extends State<Signup> {
                           ),
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        labelText: 'Email',
+                        labelText: 'Emel',
                         labelStyle: TextStyle(
                           color: DbpColor().jendelaGray,
                         ),
@@ -263,7 +264,7 @@ class _SignupState extends State<Signup> {
                       controller: passwordController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return "Please enter a password";
+                          return "Sila masukkan kata laluan anda";
                         } else
                           return null;
                       },
@@ -293,7 +294,7 @@ class _SignupState extends State<Signup> {
                           ),
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        labelText: 'Password',
+                        labelText: 'Kata Laluan',
                         labelStyle: TextStyle(
                           color: DbpColor().jendelaGray,
                         ),
@@ -321,7 +322,7 @@ class _SignupState extends State<Signup> {
                       controller: confirmPasswordController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return "Please repeat your password";
+                          return "Sila ulangi kata laluan anda";
                         } else
                           return null;
                       },
@@ -351,7 +352,7 @@ class _SignupState extends State<Signup> {
                           ),
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        labelText: 'Confirm Password',
+                        labelText: 'Sahkan Kata Laluan',
                         labelStyle: TextStyle(
                           color: DbpColor().jendelaGray,
                         ),
@@ -402,7 +403,7 @@ class _SignupState extends State<Signup> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: 'I agree to the',
+                              text: 'Saya setuju dengan',
                               style: TextStyle(
                                   color: DbpColor().jendelaGray,
                                   fontSize: 17,
@@ -413,7 +414,7 @@ class _SignupState extends State<Signup> {
                                 ..onTap = () {
                                   _showTerms();
                                 },
-                              text: ' Terms & Conditions',
+                              text: ' Terma & Syarat',
                               style: TextStyle(
                                   color: DbpColor().jendelaOrange,
                                   fontSize: 17,
@@ -484,7 +485,7 @@ class _SignupState extends State<Signup> {
                               null;
                             },
                       child: const Text(
-                        'Create Account',
+                        'Cipta Akaun',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -498,16 +499,16 @@ class _SignupState extends State<Signup> {
                   if (state is AuthLoaded) {
                     _showSuccessPopup();
                   } else if (state is AuthError) {
-                    _showErrorPopup(state.message ?? 'An error occured');
+                    _showErrorPopup(state.message ?? 'Ralat Berlaku');
                   }
                 },
               ),
             ),
             AuthProvider(
-              account: 'Already have an account?',
-              orangeAccount: ' Sign In',
-              guest: 'You can also continue as',
-              guestAccount: ' Guest',
+              account: 'Sudah mempunyai akaun?',
+              orangeAccount: ' Log Masuk',
+              guest: 'Anda juga boleh teruskan sebagai',
+              guestAccount: ' Tetamu',
               pageNavigator: goToSignin,
             )
           ],

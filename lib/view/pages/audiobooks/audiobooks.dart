@@ -17,7 +17,7 @@ class Audiobooks extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Now Playing'),
+        title: const Text('Sedang dimainkan'),
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
       ),
       body: CustomScrollView(

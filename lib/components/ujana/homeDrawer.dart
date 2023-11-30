@@ -22,6 +22,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -44,7 +45,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
           //   },
           // ),
           ListTile(
-            title: const Text('Sign In'),
+            title: const Text('Log Masuk'),
             onTap: () {
               PersistentNavBarNavigator.pushNewScreen(context,
                   withNavBar: false,
@@ -53,7 +54,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             },
           ),
           ListTile(
-            title: const Text('Sign Up'),
+            title: const Text('Daftar Akaun'),
             onTap: () {
               PersistentNavBarNavigator.pushNewScreen(context,
                   withNavBar: false,

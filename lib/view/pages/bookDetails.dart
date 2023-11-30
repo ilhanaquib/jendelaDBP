@@ -337,7 +337,7 @@ class _BookDetailState extends State<BookDetail> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Category',
+                                      'Kategori',
                                       style: TextStyle(
                                         color: DbpColor().jendelaGray,
                                       ),
@@ -357,13 +357,13 @@ class _BookDetailState extends State<BookDetail> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Language',
+                                      'Bahasa',
                                       style: TextStyle(
                                         color: DbpColor().jendelaGray,
                                       ),
                                     ),
                                     Text(
-                                      'Malay',
+                                      'Melayu',
                                       style: TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
@@ -385,7 +385,7 @@ class _BookDetailState extends State<BookDetail> {
                                   const Padding(
                                     padding: EdgeInsets.only(top: 30),
                                     child: Text(
-                                      'What\'s it about?',
+                                      'Tentang Buku',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 17),
@@ -420,7 +420,7 @@ class _BookDetailState extends State<BookDetail> {
                                   const Padding(
                                     padding: EdgeInsets.only(top: 30),
                                     child: Text(
-                                      'What\'s it about?',
+                                      'Tentang Buku',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 17),
@@ -502,7 +502,7 @@ class _BookDetailState extends State<BookDetail> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'Read Book',
+                                            'Baca Buku',
                                             style: TextStyle(
                                               color: DbpColor().jendelaOrange,
                                             ),
@@ -586,7 +586,7 @@ class _BookDetailState extends State<BookDetail> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'Play Audio',
+                                            'Main Audio',
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
@@ -650,13 +650,13 @@ class _BookDetailState extends State<BookDetail> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'Read',
+                                            'Baca',
                                             style: TextStyle(
                                               color: DbpColor().jendelaOrange,
                                             ),
                                           ),
                                           Text(
-                                            'Book',
+                                            'Buku',
                                             style: TextStyle(
                                               color: DbpColor().jendelaOrange,
                                             ),
@@ -738,7 +738,7 @@ class _BookDetailState extends State<BookDetail> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'Play',
+                                            'Main',
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),

@@ -25,9 +25,11 @@ class _noFormatSheetState extends State<noFormatSheet> {
       children: [
         const Padding(
           padding: EdgeInsets.only(top: 30, left: 30, right: 30),
-          child: Text(
-            'This book isnt available in audiobook format',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          child: Center(
+            child: Text(
+              'Buku ini tiada di dalam format Audio',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
           ),
         ),
         Center(
@@ -46,7 +48,7 @@ class _noFormatSheetState extends State<noFormatSheet> {
                 Navigator.pop(context);
               },
               child: const Text(
-                'Dismiss',
+                'Baik',
                 style: TextStyle(color: Colors.white),
               ),
             ),

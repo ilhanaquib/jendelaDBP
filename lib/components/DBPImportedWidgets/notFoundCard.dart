@@ -12,8 +12,8 @@ class NotFoundCard extends StatelessWidget {
       hideBackgroundAnimation: true,
       image: null,
       packageImage: PackageImage.Image_4,
-      title: 'Missing Books',
-      subTitle: 'Sorry, The Books You\'re Looking for Are not Here.',
+      title: 'Buku tidak dijumpai',
+      subTitle: 'Maaf, buku yang anda cari tidak dijumpai',
       titleTextStyle: const TextStyle(
         fontSize: 22,
         color: Color(0xff9da9c7),

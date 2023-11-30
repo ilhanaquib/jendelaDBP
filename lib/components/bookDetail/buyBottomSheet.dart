@@ -206,7 +206,7 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                             ),
                           ),
                           child: const Text(
-                            'Buy Now',
+                            'Beli Sekarang',
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
@@ -227,7 +227,7 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                             Navigator.of(context).pop();
                           },
                           child: const Text(
-                            'Cancel',
+                            'Batal',
                             style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -250,7 +250,7 @@ class _buyBottomSheetState extends State<buyBottomSheet> {
                                 width: 8,
                               ),
                               Text(
-                                'Add to cart',
+                                'Tambah ke troli',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),

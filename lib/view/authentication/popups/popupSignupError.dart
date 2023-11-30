@@ -24,19 +24,19 @@ class PopupSignupError extends StatelessWidget {
               height: 20,
             ),
             const Text(
-              'Sign Up Failed',
+              'Daftar Akaun Gagal',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             const SizedBox(
               height: 40,
             ),
              Text(
-              'Your account failed to be created.',
+              'Akaun anda gagal untuk dicipta',
               style: TextStyle(
                   color: DbpColor().jendelaGray, fontSize: 15),
             ),
              Text(
-              'please try again',
+              'sila cuba sekali lagi',
               style: TextStyle(
                   color: DbpColor().jendelaGray, fontSize: 15),
             ),
@@ -44,7 +44,7 @@ class PopupSignupError extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'Error : $errorMessage',
+              'Ralat : $errorMessage',
               textAlign: TextAlign.center,
               style:  TextStyle(
                   color: DbpColor().jendelaGray, fontSize: 15),
@@ -63,7 +63,7 @@ class PopupSignupError extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 child: const Text(
-                  'Dismiss',
+                  'Baik',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,

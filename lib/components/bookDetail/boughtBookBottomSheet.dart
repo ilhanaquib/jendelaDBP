@@ -26,7 +26,7 @@ class _boughtBookBottomSheetState extends State<boughtBookBottomSheet> {
         const Padding(
           padding: EdgeInsets.only(top: 30, left: 30, right: 30),
           child: Text(
-            'You have already bought this book, go to My Books to read your books.',
+            'Anda telah membeli buku ini. Sila ke halaman Buku Anda untuk membacanya',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
         ),
@@ -48,7 +48,7 @@ class _boughtBookBottomSheetState extends State<boughtBookBottomSheet> {
                   Navigator.pop(context);
                 },
                 child: const Text(
-                  'Dismiss',
+                  'Baik',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -81,7 +81,7 @@ class _boughtBookBottomSheetState extends State<boughtBookBottomSheet> {
                   // );
                 },
                 child: const Text(
-                  'Go to My Books',
+                  'Pergi ke Buku Anda',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

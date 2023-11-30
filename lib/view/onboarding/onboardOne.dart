@@ -25,19 +25,19 @@ class Onboard_one extends StatelessWidget {
             ),
           ),
           const Text(
-            'Keep Reading',
+            'Teruskan Membaca',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
           const SizedBox(
             height: 20,
           ),
            Text(
-            'Explore the giant world ',
+            'Terokai dunia luas ini yang ',
             style: TextStyle(
                 fontSize: 15, color: DbpColor().jendelaGray,),
           ),
            Text(
-            'of different book ',
+            'penuh dengan pelbagai buku ',
             style: TextStyle(
                 fontSize: 15, color: DbpColor().jendelaGray,),
           ),

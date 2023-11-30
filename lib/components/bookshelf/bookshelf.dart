@@ -22,7 +22,7 @@ Widget bookShelf(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: CarouselTitle(
             title: categoryTitle + ' Terkini',
-            seeAllText: "View All",
+            seeAllText: "Lihat Semua",
             seeAllOnTap: () {
               PersistentNavBarNavigator.pushNewScreen(
                 context,

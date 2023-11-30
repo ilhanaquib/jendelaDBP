@@ -31,20 +31,20 @@ class CreateNewPassword extends StatelessWidget {
               child: Column(
                 children: [
                   const Text(
-                    'Create New Password',
+                    'Cipta kata laluan baru',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    'Your new password has to be different',
+                    'Kata laluan mestilah berlainan',
                     style: TextStyle(
                       color: DbpColor().jendelaGray,
                     ),
                   ),
                   Text(
-                    'from previously used password',
+                    'dari kata laluan lama',
                     style: TextStyle(
                       color: DbpColor().jendelaGray,
                     ),
@@ -56,10 +56,10 @@ class CreateNewPassword extends StatelessWidget {
               height: 50,
             ),
             AuthPasswordForm(
-              fieldName: 'Password',
+              fieldName: 'Kata laluan',
             ),
             AuthPasswordForm(
-              fieldName: 'Confirm Password',
+              fieldName: 'Sahkan kata laluan',
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 100),
@@ -92,7 +92,7 @@ class CreateNewPassword extends StatelessWidget {
                     );
                   },
                   child: const Text(
-                    'Create Password',
+                    'Cipta Kata Laluan',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                 ),

@@ -160,7 +160,7 @@ class _PostAndArticleState extends State<PostAndArticle> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text(
-          'Posts',
+          'Siaran',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         BlocBuilder<PostBloc, PostState>(
@@ -244,7 +244,7 @@ class _PostAndArticleState extends State<PostAndArticle> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text(
-            'Articles',
+            'Artikel',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           SizedBox(
@@ -313,7 +313,7 @@ class _PostAndArticleState extends State<PostAndArticle> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text(
-            'Articles',
+            'Artikel',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           SizedBox(

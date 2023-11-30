@@ -65,7 +65,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   TextButton(
                     onPressed: () => controller.jumpToPage(2),
                     child: const Text(
-                      'Skip',
+                      'langkau',
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -76,7 +76,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                     child: const Row(
                       children: [
                         Text(
-                          'Next',
+                          'Seterusnya',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),

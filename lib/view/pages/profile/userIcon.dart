@@ -75,24 +75,24 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Padding(
-            padding: const EdgeInsets.only(left: 20),
+          const Padding(
+            padding: EdgeInsets.only(left: 20),
             child: SizedBox(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Upload Photo,',
+                  Text(
+                    'Muat Naik Gambar,',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
-                  Text(
-                    'User',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: DbpColor().jendelaGray,
-                    ),
-                  ),
+                  // Text(
+                  //   'Pengg',
+                  //   style: TextStyle(
+                  //     fontSize: 20,
+                  //     color: DbpColor().jendelaGray,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -145,12 +145,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       onPressed: _saveImage,
                       style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          side:  BorderSide(
-                              color: DbpColor().jendelaOrange,),
-                          backgroundColor:
-                              DbpColor().jendelaOrange,
+                          side: BorderSide(
+                            color: DbpColor().jendelaOrange,
+                          ),
+                          backgroundColor: DbpColor().jendelaOrange,
                           minimumSize: const Size.fromHeight(40)),
-                      child: const Text('Save'),
+                      child: const Text('Simpan'),
                     ),
                     const SizedBox(
                       height: 10,
@@ -158,14 +158,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     OutlinedButton(
                       onPressed: () {},
                       style: OutlinedButton.styleFrom(
-                          foregroundColor:
-                              DbpColor().jendelaGray,
+                          foregroundColor: DbpColor().jendelaGray,
                           side: const BorderSide(
                               color: Color.fromARGB(255, 206, 206, 206)),
                           backgroundColor:
                               const Color.fromARGB(255, 206, 206, 206),
                           minimumSize: const Size.fromHeight(40)),
-                      child: const Text('Cancel'),
+                      child: const Text('Batal'),
                     ),
                   ],
                 ),
