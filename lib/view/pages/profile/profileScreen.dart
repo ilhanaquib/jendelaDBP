@@ -1,93 +1,72 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-
-import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
+import 'package:jendela_dbp/components/bookshelf/carouselTitle.dart';
+import 'package:jendela_dbp/components/user/loginCard.dart';
+import 'package:jendela_dbp/components/userBooks/purchaseSignin.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
-import 'package:jendela_dbp/controllers/globalVar.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
+import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
 import 'package:jendela_dbp/stateManagement/states/authState.dart';
 import 'package:jendela_dbp/view/authentication/signin.dart';
-import 'package:jendela_dbp/model/userModel.dart';
-import 'package:jendela_dbp/view/pages/profile/userIcon.dart';
-
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
-
+  ProfileScreen();
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  _ProfileScreen createState() => _ProfileScreen();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  Box<HiveBookAPI> APIBook = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
-  List<int> kategori1Books = [];
-  bool isLoading = true;
-  final User user = User();
-
-  var allProduct;
-
-  Future<bool> getAllProduct() async {
-    var value = await SharedPreferences.getInstance();
-    var token = value.getString('token');
-
-    if (bookAPIBox.isEmpty || bookAPIBox.length == 0) {
-      setState(() {
-        isLoading = true;
-      });
-
-      bookAPIBox.clear();
-      await getKategori(context, token, GlobalVar.kategori1);
-    }
-
-    getKategoriFromAPI();
-
-    setState(() {
-      isLoading = false;
-    });
-    return true;
-  }
-
-  void getKategoriFromAPI() {
-    print('object');
-    kategori1Books = APIBook.keys
-        .cast<int>()
-        .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori1)
-        .toList();
-  }
-
-  void _updateAppBar() {
-    setState(() {
-      // Rebuild the app bar to reflect the changes
-    });
-  }
+class _ProfileScreen extends State<ProfileScreen> {
+  DbpColor colors = DbpColor();
+  TextEditingController _userNameController = TextEditingController();
+  TextEditingController _userFirstNameController = TextEditingController();
+  TextEditingController _userLastNameController = TextEditingController();
+  TextEditingController _userEmailController = TextEditingController();
+  TextEditingController _userNewPasswordController = TextEditingController();
+  TextEditingController _userConfirmPasswordController =
+      TextEditingController();
+  FocusNode _userNameFocusNode = FocusNode();
+  FocusNode _userFirstNameFocusNode = FocusNode();
+  FocusNode _userLastNameFocusNode = FocusNode();
+  FocusNode _userEmailFocusNode = FocusNode();
+  FocusNode _userNewPasswordFocusNode = FocusNode();
+  FocusNode _userConfirmPasswordFocusNode = FocusNode();
+  int runCount = 1;
 
   @override
   void initState() {
     super.initState();
-    allProduct = getAllProduct();
+    _userNewPasswordController.text = '';
+    _userConfirmPasswordController.text = '';
   }
 
   @override
   void dispose() {
+    _userNameController.dispose();
+    _userFirstNameController.dispose();
+    _userLastNameController.dispose();
+    _userEmailController.dispose();
+    _userNewPasswordController.dispose();
+    _userConfirmPasswordController.dispose();
+    _userNameFocusNode.dispose();
+    _userFirstNameFocusNode.dispose();
+    _userLastNameFocusNode.dispose();
+    _userEmailFocusNode.dispose();
+    _userNewPasswordFocusNode.dispose();
+    _userConfirmPasswordFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Akaun Anda'),
+        title: const Text(
+          'Perincian Akaun',
+        ),
       ),
       body: RefreshIndicator(
         child: SingleChildScrollView(
@@ -99,14 +78,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 listener: (context, state) {
                   if (state is AuthError) {
                     if (state.message != null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          width: 200,
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(state.message ?? ''),
-                          duration: const Duration(seconds: 5),
-                        ),
-                      );
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        width: 200,
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(state.message ?? ''),
+                        duration: const Duration(seconds: 5),
+                      ));
                     }
                   }
                   if (state is AuthLoaded) {
@@ -115,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: 200,
                         behavior: SnackBarBehavior.floating,
                         content: Text(state.message ?? ''),
-                        duration: Duration(seconds: 5),
+                        duration: const Duration(seconds: 5),
                       ));
                     }
                   }
@@ -123,27 +100,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 builder: (context, state) {
                   if (state is AuthLoaded) {
                     if (state.isAuthenticated == true) {
-                      return _userProfileWidget(context);
+                      _userNameController.text = state.user!.name ?? '';
+                      _userFirstNameController.text =
+                          state.user!.firstName ?? '';
+                      _userLastNameController.text = state.user!.lastName ?? '';
+                      _userEmailController.text = state.user!.email ?? '';
+                      return _userProfileWidget(context,
+                          user: state.user ?? User());
                     }
                   }
 
                   if (state is AuthLoading) {
-                    return Container(
+                    return SizedBox(
                       height: 400,
                       child: Center(
                         child: LoadingAnimationWidget.discreteCircle(
                           color: DbpColor().jendelaGray,
-                          secondRingColor:
-                              DbpColor().jendelaGreen,
-                          thirdRingColor:
-                              DbpColor().jendelaOrange,
-                          size: 30.0,
+                          secondRingColor: DbpColor().jendelaGreen,
+                          thirdRingColor: DbpColor().jendelaOrange,
+                          size: 50.0,
                         ),
                       ),
                     );
                   }
 
-                  return _signInFirst();
+                  return _userLoginWidget();
                 }),
           ),
         ),
@@ -154,162 +135,140 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _userProfileWidget(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Akaun Anda'),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: SizedBox(
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      PersistentNavBarNavigator.pushNewScreen(
-                        context,
-                        withNavBar: false,
-                        screen: BlocProvider.value(
-                          value: context.read<ImageBloc>(),
-                          child: UserHomeScreen(
-                            updateAppBar: _updateAppBar,
-                          ),
-                        ),
-                      );
-                    },
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundImage: context
-                              .watch<ImageBloc>()
-                              .selectedImageProvider ??
-                          const AssetImage('assets/images/logo.png'),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(user.name!),
-                        Text(user.email!),
-                        Text(user.country!),
-                        Text(user.city!),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
+  Widget _userProfileWidget(BuildContext context, {required User user}) {
+    return Column(
+      children: [
+        TextFormField(
+          controller: _userFirstNameController,
+          focusNode: _userFirstNameFocusNode,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.person),
+            label: Text('Nama Awal (First Name)'),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            child: SizedBox(
-              child: Table(
-                border: const TableBorder(
-                  top: BorderSide(width: 1),
-                  right: BorderSide(width: 1),
-                  bottom: BorderSide(width: 1),
-                  left: BorderSide(width: 1),
-                  horizontalInside: BorderSide(width: 1),
-                ),
-                children: const <TableRow>[
-                  TableRow(
-                    children: <Widget>[
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.top,
-                        child: Text('Order'),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.top,
-                        child: Text('Date'),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.top,
-                        child: Text('Status'),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.top,
-                        child: Text('Total'),
-                      ),
-                    ],
-                  ),
-                  TableRow(
-                    children: <Widget>[
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.top,
-                        child: Text('#61148'),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.top,
-                        child: Text('15/8/2023'),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.top,
-                        child: Text('Completed'),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.top,
-                        child: Text('RM0.00 for 1 item'),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
+          onEditingComplete: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              currentFocus.focusedChild!.unfocus();
+            }
+          },
+        ),
+        TextFormField(
+          controller: _userLastNameController,
+          focusNode: _userLastNameFocusNode,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.person),
+            label: Text('Nama Akhir (Last Name)'),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: SizedBox(
-              child: bookShelf(context, GlobalVar.kategori1Title,
-                  GlobalVar.kategori1, kategori1Books, APIBook),
-            ),
+          onEditingComplete: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              currentFocus.focusedChild!.unfocus();
+            }
+          },
+        ),
+        TextFormField(
+          controller: _userNameController,
+          focusNode: _userNameFocusNode,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.person),
+            label: Text('Nama'),
           ),
-        ],
-      ),
+          onEditingComplete: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              currentFocus.focusedChild!.unfocus();
+            }
+          },
+        ),
+        TextFormField(
+          controller: _userEmailController,
+          focusNode: _userEmailFocusNode,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.mail),
+            label: Text('Alamat emel'),
+          ),
+          onEditingComplete: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              currentFocus.focusedChild!.unfocus();
+            }
+          },
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+          child: Divider(
+            color: Colors.green,
+            thickness: 0.2,
+            height: 10,
+          ),
+        ),
+        CarouselTitle(
+          title: 'Tukar Kata Laluan',
+          seeAllText: "",
+          seeAllOnTap: () {},
+        ),
+        TextFormField(
+          controller: _userNewPasswordController,
+          focusNode: _userNewPasswordFocusNode,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.security_rounded),
+            label: Text('Kata Laluan Baru'),
+          ),
+          onEditingComplete: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              currentFocus.focusedChild!.unfocus();
+            }
+          },
+        ),
+        TextFormField(
+          controller: _userConfirmPasswordController,
+          focusNode: _userConfirmPasswordFocusNode,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.security_rounded),
+            label: Text('Sahkan Kata Laluan Baru'),
+          ),
+          onEditingComplete: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              currentFocus.focusedChild!.unfocus();
+            }
+          },
+        ),
+        OutlinedButton(
+            child: const Text('Kemas Kini'),
+            onPressed: () {
+              BlocProvider.of<AuthCubit>(context).update(
+                  name: _userNameController.text,
+                  firstName: _userFirstNameController.text,
+                  lastName: _userLastNameController.text,
+                  email: _userEmailController.text,
+                  newPassword: _userNewPasswordController.text,
+                  confirmPassword: _userConfirmPasswordController.text);
+            }),
+        const SizedBox(
+          height: 10.0,
+        ),
+        TextButton(
+          onPressed: () {
+            BlocProvider.of<AuthCubit>(context).logout(context);
+          },
+          child: Text(
+            'Log Keluar',
+            style: TextStyle(color: DbpColor().jendelaGreen),
+          ),
+        )
+      ],
     );
   }
 
-  Widget _signInFirst() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 150),
-      child: Center(
-        child: Column(
-          children: [
-            const Text('Anda belum log masuk'),
-            RichText(
-              text: TextSpan(
-                children: [
-                  const TextSpan(
-                    text: 'Sila ',
-                    style: TextStyle(
-                        color: Colors.black), // Customize the style if needed
-                  ),
-                  TextSpan(
-                    text: 'log masuk',
-                    style: const TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        PersistentNavBarNavigator.pushNewScreen(context,
-                            withNavBar: false, screen: const Signin());
-                      },
-                  ),
-                  const TextSpan(
-                    text: ' untuk teruskan',
-                    style: TextStyle(
-                        color: Colors.black), // Customize the style if needed
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  Widget _userLoginWidget() {
+    return LoginCard();
   }
 }

@@ -45,7 +45,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
           );
         },
         child: widget.purchasedBook.featured_media_url == null
-            ? const SizedBox()
+            ? Container(decoration: BoxDecoration(border: Border.all(color: Colors.black)), child: Image.asset('assets/images/tiadakulitbuku.png'))
             : CachedNetworkImage(
                 alignment: Alignment.bottomCenter,
                 fit: BoxFit.fitWidth,

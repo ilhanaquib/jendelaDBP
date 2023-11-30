@@ -169,7 +169,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
           ),
           inputTextField(
               "Negara", widget.country, "Negara", TextInputType.text, true,
-              enabled: false),
+              enabled: true),
           const Divider(
             thickness: 0.5,
           ),

@@ -69,7 +69,6 @@ class _boughtBookBottomSheetState extends State<boughtBookBottomSheet> {
                     context,
                     withNavBar: true,
                     screen: UserBooks(
-                      controller: controller,
                     ),
                   );
                   // Navigator.push(

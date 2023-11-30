@@ -22,7 +22,6 @@ class _SavedBooksHomeState extends State<SavedBooksHome> {
       scrollDirection: Axis.horizontal,
       children: [
         UserBooks(
-          controller: controller,
         ),
         if (ResponsiveLayout.isDesktop(context))
           LikedBooksGrid(

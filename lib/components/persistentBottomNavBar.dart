@@ -21,12 +21,12 @@ class MyPersistentBottomNavBar extends StatelessWidget {
         PersistentTabController(initialIndex: 0);
 
     List<Widget> buildScreens() {
-      return const [
-        Home(),
-        PostAndArticle(),
-        Ujana(),
-        AudiobooksHome(),
-        SavedBooksHome(),
+      return  [
+        const Home(),
+        const PostAndArticle(),
+        const Ujana(),
+        const AudiobooksHome(),
+        const SavedBooksHome(),
         ProfileScreen(),
       ];
     }

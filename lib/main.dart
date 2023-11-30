@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jendela_dbp/controllers/dbpColor.dart';
 import 'package:jendela_dbp/view/pages/audiobooks/audiobooksHome.dart';
+import 'package:jendela_dbp/view/pages/home.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -115,7 +116,7 @@ class JendelaDBP extends StatelessWidget {
         ),
         routes: {
           // bottom nav bar
-          '/home': (context) => const Ujana(),
+          '/home': (context) => const MyPersistentBottomNavBar(),
           '/savedBooks': (context) => const LikedBooks(),
           '/audiobooks': (context) => const AudiobooksHome(),
           '/profile': (context) => const Profile(),

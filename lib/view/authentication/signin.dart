@@ -358,7 +358,6 @@ class _SigninState extends State<Signin> {
               //     _showErrorPopup(state.message ?? 'An error occurred');
               //   }
               // },
-
             ),
             const SizedBox(
               height: 40,
@@ -428,37 +427,6 @@ class _SigninState extends State<Signin> {
             prefs.setString('token', data['token']);
             prefs.setInt('id', user.id ?? 0);
 
-            Box<HiveBookAPI> bookAPIBox =
-                Hive.box<HiveBookAPI>(GlobalVar.APIBook);
-            await bookAPIBox.clear();
-
-            var wait1 =
-                getKategori(context, data['token'], GlobalVar.kategori1);
-            var wait2 =
-                getKategori(context, data['token'], GlobalVar.kategori2);
-            var wait3 =
-                getKategori(context, data['token'], GlobalVar.kategori3);
-            var wait4 =
-                getKategori(context, data['token'], GlobalVar.kategori4);
-            var wait5 =
-                getKategori(context, data['token'], GlobalVar.kategori5);
-            var wait6 =
-                getKategori(context, data['token'], GlobalVar.kategori6);
-            var wait8 =
-                getKategori(context, data['token'], GlobalVar.kategori8);
-            var wait9 =
-                getKategori(context, data['token'], GlobalVar.kategori9);
-            var wait10 =
-                getKategori(context, data['token'], GlobalVar.kategori10);
-            var wait11 =
-                getKategori(context, data['token'], GlobalVar.kategori11);
-            var wait12 =
-                getKategori(context, data['token'], GlobalVar.kategori12);
-            var wait13 =
-                getKategori(context, data['token'], GlobalVar.kategori13);
-            var wait14 =
-                getKategori(context, data['token'], GlobalVar.kategori14);
-
             ApiService.maklumatPengguna(data['token']).then((response) async {
               var dataUSer;
               dataUSer = json.decode(response.body);
@@ -467,32 +435,10 @@ class _SigninState extends State<Signin> {
             }).catchError((e) {
               // print(e);
             });
+            isToLogin = false;
 
-            if (await wait1 == true && await wait2 == true) {
-              isToLogin = false;
-
-              Future.delayed(const Duration(seconds: 1)).then((value) {
-                Navigator.of(context).pushReplacementNamed('/Home');
-              });
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text('Something Happen'),
-                duration: Duration(seconds: 3),
-              ));
-            }
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.floating,
-              content: Text(
-                  'Nama Pengguna atau Kata Laluan Salah @ Code:$statusCode'),
-              duration: const Duration(seconds: 3),
-            ));
-
-            setState(() {
-              isToLogin = false;
-              emailController.text = "";
-              passwordController.text = "";
+            Future.delayed(const Duration(seconds: 1)).then((value) {
+              Navigator.of(context).pushReplacementNamed('/home');
             });
           }
         });
