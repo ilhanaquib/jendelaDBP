@@ -6,34 +6,34 @@ part '../adapters/hivePostModel.g.dart';
 class Post {
   Post({
     this.author,
-    this.comment_status,
+    this.commentStatus,
     this.date,
-    this.date_gmt,
-    this.featured_media,
+    this.dateGmt,
+    this.featuredMedia,
     this.format,
     this.id,
     this.link,
     this.modified,
-    this.modified_gmt,
-    this.ping_status,
+    this.modifiedGmt,
+    this.pingStatus,
     this.slug,
     this.status,
     this.type,
-    this.yoast_head,
+    this.yoastHead,
     this.title,
-    this.featured_media_urls,
+    this.featuredMediaUrls,
     this.content,
   });
   @HiveField(0)
   int? author;
   @HiveField(1)
-  String? comment_status;
+  String? commentStatus;
   @HiveField(2)
   String? date;
   @HiveField(3)
-  String? date_gmt;
+  String? dateGmt;
   @HiveField(4)
-  int? featured_media;
+  int? featuredMedia;
   @HiveField(5)
   String? format;
   @HiveField(6)
@@ -43,9 +43,9 @@ class Post {
   @HiveField(8)
   String? modified;
   @HiveField(9)
-  String? modified_gmt;
+  String? modifiedGmt;
   @HiveField(10)
-  String? ping_status;
+  String? pingStatus;
   @HiveField(11)
   String? slug;
   @HiveField(12)
@@ -53,33 +53,33 @@ class Post {
   @HiveField(13)
   String? type;
   @HiveField(14)
-  String? yoast_head;
+  String? yoastHead;
   @HiveField(15)
   String? title;
   @HiveField(16)
-  String? featured_media_urls;
+  String? featuredMediaUrls;
   @HiveField(17)
   String? content;
 
   static Post fromJson(Map jsonString) {
     return Post(
       author: jsonString['author'],
-      comment_status: jsonString['comment_status'],
+      commentStatus: jsonString['comment_status'],
       date: jsonString['date'],
-      date_gmt: jsonString['date_gmt'],
-      featured_media: jsonString['featured_media'],
+      dateGmt: jsonString['date_gmt'],
+      featuredMedia: jsonString['featured_media'],
       format: jsonString['format'],
       id: jsonString['id'],
       link: jsonString['link'],
       modified: jsonString['modified'],
-      modified_gmt: jsonString['modified_gmt'],
-      ping_status: jsonString['ping_status'],
+      modifiedGmt: jsonString['modified_gmt'],
+      pingStatus: jsonString['ping_status'],
       slug: jsonString['slug'],
       status: jsonString['status'],
       type: jsonString['type'],
-      yoast_head: jsonString['yoast_head'],
+      yoastHead: jsonString['yoast_head'],
       title: jsonString['title']['rendered'],
-      featured_media_urls: jsonString['featured_media_urls']['post-thumbnail'],
+      featuredMediaUrls: jsonString['featured_media_urls']['post-thumbnail'],
       content: jsonString['content']['rendered'],
     );
   }
@@ -87,22 +87,22 @@ class Post {
   static Post fromJsonCache(Map jsonString) {
     return Post(
       author: jsonString['author'],
-      comment_status: jsonString['comment_status'],
+      commentStatus: jsonString['comment_status'],
       date: jsonString['date'],
-      date_gmt: jsonString['date_gmt'],
-      featured_media: jsonString['featured_media'],
+      dateGmt: jsonString['date_gmt'],
+      featuredMedia: jsonString['featured_media'],
       format: jsonString['format'],
       id: jsonString['id'],
       link: jsonString['link'],
       modified: jsonString['modified'],
-      modified_gmt: jsonString['modified_gmt'],
-      ping_status: jsonString['ping_status'],
+      modifiedGmt: jsonString['modified_gmt'],
+      pingStatus: jsonString['ping_status'],
       slug: jsonString['slug'],
       status: jsonString['status'],
       type: jsonString['type'],
-      yoast_head: jsonString['yoast_head'],
+      yoastHead: jsonString['yoast_head'],
       title: jsonString['title'],
-      featured_media_urls: jsonString['featured_media_urls'],
+      featuredMediaUrls: jsonString['featured_media_urls'],
       content: jsonString['content'],
     );
   }
@@ -110,22 +110,22 @@ class Post {
   Map<String, dynamic> toJson() {
     return {
       'author': author,
-      'comment_status': comment_status,
+      'comment_status': commentStatus,
       'date': date,
-      'date_gmt': date_gmt,
-      'featured_media': featured_media,
+      'date_gmt': dateGmt,
+      'featured_media': featuredMedia,
       'format': format,
       'id': id,
       'link': link,
       'modified': modified,
-      'modified_gmt': modified_gmt,
-      'ping_status': ping_status,
+      'modified_gmt': modifiedGmt,
+      'ping_status': pingStatus,
       'slug': slug,
       'status': status,
       'type': type,
-      'yoast_head': yoast_head,
+      'yoast_head': yoastHead,
       'title': title,
-      'featured_media_urls': featured_media_urls,
+      'featured_media_urls': featuredMediaUrls,
       'content': content,
     };
   }

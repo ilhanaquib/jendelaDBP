@@ -10,17 +10,17 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:jendela_dbp/components/ujana/filterButtons.dart';
+import 'package:jendela_dbp/components/ujana/filter_buttons.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
-import 'package:jendela_dbp/components/ujana/homeDrawer.dart';
-import 'package:jendela_dbp/components/ujana/searchDelegate.dart';
-import 'package:jendela_dbp/components/ujana/topHeaderHome.dart';
+import 'package:jendela_dbp/components/ujana/home_drawer.dart';
+import 'package:jendela_dbp/components/ujana/search_delegate.dart';
+import 'package:jendela_dbp/components/ujana/top_header_home.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
-import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
-import 'package:jendela_dbp/controllers/globalVar.dart';
-import 'package:jendela_dbp/components/cart/cartIcon.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/stateManagement/blocs/image_picker_bloc.dart';
+import 'package:jendela_dbp/controllers/get_books_from_api.dart';
+import 'package:jendela_dbp/controllers/global_var.dart';
+import 'package:jendela_dbp/components/cart/cart_icon.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
 
 class Ujana extends StatefulWidget {
   const Ujana({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
   //-----custom refresh indicator----
 
   // ignore: non_constant_identifier_names
-  Box<HiveBookAPI> APIBook = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
+  Box<HiveBookAPI> APIBook = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
   List<int> kategori1Books = [];
   List<int> kategori2Books = [];
   List<int> kategori3Books = [];
@@ -63,7 +63,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
   List<int> kategori15Books = [];
   bool isLoading = true;
 
-  var allProduct;
+  dynamic allProduct;
 
   @override
   void initState() {
@@ -122,78 +122,78 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
     kategori1Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori1)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori1)
         .toList();
     kategori2Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori2)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori2)
         .toList();
 
     kategori3Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori3)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori3)
         .toList();
     kategori4Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori4)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori4)
         .toList();
     kategori5Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori5)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori5)
         .toList();
     kategori6Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori6)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori6)
         .toList();
     kategori7Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori7)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori7)
         .toList();
     kategori8Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori8)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori8)
         .toList();
     kategori9Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori9)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori9)
         .toList();
     kategori10Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori10)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori10)
         .toList();
     kategori11Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori11)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori11)
         .toList();
     kategori12Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori12)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori12)
         .toList();
     kategori13Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori13)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori13)
         .toList();
     kategori14Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori14)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori14)
         .toList();
     kategori15Books = APIBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori15)
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori15)
         .toList();
   }
 
@@ -305,9 +305,9 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                 // ),
                 ),
           ),
-          actions: [
+          actions: const [
             Padding(
-              padding: const EdgeInsets.only(right: 10),
+              padding: EdgeInsets.only(right: 10),
               child: CartIcon(),
             ),
           ],

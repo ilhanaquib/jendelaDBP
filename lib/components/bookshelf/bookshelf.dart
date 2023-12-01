@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import 'package:jendela_dbp/components/bookshelf/booksInsideShelf.dart';
-import 'package:jendela_dbp/view/pages/allBooks.dart';
-import 'carouselTitle.dart';
+import 'package:jendela_dbp/components/bookshelf/books_inside_shelf.dart';
+import 'package:jendela_dbp/view/pages/all_books.dart';
+import 'carousel_title.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 
 Widget bookShelf(
@@ -13,7 +13,7 @@ Widget bookShelf(
   categoryTitle,
   categoryCode,
   List<int> listBook,
-  Box<HiveBookAPI> APIBook,
+  Box<HiveBookAPI> apiBook,
 ) {
   return SizedBox(
     child: Column(
@@ -30,14 +30,14 @@ Widget bookShelf(
                 screen: AllBooks(
                     categoryTitle: categoryTitle,
                     listBook: listBook,
-                    bookBox: APIBook),
+                    bookBox: apiBook),
               );
             },
           ),
         ),
         SizedBox(
           height: 320,
-          child: BooksInsideShelf(dataBooks: listBook, bookBox: APIBook),
+          child: BooksInsideShelf(dataBooks: listBook, bookBox: apiBook),
         )
       ],
     ),

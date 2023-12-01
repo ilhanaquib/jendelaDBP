@@ -3,19 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
-import 'package:jendela_dbp/api-services.dart';
+import 'package:jendela_dbp/api_services.dart';
 
-import 'package:jendela_dbp/components/authentication/authProvider.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
-import 'package:jendela_dbp/controllers/globalVar.dart';
-import 'package:jendela_dbp/controllers/screenSize.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/components/authentication/auth_provider.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
+import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:jendela_dbp/model/userModel.dart';
-import 'package:jendela_dbp/view/authentication/popups/popupSigninError.dart';
-import 'package:msh_checkbox/msh_checkbox.dart';
+import 'package:jendela_dbp/view/authentication/popups/popup_signin_error.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -398,14 +393,14 @@ class _SigninState extends State<Signin> {
       //'https://jendeladbp.my/wp-json/jwt-auth/v1/token'
       try {
         ApiService.logMasuk(body).then((response) async {
-          final int statusCode = response.statusCode;
+          //final int statusCode = response.statusCode;
 
           if (response.statusCode == 401) {
             _showErrorPopup('An error occurred');
             // Navigator.of(context).pushNamedAndRemoveUntil(
             //     '/Logout', (Route<dynamic> route) => false);
           } else if (response.statusCode == 200) {
-            var data;
+            dynamic data;
             data = json.decode(response.body);
             // print("my token" + data['token']);
             Response userRes = await ApiService.maklumatPengguna(data['token']);
@@ -428,7 +423,7 @@ class _SigninState extends State<Signin> {
             prefs.setInt('id', user.id ?? 0);
 
             ApiService.maklumatPengguna(data['token']).then((response) async {
-              var dataUSer;
+              dynamic dataUSer;
               dataUSer = json.decode(response.body);
               prefs.setString('userID', dataUSer['id'].toString());
               prefs.setString('userData', json.encode(dataUSer));

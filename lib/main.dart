@@ -6,9 +6,9 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/view/pages/audiobooks/audiobooksHome.dart';
-import 'package:jendela_dbp/view/pages/home.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
+import 'package:jendela_dbp/hive/models/hiveUserBookModel.dart';
+import 'package:jendela_dbp/view/pages/audiobooks/audiobooks_home.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -17,26 +17,22 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:jendela_dbp/components/read_book/setting.dart';
-import 'package:jendela_dbp/components/persistentBottomNavBar.dart';
-import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
-import 'package:jendela_dbp/stateManagement/blocs/notUsed/appearanceButtonBloc.dart';
-import 'package:jendela_dbp/stateManagement/blocs/notUsed/fontButtonBloc.dart';
-import 'package:jendela_dbp/stateManagement/blocs/postBloc.dart';
-import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
-import 'package:jendela_dbp/stateManagement/cubits/likedStatusCubit.dart';
-import 'package:jendela_dbp/view/authentication/createNewPassword.dart';
-import 'package:jendela_dbp/view/authentication/forgotPassword.dart';
+import 'package:jendela_dbp/components/persistent_bottom_nav_bar.dart';
+import 'package:jendela_dbp/stateManagement/blocs/image_picker_bloc.dart';
+import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
+import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
+import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
+import 'package:jendela_dbp/view/authentication/create_new_password.dart';
+import 'package:jendela_dbp/view/authentication/forgot_password.dart';
 import 'package:jendela_dbp/view/authentication/signin.dart';
 import 'package:jendela_dbp/view/authentication/signup.dart';
 import 'package:jendela_dbp/view/authentication/verification.dart';
-import 'package:jendela_dbp/view/authentication/verificationPassword.dart';
-import 'package:jendela_dbp/view/onboarding/onboardScreen.dart';
-import 'package:jendela_dbp/view/pages/ujana.dart';
+import 'package:jendela_dbp/view/authentication/verification_password.dart';
+import 'package:jendela_dbp/view/onboarding/onboard_screen.dart';
 import 'package:jendela_dbp/view/pages/profile/profile.dart';
-import 'package:jendela_dbp/view/pages/savedBooks/likedBooks.dart';
-import 'package:jendela_dbp/controllers/likedBooksManagement.dart';
-import 'package:jendela_dbp/controllers/globalVar.dart';
+import 'package:jendela_dbp/view/pages/savedBooks/liked_books.dart';
+import 'package:jendela_dbp/controllers/liked_books_management.dart';
+import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 
@@ -82,14 +78,6 @@ class JendelaDBP extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AppearanceBloc>(
-          create: (context) => AppearanceBloc(),
-          child: const Setting(),
-        ),
-        BlocProvider<FontBloc>(
-          create: (context) => FontBloc(),
-          child: const Setting(),
-        ),
         BlocProvider<AuthCubit>(
           create: (BuildContext context) => AuthCubit(),
         ),
@@ -142,9 +130,11 @@ Future<void> registerHive() async {
   final document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
   Hive.registerAdapter(HiveBookAPIAdapter());
-  await Hive.openBox<HiveBookAPI>(GlobalVar.APIBook);
-  await Hive.openBox<HivePurchasedBook>(GlobalVar.PuchasedBook);
-  await Hive.openBox<HiveBookAPI>(GlobalVar.ToCartBook);
+  Hive.registerAdapter(HivePurchasedBookAdapter());
+  Hive.registerAdapter(BookUserModelAdapter());
+  await Hive.openBox<HiveBookAPI>(GlobalVar.apiBook);
+  await Hive.openBox<HivePurchasedBook>(GlobalVar.puchasedBook);
+  await Hive.openBox<HiveBookAPI>(GlobalVar.toCartBook);
   await Hive.openBox<bool>('liked_status');
   await Hive.openBox<HiveBookAPI>('liked_books');
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();

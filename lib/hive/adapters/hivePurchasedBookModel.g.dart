@@ -17,28 +17,28 @@ class HivePurchasedBookAdapter extends TypeAdapter<HivePurchasedBook> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HivePurchasedBook(
-      download_id: fields[0] as String?,
-      download_url: fields[1] as String?,
-      product_name: fields[2] as String?,
+      downloadId: fields[0] as String?,
+      downloadUrl: fields[1] as String?,
+      productName: fields[2] as String?,
       isDownload: fields[3] as bool?,
       downloadUser: fields[4] as String?,
       typeFile: fields[5] as String?,
       bookHistory: fields[6] as String?,
       isFavorite: fields[7] as bool?,
-      product_id: fields[9] as int?,
-      download_name: fields[8] as String?,
-      order_id: fields[10] as int?,
-      order_key: fields[11] as String?,
-      downloads_remaining: fields[12] as String?,
-      access_expires: fields[13] as String?,
-      access_expires_gmt: fields[14] as String?,
-      download_url_temp: fields[15] as String?,
+      productId: fields[9] as int?,
+      downloadName: fields[8] as String?,
+      orderId: fields[10] as int?,
+      orderKey: fields[11] as String?,
+      downloadsRemaining: fields[12] as String?,
+      accessExpires: fields[13] as String?,
+      accessExpiresGmt: fields[14] as String?,
+      downloadUrlTemp: fields[15] as String?,
       localPath: fields[16] as String?,
       descriptionParent: fields[19] as String?,
-      featured_media_url: fields[17] as String?,
+      featuredMediaUrl: fields[17] as String?,
       parentID: fields[18] as int?,
-      product_category: fields[20] as String?,
-      IDUser: fields[21] as String?,
+      productCategory: fields[20] as String?,
+      idUser: fields[21] as String?,
     );
   }
 
@@ -47,11 +47,11 @@ class HivePurchasedBookAdapter extends TypeAdapter<HivePurchasedBook> {
     writer
       ..writeByte(22)
       ..writeByte(0)
-      ..write(obj.download_id)
+      ..write(obj.downloadId)
       ..writeByte(1)
-      ..write(obj.download_url)
+      ..write(obj.downloadUrl)
       ..writeByte(2)
-      ..write(obj.product_name)
+      ..write(obj.productName)
       ..writeByte(3)
       ..write(obj.isDownload)
       ..writeByte(4)
@@ -63,33 +63,33 @@ class HivePurchasedBookAdapter extends TypeAdapter<HivePurchasedBook> {
       ..writeByte(7)
       ..write(obj.isFavorite)
       ..writeByte(8)
-      ..write(obj.download_name)
+      ..write(obj.downloadName)
       ..writeByte(9)
-      ..write(obj.product_id)
+      ..write(obj.productId)
       ..writeByte(10)
-      ..write(obj.order_id)
+      ..write(obj.orderId)
       ..writeByte(11)
-      ..write(obj.order_key)
+      ..write(obj.orderKey)
       ..writeByte(12)
-      ..write(obj.downloads_remaining)
+      ..write(obj.downloadsRemaining)
       ..writeByte(13)
-      ..write(obj.access_expires)
+      ..write(obj.accessExpires)
       ..writeByte(14)
-      ..write(obj.access_expires_gmt)
+      ..write(obj.accessExpiresGmt)
       ..writeByte(15)
-      ..write(obj.download_url_temp)
+      ..write(obj.downloadUrlTemp)
       ..writeByte(16)
       ..write(obj.localPath)
       ..writeByte(17)
-      ..write(obj.featured_media_url)
+      ..write(obj.featuredMediaUrl)
       ..writeByte(18)
       ..write(obj.parentID)
       ..writeByte(19)
       ..write(obj.descriptionParent)
       ..writeByte(20)
-      ..write(obj.product_category)
+      ..write(obj.productCategory)
       ..writeByte(21)
-      ..write(obj.IDUser);
+      ..write(obj.idUser);
   }
 
   @override

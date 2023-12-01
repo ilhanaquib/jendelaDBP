@@ -8,7 +8,7 @@ class Categoryy {
   String? title;
 
   static List<Categoryy> getAllCategory() {
-    List<Categoryy> Categorys = [
+    List<Categoryy> categorys = [
       Categoryy(
         id: "1",
         title: 'Majalah',
@@ -34,6 +34,6 @@ class Categoryy {
         title: 'Berita',
       ),
     ];
-    return Categorys;
+    return categorys;
   }
 }

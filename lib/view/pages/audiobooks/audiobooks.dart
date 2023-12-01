@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import 'package:jendela_dbp/components/audiobook/audioPlayer.dart';
+import 'package:jendela_dbp/components/audiobook/audio_player.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 
 class Audiobooks extends StatelessWidget {
@@ -45,7 +45,7 @@ class Audiobooks extends StatelessWidget {
                           child: Stack(
                             children: [
                               CachedNetworkImage(
-                                imageUrl: book!.featured_media_url!,
+                                imageUrl: book!.featuredMediaUrl!,
                                 height: 200,
                                 width: 150,
                                 fit: BoxFit.fill,
@@ -83,7 +83,7 @@ class Audiobooks extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         left: 20, right: 20),
                                     child: TextScroll(
-                                      book!.product_name!,
+                                      book!.productName!,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),

@@ -18,22 +18,22 @@ class PostAdapter extends TypeAdapter<Post> {
     };
     return Post(
       author: fields[0] as int?,
-      comment_status: fields[1] as String?,
+      commentStatus: fields[1] as String?,
       date: fields[2] as String?,
-      date_gmt: fields[3] as String?,
-      featured_media: fields[4] as int?,
+      dateGmt: fields[3] as String?,
+      featuredMedia: fields[4] as int?,
       format: fields[5] as String?,
       id: fields[6] as int?,
       link: fields[7] as String?,
       modified: fields[8] as String?,
-      modified_gmt: fields[9] as String?,
-      ping_status: fields[10] as String?,
+      modifiedGmt: fields[9] as String?,
+      pingStatus: fields[10] as String?,
       slug: fields[11] as String?,
       status: fields[12] as String?,
       type: fields[13] as String?,
-      yoast_head: fields[14] as String?,
+      yoastHead: fields[14] as String?,
       title: fields[15] as String?,
-      featured_media_urls: fields[16] as String?,
+      featuredMediaUrls: fields[16] as String?,
       content: fields[17] as String?,
     );
   }
@@ -45,13 +45,13 @@ class PostAdapter extends TypeAdapter<Post> {
       ..writeByte(0)
       ..write(obj.author)
       ..writeByte(1)
-      ..write(obj.comment_status)
+      ..write(obj.commentStatus)
       ..writeByte(2)
       ..write(obj.date)
       ..writeByte(3)
-      ..write(obj.date_gmt)
+      ..write(obj.dateGmt)
       ..writeByte(4)
-      ..write(obj.featured_media)
+      ..write(obj.featuredMedia)
       ..writeByte(5)
       ..write(obj.format)
       ..writeByte(6)
@@ -61,9 +61,9 @@ class PostAdapter extends TypeAdapter<Post> {
       ..writeByte(8)
       ..write(obj.modified)
       ..writeByte(9)
-      ..write(obj.modified_gmt)
+      ..write(obj.modifiedGmt)
       ..writeByte(10)
-      ..write(obj.ping_status)
+      ..write(obj.pingStatus)
       ..writeByte(11)
       ..write(obj.slug)
       ..writeByte(12)
@@ -71,11 +71,11 @@ class PostAdapter extends TypeAdapter<Post> {
       ..writeByte(13)
       ..write(obj.type)
       ..writeByte(14)
-      ..write(obj.yoast_head)
+      ..write(obj.yoastHead)
       ..writeByte(15)
       ..write(obj.title)
       ..writeByte(16)
-      ..write(obj.featured_media_urls)
+      ..write(obj.featuredMediaUrls)
       ..writeByte(17)
       ..write(obj.content);
   }

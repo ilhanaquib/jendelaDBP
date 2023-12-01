@@ -4,29 +4,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import 'package:jendela_dbp/components/article/articleNotFound.dart';
+import 'package:jendela_dbp/components/article/article_not_found.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
-import 'package:jendela_dbp/components/cart/cartIcon.dart';
-import 'package:jendela_dbp/components/home/homeArticleCard.dart';
-import 'package:jendela_dbp/components/home/homePostCard.dart';
-import 'package:jendela_dbp/components/posts/errorCard.dart';
-import 'package:jendela_dbp/components/posts/postNotFoundCard.dart';
-import 'package:jendela_dbp/components/ujana/homeDrawer.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/controllers/globalVar.dart';
-import 'package:jendela_dbp/controllers/screenSize.dart';
+import 'package:jendela_dbp/components/cart/cart_icon.dart';
+import 'package:jendela_dbp/components/home/home_article_card.dart';
+import 'package:jendela_dbp/components/home/home_post_card.dart';
+import 'package:jendela_dbp/components/posts/error_card.dart';
+import 'package:jendela_dbp/components/posts/post_not_found_card.dart';
+import 'package:jendela_dbp/components/ujana/home_drawer.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
+import 'package:jendela_dbp/controllers/global_var.dart';
+import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
-import 'package:jendela_dbp/stateManagement/blocs/articleBloc.dart';
-import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
-import 'package:jendela_dbp/stateManagement/blocs/poductBloc.dart';
-import 'package:jendela_dbp/stateManagement/blocs/postBloc.dart';
-import 'package:jendela_dbp/stateManagement/cubits/connectionCubit.dart';
-import 'package:jendela_dbp/stateManagement/events/articleEvent.dart';
-import 'package:jendela_dbp/stateManagement/events/postEvent.dart';
-import 'package:jendela_dbp/stateManagement/states/articleState.dart';
-import 'package:jendela_dbp/stateManagement/states/postState.dart';
+import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
+import 'package:jendela_dbp/stateManagement/blocs/poduct_bloc.dart';
+import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
+import 'package:jendela_dbp/stateManagement/cubits/connection_cubit.dart';
+import 'package:jendela_dbp/stateManagement/events/article_event.dart';
+import 'package:jendela_dbp/stateManagement/events/post_event.dart';
+import 'package:jendela_dbp/stateManagement/states/article_state.dart';
+import 'package:jendela_dbp/stateManagement/states/post_state.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -41,7 +40,7 @@ class _HomeState extends State<Home> {
   PostBloc postBloc = PostBloc();
   ArticleBloc articleBloc = ArticleBloc();
   ProductBloc bookBloc = ProductBloc();
-  Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
+  Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
   ConnectionCubit connectionCubit = ConnectionCubit();
 
   void _updateAppBar() {
@@ -90,9 +89,9 @@ class _HomeState extends State<Home> {
               // ),
               ),
         ),
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 10),
+            padding: EdgeInsets.only(right: 10),
             child: CartIcon(),
           ),
         ],
@@ -308,7 +307,7 @@ class _HomeState extends State<Home> {
                 );
               }
               if (data is ArticleError) {
-                return ErrorCard(message: 'error');
+                return const ErrorCard(message: 'error');
               }
               return SizedBox(
                 height: 300,
@@ -330,14 +329,14 @@ class _HomeState extends State<Home> {
 
   Widget _articleCategory(BuildContext context, int i) {
     Map<int, dynamic> categoryId = {
-      1: GlobalVar.DewanBahasaId,
-      2: GlobalVar.DewanSasteraId,
-      3: GlobalVar.DewanMasyarakatId,
-      4: GlobalVar.DewanBudayaId,
-      5: GlobalVar.DewanEkonomiId,
-      6: GlobalVar.DewanKosmikiId,
-      7: GlobalVar.DewanTamadunIslamId,
-      8: GlobalVar.TunasCiptaId,
+      1: GlobalVar.dewanBahasaId,
+      2: GlobalVar.dewanSasteraId,
+      3: GlobalVar.dewanMasyarakatId,
+      4: GlobalVar.dewanBudayaId,
+      5: GlobalVar.dewanEkonomiId,
+      6: GlobalVar.dewanKosmikiId,
+      7: GlobalVar.dewanTamadunIslamId,
+      8: GlobalVar.tunasCiptaId,
     };
     Map<int, String> categoryName = {
       1: 'Dewan Bahasa',
@@ -434,7 +433,7 @@ class _HomeState extends State<Home> {
               }
 
               if (data is ArticleError) {
-                return ErrorCard(message: 'error');
+                return const ErrorCard(message: 'error');
               }
               return SizedBox(
                 height: 300,

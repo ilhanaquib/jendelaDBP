@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
 
 class SliderWidget extends StatefulWidget {
   const SliderWidget({super.key});

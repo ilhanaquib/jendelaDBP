@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
+import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
 import 'package:jendela_dbp/view/authentication/signup.dart';
 import 'package:mockito/mockito.dart';
 

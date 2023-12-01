@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:jendela_dbp/components/authentication/authProvider.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
-import 'package:jendela_dbp/controllers/screenSize.dart';
-import 'package:jendela_dbp/stateManagement/cubits/AuthCubit.dart';
-import 'package:jendela_dbp/stateManagement/states/authState.dart';
-import 'package:jendela_dbp/view/authentication/popups/popupSignup.dart';
-import 'package:jendela_dbp/view/authentication/popups/popupSignupError.dart';
-import 'package:jendela_dbp/view/authentication/popups/popupTerms.dart';
+import 'package:jendela_dbp/components/authentication/auth_provider.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
+import 'package:jendela_dbp/controllers/screen_size.dart';
+import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
+import 'package:jendela_dbp/stateManagement/states/auth_state.dart';
+import 'package:jendela_dbp/view/authentication/popups/popup_signup.dart';
+import 'package:jendela_dbp/view/authentication/popups/popup_signup_error.dart';
+import 'package:jendela_dbp/view/authentication/popups/popup_terms.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
 
 class Signup extends StatefulWidget {
@@ -76,7 +76,7 @@ class _SignupState extends State<Signup> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           elevation: 0,
           backgroundColor: Colors.white,
           content: SizedBox(
@@ -265,8 +265,9 @@ class _SignupState extends State<Signup> {
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return "Sila masukkan kata laluan anda";
-                        } else
+                        } else {
                           return null;
+                        }
                       },
                       obscureText: !_passwordVisible,
                       decoration: InputDecoration(
@@ -281,7 +282,7 @@ class _SignupState extends State<Signup> {
                             color: const Color.fromARGB(255, 162, 162, 162),
                           ),
                           onPressed: () {
-                            print(_passwordVisible);
+                            //print(_passwordVisible);
                             // Update the state i.e. toogle the state of passwordVisible variable
                             setState(() {
                               _passwordVisible = !_passwordVisible;
@@ -323,8 +324,9 @@ class _SignupState extends State<Signup> {
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return "Sila ulangi kata laluan anda";
-                        } else
+                        } else {
                           return null;
+                        }
                       },
                       obscureText: !_confirmPasswordVisible,
                       decoration: InputDecoration(
@@ -389,7 +391,9 @@ class _SignupState extends State<Signup> {
                           value: shouldCheck,
                           style: MSHCheckboxStyle.fillScaleCheck,
                           size: 20,
+                          // ignore: deprecated_member_use
                           checkedColor: DbpColor().jendelaOrange,
+                          // ignore: deprecated_member_use
                           uncheckedColor: DbpColor().jendelaOrange,
                           onChanged: (val) {
                             setState(() {

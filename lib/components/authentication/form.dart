@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
 
 // ignore: must_be_immutable
 class AuthForm extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
 
 class SettingButton extends StatefulWidget {
   final IconData icon;

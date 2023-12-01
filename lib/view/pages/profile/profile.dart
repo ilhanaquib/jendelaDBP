@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/model/userModel.dart';
-import 'package:jendela_dbp/stateManagement/blocs/imagePickerBloc.dart';
-import 'package:jendela_dbp/view/pages/profile/userIcon.dart';
+import 'package:jendela_dbp/stateManagement/blocs/image_picker_bloc.dart';
+import 'package:jendela_dbp/view/pages/profile/user_icon.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,8 +11,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/controllers/getBooksFromApi.dart';
-import 'package:jendela_dbp/controllers/globalVar.dart';
+import 'package:jendela_dbp/controllers/get_books_from_api.dart';
+import 'package:jendela_dbp/controllers/global_var.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -22,12 +22,12 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  Box<HiveBookAPI> APIBook = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
+  Box<HiveBookAPI> apiBook = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
   List<int> kategori1Books = [];
   bool isLoading = true;
   final User user = User();
 
-  var allProduct;
+  dynamic allProduct;
 
   @override
   void initState() {
@@ -57,11 +57,11 @@ class _ProfileState extends State<Profile> {
   }
 
   void getKategoriFromAPI() {
-    print('object');
-    kategori1Books = APIBook.keys
+    //print('object');
+    kategori1Books = apiBook.keys
         .cast<int>()
         .where(
-            (key) => APIBook.get(key)!.product_category == GlobalVar.kategori1)
+            (key) => apiBook.get(key)!.productCategory == GlobalVar.kategori1)
         .toList();
   }
 
@@ -107,8 +107,8 @@ class _ProfileState extends State<Profile> {
                           const AssetImage('assets/images/logo.png'),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -182,7 +182,7 @@ class _ProfileState extends State<Profile> {
             padding: const EdgeInsets.only(left: 20),
             child: SizedBox(
               child: bookShelf(context, GlobalVar.kategori1Title,
-                  GlobalVar.kategori1, kategori1Books, APIBook),
+                  GlobalVar.kategori1, kategori1Books, apiBook),
             ),
           ),
         ],

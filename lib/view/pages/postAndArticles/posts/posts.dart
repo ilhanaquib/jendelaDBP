@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/controllers/dbpColor.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import 'package:jendela_dbp/components/posts/errorCard.dart';
-import 'package:jendela_dbp/components/posts/postCard.dart';
-import 'package:jendela_dbp/components/posts/postNotFoundCard.dart';
+import 'package:jendela_dbp/components/posts/error_card.dart';
+import 'package:jendela_dbp/components/posts/post_card.dart';
+import 'package:jendela_dbp/components/posts/post_not_found_card.dart';
 import 'package:jendela_dbp/hive/models/hivePostModel.dart';
-import 'package:jendela_dbp/stateManagement/blocs/postBloc.dart';
-import 'package:jendela_dbp/stateManagement/cubits/connectionCubit.dart';
-import 'package:jendela_dbp/stateManagement/events/postEvent.dart';
-import 'package:jendela_dbp/stateManagement/states/postState.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
+import 'package:jendela_dbp/stateManagement/cubits/connection_cubit.dart';
+import 'package:jendela_dbp/stateManagement/events/post_event.dart';
+import 'package:jendela_dbp/stateManagement/states/post_state.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({Key? key}) : super(key: key);

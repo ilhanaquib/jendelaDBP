@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 import 'package:path/path.dart' as p;
 
-import 'package:jendela_dbp/controllers/globalVar.dart';
+import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 
 part 'adapters/productModel.g.dart';
@@ -142,7 +142,7 @@ class Product {
   }
 
   HiveBookAPI getBookAPI() {
-    Box<HiveBookAPI> bookFromAPI = Hive.box<HiveBookAPI>(GlobalVar.APIBook);
+    Box<HiveBookAPI> bookFromAPI = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
     List listBooksApi = bookFromAPI.keys.cast<int>().toList();
     HiveBookAPI? bookAPI;
     for (var i = 0; i < listBooksApi.length; i++) {

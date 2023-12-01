@@ -8,12 +8,12 @@ class Book {
       this.categories,
       this.linkEpub,
       this.linkPdf,
-      this.regular_price,
-      this.sale_price,
-      this.average_rating,
-      this.date_created,
-      this.date_modified,
-      this.rating_count});
+      this.regularPrice,
+      this.salePrice,
+      this.averageRating,
+      this.datecreated,
+      this.dateModified,
+      this.ratingCount});
 
   int? id;
   String? name;
@@ -21,16 +21,16 @@ class Book {
   String? permalink;
   String? description;
 
-  var categories;
+  dynamic categories;
   String? linkEpub;
   String? linkPdf;
-  String? regular_price;
-  String? sale_price;
+  String? regularPrice;
+  String? salePrice;
 
-  String? date_created;
-  String? date_modified;
-  String? average_rating;
-  int? rating_count;
+  String? datecreated;
+  String? dateModified;
+  String? averageRating;
+  int? ratingCount;
 
   // static List<Book> getAllBook() {
   //   List<Book> Books = [
@@ -162,12 +162,12 @@ class Book {
       categories: data['categories'],
       linkEpub: linkEpub,
       linkPdf: linkPdf,
-      regular_price: data['regular_price'],
-      sale_price: data['sale_price'],
-      average_rating: data['average_rating'],
-      date_created: data['date_created'],
-      date_modified: data['date_modified'],
-      rating_count: data['rating_count'],
+      regularPrice: data['regular_price'],
+      salePrice: data['sale_price'],
+      averageRating: data['average_rating'],
+      datecreated: data['date_created'],
+      dateModified: data['date_modified'],
+      ratingCount: data['rating_count'],
     );
   }
 }

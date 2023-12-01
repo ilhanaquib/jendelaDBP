@@ -5,11 +5,11 @@ part '../adapters/hivePurchasedBookModel.g.dart';
 @HiveType(typeId: 2)
 class HivePurchasedBook {
   @HiveField(0)
-  String? download_id;
+  String? downloadId;
   @HiveField(1)
-  String? download_url;
+  String? downloadUrl;
   @HiveField(2)
-  String? product_name;
+  String? productName;
   @HiveField(3)
   bool? isDownload;
   @HiveField(4)
@@ -21,81 +21,81 @@ class HivePurchasedBook {
   @HiveField(7)
   bool? isFavorite;
   @HiveField(8)
-  String? download_name;
+  String? downloadName;
   @HiveField(9)
-  int? product_id;
+  int? productId;
   @HiveField(10)
-  int? order_id;
+  int? orderId;
   @HiveField(11)
-  String? order_key;
+  String? orderKey;
   @HiveField(12)
-  String? downloads_remaining;
+  String? downloadsRemaining;
   @HiveField(13)
-  String? access_expires;
+  String? accessExpires;
   @HiveField(14)
-  String? access_expires_gmt;
+  String? accessExpiresGmt;
   @HiveField(15)
-  String? download_url_temp;
+  String? downloadUrlTemp;
   @HiveField(16)
   String? localPath;
   @HiveField(17)
-  String? featured_media_url;
+  String? featuredMediaUrl;
   @HiveField(18)
   int? parentID;
   @HiveField(19)
   String? descriptionParent;
 
   @HiveField(20)
-  String? product_category;
+  String? productCategory;
 
   @HiveField(21)
-  String? IDUser;
+  String? idUser;
 
   HivePurchasedBook(
-      {this.download_id,
-      this.download_url,
-      this.product_name,
+      {this.downloadId,
+      this.downloadUrl,
+      this.productName,
       this.isDownload,
       this.downloadUser,
       this.typeFile,
       this.bookHistory,
       this.isFavorite,
-      this.product_id,
-      this.download_name,
-      this.order_id,
-      this.order_key,
-      this.downloads_remaining,
-      this.access_expires,
-      this.access_expires_gmt,
-      this.download_url_temp,
+      this.productId,
+      this.downloadName,
+      this.orderId,
+      this.orderKey,
+      this.downloadsRemaining,
+      this.accessExpires,
+      this.accessExpiresGmt,
+      this.downloadUrlTemp,
       this.localPath,
       this.descriptionParent,
-      this.featured_media_url,
+      this.featuredMediaUrl,
       this.parentID,
-      this.product_category,
-      this.IDUser});
+      this.productCategory,
+      this.idUser});
 
   static HivePurchasedBook fromJson(Map data,
-      {typeFile, featured_media_url, IDUser}) {
+      {typeFile, featuredMediaUrl, idUser}) {
     return HivePurchasedBook(
-        download_id: data['download_id'],
-        download_url: data['download_url'],
-        product_id: data['product_id'],
-        product_name: data['product_name'],
-        download_name: data['download_name'],
-        order_id: data['order_id'],
-        order_key: data['order_key'],
-        downloads_remaining: data['downloads_remaining'],
-        access_expires: data['access_expires'],
-        access_expires_gmt: data['access_expires_gmt'],
-        download_url_temp: data['file']['file'],
+        downloadId: data['download_id'],
+        downloadUrl: data['download_url'],
+        productId: data['product_id'],
+        productName: data['product_name'],
+        downloadName: data['download_name'],
+        orderId: data['order_id'],
+        orderKey: data['order_key'],
+        downloadsRemaining: data['downloads_remaining'],
+        accessExpires: data['access_expires'],
+        accessExpiresGmt: data['access_expires_gmt'],
+        downloadUrlTemp: data['file']['file'],
         typeFile: typeFile,
         localPath: "Tiada",
         isDownload: false,
         bookHistory: "Tiada",
-        featured_media_url: featured_media_url,
+        featuredMediaUrl: featuredMediaUrl,
         parentID: data['parent_product']['id'],
         descriptionParent: data['parent_product']['description'],
-        IDUser: IDUser);
+        idUser: idUser);
   }
 }

@@ -22,26 +22,26 @@ class HiveBookAPIAdapter extends TypeAdapter<HiveBookAPI> {
       images: fields[2] as String?,
       description: fields[3] as String?,
       categories: fields[4] as String?,
-      regular_price: fields[5] as String?,
-      sale_price: fields[6] as String?,
-      average_rating: fields[9] as String?,
-      date_created: fields[7] as String?,
-      date_modified: fields[8] as String?,
-      rating_count: fields[10] as int?,
+      regularPrice: fields[5] as String?,
+      salePrice: fields[6] as String?,
+      averageRating: fields[9] as String?,
+      dateCreated: fields[7] as String?,
+      dateModified: fields[8] as String?,
+      ratingCount: fields[10] as int?,
       downloadUser: fields[12] as String?,
       isDownload: fields[11] as bool?,
       isFavorite: fields[13] as bool?,
       status: fields[14] as String?,
       type: fields[15] as String?,
-      woocommerce_variations: fields[16] as String?,
+      woocommerceVariations: fields[16] as String?,
       quantity: fields[17] as int?,
       discountPrice: fields[18] as String?,
-      product_category: fields[19] as String?,
+      productCategory: fields[19] as String?,
       price: fields[20] as String?,
       sku: fields[21] as String?,
-      stock_status: fields[22] as String?,
-      meta_data: (fields[23] as List?)?.cast<dynamic>(),
-      external_url: fields[24] as String?,
+      stockStatus: fields[22] as String?,
+      metaData: (fields[23] as List?)?.cast<dynamic>(),
+      externalUrl: fields[24] as String?,
       toCheckout: fields[25] as bool?,
       buyQuantity: fields[26] as int?,
       timestamp: fields[27] as DateTime?,
@@ -63,17 +63,17 @@ class HiveBookAPIAdapter extends TypeAdapter<HiveBookAPI> {
       ..writeByte(4)
       ..write(obj.categories)
       ..writeByte(5)
-      ..write(obj.regular_price)
+      ..write(obj.regularPrice)
       ..writeByte(6)
-      ..write(obj.sale_price)
+      ..write(obj.salePrice)
       ..writeByte(7)
-      ..write(obj.date_created)
+      ..write(obj.dateCreated)
       ..writeByte(8)
-      ..write(obj.date_modified)
+      ..write(obj.dateModified)
       ..writeByte(9)
-      ..write(obj.average_rating)
+      ..write(obj.averageRating)
       ..writeByte(10)
-      ..write(obj.rating_count)
+      ..write(obj.ratingCount)
       ..writeByte(11)
       ..write(obj.isDownload)
       ..writeByte(12)
@@ -85,23 +85,23 @@ class HiveBookAPIAdapter extends TypeAdapter<HiveBookAPI> {
       ..writeByte(15)
       ..write(obj.type)
       ..writeByte(16)
-      ..write(obj.woocommerce_variations)
+      ..write(obj.woocommerceVariations)
       ..writeByte(17)
       ..write(obj.quantity)
       ..writeByte(18)
       ..write(obj.discountPrice)
       ..writeByte(19)
-      ..write(obj.product_category)
+      ..write(obj.productCategory)
       ..writeByte(20)
       ..write(obj.price)
       ..writeByte(21)
       ..write(obj.sku)
       ..writeByte(22)
-      ..write(obj.stock_status)
+      ..write(obj.stockStatus)
       ..writeByte(23)
-      ..write(obj.meta_data)
+      ..write(obj.metaData)
       ..writeByte(24)
-      ..write(obj.external_url)
+      ..write(obj.externalUrl)
       ..writeByte(25)
       ..write(obj.toCheckout)
       ..writeByte(26)

@@ -24,22 +24,22 @@ class HiveBookAPI {
   String? categories;
 
   @HiveField(5)
-  String? regular_price;
+  String? regularPrice;
 
   @HiveField(6)
-  String? sale_price;
+  String? salePrice;
 
   @HiveField(7)
-  String? date_created;
+  String? dateCreated;
 
   @HiveField(8)
-  String? date_modified;
+  String? dateModified;
 
   @HiveField(9)
-  String? average_rating;
+  String? averageRating;
 
   @HiveField(10)
-  int? rating_count;
+  int? ratingCount;
 
   @HiveField(11)
   bool? isDownload;
@@ -57,7 +57,7 @@ class HiveBookAPI {
   String? type;
 
   @HiveField(16)
-  String? woocommerce_variations;
+  String? woocommerceVariations;
 
   @HiveField(17)
   int? quantity;
@@ -66,7 +66,7 @@ class HiveBookAPI {
   String? discountPrice;
 
   @HiveField(19)
-  String? product_category;
+  String? productCategory;
 
   @HiveField(20)
   String? price;
@@ -75,13 +75,13 @@ class HiveBookAPI {
   String? sku;
 
   @HiveField(22)
-  String? stock_status;
+  String? stockStatus;
 
   @HiveField(23)
-  List? meta_data;
+  List? metaData;
 
   @HiveField(24)
-  String? external_url;
+  String? externalUrl;
 
   @HiveField(25)
   bool? toCheckout;
@@ -98,26 +98,26 @@ class HiveBookAPI {
       this.images,
       this.description,
       this.categories,
-      this.regular_price,
-      this.sale_price,
-      this.average_rating,
-      this.date_created,
-      this.date_modified,
-      this.rating_count,
+      this.regularPrice,
+      this.salePrice,
+      this.averageRating,
+      this.dateCreated,
+      this.dateModified,
+      this.ratingCount,
       this.downloadUser,
       this.isDownload,
       this.isFavorite,
       this.status,
       this.type,
-      this.woocommerce_variations,
+      this.woocommerceVariations,
       this.quantity,
       this.discountPrice,
-      this.product_category,
+      this.productCategory,
       this.price,
       this.sku,
-      this.stock_status,
-      this.meta_data,
-      this.external_url,
+      this.stockStatus,
+      this.metaData,
+      this.externalUrl,
       this.toCheckout,
       this.buyQuantity,
       this.timestamp});
@@ -141,21 +141,21 @@ class HiveBookAPI {
         images: imageCheck,
         description: removeAllHtmlTags(jsonMap['woocommerce']['description']),
         categories: tempCategories,
-        regular_price: jsonMap['woocommerce']['regular_price'],
-        sale_price: jsonMap['woocommerce']['sale_price'],
-        average_rating: jsonMap['woocommerce']['average_rating'],
-        date_created: jsonMap['woocommerce']['date_created']['date'],
-        date_modified: jsonMap['woocommerce']['date_modified']['date'],
-        rating_count: jsonMap['woocommerce']['rating_count'],
+        regularPrice: jsonMap['woocommerce']['regular_price'],
+        salePrice: jsonMap['woocommerce']['sale_price'],
+        averageRating: jsonMap['woocommerce']['average_rating'],
+        dateCreated: jsonMap['woocommerce']['date_created']['date'],
+        dateModified: jsonMap['woocommerce']['date_modified']['date'],
+        ratingCount: jsonMap['woocommerce']['rating_count'],
         status: jsonMap['status'],
         type: jsonMap['type'],
-        woocommerce_variations: json.encode(jsonMap['woocommerce_variations']),
-        product_category: productCategoryCheck,
+        woocommerceVariations: json.encode(jsonMap['woocommerce_variations']),
+        productCategory: productCategoryCheck,
         price: jsonMap['woocommerce']['price'],
         sku: jsonMap['woocommerce']['sku'],
-        stock_status: jsonMap['woocommerce']['stock_status'],
-        meta_data: jsonMap['woocommerce']['meta_data'],
-        external_url: jsonMap['external_url'],
+        stockStatus: jsonMap['woocommerce']['stock_status'],
+        metaData: jsonMap['woocommerce']['meta_data'],
+        externalUrl: jsonMap['external_url'],
         timestamp: DateTime.now());
   }
 
@@ -170,20 +170,20 @@ class HiveBookAPI {
       images: product.featuredMediaUrl ?? "Tiada",
       description: removeAllHtmlTags(product.woocommerce!.description ?? ''),
       categories: "Tiada",
-      regular_price: product.woocommerce!.regularPrice,
-      sale_price: product.woocommerce!.salePrice,
-      average_rating: product.woocommerce!.averageRating,
-      date_created: product.woocommerce!.dateCreated!['date'],
-      date_modified: product.woocommerce!.dateModified!['date'],
-      rating_count: product.woocommerce!.ratingCounts!.length,
+      regularPrice: product.woocommerce!.regularPrice,
+      salePrice: product.woocommerce!.salePrice,
+      averageRating: product.woocommerce!.averageRating,
+      dateCreated: product.woocommerce!.dateCreated!['date'],
+      dateModified: product.woocommerce!.dateModified!['date'],
+      ratingCount: product.woocommerce!.ratingCounts!.length,
       status: product.postStatus,
       type: product.postType,
-      woocommerce_variations: json.encode(product.woocommerceVariations),
-      product_category: productCategoryCheck,
+      woocommerceVariations: json.encode(product.woocommerceVariations),
+      productCategory: productCategoryCheck,
       price: product.woocommerce!.price,
       sku: product.woocommerce!.sku,
-      stock_status: product.woocommerce!.stockStatus,
-      meta_data: product.woocommerce!.metaData,
+      stockStatus: product.woocommerce!.stockStatus,
+      metaData: product.woocommerce!.metaData,
     );
   }
 
