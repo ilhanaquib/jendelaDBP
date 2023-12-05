@@ -7,6 +7,7 @@ import 'package:jendela_dbp/components/bukuDibeli/purchased_book_cover.dart';
 import 'package:jendela_dbp/components/user/login_card.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
+import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/poduct_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
@@ -96,15 +97,9 @@ class _UserBooks extends State<UserBooks> {
                           ));
                         }
                         // return
-                        return GridView(
+                        return ListView(
                           physics: const BouncingScrollPhysics(
                               parent: AlwaysScrollableScrollPhysics()),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 10.0,
-                                  mainAxisSpacing: 10.0,
-                                  childAspectRatio: 2 / 3),
                           children: listOfWidget,
                         );
                       } else {

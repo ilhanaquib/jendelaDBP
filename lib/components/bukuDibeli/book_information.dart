@@ -23,6 +23,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:vocsy_epub_viewer/epub_viewer.dart';
+import 'package:jendela_dbp/view/pages/audiobooks/audiobooks.dart';
 
 // const String localBook = "LocalBook";
 
@@ -113,8 +114,9 @@ class _BookInformationState extends State<BookInformation> {
         duration: Duration(seconds: 3),
       ));
 
-      Future.delayed(const Duration(seconds: 2)).then((value) => Navigator.of(context)
-          .pushNamedAndRemoveUntil('/Logout', (Route<dynamic> route) => false));
+      Future.delayed(const Duration(seconds: 2)).then((value) =>
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/Logout', (Route<dynamic> route) => false));
     } else {
       setState(() {
         isLoadingBook = true;
@@ -298,80 +300,45 @@ class _BookInformationState extends State<BookInformation> {
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              SizedBox(
-                                width:
-                                    (MediaQuery.of(context).size.width / 1000) *
-                                        350,
-                                child: widget.bookIdentification
-                                            .featuredMediaUrl ==
-                                        null
-                                    ? Image.asset(
-                                        "assets/bookCover2/tiadakulitbuku.png",
-                                        fit: BoxFit.fitWidth)
-                                    : CachedNetworkImage(
-                                        alignment: Alignment.bottomCenter,
-                                        fit: BoxFit.fitWidth,
-                                        imageUrl: widget.bookIdentification
-                                                .featuredMediaUrl ??
-                                            '',
-                                        progressIndicatorBuilder:
-                                            (context, url, downloadProgress) =>
-                                                Container(
-                                          // alignment: Alignment.center,
-                                          child: LoadingAnimationWidget
-                                              .discreteCircle(
-                                            color: DbpColor().jendelaGray,
-                                            secondRingColor:
-                                                DbpColor().jendelaGreen,
-                                            thirdRingColor:
-                                                DbpColor().jendelaOrange,
-                                            size: 50.0,
-                                          ),
-                                        ),
-                                      ),
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              SizedBox(
-                                width:
-                                    (MediaQuery.of(context).size.width / 1000) *
-                                        540,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width:
-                                          (MediaQuery.of(context).size.width /
-                                                  1000) *
-                                              540,
-                                      child: Text(
-                                        widget.bookIdentification
-                                                .productName ??
-                                            '',
-                                        // overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.9,
-                                      child: bookOpenButton(),
-                                    ),
-                                  ],
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: DbpColor().jendelaGreen,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: DbpColor().jendelaGreen,
+                                  ),
                                 ),
+                                width: 150,
+                                child: CachedNetworkImage(
+                                  alignment: Alignment.bottomCenter,
+                                  fit: BoxFit.fitWidth,
+                                  imageUrl: widget.bookIdentification
+                                          .featuredMediaUrl ??
+                                      '',
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text(
+                                      widget.bookIdentification.productName ??
+                                          '',
+                                      //overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  bookOpenButton(),
+                                ],
                               ),
                             ],
                           ),
@@ -401,69 +368,13 @@ class _BookInformationState extends State<BookInformation> {
                                 width: double.infinity,
                                 child: Text(
                                   widget.bookIdentification.descriptionParent ??
-                                      '',
+                                      'Tiada maklumat untuk buku ini',
                                   textAlign: TextAlign.justify,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: maxTextLine,
                                 ),
                               ),
                               const SizedBox(
                                 height: 5,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: Text(
-                                      widget.bookIdentification
-                                              .descriptionParent ??
-                                          '',
-                                      textAlign: TextAlign.justify,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: maxTextLine,
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      if (isOpenMaxTextLine == false) {
-                                        setState(() {
-                                          maxTextLine = 90;
-                                          isOpenMaxTextLine = true;
-                                        });
-                                      } else {
-                                        setState(() {
-                                          maxTextLine = 3;
-                                          isOpenMaxTextLine = false;
-                                        });
-                                      }
-                                    },
-                                    child: isOpenMaxTextLine
-                                        ? const Padding(
-                                            padding:  EdgeInsets.only(
-                                                right: 15),
-                                            child: Text(
-                                              "Tutup",
-                                              style: TextStyle(
-                                                color: Colors.blue,
-                                              ),
-                                            ),
-                                          )
-                                        : widget.bookIdentification
-                                                    .descriptionParent ==
-                                                ""
-                                            ? Container()
-                                            : const Padding(
-                                                padding:  EdgeInsets.only(
-                                                    right: 15),
-                                                child: Text("Lagi",
-                                                    style: TextStyle(
-                                                      color: Colors.blue,
-                                                    ),),
-                                              ),
-                                  )
-                                ],
-                              )
                             ],
                           ),
                         ),
@@ -490,36 +401,35 @@ class _BookInformationState extends State<BookInformation> {
     );
   }
 
-  Widget openPdfReader() {
-    return PdfViewerPage(
-      book: parentDetailsBook,
-      pdfFile: localPathPermanent,
-    );
-    // PDFView(
-    //   filePath: localPathPermanent,
-    //   enableSwipe: true,
-    //   swipeHorizontal: true,
-    //   autoSpacing: false,
-    //   pageFling: true,
-    //   onRender: (_pages) {
-    //     setState(() {
-    //       pages = _pages ?? 1;
-    //     });
-    //   },
-    //   onError: (error) {
-    //     // print(error.toString());
-    //   },
-    //   onPageError: (page, error) {
-    //     // print('$page: ${error.toString()}');
-    //   },
-    //   onViewCreated: (PDFViewController pdfViewController) {
-    //     _controller.complete(pdfViewController);
-    //   },
-    //   onPageChanged: (int? page, int? total) {
-    //     // print('page change: $page/$total');
-    //   },
-    // );
-  }
+  // Widget openPdfReader() {
+  //   return PdfViewerPage(
+  //     pdfPath: decryp,
+  //   );
+  //   // PDFView(
+  //   //   filePath: localPathPermanent,
+  //   //   enableSwipe: true,
+  //   //   swipeHorizontal: true,
+  //   //   autoSpacing: false,
+  //   //   pageFling: true,
+  //   //   onRender: (_pages) {
+  //   //     setState(() {
+  //   //       pages = _pages ?? 1;
+  //   //     });
+  //   //   },
+  //   //   onError: (error) {
+  //   //     // print(error.toString());
+  //   //   },
+  //   //   onPageError: (page, error) {
+  //   //     // print('$page: ${error.toString()}');
+  //   //   },
+  //   //   onViewCreated: (PDFViewController pdfViewController) {
+  //   //     _controller.complete(pdfViewController);
+  //   //   },
+  //   //   onPageChanged: (int? page, int? total) {
+  //   //     // print('page change: $page/$total');
+  //   //   },
+  //   // );
+  // }
 
   Future<void> downloadBook() async {
     setState(() {
@@ -565,8 +475,7 @@ class _BookInformationState extends State<BookInformation> {
         enableTts: false);
 
     // Decrypt file
-    File decryptFile =
-        await EncryptFile.decryptFile(File(localPathPermanent));
+    File decryptFile = await EncryptFile.decryptFile(File(localPathPermanent));
 
     if (!decryptFile.existsSync()) {
       // Notification
@@ -610,8 +519,8 @@ class _BookInformationState extends State<BookInformation> {
   Future<void> openEpubReaderForIOS() async {
     // print('ini data history: ' + (myDetailsBook!.bookHistory ?? ''));
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var epubHistory = prefs.getString(
-        "${myDetailsBook!.productId}USER${currentUserID ?? ''}");
+    var epubHistory = prefs
+        .getString("${myDetailsBook!.productId}USER${currentUserID ?? ''}");
 
     //Map<dynamic, dynamic?> myyy = Map();
 
@@ -686,55 +595,76 @@ class _BookInformationState extends State<BookInformation> {
                 size: 50.0,
               )
             : isDownloadFile
-                ? SizedBox(
-                    width: 100,
-                    child: OutlinedButton(
-                      child: const Row(
-                        children: [
-                          Text('Baca'),
-                          Icon(Icons.book_rounded, color: Colors.white70),
-                        ],
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          isLoadingBook = true;
-                        });
-                        if (Platform.isIOS) {
-                          await openEpubReader();
-                          // OpenEpubReaderForIOS();
-                        } else {
-                          await openEpubReader();
-                        }
-                        setState(() {
-                          isLoadingBook = false;
-                        });
-                      },
+                ? OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          DbpColor().jendelaGreen), // Green background
+                      overlayColor: MaterialStateProperty.all<Color>(
+                          Colors.transparent), // No overlay color
+                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
+                          color: DbpColor().jendelaGreen,
+                          width: 2)), // Green border
                     ),
+                    child: const Row(
+                      children: [
+                        Text(
+                          'Baca',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.book_rounded, color: Colors.white),
+                      ],
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        isLoadingBook = true;
+                      });
+                      if (Platform.isIOS) {
+                        await openEpubReader();
+                        // OpenEpubReaderForIOS();
+                      } else {
+                        await openEpubReader();
+                      }
+                      setState(() {
+                        isLoadingBook = false;
+                      });
+                    },
                   )
-                : SizedBox(
-                    width: 150,
-                    child: OutlinedButton(
-                      child: const Row(
-                        children: [
-                          Text('Muat Turun'),
-                          Icon(Icons.download, color: Colors.white70),
-                        ],
-                      ),
-                      onPressed: () async {
-                        var connectivityResult =
-                            await (Connectivity().checkConnectivity());
-                        if (connectivityResult == ConnectivityResult.mobile ||
-                            connectivityResult == ConnectivityResult.wifi) {
-                          downloadBook();
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            behavior: SnackBarBehavior.floating,
-                            content: Text('Memerlukan penggunaan internet'),
-                            duration: Duration(seconds: 3),
-                          ));
-                        }
-                      },
+                : OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          DbpColor().jendelaGreen), // Green background
+                      overlayColor: MaterialStateProperty.all<Color>(
+                          Colors.transparent), // No overlay color
+                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
+                          color: DbpColor().jendelaGreen,
+                          width: 2)), // Green border
                     ),
+                    child: const Row(
+                      children: [
+                        Text(
+                          'Muat Turun',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.download, color: Colors.white),
+                      ],
+                    ),
+                    onPressed: () async {
+                      var connectivityResult =
+                          await (Connectivity().checkConnectivity());
+                      if (connectivityResult == ConnectivityResult.mobile ||
+                          connectivityResult == ConnectivityResult.wifi) {
+                        downloadBook();
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text('Memerlukan penggunaan internet'),
+                          duration: Duration(seconds: 3),
+                        ));
+                      }
+                    },
                   ),
       );
     } else if ('.pdf' == fileExt.toLowerCase()) {
@@ -747,130 +677,91 @@ class _BookInformationState extends State<BookInformation> {
                 size: 50.0,
               )
             : isDownloadFile
-                ? SizedBox(
-                    width: 100,
-                    child: OutlinedButton(
-                      child: const Row(
-                        children: [
-                          Text('Baca'),
-                          Icon(Icons.book_rounded, color: Colors.white70),
-                        ],
-                      ),
-                      onPressed: () async {
-                        // decrypt file
-                        File file = File(localPathPermanent);
-                        setState(() {
-                          isLoadingBook = true;
-                        });
-                        if (await file.exists()) {
-                          // Decrypt file
-                          File decryptedFile =
-                              await EncryptFile.decryptFile(file);
-                          Navigator.of(context)
-                              .pushNamed('/PdfViewer',
-                                  arguments: decryptedFile.path)
-                              .then((value) {
-                            // if (decryptedFile.existsSync()) {
-                            //   decryptedFile.deleteSync();
-                            // }
-                          });
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            behavior: SnackBarBehavior.floating,
-                            content: Text('Error'),
-                            duration: Duration(seconds: 3),
-                          ));
-                        }
-                        setState(() {
-                          isLoadingBook = false;
-                        });
-                        // OpenPdfReader();
-                        return;
-                      },
+                ? OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          DbpColor().jendelaGreen), // Green background
+                      overlayColor: MaterialStateProperty.all<Color>(
+                          Colors.transparent), // No overlay color
+                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
+                          color: DbpColor().jendelaGreen,
+                          width: 2)), // Green border
                     ),
+                    child: const Row(
+                      children: [
+                        Text(
+                          'Baca',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.book_rounded, color: Colors.white),
+                      ],
+                    ),
+                    onPressed: () async {
+                      // decrypt file
+                      File file = File(localPathPermanent);
+                      setState(() {
+                        isLoadingBook = true;
+                      });
+                      if (await file.exists()) {
+                        // Decrypt file
+                        File decryptedFile =
+                            await EncryptFile.decryptFile(file);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PdfViewerPage(
+                                    pdfPath: decryptedFile,
+                                    bookName:
+                                        widget.bookIdentification.productName!,
+                                  )),
+                        );
+                        // Navigator.of(context)
+                        //     .push()
+                        //     .then((value) {
+                        //   // if (decryptedFile.existsSync()) {
+                        //   //   decryptedFile.deleteSync();
+                        //   // }
+                        // });
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text('Error'),
+                          duration: Duration(seconds: 3),
+                        ));
+                      }
+                      setState(() {
+                        isLoadingBook = false;
+                      });
+                      // OpenPdfReader();
+                      return;
+                    },
                   )
                 : SizedBox(
                     width: 150,
                     child: OutlinedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            DbpColor().jendelaGreen), // Green background
+                        overlayColor: MaterialStateProperty.all<Color>(
+                            Colors.transparent), // No overlay color
+                        side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(color: DbpColor().jendelaGreen, width: 2),
+                        ), // Green border
+                      ),
                       child: const Row(
                         children: [
-                          Text('Muat Turun'),
-                          Icon(Icons.download, color: Colors.white70),
+                          Text(
+                            'Muat Turun',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Icon(Icons.download, color: Colors.white),
                         ],
                       ),
                       onPressed: () async {
-                        var connectivityResult =
-                            await (Connectivity().checkConnectivity());
-                        if (connectivityResult == ConnectivityResult.mobile ||
-                            connectivityResult == ConnectivityResult.wifi) {
-                          downloadBook();
-                        } else {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            behavior: SnackBarBehavior.floating,
-                            content: Text('Memerlukan penggunaan internet'),
-                            duration: Duration(seconds: 3),
-                          ));
-                        }
-                      },
-                    ),
-                  ),
-      );
-    } else if (".mp3" == fileExt.toLowerCase()) {
-      // Audio
-
-      listOfWidget.add(
-        isDownloadingFile
-            ? LoadingAnimationWidget.discreteCircle(
-                color: DbpColor().jendelaGray,
-                secondRingColor: DbpColor().jendelaGreen,
-                thirdRingColor: DbpColor().jendelaOrange,
-                size: 50.0,
-              )
-            : isDownloadFile
-                ? SizedBox(
-                    width: 150,
-                    child: OutlinedButton(
-                      child: const Row(
-                        children: [
-                          Text('Buka'),
-                          Icon(Icons.play_arrow, color: Colors.white70),
-                        ],
-                      ),
-                      onPressed: () async {
-                        File file = File(localPathPermanent);
-                        File? decryptedFile;
-                        if (file.existsSync()) {
-                          // Decrypt file
-                          decryptedFile = await EncryptFile.decryptFile(file);
-                        }
-                        Navigator.of(context)
-                            .pushNamed('/AudioPlayer', arguments: {
-                          'title': widget.bookIdentification.productName,
-                          'path': decryptedFile!.path,
-                          'coverImage':
-                              widget.bookIdentification.featuredMediaUrl
-                        }).then((value) {
-                          // if (decryptedFile!.existsSync()) {
-                          //   decryptedFile.deleteSync();
-                          // }
-                        });
-                      },
-                    ),
-                  )
-                : SizedBox(
-                    width: 150,
-                    child: OutlinedButton(
-                      child: const Row(
-                        children: [
-                          Text('Muat Turun'),
-                          Icon(Icons.download, color: Colors.white70),
-                        ],
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          isLoadingBook = true;
-                        });
                         var connectivityResult =
                             await (Connectivity().checkConnectivity());
                         if (connectivityResult == ConnectivityResult.mobile ||
@@ -885,11 +776,102 @@ class _BookInformationState extends State<BookInformation> {
                             ),
                           );
                         }
-                        setState(() {
-                          isLoadingBook = false;
-                        });
                       },
                     ),
+                  ),
+      );
+    } else if (".mp3" == fileExt.toLowerCase()) {
+      // Audio
+      listOfWidget.add(
+        isDownloadingFile
+            ? LoadingAnimationWidget.discreteCircle(
+                color: DbpColor().jendelaGray,
+                secondRingColor: DbpColor().jendelaGreen,
+                thirdRingColor: DbpColor().jendelaOrange,
+                size: 50.0,
+              )
+            : isDownloadFile
+                ? OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          DbpColor().jendelaGreen), // Green background
+                      overlayColor: MaterialStateProperty.all<Color>(
+                          Colors.transparent), // No overlay color
+                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
+                          color: DbpColor().jendelaGreen,
+                          width: 2)), // Green border
+                    ),
+                    child: const Row(
+                      children: [
+                        Text(
+                          'Buka',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.play_arrow, color: Colors.white),
+                      ],
+                    ),
+                    onPressed: () async {
+                      File file = File(localPathPermanent);
+                      File? decryptedFile;
+                      if (file.existsSync()) {
+                        // Decrypt file
+                        decryptedFile = await EncryptFile.decryptFile(file);
+                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Audiobooks(
+                                  book: widget.bookIdentification,
+                                  audioFile: decryptedFile!.path,
+                                )),
+                      );
+
+                     
+                    },
+                  )
+                : OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          DbpColor().jendelaGreen), // Green background
+                      overlayColor: MaterialStateProperty.all<Color>(
+                          Colors.transparent), // No overlay color
+                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
+                          color: DbpColor().jendelaGreen,
+                          width: 2)), // Green border
+                    ),
+                    child: const Row(
+                      children: [
+                        Text(
+                          'Muat Turun',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.download, color: Colors.white),
+                      ],
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        isLoadingBook = true;
+                      });
+                      var connectivityResult =
+                          await (Connectivity().checkConnectivity());
+                      if (connectivityResult == ConnectivityResult.mobile ||
+                          connectivityResult == ConnectivityResult.wifi) {
+                        downloadBook();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            content: Text('Memerlukan penggunaan internet'),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      }
+                      setState(() {
+                        isLoadingBook = false;
+                      });
+                    },
                   ),
       );
     }

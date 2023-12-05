@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:text_scroll/text_scroll.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:jendela_dbp/components/audiobook/audio_player.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 
@@ -111,9 +110,9 @@ class Audiobooks extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20, right: 20, top: 30),
-                        child: AudioPlayerWidget(),
+                       Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+                        child: AudioPlayerWidget(audioFile: audioFile),
                       ),
                     ],
                   ),

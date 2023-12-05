@@ -8,9 +8,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:jendela_dbp/components/bookDetail/chapter_list.dart';
-
-
 class AudioPlayerWidget extends StatefulWidget {
   const AudioPlayerWidget({super.key, this.audioFile});
 
@@ -45,10 +42,10 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       }
     });
 
-    _loadAudioFromAsset().then((filePath) {
-      _audioPlayer.setFilePath(filePath);
-      _audioPlayer.play();
-    });
+    _loadAudioFromFile(widget.audioFile!).then((filePath) {
+    _audioPlayer.setFilePath(filePath);
+    _audioPlayer.play();
+  });
 
     _audioPlayer.playerStateStream.listen((playerState) {
       setState(() {
@@ -68,16 +65,6 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   Duration _currentPosition = Duration.zero;
   Duration _audioDuration = Duration.zero;
 
-  void bottomSheet(BuildContext context) {
-    showModalBottomSheet<void>(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        elevation: 0,
-        context: context,
-        builder: (BuildContext context) {
-          return const ChapterList();
-        });
-  }
-
   void _togglePlayback() async {
     if (_audioPlayer.playing) {
       await _audioPlayer.pause();
@@ -92,7 +79,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   void _skipForward() async {
     // Get the current position of the audio
-    final currentPosition =  _audioPlayer.position;
+    final currentPosition = _audioPlayer.position;
 
     // Calculate the new position to skip forward by ten seconds
     final newPosition = currentPosition + const Duration(seconds: 10);
@@ -103,7 +90,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   void _skipBackward() async {
     // Get the current position of the audio
-    final currentPosition =  _audioPlayer.position;
+    final currentPosition = _audioPlayer.position;
 
     // Calculate the new position to skip backward by ten seconds
     final newPosition = currentPosition - const Duration(seconds: 10);
@@ -113,8 +100,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   void _changePlaybackSpeed(double speed) {
-    setState(() {
-    });
+    setState(() {});
     _audioPlayer.setSpeed(speed);
   }
 
@@ -126,13 +112,16 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     return "$hours:$minutes:$seconds";
   }
 
-  Future<String> _loadAudioFromAsset() async {
-    final ByteData data =
-        await rootBundle.load(widget.audioFile!);
-    final Directory tempDir = await getTemporaryDirectory();
-    final File tempFile = File('${tempDir.path}/audiobook.wav');
-    await tempFile.writeAsBytes(data.buffer.asUint8List());
-    return tempFile.path;
+  Future<String> _loadAudioFromFile(String filePath) async {
+    // Use the provided filePath directly instead of loading from assets
+    final File audioFile = File(filePath);
+
+    // You might want to perform checks here to ensure the file exists, etc.
+    if (!await audioFile.exists()) {
+      throw FileSystemException("File does not exist");
+    }
+
+    return filePath; // Return the file path
   }
 
   void _showPopup(BuildContext context) {
@@ -219,15 +208,6 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(
-                  onPressed: () {
-                    bottomSheet(context);
-                  },
-                  icon: const Icon(
-                    Icons.list_rounded,
-                    color: Color.fromARGB(255, 191, 191, 191),
-                    size: 30,
-                  )),
               IconButton(
                 onPressed: () {
                   _skipBackward();

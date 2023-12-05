@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 
 import 'package:jendela_dbp/components/bukuDibeli/custom_alert.dart';
 import 'package:jendela_dbp/controllers/constants.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/size_config.dart';
 
 class DownloadAlert extends StatefulWidget {
@@ -81,12 +82,10 @@ class _DownloadAlertState extends State<DownloadAlert> {
                   ),
                 ),
                 child: LinearProgressIndicator(
-                  value: double.parse(progress) / 100.0,
-                  valueColor:
-                      const AlwaysStoppedAnimation(Colors.red),
-                  backgroundColor:
-                      Colors.red
-                ),
+                    value: double.parse(progress) / 100.0,
+                    valueColor:
+                        AlwaysStoppedAnimation(DbpColor().jendelaOrange),
+                    backgroundColor: DbpColor().jendelaOrange),
               ),
               const SizedBox(height: 5.0),
               Row(

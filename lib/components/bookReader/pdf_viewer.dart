@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,13 +7,12 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:text_scroll/text_scroll.dart';
 
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-
+// ignore: must_be_immutable
 class PdfViewerPage extends StatefulWidget {
-  const PdfViewerPage({super.key, this.book, this.pdfFile});
+  PdfViewerPage({super.key, required this.pdfPath, required this.bookName});
 
-  final HiveBookAPI? book;
-  final String? pdfFile;
+  File pdfPath;
+  String bookName;
 
   @override
   State<PdfViewerPage> createState() => _PdfViewerPageState();
@@ -94,9 +95,8 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
       appBar: showAppBar
           ? AppBar(
               title: TextScroll(
-                widget.book!.name!,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                widget.bookName,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 mode: TextScrollMode.endless,
                 velocity: const Velocity(
                   pixelsPerSecond: Offset(30, 0),
@@ -130,8 +130,8 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
           });
         },
         child: SizedBox(
-          child: SfPdfViewer.network(
-            'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf',
+          child: SfPdfViewer.file(
+            widget.pdfPath,
             key: _pdfViewerKey,
             scrollDirection: PdfScrollDirection.horizontal,
             enableTextSelection: true,
@@ -146,7 +146,11 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
             onDocumentLoaded: (details) async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               lastRead = prefs.getInt('lastRead');
-              _pdfViewerController.jumpToPage(lastRead!);
+              if (lastRead != null) {
+                _pdfViewerController.jumpToPage(lastRead!);
+              } else {
+                _pdfViewerController.jumpToPage(1);
+              }
             },
           ),
         ),

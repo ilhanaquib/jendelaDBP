@@ -96,29 +96,29 @@ class _BookDetailState extends State<BookDetail> {
   //   // });
   // }
 
-  void bottomSheetChapter(BuildContext context) {
-    showModalBottomSheet<void>(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        elevation: 0,
-        context: context,
-        builder: (BuildContext context) {
-          return ChapterList(
-            book: widget.book,
-          );
-        });
-  }
+  // void bottomSheetChapter(BuildContext context) {
+  //   showModalBottomSheet<void>(
+  //       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+  //       elevation: 0,
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return ChapterList(
+  //           book: widget.book,
+  //         );
+  //       });
+  // }
 
-  void bottomSheetRead(BuildContext context) {
-    showModalBottomSheet<void>(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        elevation: 0,
-        context: context,
-        builder: (BuildContext context) {
-          return ChapterList(
-            book: widget.book,
-          );
-        });
-  }
+  // void bottomSheetRead(BuildContext context) {
+  //   showModalBottomSheet<void>(
+  //       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+  //       elevation: 0,
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return ChapterList(
+  //           book: widget.book,
+  //         );
+  //       });
+  // }
 
   Future<void> buyItem(context) {
     List toJSonVariation =

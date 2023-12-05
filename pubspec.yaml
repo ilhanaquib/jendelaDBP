@@ -74,6 +74,7 @@ dependencies:
   text_scroll: ^0.2.0
   learning_language: ^0.0.4
   syncfusion_flutter_pdfviewer: ^23.1.38
+  syncfusion_flutter_pdf: ^23.2.6
   vocsy_epub_viewer: ^2.0.0
   dio: ^5.3.3
   encrypt: ^5.0.3
@@ -82,6 +83,8 @@ dependencies:
   desktop_webview_window: ^0.2.3
   material_symbols_icons: ^4.2706.0
   window_manager: ^0.3.7
+  meta: ^1.10.0
+  rxdart: ^0.27.7
 
 
 
