@@ -312,12 +312,16 @@ class _BookInformationState extends State<BookInformation> {
                                   ),
                                 ),
                                 width: 150,
-                                child: CachedNetworkImage(
-                                  alignment: Alignment.bottomCenter,
-                                  fit: BoxFit.fitWidth,
-                                  imageUrl: widget.bookIdentification
-                                          .featuredMediaUrl ??
-                                      '',
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    alignment: Alignment.bottomCenter,
+                                    fit: BoxFit
+                                        .cover, // Use BoxFit.cover for maintaining aspect ratio within rounded corners
+                                    imageUrl: widget.bookIdentification
+                                            .featuredMediaUrl ??
+                                        '',
+                                  ),
                                 ),
                               ),
                               Column(
@@ -350,13 +354,13 @@ class _BookInformationState extends State<BookInformation> {
                           padding: const EdgeInsets.only(left: 12, right: 12),
                           child: Column(
                             children: [
-                              const Row(
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
                                     'Sinopsis Buku',
                                     style: TextStyle(
-                                        color: Colors.blue,
+                                        color: DbpColor().jendelaOrange,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ],
@@ -401,36 +405,6 @@ class _BookInformationState extends State<BookInformation> {
     );
   }
 
-  // Widget openPdfReader() {
-  //   return PdfViewerPage(
-  //     pdfPath: decryp,
-  //   );
-  //   // PDFView(
-  //   //   filePath: localPathPermanent,
-  //   //   enableSwipe: true,
-  //   //   swipeHorizontal: true,
-  //   //   autoSpacing: false,
-  //   //   pageFling: true,
-  //   //   onRender: (_pages) {
-  //   //     setState(() {
-  //   //       pages = _pages ?? 1;
-  //   //     });
-  //   //   },
-  //   //   onError: (error) {
-  //   //     // print(error.toString());
-  //   //   },
-  //   //   onPageError: (page, error) {
-  //   //     // print('$page: ${error.toString()}');
-  //   //   },
-  //   //   onViewCreated: (PDFViewController pdfViewController) {
-  //   //     _controller.complete(pdfViewController);
-  //   //   },
-  //   //   onPageChanged: (int? page, int? total) {
-  //   //     // print('page change: $page/$total');
-  //   //   },
-  //   // );
-  // }
-
   Future<void> downloadBook() async {
     setState(() {
       isDownloadingFile = true;
@@ -468,9 +442,9 @@ class _BookInformationState extends State<BookInformation> {
     // Map<dynamic, dynamic> myyy = Map();
 
     VocsyEpub.setConfig(
-        themeColor: Theme.of(context).primaryColor,
+        themeColor: DbpColor().jendelaGreen,
         identifier: "iosBook",
-        scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
+        scrollDirection: EpubScrollDirection.HORIZONTAL,
         allowSharing: false,
         enableTts: false);
 
@@ -826,8 +800,6 @@ class _BookInformationState extends State<BookInformation> {
                                   audioFile: decryptedFile!.path,
                                 )),
                       );
-
-                     
                     },
                   )
                 : OutlinedButton(

@@ -7,7 +7,7 @@ import 'package:jendela_dbp/components/bukuDibeli/purchased_book_cover.dart';
 import 'package:jendela_dbp/components/user/login_card.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
 import 'package:jendela_dbp/stateManagement/blocs/poduct_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
@@ -16,9 +16,12 @@ import 'package:jendela_dbp/stateManagement/events/product_event.dart';
 import 'package:jendela_dbp/stateManagement/states/auth_state.dart';
 import 'package:jendela_dbp/stateManagement/states/product_state.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class UserBooks extends StatefulWidget {
-  const UserBooks({super.key});
+  const UserBooks({super.key, this.controller});
+  // ignore: prefer_typing_uninitialized_variables
+  final controller;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -50,11 +53,33 @@ class _UserBooks extends State<UserBooks> {
     conCubit.checkConnection(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Buku Dibeli',
-          style: TextStyle(color: Colors.black),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(88.0),
+        child: Column(
+          children: [
+            AppBar(
+              title: const Text('Buku Anda'),
+              centerTitle: true,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SmoothPageIndicator(
+                  controller: widget.controller,
+                  count: 2,
+                  effect: ExpandingDotsEffect(
+                      activeDotColor: DbpColor().jendelaOrange,
+                      dotColor: DbpColor().jendelaGray,
+                      dotHeight: 8,
+                      dotWidth: 8),
+                  onDotClicked: (index) => widget.controller.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
       body: RefreshIndicator(
@@ -91,17 +116,42 @@ class _UserBooks extends State<UserBooks> {
                         for (var index in state.dataBooks!) {
                           HivePurchasedBook? value =
                               bookPurchaseBox.get(index) ?? HivePurchasedBook();
-                          listOfWidget.add(BookPurchasedCoverCard(
-                            context,
-                            purchasedBook: value,
-                          ));
+                          listOfWidget.add(
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: BookPurchasedCoverCard(
+                                context,
+                                purchasedBook: value,
+                              ),
+                            ),
+                          );
                         }
                         // return
-                        return ListView(
-                          physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics()),
-                          children: listOfWidget,
-                        );
+                        if (ResponsiveLayout.isDesktop(context)) {
+                          return GridView(
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3),
+                            children: listOfWidget,
+                          );
+                        } else if (ResponsiveLayout.isTablet(context)) {
+                          return GridView(
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
+                            children: listOfWidget,
+                          );
+                        } else {
+                          return ListView(
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            children: listOfWidget,
+                          );
+                        }
                       } else {
                         return SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
@@ -130,88 +180,10 @@ class _UserBooks extends State<UserBooks> {
               }
               return const LoginCard();
             }
-            return LoadingAnimationWidget.discreteCircle(
-              color: DbpColor().jendelaGray,
-              secondRingColor: DbpColor().jendelaGreen,
-              thirdRingColor: DbpColor().jendelaOrange,
-              size: 50.0,
-            );
+            return const LoginCard();
           },
         ),
       ),
     );
-    // child: Container(
-    //   child: Padding(
-    //     padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 10.0),
-    //     child: Column(
-    //       children: [
-    //         Expanded(
-    //           child: BlocConsumer<AuthCubit, AuthState>(
-    //             bloc: _authCubit,
-    //             listener: (context, state) {},
-    //             builder: (context, state) {
-    //               if (state is AuthError) {
-    //                 return LoginCard();
-    //               }
-    //               if (state is AuthLoaded) {
-    //                 if (state.isAuthenticated == true) {
-    //                   return BlocConsumer<ProductBloc, ProductState>(
-    //                     bloc: purchasedBookBloc,
-    //                     listener: (context, state) {
-    //                       if (state is ProductError) {
-    //                         ScaffoldMessenger.of(context)
-    //                             .showSnackBar(SnackBar(
-    //                           behavior: SnackBarBehavior.floating,
-    //                           content: Text(state.message ?? ''),
-    //                           duration: Duration(seconds: 3),
-    //                         ));
-    //                       }
-    //                     },
-    //                     builder: (context, state) {
-    //                       if (state is ProductError) {
-    //                         return LoadingCard();
-    //                       }
-    //                       if (state is ProductLoaded) {
-    //                         if ((state.dataBooks?.length ?? 0) > 0) {
-    //                           List<Widget> listOfWidget = [];
-    //                           state.dataBooks!.forEach((index) {
-    //                             BookPurchase? value =
-    //                                 bookPurchaseBox.get(index) ??
-    //                                     BookPurchase();
-    //                             listOfWidget.add(BookPurchasedCoverCard(
-    //                               context,
-    //                               bookPurchase: value,
-    //                             ));
-    //                           });
-    //                           return GridView(
-    //                             physics: BouncingScrollPhysics(
-    //                                 parent:
-    //                                     AlwaysScrollableScrollPhysics()),
-    //                             children: listOfWidget,
-    //                             gridDelegate:
-    //                                 SliverGridDelegateWithFixedCrossAxisCount(
-    //                                     crossAxisCount: 3,
-    //                                     crossAxisSpacing: 10.0,
-    //                                     mainAxisSpacing: 10.0,
-    //                                     childAspectRatio: 2 / 3),
-    //                           );
-    //                         } else {
-    //                           return Center(child: NotFoundCard());
-    //                         }
-    //                       }
-    //                       return LoginCard();
-    //                     },
-    //                   );
-    //                 }
-    //                 return LoginCard();
-    //               }
-    //               return LoadingCard();
-    //             },
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // ),
   }
 }

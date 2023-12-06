@@ -6,8 +6,8 @@ class UserCubit extends Cubit<UserState> {
   UserCubit() : super(UserInitial());
 
   void displaySnackBar(BuildContext context, {String? message}) {
-    final snackBar = SnackBar(content: Text(message ?? ''));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    //final snackBar = SnackBar(content: Text(message ?? ''));
+    //Scaffold.of(context).showSnackBar(snackBar);
   }
 
   Future<bool> update(id, {String? name, String? email}) async {

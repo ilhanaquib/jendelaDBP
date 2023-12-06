@@ -23,6 +23,7 @@ import 'package:jendela_dbp/view/pages/audiobooks/audiobooks.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vocsy_epub_viewer/epub_viewer.dart';
 
@@ -233,9 +234,9 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
     // Map<dynamic, dynamic> myyy = Map();
 
     VocsyEpub.setConfig(
-        themeColor: Theme.of(context).primaryColor,
+        themeColor: DbpColor().jendelaGreen,
         identifier: "iosBook",
-        scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
+        scrollDirection: EpubScrollDirection.HORIZONTAL,
         allowSharing: false,
         enableTts: false);
 
@@ -317,10 +318,14 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                       ),
                     ),
                     width: 150,
-                    child: CachedNetworkImage(
-                      alignment: Alignment.bottomCenter,
-                      fit: BoxFit.fitWidth,
-                      imageUrl: widget.purchasedBook.featuredMediaUrl ?? '',
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CachedNetworkImage(
+                        alignment: Alignment.bottomCenter,
+                        fit: BoxFit
+                            .cover, // Use BoxFit.cover for maintaining aspect ratio within rounded corners
+                        imageUrl: widget.purchasedBook.featuredMediaUrl ?? '',
+                      ),
                     ),
                   ),
                   Column(
@@ -339,7 +344,14 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                       const SizedBox(
                         height: 20,
                       ),
-                      bookOpenButton(),
+                      isLoadingBook
+                          ? LoadingAnimationWidget.discreteCircle(
+                              color: DbpColor().jendelaGray,
+                              secondRingColor: DbpColor().jendelaGreen,
+                              thirdRingColor: DbpColor().jendelaOrange,
+                              size: 50.0,
+                            )
+                          : bookOpenButton(),
                     ],
                   ),
                 ],
@@ -473,13 +485,13 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                         // Decrypt file
                         File decryptedFile =
                             await EncryptFile.decryptFile(file);
-                        Navigator.push(
+                        PersistentNavBarNavigator.pushNewScreen(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => PdfViewerPage(
-                                    pdfPath: decryptedFile,
-                                    bookName: widget.purchasedBook.productName!,
-                                  )),
+                          withNavBar: false,
+                          screen: PdfViewerPage(
+                            pdfPath: decryptedFile,
+                            bookName: widget.purchasedBook.productName!,
+                          ),
                         );
                         // Navigator.of(context)
                         //     .push()
@@ -583,13 +595,13 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                         // Decrypt file
                         decryptedFile = await EncryptFile.decryptFile(file);
                       }
-                      Navigator.push(
+                      PersistentNavBarNavigator.pushNewScreen(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => Audiobooks(
-                                  book: widget.purchasedBook,
-                                  audioFile: decryptedFile!.path,
-                                )),
+                        withNavBar: false,
+                        screen: Audiobooks(
+                          book: widget.purchasedBook,
+                          audioFile: decryptedFile!.path,
+                        ),
                       );
 
                       // Navigator.of(context)

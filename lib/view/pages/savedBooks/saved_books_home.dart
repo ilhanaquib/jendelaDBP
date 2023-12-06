@@ -21,7 +21,8 @@ class _SavedBooksHomeState extends State<SavedBooksHome> {
       controller: controller,
       scrollDirection: Axis.horizontal,
       children: [
-        const UserBooks(
+        UserBooks(
+          controller: controller,
         ),
         if (ResponsiveLayout.isDesktop(context))
           LikedBooksGrid(

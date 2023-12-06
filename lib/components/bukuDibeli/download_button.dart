@@ -1,9 +1,9 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings, unnecessary_string_interpolations
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/components/bukuDibeli/download_alert.dart';
 import 'package:jendela_dbp/controllers/constants.dart';
-import 'package:jendela_dbp/controllers/encrypt_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -37,31 +37,31 @@ Future<bool> startDownload(
   File file = File(path);
   if ((!await file.exists()) && (isGranted)) {
     await file.create();
-    var value = await showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => DownloadAlert(
-        url: myDetailsBook.downloadUrlTemp,
-        path: path,
-      ),
-    );
+    // var value = await showDialog(
+    //   barrierDismissible: false,
+    //   context: context,
+    //   builder: (context) => DownloadAlertDialog(
+    //     url: myDetailsBook.downloadUrlTemp,
+    //     path: path,
+    //   ),
+    // );
 
-    File securePath = await EncryptFile.encryptFile(file);
+    //File securePath = await EncryptFile.encryptFile(file);
   } else {
     isGranted = await Permission.storage.request().isGranted;
     if (isGranted) {
       await file.delete();
       await file.create();
-      var value = await showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) => DownloadAlert(
-          url: myDetailsBook.downloadUrlTemp,
-          path: path,
-        ),
-      );
+      // var value = await showDialog(
+      //   barrierDismissible: false,
+      //   context: context,
+      //   builder: (context) => DownloadAlertDialog(
+      //     url: myDetailsBook.downloadUrlTemp,
+      //     path: path,
+      //   ),
+      // );
 
-      File securePath = await EncryptFile.encryptFile(file);
+      //File securePath = await EncryptFile.encryptFile(file);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,

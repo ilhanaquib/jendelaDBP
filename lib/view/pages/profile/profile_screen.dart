@@ -18,10 +18,12 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreen extends State<ProfileScreen> {
   DbpColor colors = DbpColor();
   final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _userFirstNameController = TextEditingController();
+  final TextEditingController _userFirstNameController =
+      TextEditingController();
   final TextEditingController _userLastNameController = TextEditingController();
   final TextEditingController _userEmailController = TextEditingController();
-  final TextEditingController _userNewPasswordController = TextEditingController();
+  final TextEditingController _userNewPasswordController =
+      TextEditingController();
   final TextEditingController _userConfirmPasswordController =
       TextEditingController();
   final FocusNode _userNameFocusNode = FocusNode();
@@ -31,6 +33,7 @@ class _ProfileScreen extends State<ProfileScreen> {
   final FocusNode _userNewPasswordFocusNode = FocusNode();
   final FocusNode _userConfirmPasswordFocusNode = FocusNode();
   int runCount = 1;
+  String? currentUser = '';
 
   @override
   void initState() {
@@ -239,27 +242,51 @@ class _ProfileScreen extends State<ProfileScreen> {
             }
           },
         ),
-        OutlinedButton(
-            child: const Text('Kemas Kini'),
-            onPressed: () {
-              BlocProvider.of<AuthCubit>(context).update(
-                  name: _userNameController.text,
-                  firstName: _userFirstNameController.text,
-                  lastName: _userLastNameController.text,
-                  email: _userEmailController.text,
-                  newPassword: _userNewPasswordController.text,
-                  confirmPassword: _userConfirmPasswordController.text);
-            }),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: OutlinedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    DbpColor().jendelaGreen), // Green background
+                overlayColor: MaterialStateProperty.all<Color>(
+                    Colors.transparent), // No overlay color
+                side: MaterialStateProperty.all<BorderSide>(BorderSide(
+                    color: DbpColor().jendelaGreen, width: 2)), // Green border
+              ),
+              child: const Text(
+                'Kemas Kini',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                BlocProvider.of<AuthCubit>(context).update(
+                    name: _userNameController.text,
+                    firstName: _userFirstNameController.text,
+                    lastName: _userLastNameController.text,
+                    email: _userEmailController.text,
+                    newPassword: _userNewPasswordController.text,
+                    confirmPassword: _userConfirmPasswordController.text);
+              }),
+        ),
         const SizedBox(
           height: 10.0,
         ),
-        TextButton(
+        OutlinedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Colors.red), // Green background
+            overlayColor: MaterialStateProperty.all<Color>(
+                Colors.transparent), // No overlay color
+            side: MaterialStateProperty.all<BorderSide>(
+              const BorderSide(color: Colors.red, width: 2),
+            ), // Green border
+          ),
           onPressed: () {
             BlocProvider.of<AuthCubit>(context).logout(context);
           },
-          child: Text(
+          child: const Text(
             'Log Keluar',
-            style: TextStyle(color: DbpColor().jendelaGreen),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         )
       ],

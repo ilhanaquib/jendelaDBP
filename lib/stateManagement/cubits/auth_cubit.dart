@@ -1,20 +1,20 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'dart:convert';
+// import 'dart:html'
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
 import 'package:jendela_dbp/api_services.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/model/userModel.dart';
 import 'package:jendela_dbp/stateManagement/states/auth_state.dart';
-
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(const AuthInitial());
@@ -45,7 +45,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // update user data
   Future<bool> update(
       {required String name,
       required String email,
@@ -113,7 +112,7 @@ class AuthCubit extends Cubit<AuthState> {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'Authorization': 'Bearer $token',
+              'Authorization': 'Bearer ' + token,
             },
             body: body);
 
@@ -134,7 +133,10 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(
               isAuthenticated: false,
               hideNavigationBar: hideNavigationBar,
-              message: 'Error ${response.statusCode} ${response.reasonPhrase ?? ''}'));
+              message: 'Error ' +
+                  response.statusCode.toString() +
+                  ' ' +
+                  (response.reasonPhrase ?? '')));
         }
       }
       return true;
@@ -171,7 +173,7 @@ class AuthCubit extends Cubit<AuthState> {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'Authorization': 'Bearer $token',
+              'Authorization': 'Bearer ' + token,
             });
         if (response.statusCode == 200) {
           user = User.fromJson(json.decode(response.body));
@@ -184,7 +186,7 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(
               isAuthenticated: false,
               hideNavigationBar: hideNavigationBar,
-              message: 'Error ${response.statusCode}'));
+              message: 'Error ' + response.statusCode.toString()));
           return null;
         }
       }
@@ -197,107 +199,90 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // signup/register
   Future<void> signup(String username, String email, String password,
       String confirmPassword) async {
     emit(AuthLoading(
-      hideNavigationBar: state.hideNavigationBar,
-      user: state.user,
-      isAuthenticated: state.isAuthenticated,
-    ));
-
-    // Validate input fields
+        hideNavigationBar: state.hideNavigationBar,
+        user: state.user,
+        isAuthenticated: state.isAuthenticated));
+    // Validate
     if (username.isEmpty ||
         email.isEmpty ||
         password.isEmpty ||
         confirmPassword.isEmpty) {
       emit(AuthError(
-        hideNavigationBar: state.hideNavigationBar,
-        user: state.user,
-        message: "Please fill all the required information",
-        isAuthenticated: state.isAuthenticated,
-      ));
-      return;
-    }
-
-    if (password.length < 6) {
-      emit(AuthError(
-        hideNavigationBar: state.hideNavigationBar,
-        user: state.user,
-        message: "Password must be longer than 6 characters",
-        isAuthenticated: state.isAuthenticated,
-      ));
-      return;
-    }
-
-    if (password != confirmPassword) {
-      emit(AuthError(
-        hideNavigationBar: state.hideNavigationBar,
-        user: state.user,
-        message: "Password does not match with confirm password",
-        isAuthenticated: state.isAuthenticated,
-      ));
-      return;
-    }
-
-    // Signup process
-    try {
-      // Call the signup API
-      var data = {
-        "username": username,
-        "email": email,
-        "password": password,
-        "confirm_password": confirmPassword,
-      };
-      var response = await ApiService.register(json.encode(data));
-
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        var userRespBody = json.decode(response.body);
-        var userRes = await ApiService.maklumatPengguna(userRespBody['token']);
-
-        if (userRes.statusCode >= 200 && userRes.statusCode < 300) {
-          User user = User.fromJson(json.decode(userRes.body));
-
-          // Save user data locally
-          await saveAuthUserToLocal(
-              username: username, user: user, token: userRespBody['token']);
-
-          // Emit AuthLoaded state with successful message
-          emit(AuthLoaded(
-            hideNavigationBar: state.hideNavigationBar,
-            user: user,
-            message: 'Account created successfully!',
-            isAuthenticated: true,
-          ));
-        } else {
-          var errbody = json.decode(userRes.body);
-          emit(AuthError(
-            hideNavigationBar: state.hideNavigationBar,
-            user: state.user,
-            message: errbody['message'],
-            isAuthenticated: state.isAuthenticated,
-          ));
-        }
-      } else {
-        var errbody = json.decode(response.body);
-        emit(AuthError(
           hideNavigationBar: state.hideNavigationBar,
           user: state.user,
-          message: errbody['message'],
-          isAuthenticated: state.isAuthenticated,
-        ));
-      }
+          message: "Semua input diperlukan",
+          isAuthenticated: state.isAuthenticated));
+      return;
+    }
+    if (password.length < 6) {
+      emit(AuthError(
+          hideNavigationBar: state.hideNavigationBar,
+          user: state.user,
+          message: "Panjang kata laluan hendaklah lebih dari 6.",
+          isAuthenticated: state.isAuthenticated));
+    }
+    if (password != confirmPassword) {
+      emit(AuthError(
+          hideNavigationBar: state.hideNavigationBar,
+          user: state.user,
+          message: "Kata laluan tidak sempadan dengan kata laluan pengesahan.",
+          isAuthenticated: state.isAuthenticated));
+      return;
+    }
+    // Signup
+    try {
+      var data = {};
+      data["username"] = username;
+      data["email"] = email;
+      data["password"] = password;
+      data["confirm_password"] = confirmPassword;
+      Object body = json.encode(data);
+      var dataheader = {};
+      dataheader["Content-Type"] = "application/json";
+      //Object header = json.encode(dataheader);
+      ApiService.register(body).then((response) async {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          var userRespBody = json.decode(response.body);
+          Response userRes =
+              await ApiService.maklumatPengguna(userRespBody['token']);
+          if (userRes.statusCode >= 200 && userRes.statusCode < 300) {
+            User user = User.fromJson(json.decode(userRes.body));
+            await saveAuthUserToLocal(
+                username: username, user: user, token: userRespBody['token']);
+            emit(AuthLoaded(
+                hideNavigationBar: state.hideNavigationBar,
+                user: user,
+                message: null,
+                isAuthenticated: true));
+          } else {
+            var errbody = json.decode(userRes.body);
+            emit(AuthError(
+                hideNavigationBar: state.hideNavigationBar,
+                user: state.user,
+                message: errbody['message'],
+                isAuthenticated: state.isAuthenticated));
+          }
+        } else {
+          var errbody = json.decode(response.body);
+          emit(AuthError(
+              hideNavigationBar: state.hideNavigationBar,
+              user: state.user,
+              message: errbody['message'],
+              isAuthenticated: state.isAuthenticated));
+        }
+      });
     } catch (e) {
       emit(AuthError(
-        hideNavigationBar: state.hideNavigationBar,
-        user: state.user,
-        message: e.toString(),
-        isAuthenticated: state.isAuthenticated,
-      ));
+          hideNavigationBar: state.hideNavigationBar,
+          user: state.user,
+          message: e.toString(),
+          isAuthenticated: state.isAuthenticated));
     }
   }
 
-  // apple sign up
   Future<void> appleSignUp(BuildContext context) async {
     //String? message = state.message;
     bool? hideNavigationBar = state.hideNavigationBar;
@@ -375,7 +360,7 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError(
               isAuthenticated: false,
               hideNavigationBar: hideNavigationBar,
-              message: 'Error ${session.statusCode}'));
+              message: 'Error ' + session.statusCode.toString()));
         }
         logout(context);
       }
@@ -399,7 +384,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // login
   Future<Map> login(context,
       {required bool isToLogin,
       required GlobalKey<FormState> formKey,
@@ -407,11 +391,6 @@ class AuthCubit extends Cubit<AuthState> {
       required TextEditingController passwordController}) async {
     isToLogin = true;
     final form = formKey.currentState;
-    if (form == null) {
-      // Handle the case where formKey.currentState is null
-      // For example, you can return an error map indicating the issue.
-      return {'error': 'Form is null'};
-    }
     String? message = state.message;
     bool? isAuthenticated = state.isAuthenticated;
     bool? hideNavigationBar = state.hideNavigationBar;
@@ -421,7 +400,7 @@ class AuthCubit extends Cubit<AuthState> {
         isAuthenticated: isAuthenticated,
         hideNavigationBar: hideNavigationBar,
         message: message));
-    if (!form.validate()) {
+    if (!form!.validate()) {
       isToLogin = false;
       emit(AuthError(
           isAuthenticated: false,
@@ -438,7 +417,8 @@ class AuthCubit extends Cubit<AuthState> {
           final int statusCode = response.statusCode;
           if (response.statusCode >= 200 && response.statusCode <= 299) {
             // Success response
-            dynamic data;
+            // ignore: prefer_typing_uninitialized_variables
+            var data;
             data = json.decode(response.body);
             Response userRes = await ApiService.maklumatPengguna(data['token']);
             if (userRes.statusCode >= 300) {
@@ -459,6 +439,23 @@ class AuthCubit extends Cubit<AuthState> {
                 username: usernameController.text,
                 user: user,
                 token: data['token']);
+
+            // Box<BookAPI> bookAPIBox = Hive.box<BookAPI>(GlobalVar.APIBook);
+            // await bookAPIBox.clear();
+
+            // await getKategori(context, data['token'], GlobalVar.kategori1);
+            // await getKategori(context, data['token'], GlobalVar.kategori2);
+            // await getKategori(context, data['token'], GlobalVar.kategori3);
+            // await getKategori(context, data['token'], GlobalVar.kategori4);
+            // await getKategori(context, data['token'], GlobalVar.kategori5);
+            // await getKategori(context, data['token'], GlobalVar.kategori6);
+            // await getKategori(context, data['token'], GlobalVar.kategori8);
+            // await getKategori(context, data['token'], GlobalVar.kategori9);
+            // await getKategori(context, data['token'], GlobalVar.kategori10);
+            // await getKategori(context, data['token'], GlobalVar.kategori11);
+            // await getKategori(context, data['token'], GlobalVar.kategori12);
+            // await getKategori(context, data['token'], GlobalVar.kategori13);
+            // await getKategori(context, data['token'], GlobalVar.kategori14);
 
             isToLogin = false;
             emit(AuthLoaded(
@@ -482,7 +479,8 @@ class AuthCubit extends Cubit<AuthState> {
             emit(AuthError(
                 isAuthenticated: false,
                 hideNavigationBar: hideNavigationBar,
-                message: 'Nama Pengguna atau Kata Laluan Salah @ Code:$statusCode'));
+                message: 'Nama Pengguna atau Kata Laluan Salah @ Code:' +
+                    statusCode.toString()));
 
             isToLogin = false;
             usernameController.text = "";
@@ -510,7 +508,6 @@ class AuthCubit extends Cubit<AuthState> {
     };
   }
 
-  //make sure logged in user stays logged in
   Future<SharedPreferences> saveAuthUserToLocal(
       {required User user,
       required String username,
@@ -524,7 +521,6 @@ class AuthCubit extends Cubit<AuthState> {
     return prefs;
   }
 
-  // logout
   Future<bool> logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('currentUser', '');

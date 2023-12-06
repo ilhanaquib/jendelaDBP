@@ -10,7 +10,6 @@ import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/no_description_card.dart';
-import 'package:jendela_dbp/components/bookDetail/chapter_list.dart';
 import 'package:jendela_dbp/components/bookDetail/buy_bottom_sheet.dart';
 import 'package:jendela_dbp/components/bookDetail/bought_book_bottom_sheet.dart';
 import 'package:jendela_dbp/hive/models/hiveBookModel.dart';

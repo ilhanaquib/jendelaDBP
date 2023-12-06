@@ -1,3 +1,5 @@
+// ignore_for_file: overridden_fields, annotate_overrides
+
 import 'package:equatable/equatable.dart';
 import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
 import 'package:meta/meta.dart';

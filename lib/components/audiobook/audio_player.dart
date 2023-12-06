@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
@@ -118,7 +116,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
     // You might want to perform checks here to ensure the file exists, etc.
     if (!await audioFile.exists()) {
-      throw FileSystemException("File does not exist");
+      throw const FileSystemException("File does not exist");
     }
 
     return filePath; // Return the file path
@@ -208,6 +206,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              const SizedBox(width: 60,),
               IconButton(
                 onPressed: () {
                   _skipBackward();

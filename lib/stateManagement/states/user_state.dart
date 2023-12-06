@@ -14,15 +14,11 @@ abstract class UserState extends Equatable {
 class UserInitial extends UserState {}
 
 class UserError extends UserState {
-  @override
-  // ignore: overridden_fields
   final String? message;
   const UserError({this.message}) : super(message: message);
 }
 
 class UserSuccess extends UserState {
-  @override
-  // ignore: overridden_fields
   final String? message;
   const UserSuccess({this.message}) : super(message: message);
 }
@@ -30,11 +26,7 @@ class UserSuccess extends UserState {
 class UserLoading extends UserState {}
 
 class UserLoaded extends UserState {
-  @override
-  // ignore: overridden_fields
   final User? user;
-  @override
-  // ignore: overridden_fields
   final List<User>? users;
   const UserLoaded({this.user, this.users}) : super(user: user, users: users);
 }

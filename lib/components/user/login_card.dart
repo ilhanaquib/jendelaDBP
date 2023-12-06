@@ -62,6 +62,30 @@ class _LoginCard extends State<LoginCard> {
     super.dispose();
   }
 
+  // Future<void> checkUserLoginData() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  //   // Check if user data exists in SharedPreferences
+  //   String? currentUser = prefs.getString('currentUser');
+  //   String? token = prefs.getString('token');
+  //   int? userId = prefs.getInt('id');
+
+  //   // Check if the necessary data exists to determine user login status
+  //   if (currentUser != null &&
+  //       currentUser.isNotEmpty &&
+  //       token != null &&
+  //       userId != null) {
+  //     // User is logged in
+  //     print('User is logged in');
+  //     print('Current user: $currentUser');
+  //     print('User token: $token');
+  //     print('User ID: $userId');
+  //   } else {
+  //     // User is not logged in or missing some required data
+  //     print('User is not logged in');
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
@@ -112,8 +136,8 @@ class _LoginCard extends State<LoginCard> {
                             }
                           },
                           controller: usernameController,
-                          style:
-                              const TextStyle(color: Colors.black, fontSize: 18),
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 18),
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 12),
@@ -221,126 +245,125 @@ class _LoginCard extends State<LoginCard> {
                                 size: 50.0,
                               )
                             : SizedBox(
-                              height: 70,
-                              width: 500,
-                              child: Padding(
+                                height: 70,
+                                width: 500,
+                                child: Padding(
                                   padding: padding,
                                   child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        side: BorderSide(
-                                          color: DbpColor().jendelaOrange,
-                                        ),
-                                        backgroundColor: DbpColor().jendelaOrange,
-                                        minimumSize: const Size.fromHeight(70),
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      side: BorderSide(
+                                        color: DbpColor().jendelaOrange,
                                       ),
-                                      onPressed: () async {
-                                        isLoading = true;
-                                        //   var connectivityResult =
-                                        //       await (Connectivity()
-                                        //           .checkConnectivity());
-                                        //   if (connectivityResult ==
-                                        //           ConnectivityResult.mobile ||
-                                        //       connectivityResult ==
-                                        //           ConnectivityResult.wifi) {
-                                        //     _login();
-                                        //   } else {
-                                        //     ScaffoldMessenger.of(context)
-                                        //         .showSnackBar(SnackBar(
-                                        //       behavior: SnackBarBehavior.floating,
-                                        //       content:
-                                        //           Text('Tiada Sambungan Internet'),
-                                        //       duration: Duration(seconds: 3),
-                                        //     ));
-                                        //   }
-                                        FocusScopeNode currentFocus =
-                                            FocusScope.of(context);
-                                        currentFocus.unfocus();
-                                        setState(() {
-                                          testInternetAccess = true;
-                                        });
-                                        try {
-                                          final result =
-                                              await InternetAddress.lookup(
-                                                      'google.com')
-                                                  .timeout(
-                                                      const Duration(seconds: 3));
-                                          if (result.isNotEmpty &&
-                                              result[0].rawAddress.isNotEmpty) {
-                                            setState(() {
-                                              testInternetAccess = false;
-                                            });
-                                            Map authResult =
-                                                await authCubit.login(context,
-                                                    isToLogin: isToLogin,
-                                                    formKey: _formKey,
-                                                    usernameController:
-                                                        usernameController,
-                                                    passwordController:
-                                                        passwordController);
-                                            setState(() {
-                                              isToLogin = authResult['isToLogin'];
-                                              usernameController = authResult[
-                                                  'usernameController'];
-                                              passwordController = authResult[
-                                                  'passwordController'];
-                                            });
-                                            if (isToLogin) {
-                                              Future.delayed(
-                                                      const Duration(seconds: 1))
-                                                  .then((value) async {
-                                                // Navigator.of(context)
-                                                //     .pushReplacementNamed('/Home');
-                                                try {
-                                                  // pushNewScreen(
-                                                  //   context,
-                                                  //   screen: MyApp(),
-                                                  //   withNavBar:
-                                                  //       false, // OPTIONAL VALUE. True by default.
-                                                  // );
-                                                  Navigator.of(context)
-                                                      .pushReplacementNamed(
-                                                    '/home',
-                                                  );
-                                                } catch (e, st) {
-                                                  await Sentry.captureException(
-                                                    e,
-                                                    stackTrace: st,
-                                                  );
-                                                }
-                                              });
-                                            }
-                                          }
-                                        } catch (exception, stackTrace) {
+                                      backgroundColor: DbpColor().jendelaOrange,
+                                      minimumSize: const Size.fromHeight(70),
+                                    ),
+                                    onPressed: () async {
+                                      isLoading = true;
+                                      //   var connectivityResult =
+                                      //       await (Connectivity()
+                                      //           .checkConnectivity());
+                                      //   if (connectivityResult ==
+                                      //           ConnectivityResult.mobile ||
+                                      //       connectivityResult ==
+                                      //           ConnectivityResult.wifi) {
+                                      //     _login();
+                                      //   } else {
+                                      //     ScaffoldMessenger.of(context)
+                                      //         .showSnackBar(SnackBar(
+                                      //       behavior: SnackBarBehavior.floating,
+                                      //       content:
+                                      //           Text('Tiada Sambungan Internet'),
+                                      //       duration: Duration(seconds: 3),
+                                      //     ));
+                                      //   }
+                                      FocusScopeNode currentFocus =
+                                          FocusScope.of(context);
+                                      currentFocus.unfocus();
+                                      setState(() {
+                                        testInternetAccess = true;
+                                      });
+                                      try {
+                                        final result =
+                                            await InternetAddress.lookup(
+                                                    'google.com')
+                                                .timeout(
+                                                    const Duration(seconds: 3));
+                                        if (result.isNotEmpty &&
+                                            result[0].rawAddress.isNotEmpty) {
                                           setState(() {
                                             testInternetAccess = false;
                                           });
-                                          await Sentry.captureException(
-                                            exception,
-                                            stackTrace: stackTrace,
-                                          );
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                            behavior: SnackBarBehavior.floating,
-                                            content: Text('Tiada Akses Internet'),
-                                            duration: Duration(seconds: 3),
-                                          ));
+                                          Map authResult =
+                                              await authCubit.login(context,
+                                                  isToLogin: isToLogin,
+                                                  formKey: _formKey,
+                                                  usernameController:
+                                                      usernameController,
+                                                  passwordController:
+                                                      passwordController);
+                                          setState(() {
+                                            isToLogin = authResult['isToLogin'];
+                                            usernameController = authResult[
+                                                'usernameController'];
+                                            passwordController = authResult[
+                                                'passwordController'];
+                                          });
+                                          if (isToLogin) {
+                                            Future.delayed(
+                                                    const Duration(seconds: 1))
+                                                .then((value) async {
+                                              // Navigator.of(context)
+                                              //     .pushReplacementNamed('/Home');
+                                              try {
+                                                // pushNewScreen(
+                                                //   context,
+                                                //   screen: MyApp(),
+                                                //   withNavBar:
+                                                //       false, // OPTIONAL VALUE. True by default.
+                                                // );
+                                                Navigator.of(context)
+                                                    .pushReplacementNamed(
+                                                  '/home',
+                                                );
+                                              } catch (e, st) {
+                                                await Sentry.captureException(
+                                                  e,
+                                                  stackTrace: st,
+                                                );
+                                              }
+                                            });
+                                          }
                                         }
+                                      } catch (exception, stackTrace) {
                                         setState(() {
                                           testInternetAccess = false;
                                         });
-                                      },
-                                      child: const Text(
-                                        'Log Masuk',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        await Sentry.captureException(
+                                          exception,
+                                          stackTrace: stackTrace,
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text('Tiada Akses Internet'),
+                                          duration: Duration(seconds: 3),
+                                        ));
+                                      }
+                                      setState(() {
+                                        testInternetAccess = false;
+                                      });
+                                    },
+                                    child: const Text(
+                                      'Log Masuk',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                            ),
-                              
+                                ),
+                              ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: AuthProvider(

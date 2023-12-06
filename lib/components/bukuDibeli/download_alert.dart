@@ -1,118 +1,80 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-import 'package:dio/dio.dart';
-
-import 'package:jendela_dbp/components/bukuDibeli/custom_alert.dart';
-import 'package:jendela_dbp/controllers/constants.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
-import 'package:jendela_dbp/controllers/size_config.dart';
+import 'package:http/http.dart' as http;
 
-class DownloadAlert extends StatefulWidget {
+class DownloadAlertDialog extends StatefulWidget {
   final String url;
   final String path;
 
-  const DownloadAlert({Key? key, required this.url, required this.path})
-      : super(key: key);
+  const DownloadAlertDialog({super.key, required this.url, required this.path});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _DownloadAlertState createState() => _DownloadAlertState();
+  _DownloadAlertDialogState createState() => _DownloadAlertDialogState();
 }
 
-class _DownloadAlertState extends State<DownloadAlert> {
-  Dio dio = Dio();
-  int received = 0;
-  String progress = '0';
-  int total = 0;
+class _DownloadAlertDialogState extends State<DownloadAlertDialog> {
+  late double _downloadProgress = 0.0;
+  late int _totalSize = 0;
 
-  download() async {
-    await dio.download(
-      widget.url,
-      widget.path,
-      deleteOnError: true,
-      onReceiveProgress: (receivedBytes, totalBytes) {
+  @override
+  void initState() {
+    super.initState();
+    _downloadFile();
+  }
+
+  Future<void> _downloadFile() async {
+    final request = http.Request('GET', Uri.parse(widget.url));
+    final response = await http.Client().send(request);
+    _totalSize = response.contentLength ?? 0;
+    List<int> bytes = [];
+
+    response.stream.listen(
+      (List<int> chunk) {
+        bytes.addAll(chunk);
         setState(() {
-          received = receivedBytes;
-          total = totalBytes;
-          progress = (received / total * 100).toStringAsFixed(0);
+          _downloadProgress = bytes.length / _totalSize;
         });
-
-        //Check if download is complete and close the alert dialog
-        if (receivedBytes == totalBytes) {
-          Navigator.pop(context, '${Constants.formatBytes(total, 1)}');
-        }
+      },
+      onDone: () async {
+        final file = File(widget.path);
+        await file.writeAsBytes(bytes);
+        // Encrypt file if needed
+        // File securePath = await EncryptFile.encryptFile(file);
+        Navigator.of(context).pop();
+      },
+      onError: (e) {
+        // Handle error during download
+        //print('Download Error: $e');
+        Navigator.of(context).pop();
       },
     );
   }
 
   @override
-  void initState() {
-    super.initState();
-    download();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // ignore: deprecated_member_use
-    return WillPopScope(
-      onWillPop: () => Future.value(false),
-      child: CustomAlert(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                'Dimuat Turun...',
-                style: TextStyle(
-                  fontSize: SizeConfig.textMultiplier * 2.1,
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 20.0),
-              Container(
-                height: 5,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                child: LinearProgressIndicator(
-                    value: double.parse(progress) / 100.0,
-                    valueColor:
-                        AlwaysStoppedAnimation(DbpColor().jendelaOrange),
-                    backgroundColor: DbpColor().jendelaOrange),
-              ),
-              const SizedBox(height: 5.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    '$progress %',
-                    style: TextStyle(
-                      fontSize: SizeConfig.textMultiplier * 1.9,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    '${Constants.formatBytes(received, 1)} '
-                    'of ${Constants.formatBytes(total, 1)}',
-                    style: TextStyle(
-                      fontSize: SizeConfig.textMultiplier * 1.9,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ],
+    return AlertDialog(
+      elevation: 0,
+      backgroundColor: Colors.white,
+      title: const Text('Sedang dimuat turun...'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          LinearProgressIndicator(
+            value: _downloadProgress,
+            color: DbpColor().jendelaOrange,
           ),
-        ),
+          const SizedBox(height: 10),
+          Text(
+            '${(_downloadProgress * 100).toStringAsFixed(2)}%',
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Saiz: ${(_totalSize / (1024 * 1024)).toStringAsFixed(2)} MB',
+          ),
+        ],
       ),
     );
   }

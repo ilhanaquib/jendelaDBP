@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:jendela_dbp/model/epubSetting.dart';
 import 'package:jendela_dbp/model/productModel.dart';
 import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
-import 'package:meta/meta.dart';
 
 @immutable
 abstract class ProductEvent extends Equatable {}

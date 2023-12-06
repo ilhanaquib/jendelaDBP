@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:jendela_dbp/model/userModel.dart';
 
 // part of 'auth_cubit.dart';
@@ -24,17 +23,9 @@ class AuthInitial extends AuthState {
 }
 
 class AuthLoaded extends AuthState {
-  @override
-  // ignore: overridden_fields
   final User? user;
-  @override
-  // ignore: overridden_fields
   final String? message;
-  @override
-  // ignore: overridden_fields
   final bool? hideNavigationBar;
-  @override
-  // ignore: overridden_fields
   final bool? isAuthenticated;
   const AuthLoaded(
       {this.message,
@@ -49,17 +40,9 @@ class AuthLoaded extends AuthState {
 }
 
 class AuthLoading extends AuthState {
-  @override
-  // ignore: overridden_fields
   final User? user;
-  @override
-  // ignore: overridden_fields
   final String? message;
-  @override
-  // ignore: overridden_fields
   final bool? hideNavigationBar;
-  @override
-  // ignore: overridden_fields
   final bool? isAuthenticated;
   const AuthLoading(
       {this.hideNavigationBar,
@@ -74,17 +57,9 @@ class AuthLoading extends AuthState {
 }
 
 class AuthError extends AuthState {
-  @override
-  // ignore: overridden_fields
   final User? user;
-  @override
-  // ignore: overridden_fields
   final String? message;
-  @override
-  // ignore: overridden_fields
   final bool? hideNavigationBar;
-  @override
-  // ignore: overridden_fields
   final bool? isAuthenticated;
   const AuthError(
       {this.hideNavigationBar, this.user, this.message, this.isAuthenticated})
