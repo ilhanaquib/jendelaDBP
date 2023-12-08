@@ -11,8 +11,8 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/get_books_from_api.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/model/userModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
+import 'package:jendela_dbp/model/user_model.dart';
 import 'package:jendela_dbp/view/authentication/popups/popup_signin_error.dart';
 import 'package:jendela_dbp/api_services.dart';
 
@@ -303,6 +303,7 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
                       exception,
                       stackTrace: stackTrace,
                     );
+                    if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         behavior: SnackBarBehavior.floating,
@@ -372,115 +373,131 @@ class _PurchaseSignInState extends State<PurchaseSignIn> {
       Object body = json.encode(data);
       //'https://jendeladbp.my/wp-json/jwt-auth/v1/token'
       try {
-        ApiService.logMasuk(body).then((response) async {
-          final int statusCode = response.statusCode;
+        ApiService.logMasuk(body).then(
+          (response) async {
+            final int statusCode = response.statusCode;
 
-          if (response.statusCode == 401) {
-            _showErrorPopup('Ralat berlaku');
-            // Navigator.of(context).pushNamedAndRemoveUntil(
-            //     '/Logout', (Route<dynamic> route) => false);
-          } else if (response.statusCode == 200) {
-            dynamic data;
-            data = json.decode(response.body);
-            // print("my token" + data['token']);
-            Response userRes = await ApiService.maklumatPengguna(data['token']);
-            if (userRes.statusCode != 200) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                width: 200,
-                behavior: SnackBarBehavior.floating,
-                content: Text('Sesi tamat tempoh, sila log masuk sekali lagi'),
-                duration: Duration(seconds: 1),
-              ));
+            if (response.statusCode == 401) {
+              _showErrorPopup('Ralat berlaku');
               // Navigator.of(context).pushNamedAndRemoveUntil(
               //     '/Logout', (Route<dynamic> route) => false);
-            }
-            var userRespBody = json.decode(userRes.body);
-            User user = User.fromJson(userRespBody);
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setString('currentUser', emailController.text);
-            // prefs.setString('passwordUser', passwordController.text);
-            prefs.setString('token', data['token']);
-            prefs.setInt('id', user.id ?? 0);
+            } else if (response.statusCode == 200) {
+              dynamic data;
+              data = json.decode(response.body);
+              // print("my token" + data['token']);
+              Response userRes =
+                  await ApiService.maklumatPengguna(data['token']);
+              if (userRes.statusCode != 200) {
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  width: 200,
+                  behavior: SnackBarBehavior.floating,
+                  content:
+                      Text('Sesi tamat tempoh, sila log masuk sekali lagi'),
+                  duration: Duration(seconds: 1),
+                ));
+                // Navigator.of(context).pushNamedAndRemoveUntil(
+                //     '/Logout', (Route<dynamic> route) => false);
+              }
+              var userRespBody = json.decode(userRes.body);
+              User user = User.fromJson(userRespBody);
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString('currentUser', emailController.text);
+              // prefs.setString('passwordUser', passwordController.text);
+              prefs.setString('token', data['token']);
+              prefs.setInt('id', user.id ?? 0);
 
-            Box<HiveBookAPI> bookAPIBox =
-                Hive.box<HiveBookAPI>(GlobalVar.apiBook);
-            await bookAPIBox.clear();
+              Box<HiveBookAPI> bookAPIBox =
+                  Hive.box<HiveBookAPI>(GlobalVar.apiBook);
+              await bookAPIBox.clear();
 
-            var wait1 =
-                getKategori(context, data['token'], GlobalVar.kategori1);
-            var wait2 =
-                getKategori(context, data['token'], GlobalVar.kategori2);
-            // var wait3 =
-            //     getKategori(context, data['token'], GlobalVar.kategori3);
-            // var wait4 =
-            //     getKategori(context, data['token'], GlobalVar.kategori4);
-            // var wait5 =
-            //     getKategori(context, data['token'], GlobalVar.kategori5);
-            // var wait6 =
-            //     getKategori(context, data['token'], GlobalVar.kategori6);
-            // var wait8 =
-            //     getKategori(context, data['token'], GlobalVar.kategori8);
-            // var wait9 =
-            //     getKategori(context, data['token'], GlobalVar.kategori9);
-            // var wait10 =
-            //     getKategori(context, data['token'], GlobalVar.kategori10);
-            // var wait11 =
-            //     getKategori(context, data['token'], GlobalVar.kategori11);
-            // var wait12 =
-            //     getKategori(context, data['token'], GlobalVar.kategori12);
-            // var wait13 =
-            //     getKategori(context, data['token'], GlobalVar.kategori13);
-            // var wait14 =
-            //     getKategori(context, data['token'], GlobalVar.kategori14);
+              if (!context.mounted) return;
+              var wait1 =
+                  getKategori(context, data['token'], GlobalVar.kategori1);
+              var wait2 =
+                  getKategori(context, data['token'], GlobalVar.kategori2);
+              // var wait3 =
+              //     getKategori(context, data['token'], GlobalVar.kategori3);
+              // var wait4 =
+              //     getKategori(context, data['token'], GlobalVar.kategori4);
+              // var wait5 =
+              //     getKategori(context, data['token'], GlobalVar.kategori5);
+              // var wait6 =
+              //     getKategori(context, data['token'], GlobalVar.kategori6);
+              // var wait8 =
+              //     getKategori(context, data['token'], GlobalVar.kategori8);
+              // var wait9 =
+              //     getKategori(context, data['token'], GlobalVar.kategori9);
+              // var wait10 =
+              //     getKategori(context, data['token'], GlobalVar.kategori10);
+              // var wait11 =
+              //     getKategori(context, data['token'], GlobalVar.kategori11);
+              // var wait12 =
+              //     getKategori(context, data['token'], GlobalVar.kategori12);
+              // var wait13 =
+              //     getKategori(context, data['token'], GlobalVar.kategori13);
+              // var wait14 =
+              //     getKategori(context, data['token'], GlobalVar.kategori14);
 
-            ApiService.maklumatPengguna(data['token']).then((response) async {
-              dynamic dataUSer;
-              dataUSer = json.decode(response.body);
-              prefs.setString('userID', dataUSer['id'].toString());
-              prefs.setString('userData', json.encode(dataUSer));
-            }).catchError((e) {
-              // print(e);
-            });
-
-            if (await wait1 == true && await wait2 == true) {
-              isToLogin = false;
-
-              Future.delayed(const Duration(seconds: 1)).then((value) {
-                Navigator.of(context).pushReplacementNamed('/Home');
+              ApiService.maklumatPengguna(data['token']).then((response) async {
+                dynamic dataUSer;
+                dataUSer = json.decode(response.body);
+                prefs.setString('userID', dataUSer['id'].toString());
+                prefs.setString('userData', json.encode(dataUSer));
+              }).catchError((e) {
+                // print(e);
               });
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text('Something Happen'),
-                duration: Duration(seconds: 3),
-              ));
-            }
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.floating,
-              content: Text(
-                  'Nama Pengguna atau Kata Laluan Salah @ Code:$statusCode'),
-              duration: const Duration(seconds: 3),
-            ));
 
-            setState(() {
-              isToLogin = false;
-              emailController.text = "";
-              passwordController.text = "";
-            });
-          }
-        });
+              if (await wait1 == true && await wait2 == true) {
+                isToLogin = false;
+
+                Future.delayed(const Duration(seconds: 1)).then((value) {
+                  Navigator.of(context).pushReplacementNamed('/Home');
+                });
+              } else {
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    content: Text('Something Happen'),
+                    duration: Duration(seconds: 3),
+                  ),
+                );
+              }
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  content: Text(
+                      'Nama Pengguna atau Kata Laluan Salah @ Code:$statusCode'),
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+
+              setState(
+                () {
+                  isToLogin = false;
+                  emailController.text = "";
+                  passwordController.text = "";
+                },
+              );
+            }
+          },
+        );
       } catch (exception, stackTrace) {
         isToLogin = false;
         await Sentry.captureException(
           exception,
           stackTrace: stackTrace,
         );
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(exception.toString()),
-          duration: const Duration(seconds: 3),
-        ));
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text(exception.toString()),
+            duration: const Duration(seconds: 3),
+          ),
+        );
       }
     }
   }

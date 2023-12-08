@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
-import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:jendela_dbp/hive/models/hive_post_model.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:url_launcher/url_launcher.dart';
 

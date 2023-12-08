@@ -6,7 +6,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:jendela_dbp/components/bookshelf/books_inside_shelf.dart';
 import 'package:jendela_dbp/view/pages/all_books.dart';
 import 'carousel_title.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 
 Widget bookShelf(
   context,

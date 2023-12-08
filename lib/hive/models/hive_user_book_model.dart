@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part '../adapters/hiveUserBookModel.g.dart';
+part '../adapters/hive_user_book_model.g.dart';
 
 @HiveType(typeId: 0)
 class BookUserModel {

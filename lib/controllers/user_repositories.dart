@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/model/userModel.dart';
+import 'package:jendela_dbp/model/user_model.dart';
 class UserRepository {
   User? _user;
   Box? _box;

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:jendela_dbp/api_services.dart';
-import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:jendela_dbp/hive/models/hive_post_model.dart';
 import 'package:jendela_dbp/stateManagement/events/post_event.dart';
 import 'package:jendela_dbp/stateManagement/states/post_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';

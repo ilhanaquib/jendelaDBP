@@ -9,7 +9,7 @@ import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/not_found_card.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'package:jendela_dbp/view/pages/book_details.dart';
 
@@ -21,8 +21,7 @@ class AudiosInsideShelfGrid extends StatefulWidget {
       {super.key, required this.dataBooks, required this.bookBox});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AudiosInsideShelfGridState createState() => _AudiosInsideShelfGridState();
+  State<AudiosInsideShelfGrid> createState() => _AudiosInsideShelfGridState();
 }
 
 class _AudiosInsideShelfGridState extends State<AudiosInsideShelfGrid> {

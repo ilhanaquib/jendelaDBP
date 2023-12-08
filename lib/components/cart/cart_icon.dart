@@ -5,15 +5,14 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/view/pages/purchasing/cart_screen.dart';
 
 class CartIcon extends StatefulWidget {
   const CartIcon({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CartIconState createState() => _CartIconState();
+  State<CartIcon> createState() => _CartIconState();
 }
 
 class _CartIconState extends State<CartIcon> {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:epub_view/epub_view.dart';
 
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 class EpubViewerPage extends StatefulWidget {

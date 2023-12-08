@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 
-import 'package:jendela_dbp/model/productModel.dart';
+import 'package:jendela_dbp/model/product_model.dart';
 
-part '../adapters/hiveBookModel.g.dart';
+part '../adapters/hive_book_model.g.dart';
 
 @HiveType(typeId: 1)
 class HiveBookAPI {

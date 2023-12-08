@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../models/hivePurchasedBookModel.dart';
+part of '../models/hive_purchased_book_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

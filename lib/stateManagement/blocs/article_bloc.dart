@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/api_services.dart';
-import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
+import 'package:jendela_dbp/hive/models/hive_article_model.dart';
 import 'package:jendela_dbp/stateManagement/events/article_event.dart';
 import 'package:jendela_dbp/stateManagement/states/article_state.dart';
 

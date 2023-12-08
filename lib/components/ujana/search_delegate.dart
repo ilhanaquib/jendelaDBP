@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -5,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/view/pages/book_details.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 
@@ -143,8 +144,8 @@ class BookSearchDelegate extends SearchDelegate<String> {
             crossAxisCount: isDesktop
                 ? 6
                 : 2, // You can adjust the number of columns as needed
-            mainAxisSpacing: isDesktop ? 5 : 10.0,
-            crossAxisSpacing: isDesktop ? 5 : 10.0,
+            mainAxisSpacing: isDesktop ? 5 : 20.0,
+            crossAxisSpacing: isDesktop ? 5 : 20.0,
           ),
           itemCount: suggestionList.length,
           itemBuilder: (context, index) {
@@ -160,29 +161,26 @@ class BookSearchDelegate extends SearchDelegate<String> {
               },
               child: Column(
                 children: [
-                  Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Stack(
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: suggestionList[index].images!,
-                            height: 150,
-                            width: 100,
-                            fit: BoxFit.fill,
-                          ),
-                        ],
+                  Expanded(
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: CachedNetworkImage(
+                          imageUrl: suggestionList[index].images!,
+                          width: 100,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                   ),
                   Text(
                     suggestionList[index].name!,
                     textAlign: TextAlign.center,
-                    maxLines: 1,
+                    maxLines: 2,
                   ),
                 ],
               ),

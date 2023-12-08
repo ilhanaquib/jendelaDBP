@@ -1,9 +1,12 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:http/http.dart' as http;
+import 'package:jendela_dbp/controllers/encrypt_file.dart';
 
 class DownloadAlertDialog extends StatefulWidget {
   final String url;
@@ -12,7 +15,7 @@ class DownloadAlertDialog extends StatefulWidget {
   const DownloadAlertDialog({super.key, required this.url, required this.path});
 
   @override
-  _DownloadAlertDialogState createState() => _DownloadAlertDialogState();
+  State<DownloadAlertDialog> createState() => _DownloadAlertDialogState();
 }
 
 class _DownloadAlertDialogState extends State<DownloadAlertDialog> {
@@ -42,8 +45,9 @@ class _DownloadAlertDialogState extends State<DownloadAlertDialog> {
         final file = File(widget.path);
         await file.writeAsBytes(bytes);
         // Encrypt file if needed
-        // File securePath = await EncryptFile.encryptFile(file);
-        Navigator.of(context).pop();
+        File securePath = await EncryptFile.encryptFile(file);
+        if (!context.mounted) return;
+        Navigator.pop(context);
       },
       onError: (e) {
         // Handle error during download

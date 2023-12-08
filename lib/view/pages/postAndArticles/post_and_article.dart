@@ -12,8 +12,8 @@ import 'package:jendela_dbp/components/posts/post_not_found_card.dart';
 import 'package:jendela_dbp/components/ujana/home_drawer.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
-import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
-import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:jendela_dbp/hive/models/hive_article_model.dart';
+import 'package:jendela_dbp/hive/models/hive_post_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/connection_cubit.dart';
@@ -96,9 +96,7 @@ class _PostAndArticleState extends State<PostAndArticle> {
           ),
         ],
       ),
-      drawer: HomeDrawer(updateAppBar: () {
-        setState(() {});
-      }),
+      drawer: const HomeDrawer(),
       body: CustomScrollView(
         slivers: [
           const SliverAppBar(

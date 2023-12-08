@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 
 import 'package:jendela_dbp/api_services.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 
 Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
 

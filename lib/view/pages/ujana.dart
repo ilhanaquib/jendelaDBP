@@ -15,7 +15,7 @@ import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
 import 'package:jendela_dbp/components/ujana/home_drawer.dart';
 import 'package:jendela_dbp/components/ujana/search_delegate.dart';
 import 'package:jendela_dbp/components/ujana/top_header_home.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/image_picker_bloc.dart';
 import 'package:jendela_dbp/controllers/get_books_from_api.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
@@ -202,12 +202,6 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey appBarKey = GlobalKey();
 
-  void _updateAppBar() {
-    setState(() {
-      // Rebuild the app bar to reflect the changes
-    });
-  }
-
   Future<void> _handleRefresh() async {
     _controller.reset();
     _controller.forward();
@@ -241,6 +235,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
           await getKategori(context, token, GlobalVar.kategori15);
         }
       } catch (exception) {
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text(exception.toString()),
@@ -248,6 +243,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
         ));
       }
     } else {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Text('Internet access required'),
@@ -312,9 +308,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
             ),
           ],
         ),
-        drawer: HomeDrawer(
-          updateAppBar: _updateAppBar,
-        ),
+        drawer: const HomeDrawer(),
         body: CustomScrollView(
           slivers: [
             const SliverAppBar(
@@ -430,7 +424,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                   onRefresh: _handleRefresh,
                   child: ListView(
                     children: [
-                       TopHeader(),
+                      TopHeader(),
                       //search bar
                       Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),

@@ -3,9 +3,9 @@ import 'package:hive/hive.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 
-part 'adapters/productModel.g.dart';
+part 'adapters/product_model.g.dart';
 
 @HiveType(typeId: 10)
 class Product {

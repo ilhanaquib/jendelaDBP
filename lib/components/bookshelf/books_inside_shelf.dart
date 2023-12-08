@@ -9,7 +9,7 @@ import 'package:like_button/like_button.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/not_found_card.dart';
 import 'package:jendela_dbp/controllers/liked_books_management.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'package:jendela_dbp/view/pages/book_details.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
@@ -22,8 +22,7 @@ class BooksInsideShelf extends StatefulWidget {
   BooksInsideShelf({super.key, required this.dataBooks, required this.bookBox});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _BooksInsideShelfState createState() => _BooksInsideShelfState();
+  State<BooksInsideShelf> createState() => _BooksInsideShelfState();
 }
 
 class _BooksInsideShelfState extends State<BooksInsideShelf> {

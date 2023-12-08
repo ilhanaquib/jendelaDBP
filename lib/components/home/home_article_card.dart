@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:jendela_dbp/controllers/dbp_color.dart';
-import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
+import 'package:jendela_dbp/hive/models/hive_article_model.dart';
 import 'package:jendela_dbp/view/pages/postAndArticles/articles/article_detail_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -26,11 +26,10 @@ class HomeArticleCard extends StatefulWidget {
   final bool bookmark;
   final Article article;
   @override
-  // ignore: library_private_types_in_public_api
-  _ArticleCard createState() => _ArticleCard();
+  State<HomeArticleCard> createState() => _HomeArticleCard();
 }
 
-class _ArticleCard extends State<HomeArticleCard> {
+class _HomeArticleCard extends State<HomeArticleCard> {
   void _launchURL() async {
     if (await canLaunchUrl(Uri.parse(
         widget.article.guid ?? "https://{GlobalVar.BaseURLDomain}"))) {

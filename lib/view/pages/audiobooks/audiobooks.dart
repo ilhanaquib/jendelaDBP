@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:jendela_dbp/components/audiobook/audio_player.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
 
 class Audiobooks extends StatelessWidget {
   const Audiobooks({super.key, this.book, this.audioFile});

@@ -14,7 +14,7 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 
 import 'package:jendela_dbp/controllers/get_books_from_api.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 
 class AudiobooksHome extends StatefulWidget {
@@ -75,7 +75,6 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
   Future<bool> getAllProduct() async {
     var value = await SharedPreferences.getInstance();
     var token = value.getString('token');
-
     if (bookAPIBox.isEmpty || bookAPIBox.length == 0) {
       setState(() {
         isLoading = true;
@@ -241,6 +240,7 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
           await getKategori(context, token, GlobalVar.kategori15);
         }
       } catch (exception) {
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text(exception.toString()),
@@ -248,6 +248,7 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
         ));
       }
     } else {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Text('Internet access required'),
@@ -314,15 +315,13 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
               ),
         ),
         actions: const [
-           Padding(
-            padding:  EdgeInsets.only(right: 10),
+          Padding(
+            padding: EdgeInsets.only(right: 10),
             child: CartIcon(),
           ),
         ],
       ),
-      drawer: HomeDrawer(updateAppBar: () {
-        setState(() {});
-      }),
+      drawer: const HomeDrawer(),
       body: CustomScrollView(
         slivers: [
           const SliverAppBar(

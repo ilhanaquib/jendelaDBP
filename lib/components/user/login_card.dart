@@ -12,10 +12,10 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginCard extends StatefulWidget {
-  const LoginCard({super.key});
+  LoginCard({super.key, required this.text});
+  String text;
   @override
-  // ignore: library_private_types_in_public_api
-  _LoginCard createState() => _LoginCard();
+  State<LoginCard> createState() => _LoginCard();
 }
 
 class _LoginCard extends State<LoginCard> {
@@ -114,11 +114,14 @@ class _LoginCard extends State<LoginCard> {
                   'Anda belum log masuk',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                 ),
-                Text(
-                  'Sila log masuk untuk lihat buku yang telah dibeli',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: DbpColor().jendelaGray,
+                Center(
+                  child: Text(
+                    widget.text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: DbpColor().jendelaGray,
+                    ),
                   ),
                 ),
                 Column(
@@ -294,6 +297,7 @@ class _LoginCard extends State<LoginCard> {
                                           setState(() {
                                             testInternetAccess = false;
                                           });
+                                          if (!context.mounted) return;
                                           Map authResult =
                                               await authCubit.login(context,
                                                   isToLogin: isToLogin,
@@ -343,6 +347,7 @@ class _LoginCard extends State<LoginCard> {
                                           exception,
                                           stackTrace: stackTrace,
                                         );
+                                        if (!context.mounted) return;
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                           behavior: SnackBarBehavior.floating,

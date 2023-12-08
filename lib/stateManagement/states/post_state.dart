@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:jendela_dbp/hive/models/hive_post_model.dart';
 
 // ignore: must_be_immutable
 abstract class PostState extends Equatable {

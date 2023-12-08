@@ -14,8 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Signin extends StatefulWidget {
   const Signin({super.key});
   @override
-  // ignore: library_private_types_in_public_api
-  _Signin createState() => _Signin();
+  State<Signin> createState() => _Signin();
 }
 
 class _Signin extends State<Signin> {
@@ -301,6 +300,7 @@ class _Signin extends State<Signin> {
                                             setState(() {
                                               testInternetAccess = false;
                                             });
+                                            if (!context.mounted) return;
                                             Map authResult =
                                                 await authCubit.login(context,
                                                     isToLogin: isToLogin,
@@ -351,6 +351,7 @@ class _Signin extends State<Signin> {
                                             exception,
                                             stackTrace: stackTrace,
                                           );
+                                          if (!context.mounted) return;
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
                                             behavior: SnackBarBehavior.floating,

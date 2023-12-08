@@ -9,15 +9,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jendela_dbp/api_services.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/view/pages/purchasing/checkout_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CartScreenState createState() => _CartScreenState();
+  State<CartScreen> createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {
@@ -107,6 +106,7 @@ class _CartScreenState extends State<CartScreen> {
         connectivityResult == ConnectivityResult.wifi) {
       postToCart();
     } else {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
@@ -180,7 +180,8 @@ class _CartScreenState extends State<CartScreen> {
                                             MainAxisAlignment.start,
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.only(right: 18),
+                                            padding: const EdgeInsets.only(
+                                                right: 18),
                                             child: MSHCheckbox(
                                                 style: MSHCheckboxStyle
                                                     .fillScaleCheck,
@@ -191,8 +192,9 @@ class _CartScreenState extends State<CartScreen> {
                                                 // ignore: deprecated_member_use
                                                 uncheckedColor:
                                                     DbpColor().jendelaGreen,
-                                                value: specificBook!.toCheckout ??
-                                                    false,
+                                                value:
+                                                    specificBook!.toCheckout ??
+                                                        false,
                                                 onChanged: (state) {
                                                   if (state == false) {
                                                     setState(() {
@@ -482,8 +484,7 @@ class _CartScreenState extends State<CartScreen> {
                                               MSHCheckboxStyle.fillScaleCheck,
                                           size: 20,
                                           // ignore: deprecated_member_use
-                                          checkedColor:
-                                              DbpColor().jendelaGreen,
+                                          checkedColor: DbpColor().jendelaGreen,
                                           // ignore: deprecated_member_use
                                           uncheckedColor:
                                               DbpColor().jendelaGreen,
@@ -571,7 +572,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                     const CheckoutScreen(),
+                                                      const CheckoutScreen(),
                                                 ),
                                               );
                                             }

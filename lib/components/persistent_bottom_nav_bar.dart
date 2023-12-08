@@ -8,7 +8,6 @@ import 'package:jendela_dbp/view/pages/ujana.dart';
 import 'package:jendela_dbp/view/pages/savedBooks/saved_books_home.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/view/pages/audiobooks/audiobooks_home.dart';
-import 'package:jendela_dbp/view/pages/profile/profile_screen.dart';
 
 class MyPersistentBottomNavBar extends StatelessWidget {
   const MyPersistentBottomNavBar({
@@ -27,7 +26,6 @@ class MyPersistentBottomNavBar extends StatelessWidget {
         const Ujana(),
         const AudiobooksHome(),
         const SavedBooksHome(),
-        const ProfileScreen(),
       ];
     }
 
@@ -64,12 +62,6 @@ class MyPersistentBottomNavBar extends StatelessWidget {
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.book_rounded),
           title: "Saved",
-          activeColorPrimary: DbpColor().jendelaOrange,
-          inactiveColorPrimary: DbpColor().jendelaGray,
-        ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.person_rounded),
-          title: "Profile",
           activeColorPrimary: DbpColor().jendelaOrange,
           inactiveColorPrimary: DbpColor().jendelaGray,
         ),

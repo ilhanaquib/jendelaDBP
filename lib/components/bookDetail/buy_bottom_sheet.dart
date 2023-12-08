@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/controllers/dbp_color.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 
 // ignore: must_be_immutable
 class BuyBottomSheet extends StatefulWidget {
@@ -185,7 +185,7 @@ class _BuyBottomSheetState extends State<BuyBottomSheet> {
                             //     toJSonVariation[activeNow]
                             //         ['external_url']);
                           } else {
-                            // ignore: use_build_context_synchronously
+                            if(!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 behavior: SnackBarBehavior.floating,
@@ -304,7 +304,7 @@ class _BuyBottomSheetState extends State<BuyBottomSheet> {
                                 },
                               );
                             } else {
-                              // ignore: use_build_context_synchronously
+                              if (!context.mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   behavior: SnackBarBehavior.floating,

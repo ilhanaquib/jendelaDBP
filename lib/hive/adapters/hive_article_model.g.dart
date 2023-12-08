@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../models/hiveArticleModel.dart';
+part of '../models/hive_article_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

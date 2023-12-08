@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part '../adapters/hiveArticleModel.g.dart';
+part '../adapters/hive_article_model.g.dart';
 
 @HiveType(typeId: 4)
 class Article {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/components/cart/cart_icon.dart';
+import 'package:jendela_dbp/components/ujana/home_drawer.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:like_button/like_button.dart';
@@ -10,7 +12,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/no_books_liked_card.dart';
 import 'package:jendela_dbp/controllers/liked_books_management.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'package:jendela_dbp/view/pages/book_details.dart';
 
@@ -22,8 +24,7 @@ class LikedBooks extends StatefulWidget {
   final controller;
 
   @override
-  // ignore: library_private_types_in_public_api
-  _LikedBooksState createState() => _LikedBooksState();
+  State<LikedBooks> createState() => _LikedBooksState();
 }
 
 class _LikedBooksState extends State<LikedBooks> {
@@ -84,6 +85,8 @@ class _LikedBooksState extends State<LikedBooks> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey appBarKey = GlobalKey();
     String getCategory(String category) {
       final categoryMap = {
         GlobalVar.kategori1: GlobalVar.kategori1Title,
@@ -129,13 +132,36 @@ class _LikedBooksState extends State<LikedBooks> {
       padding = const EdgeInsets.only(top: 50);
     }
     return Scaffold(
+      key: scaffoldKey,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(88.0),
         child: Column(
           children: [
             AppBar(
-              title: const Text('Buku Kegemaran'),
+              backgroundColor: Colors.white,
+              key: appBarKey,
               centerTitle: true,
+              title: const Text('Buku Kegemaran'),
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: GestureDetector(
+                    onTap: () {
+                      scaffoldKey.currentState?.openDrawer();
+                    },
+                    child: Image.asset('assets/images/logo.png')
+                    // CircleAvatar(
+                    //   backgroundImage:
+                    //       context.watch<ImageBloc>().selectedImageProvider ??
+                    //           const AssetImage('assets/images/logo.png'),
+                    // ),
+                    ),
+              ),
+              actions: const [
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: CartIcon(),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -158,6 +184,7 @@ class _LikedBooksState extends State<LikedBooks> {
           ],
         ),
       ),
+      drawer: const HomeDrawer(),
       body: ValueListenableBuilder(
         valueListenable: likedBooksBox.listenable(),
         builder: (context, Box<HiveBookAPI> box, widget) {
@@ -230,8 +257,8 @@ class _LikedBooksState extends State<LikedBooks> {
                                         height: 16,
                                       ),
                                       _buildCategoryBox(
-                                        capitalizeFirstLetter(getCategory(
-                                            book.productCategory!)),
+                                        capitalizeFirstLetter(
+                                            getCategory(book.productCategory!)),
                                       ),
                                     ],
                                   ),

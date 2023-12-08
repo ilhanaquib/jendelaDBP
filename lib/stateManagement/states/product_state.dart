@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/model/epubSetting.dart';
-import 'package:jendela_dbp/model/productModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
+import 'package:jendela_dbp/model/epub_setting.dart';
+import 'package:jendela_dbp/model/product_model.dart';
 
 abstract class ProductState extends Equatable {
   const ProductState(

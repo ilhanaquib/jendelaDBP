@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:jendela_dbp/api_services.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/model/userModel.dart';
+import 'package:jendela_dbp/model/user_model.dart';
 import 'package:jendela_dbp/stateManagement/states/auth_state.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -296,7 +296,7 @@ class AuthCubit extends Cubit<AuthState> {
           AppleIDAuthorizationScopes.fullName,
         ],
         webAuthenticationOptions: WebAuthenticationOptions(
-          // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
+          //  Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
           clientId: GlobalVar.appleSigninClientId2,
           redirectUri: Uri.parse(
             GlobalVar.appleSigninRedirectUri2,
@@ -349,10 +349,12 @@ class AuthCubit extends Cubit<AuthState> {
               hideNavigationBar: hideNavigationBar));
         } else {
           // Fail response
+
           emit(AuthError(
               isAuthenticated: false,
               hideNavigationBar: hideNavigationBar,
               message: 'Session Expired. Please login again'));
+          if (!context.mounted) return;
           logout(context);
         }
       } else {
@@ -362,6 +364,7 @@ class AuthCubit extends Cubit<AuthState> {
               hideNavigationBar: hideNavigationBar,
               message: 'Error ' + session.statusCode.toString()));
         }
+        if (!context.mounted) return;
         logout(context);
       }
     } catch (err) {
@@ -380,6 +383,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthError(
             isAuthenticated: false, hideNavigationBar: hideNavigationBar));
       }
+      if (!context.mounted) return;
       logout(context);
     }
   }

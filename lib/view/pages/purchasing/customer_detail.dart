@@ -34,8 +34,7 @@ class CustomerDetails extends StatefulWidget {
       this.country});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CustomerDetailsState createState() => _CustomerDetailsState();
+  State<CustomerDetails> createState() => _CustomerDetailsState();
 }
 
 class _CustomerDetailsState extends State<CustomerDetails> {
@@ -387,6 +386,5 @@ class _CustomerDetailsState extends State<CustomerDetails> {
         ),
       ),
     );
-    
   }
 }

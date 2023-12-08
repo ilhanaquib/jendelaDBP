@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/components/article/article_not_found.dart';
@@ -15,9 +16,8 @@ import 'package:jendela_dbp/components/ujana/home_drawer.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
-import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:jendela_dbp/hive/models/hive_article_model.dart';
+import 'package:jendela_dbp/hive/models/hive_post_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/poduct_bloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
@@ -42,12 +42,6 @@ class _HomeState extends State<Home> {
   ProductBloc bookBloc = ProductBloc();
   Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
   ConnectionCubit connectionCubit = ConnectionCubit();
-
-  void _updateAppBar() {
-    setState(() {
-      // Rebuild the app bar to reflect the changes
-    });
-  }
 
   @override
   void initState() {
@@ -96,9 +90,7 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      drawer: HomeDrawer(
-        updateAppBar: _updateAppBar,
-      ),
+      drawer: const HomeDrawer(),
       body: CustomScrollView(
         slivers: [
           const SliverAppBar(

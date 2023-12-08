@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part '../adapters/hivePurchasedBookModel.g.dart';
+part '../adapters/hive_purchased_book_model.g.dart';
 
 @HiveType(typeId: 2)
 class HivePurchasedBook {

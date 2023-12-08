@@ -54,6 +54,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       });
 
       if (result.success) {
+        if (!context.mounted) return;
         context.read<ImageBloc>().updateSelectedImage(_selectedImage!);
 
         // Call the updateAppBar callback to notify the parent widget
@@ -61,6 +62,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
         Navigator.of(context).pop(); // Go back to the home screen
       } else {
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(result.errorMessage!)),
         );

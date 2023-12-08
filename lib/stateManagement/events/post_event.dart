@@ -1,10 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
-import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:jendela_dbp/hive/models/hive_post_model.dart';
 
 // ignore: must_be_immutable
-@immutable
 abstract class PostEvent extends Equatable {
   List<Post>? listOfPost;
   String? token;

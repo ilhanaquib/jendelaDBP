@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jendela_dbp/api_services.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/view/pages/purchasing/customer_detail.dart';
 
 
@@ -18,8 +18,7 @@ class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CheckoutScreenState createState() => _CheckoutScreenState();
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {

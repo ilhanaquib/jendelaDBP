@@ -8,7 +8,7 @@ import 'package:jendela_dbp/view/pages/postAndArticles/posts/read_post.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:jendela_dbp/hive/models/hive_post_model.dart';
 
 class HomePostCard extends StatefulWidget {
   const HomePostCard({
@@ -22,11 +22,10 @@ class HomePostCard extends StatefulWidget {
   final double mediaHeight;
   final double mediaWidth;
   @override
-  // ignore: library_private_types_in_public_api
-  _PostCard createState() => _PostCard();
+  State<HomePostCard> createState() => _HomePostCard();
 }
 
-class _PostCard extends State<HomePostCard> {
+class _HomePostCard extends State<HomePostCard> {
   @override
   void initState() {
     super.initState();

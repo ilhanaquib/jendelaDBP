@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/components/bookshelf/carousel_title.dart';
 import 'package:jendela_dbp/components/user/login_card.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
-import 'package:jendela_dbp/model/userModel.dart';
+import 'package:jendela_dbp/model/user_model.dart';
 import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
 import 'package:jendela_dbp/stateManagement/states/auth_state.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -11,8 +11,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
   @override
-  // ignore: library_private_types_in_public_api
-  _ProfileScreen createState() => _ProfileScreen();
+  State<ProfileScreen> createState() => _ProfileScreen();
 }
 
 class _ProfileScreen extends State<ProfileScreen> {
@@ -294,6 +293,8 @@ class _ProfileScreen extends State<ProfileScreen> {
   }
 
   Widget _userLoginWidget() {
-    return const LoginCard();
+    return LoginCard(
+      text: 'Sila log masuk untuk lihat akaun anda',
+    );
   }
 }

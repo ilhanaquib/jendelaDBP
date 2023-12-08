@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 
-part 'adapters/userModel.g.dart';
+part 'adapters/user_model.g.dart';
 
 @HiveType(typeId: 13)
 class User {

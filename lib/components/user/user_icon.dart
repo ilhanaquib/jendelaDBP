@@ -24,6 +24,7 @@ class UserIcon extends StatelessWidget {
 
             if (pickedImage != null) {
               final imageFile = File(pickedImage.path);
+              if(!context.mounted) return;
               context.read<ImageBloc>().add(ImagePickedEvent(imageFile));
             }
           },

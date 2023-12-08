@@ -1,15 +1,13 @@
-// ignore_for_file: overridden_fields, annotate_overrides
+// ignore_for_file: overridden_fields, annotate_overrides, must_be_immutable
 
 import 'package:equatable/equatable.dart';
-import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
-import 'package:meta/meta.dart';
+import 'package:jendela_dbp/hive/models/hive_article_model.dart';
 
-@immutable
 abstract class ArticleEvent extends Equatable {
   List<Article>? listOfArticle;
   String? token;
 }
-
+      
 class ArticleFetch extends ArticleEvent {
   final int perPage;
   final int page;

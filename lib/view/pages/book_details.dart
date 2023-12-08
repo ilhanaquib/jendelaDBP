@@ -7,13 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/components/bookDetail/no_format.dart';
 import 'package:jendela_dbp/components/cart/cart_icon.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/no_description_card.dart';
 import 'package:jendela_dbp/components/bookDetail/buy_bottom_sheet.dart';
 import 'package:jendela_dbp/components/bookDetail/bought_book_bottom_sheet.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';

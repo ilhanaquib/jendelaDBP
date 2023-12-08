@@ -9,7 +9,7 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/liked_books_management.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'book_details.dart';
 
@@ -502,7 +502,7 @@ class _AllBooksState extends State<AllBooks> {
                                             CachedNetworkImage(
                                               imageUrl: bookSpecific!.images!,
                                               // height: 220,
-                                              width: 140,
+                                              width: 120,
                                               fit: BoxFit.fill,
                                             ),
                                           ],
@@ -574,7 +574,7 @@ class _AllBooksState extends State<AllBooks> {
                                   child: Text(
                                     bookSpecific.name!,
                                     textAlign: TextAlign.center,
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     style: const TextStyle(fontSize: 11),
                                   ),
                                 ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/components/cart/cart_icon.dart';
+import 'package:jendela_dbp/components/ujana/home_drawer.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:like_button/like_button.dart';
@@ -10,7 +12,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/no_books_liked_card.dart';
 import 'package:jendela_dbp/controllers/liked_books_management.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
 import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'package:jendela_dbp/view/pages/book_details.dart';
 
@@ -22,8 +24,7 @@ class LikedBooksGrid extends StatefulWidget {
   final controller;
 
   @override
-  // ignore: library_private_types_in_public_api
-  _LikedBooksGridState createState() => _LikedBooksGridState();
+  State<LikedBooksGrid> createState() => _LikedBooksGridState();
 }
 
 class _LikedBooksGridState extends State<LikedBooksGrid> {
@@ -84,6 +85,8 @@ class _LikedBooksGridState extends State<LikedBooksGrid> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey appBarKey = GlobalKey();
     String getCategory(String category) {
       final categoryMap = {
         GlobalVar.kategori1: GlobalVar.kategori1Title,
@@ -150,8 +153,30 @@ class _LikedBooksGridState extends State<LikedBooksGrid> {
         child: Column(
           children: [
             AppBar(
-              title: const Text('Buku Kegemaran'),
+              backgroundColor: Colors.white,
+              key: appBarKey,
               centerTitle: true,
+              title: const Text('Buku Kegemaran'),
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: GestureDetector(
+                    onTap: () {
+                      scaffoldKey.currentState?.openDrawer();
+                    },
+                    child: Image.asset('assets/images/logo.png')
+                    // CircleAvatar(
+                    //   backgroundImage:
+                    //       context.watch<ImageBloc>().selectedImageProvider ??
+                    //           const AssetImage('assets/images/logo.png'),
+                    // ),
+                    ),
+              ),
+              actions: const [
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: CartIcon(),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -174,6 +199,7 @@ class _LikedBooksGridState extends State<LikedBooksGrid> {
           ],
         ),
       ),
+      drawer: const HomeDrawer(),
       body: ValueListenableBuilder(
         valueListenable: likedBooksBox.listenable(),
         builder: (context, Box<HiveBookAPI> box, widget) {
@@ -201,125 +227,117 @@ class _LikedBooksGridState extends State<LikedBooksGrid> {
                   itemBuilder: (context, index) {
                     HiveBookAPI book = likedBooks[index];
                     return GestureDetector(
-                          onTap: () {
-                            PersistentNavBarNavigator.pushNewScreen(
-                              context,
-                              withNavBar: false,
-                              screen: BookDetail(
-                                book: book,
-                              ),
-                            );
-                          },
-                          child: Card(
-                            
-                            elevation: 0,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                SizedBox(
-                                  width: imageWidth,
-                                  child: Card(
-                                    elevation: 4,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(book.images!,
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 25, top: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 170,
-                                        child: Text(
-                                          book.name!,
-                                          maxLines: 3,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      _buildCategoryBox(
-                                        capitalizeFirstLetter(getCategory(
-                                            book.productCategory!)),
-                                      ),
-                                      Padding(
-                                        padding: padding,
-                                        child: LikeButton(
-                                          bubblesColor: const BubblesColor(
-                                            dotPrimaryColor: Color.fromARGB(
-                                                255, 245, 88, 88),
-                                            dotSecondaryColor: Colors.white,
-                                          ),
-                                          isLiked:
-                                              true, // Set initial liked status
-                                          onTap: (bool isLiked) async {
-                                            int bookIdToDelete = book.id!;
-
-                                            int? keyToDelete;
-
-                                            for (var entry in likedBooksBox
-                                                .toMap()
-                                                .entries) {
-                                              if (entry.value.id ==
-                                                  bookIdToDelete) {
-                                                keyToDelete = entry.key;
-                                                break;
-                                              }
-                                            }
-
-                                            if (keyToDelete != null) {
-                                              // Remove from likedBooksBox using the key
-                                              likedBooksBox.delete(keyToDelete);
-
-                                              // Update likedBooks list
-                                              likedBooks.removeWhere((book) =>
-                                                  book.id == bookIdToDelete);
-
-                                              // Update liked status map in the cubit and liked status box
-                                              context
-                                                  .read<LikedStatusCubit>()
-                                                  .removeLikedStatus(
-                                                      keyToDelete);
-
-                                              // Notify BooksInsideShelf about the change in liked status
-                                              context
-                                                  .read<LikedStatusCubit>()
-                                                  .updateLikedStatusMap(
-                                                      likedStatusMap);
-
-                                              _updateLikedStatus(
-                                                  keyToDelete, false);
-                                            }
-                                            return null;
-                                          },
-                                          likeBuilder: (bool isLiked) {
-                                            return const Icon(
-                                              Icons.delete_outline_rounded,
-                                              size: 32,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                      onTap: () {
+                        PersistentNavBarNavigator.pushNewScreen(
+                          context,
+                          withNavBar: false,
+                          screen: BookDetail(
+                            book: book,
                           ),
                         );
-                      
-                    
+                      },
+                      child: Card(
+                        elevation: 0,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              width: imageWidth,
+                              child: Card(
+                                elevation: 4,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(book.images!,
+                                      fit: BoxFit.cover),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 25, top: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 170,
+                                    child: Text(
+                                      book.name!,
+                                      maxLines: 3,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  _buildCategoryBox(
+                                    capitalizeFirstLetter(
+                                        getCategory(book.productCategory!)),
+                                  ),
+                                  Padding(
+                                    padding: padding,
+                                    child: LikeButton(
+                                      bubblesColor: const BubblesColor(
+                                        dotPrimaryColor:
+                                            Color.fromARGB(255, 245, 88, 88),
+                                        dotSecondaryColor: Colors.white,
+                                      ),
+                                      isLiked: true, // Set initial liked status
+                                      onTap: (bool isLiked) async {
+                                        int bookIdToDelete = book.id!;
+
+                                        int? keyToDelete;
+
+                                        for (var entry
+                                            in likedBooksBox.toMap().entries) {
+                                          if (entry.value.id ==
+                                              bookIdToDelete) {
+                                            keyToDelete = entry.key;
+                                            break;
+                                          }
+                                        }
+
+                                        if (keyToDelete != null) {
+                                          // Remove from likedBooksBox using the key
+                                          likedBooksBox.delete(keyToDelete);
+
+                                          // Update likedBooks list
+                                          likedBooks.removeWhere((book) =>
+                                              book.id == bookIdToDelete);
+
+                                          // Update liked status map in the cubit and liked status box
+                                          context
+                                              .read<LikedStatusCubit>()
+                                              .removeLikedStatus(keyToDelete);
+
+                                          // Notify BooksInsideShelf about the change in liked status
+                                          context
+                                              .read<LikedStatusCubit>()
+                                              .updateLikedStatusMap(
+                                                  likedStatusMap);
+
+                                          _updateLikedStatus(
+                                              keyToDelete, false);
+                                        }
+                                        return null;
+                                      },
+                                      likeBuilder: (bool isLiked) {
+                                        return const Icon(
+                                          Icons.delete_outline_rounded,
+                                          size: 32,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   },
                 )
               : const Center(

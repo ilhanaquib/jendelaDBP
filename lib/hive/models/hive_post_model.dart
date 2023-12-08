@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part '../adapters/hivePostModel.g.dart';
+part '../adapters/hive_post_model.g.dart';
 
 @HiveType(typeId: 4)
 class Post {

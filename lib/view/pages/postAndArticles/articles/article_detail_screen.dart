@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:html/parser.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
-import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
+import 'package:jendela_dbp/hive/models/hive_article_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
 import 'package:jendela_dbp/stateManagement/events/article_event.dart';
@@ -15,8 +15,7 @@ class ArticleDetailScreen extends StatefulWidget {
   final Article? article;
 
   @override
-  // ignore: library_private_types_in_public_api
-  _ArticleDetailScreen createState() => _ArticleDetailScreen();
+  State<ArticleDetailScreen> createState() => _ArticleDetailScreen();
 }
 
 class _ArticleDetailScreen extends State<ArticleDetailScreen> {

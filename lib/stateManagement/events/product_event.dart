@@ -1,8 +1,8 @@
 import 'package:epub_view/epub_view.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:jendela_dbp/model/epubSetting.dart';
-import 'package:jendela_dbp/model/productModel.dart';
+import 'package:jendela_dbp/model/epub_setting.dart';
+import 'package:jendela_dbp/model/product_model.dart';
 import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
 
 @immutable

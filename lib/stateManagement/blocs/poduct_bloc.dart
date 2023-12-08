@@ -6,11 +6,11 @@ import 'package:jendela_dbp/api_services.dart';
 import 'package:jendela_dbp/components/bukuDibeli/get_purchase.dart';
 import 'package:jendela_dbp/controllers/get_books_from_api.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
-import 'package:jendela_dbp/model/epubSetting.dart';
-import 'package:jendela_dbp/model/productModel.dart';
-import 'package:jendela_dbp/model/userModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
+import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
+import 'package:jendela_dbp/model/epub_setting.dart';
+import 'package:jendela_dbp/model/product_model.dart';
+import 'package:jendela_dbp/model/user_model.dart';
 import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
 import 'package:jendela_dbp/stateManagement/events/product_event.dart';
 import 'package:jendela_dbp/stateManagement/states/product_state.dart';
@@ -32,7 +32,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       Stream<ProductEvent> events,
       // ignore: deprecated_member_use
       TransitionFunction<ProductEvent, ProductState> transitionFn) {
-    // TODO: implement transformEvents
+    //  implement transformEvents
     // return super.transformEvents(events, transitionFn);
     // events
     //     .debounceTime(Duration(milliseconds: 500))
@@ -48,7 +48,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   @override
-  // TODO: implement initialState
+  //  implement initialState
   // ProductState get initialState => ProductUninitialized();
 
   @override

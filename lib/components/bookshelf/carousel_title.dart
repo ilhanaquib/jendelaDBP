@@ -24,7 +24,7 @@ class CarouselTitle extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 250,
+                width: 200,
                 child: Text(
                   title ?? '',
                   style: const TextStyle(

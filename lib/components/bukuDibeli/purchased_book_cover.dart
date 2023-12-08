@@ -15,9 +15,9 @@ import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/encrypt_file.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/hive/api/api_book_model.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
-import 'package:jendela_dbp/model/categoryModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
+import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
+import 'package:jendela_dbp/model/category_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/poduct_bloc.dart';
 import 'package:jendela_dbp/view/pages/audiobooks/audiobooks.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -36,8 +36,7 @@ class BookPurchasedCoverCard extends StatefulWidget {
   final HivePurchasedBook purchasedBook;
   final BuildContext context;
   @override
-  // ignore: library_private_types_in_public_api
-  _BookPurchasedCoverCard createState() => _BookPurchasedCoverCard();
+  State<BookPurchasedCoverCard> createState() => _BookPurchasedCoverCard();
 }
 
 class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
@@ -107,6 +106,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
 
     // print('user iss:  ' + currentUser);
     if (currentUser == "") {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Text('Expired session. Please login again'),
@@ -208,10 +208,12 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
     if (await permission.isDenied) {
       bool isGranted = await Permission.storage.request().isGranted;
       if (isGranted) {
+        if (!context.mounted) return;
         await startDownload(
             context, myDetailsBook, currentUser, purchasedBook, myBook);
         getBookDetails();
       } else {
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text('Akses storan ditolak'),
@@ -219,6 +221,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
         ));
       }
     } else {
+      if (!context.mounted) return;
       await startDownload(
           context, myDetailsBook, currentUser, purchasedBook, myBook);
       getBookDetails();
@@ -305,56 +308,62 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                 decoration:
                     BoxDecoration(border: Border.all(color: Colors.black)),
                 child: Image.asset('assets/images/tiadakulitbuku.png'))
-            : Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: DbpColor().jendelaGreen,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
+            : Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
                         color: DbpColor().jendelaGreen,
-                      ),
-                    ),
-                    width: 150,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        alignment: Alignment.bottomCenter,
-                        fit: BoxFit
-                            .cover, // Use BoxFit.cover for maintaining aspect ratio within rounded corners
-                        imageUrl: widget.purchasedBook.featuredMediaUrl ?? '',
-                      ),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 200,
-                        child: Text(
-                          widget.purchasedBook.productName ?? '',
-                          //overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: DbpColor().jendelaGreen,
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
+                      width: 120,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          alignment: Alignment.bottomCenter,
+                          fit: BoxFit
+                              .cover, // Use BoxFit.cover for maintaining aspect ratio within rounded corners
+                          imageUrl: widget.purchasedBook.featuredMediaUrl ?? '',
+                        ),
                       ),
-                      isLoadingBook
-                          ? LoadingAnimationWidget.discreteCircle(
-                              color: DbpColor().jendelaGray,
-                              secondRingColor: DbpColor().jendelaGreen,
-                              thirdRingColor: DbpColor().jendelaOrange,
-                              size: 50.0,
-                            )
-                          : bookOpenButton(),
-                    ],
-                  ),
-                ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 150,
+                            child: Text(
+                              widget.purchasedBook.productName ?? '',
+                              maxLines: 5,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          isLoadingBook
+                              ? LoadingAnimationWidget.discreteCircle(
+                                  color: DbpColor().jendelaGray,
+                                  secondRingColor: DbpColor().jendelaGreen,
+                                  thirdRingColor: DbpColor().jendelaOrange,
+                                  size: 50.0,
+                                )
+                              : bookOpenButton(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
       ),
     );
@@ -435,6 +444,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                           connectivityResult == ConnectivityResult.wifi) {
                         downloadBook();
                       } else {
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           behavior: SnackBarBehavior.floating,
@@ -485,6 +495,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                         // Decrypt file
                         File decryptedFile =
                             await EncryptFile.decryptFile(file);
+                        if (!context.mounted) return;
                         PersistentNavBarNavigator.pushNewScreen(
                           context,
                           withNavBar: false,
@@ -501,6 +512,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                         //   // }
                         // });
                       } else {
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           behavior: SnackBarBehavior.floating,
@@ -545,6 +557,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                             connectivityResult == ConnectivityResult.wifi) {
                           downloadBook();
                         } else {
+                          if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               behavior: SnackBarBehavior.floating,
@@ -595,6 +608,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                         // Decrypt file
                         decryptedFile = await EncryptFile.decryptFile(file);
                       }
+                      if (!context.mounted) return;
                       PersistentNavBarNavigator.pushNewScreen(
                         context,
                         withNavBar: false,
@@ -646,6 +660,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                           connectivityResult == ConnectivityResult.wifi) {
                         downloadBook();
                       } else {
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             behavior: SnackBarBehavior.floating,

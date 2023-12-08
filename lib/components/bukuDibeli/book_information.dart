@@ -13,9 +13,9 @@ import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/encrypt_file.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/hive/api/api_book_model.dart';
-import 'package:jendela_dbp/hive/models/hiveBookModel.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
-import 'package:jendela_dbp/model/categoryModel.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
+import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
+import 'package:jendela_dbp/model/category_model.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,8 +33,7 @@ class BookInformation extends StatefulWidget {
 
   BookInformation({super.key, required this.bookIdentification});
   @override
-  // ignore: library_private_types_in_public_api
-  _BookInformationState createState() => _BookInformationState();
+  State <BookInformation> createState() => _BookInformationState();
 }
 
 class _BookInformationState extends State<BookInformation> {
@@ -108,6 +107,7 @@ class _BookInformationState extends State<BookInformation> {
 
     // print('user iss:  ' + currentUser);
     if (currentUser == "") {
+      if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Text('Expired session. Please login again'),
@@ -224,6 +224,7 @@ class _BookInformationState extends State<BookInformation> {
           var connectivityResult = await (Connectivity().checkConnectivity());
           if (connectivityResult == ConnectivityResult.mobile ||
               connectivityResult == ConnectivityResult.wifi) {
+            if (!context.mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               width: 250,
               behavior: SnackBarBehavior.floating,
@@ -239,6 +240,7 @@ class _BookInformationState extends State<BookInformation> {
             // }
             downloadBook();
           } else {
+            if (!context.mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               behavior: SnackBarBehavior.floating,
               content: Text('Memerlukan penggunaan internet'),
@@ -272,6 +274,8 @@ class _BookInformationState extends State<BookInformation> {
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: colors.bgPrimaryColor,
         elevation: 0,
+        centerTitle: true,
+        title: const Text('Informasi Buku'),
         actions: [
           InkWell(
               onTap: () => showAlertDialog(context),
@@ -328,7 +332,7 @@ class _BookInformationState extends State<BookInformation> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
-                                    width: 200,
+                                    width: 150,
                                     child: Text(
                                       widget.bookIdentification.productName ??
                                           '',
@@ -416,10 +420,12 @@ class _BookInformationState extends State<BookInformation> {
     if (await permission.isDenied) {
       bool isGranted = await Permission.storage.request().isGranted;
       if (isGranted) {
+        if (!context.mounted) return;
         await startDownload(
             context, myDetailsBook, currentUser, purchasedBook, myBook);
         getBookDetails();
       } else {
+        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text('Akses storan ditolak'),
@@ -427,6 +433,7 @@ class _BookInformationState extends State<BookInformation> {
         ));
       }
     } else {
+      if (!context.mounted) return;
       await startDownload(
           context, myDetailsBook, currentUser, purchasedBook, myBook);
       getBookDetails();
@@ -512,6 +519,7 @@ class _BookInformationState extends State<BookInformation> {
       // Notification
       return;
     }
+    if (!context.mounted) return;
     Navigator.of(context).pushNamed('/EpubReader',
         arguments: Map<String, dynamic>.from({
           'file': decryptFile,
@@ -631,6 +639,7 @@ class _BookInformationState extends State<BookInformation> {
                           connectivityResult == ConnectivityResult.wifi) {
                         downloadBook();
                       } else {
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           behavior: SnackBarBehavior.floating,
@@ -681,6 +690,7 @@ class _BookInformationState extends State<BookInformation> {
                         // Decrypt file
                         File decryptedFile =
                             await EncryptFile.decryptFile(file);
+                        if (!context.mounted) return;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -698,6 +708,7 @@ class _BookInformationState extends State<BookInformation> {
                         //   // }
                         // });
                       } else {
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           behavior: SnackBarBehavior.floating,
@@ -742,6 +753,7 @@ class _BookInformationState extends State<BookInformation> {
                             connectivityResult == ConnectivityResult.wifi) {
                           downloadBook();
                         } else {
+                          if(!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               behavior: SnackBarBehavior.floating,
@@ -792,6 +804,7 @@ class _BookInformationState extends State<BookInformation> {
                         // Decrypt file
                         decryptedFile = await EncryptFile.decryptFile(file);
                       }
+                      if(!context.mounted) return;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -832,6 +845,7 @@ class _BookInformationState extends State<BookInformation> {
                           connectivityResult == ConnectivityResult.wifi) {
                         downloadBook();
                       } else {
+                        if(!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             behavior: SnackBarBehavior.floating,
@@ -863,6 +877,7 @@ class _BookInformationState extends State<BookInformation> {
           // Decrypt file
           decryptedFile = await EncryptFile.decryptFile(file);
         }
+        if(!context.mounted) return;
         Navigator.of(context).pushNamed('/AudioPlayer', arguments: {
           'title': widget.bookIdentification.productName,
           'path': decryptedFile!.path,

@@ -7,7 +7,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:jendela_dbp/components/posts/error_card.dart';
 import 'package:jendela_dbp/components/posts/post_card.dart';
 import 'package:jendela_dbp/components/posts/post_not_found_card.dart';
-import 'package:jendela_dbp/hive/models/hivePostModel.dart';
+import 'package:jendela_dbp/hive/models/hive_post_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/connection_cubit.dart';
 import 'package:jendela_dbp/stateManagement/events/post_event.dart';

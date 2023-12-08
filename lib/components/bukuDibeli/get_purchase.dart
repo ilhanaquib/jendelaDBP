@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jendela_dbp/api_services.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hivePurchasedBookModel.dart';
+import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
 
 
 Box<HivePurchasedBook> bookPurchaseBox =

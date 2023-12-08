@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:jendela_dbp/hive/models/hiveArticleModel.dart';
+import 'package:jendela_dbp/hive/models/hive_article_model.dart';
 
 // ignore: must_be_immutable
 abstract class ArticleState extends Equatable {

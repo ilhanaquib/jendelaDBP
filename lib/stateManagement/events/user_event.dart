@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:jendela_dbp/model/userModel.dart';
+import 'package:jendela_dbp/model/user_model.dart';
 import 'package:meta/meta.dart';
 
 @immutable

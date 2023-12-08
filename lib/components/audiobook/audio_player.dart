@@ -195,7 +195,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           children: [
             Text(formatTime(_currentPosition)),
             const SizedBox(
-              width: 200,
+              width: 190,
             ),
             Text(formatTime(_audioDuration)),
           ],
