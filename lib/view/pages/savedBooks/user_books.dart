@@ -135,7 +135,6 @@ class _UserBooks extends State<UserBooks> {
                     );
                   }
                   if (state is AuthLoaded) {
-                    if (state.isAuthenticated == true) {
                       return BlocConsumer<ProductBloc, ProductState>(
                         bloc: purchasedBookBloc,
                         listener: (context, state) {
@@ -221,10 +220,8 @@ class _UserBooks extends State<UserBooks> {
                           );
                         },
                       );
-                    }
-                    return LoginCard(
-                      text: 'Sila log masuk untuk lihat buku anda',
-                    );
+                    
+                    
                   }
                   return LoginCard(
                     text: 'Sila log masuk untuk lihat buku anda',

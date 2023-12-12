@@ -539,7 +539,7 @@ class AuthCubit extends Cubit<AuthState> {
         user: user,
         hideNavigationBar: hideNavigationBar));
     try {
-      emit(const AuthLoaded(isAuthenticated: false));
+      emit(const AuthLoading(isAuthenticated: false));
       // Navigator.of(context).pushReplacementNamed(
       //   '/MyApp',
       // );

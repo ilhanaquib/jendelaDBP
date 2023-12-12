@@ -39,56 +39,65 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Text(
-          'Siaran',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        ),
-        BlocBuilder<PostBloc, PostState>(
-          bloc: latestPostBloc,
-          builder: (context, data) {
-            if (data is PostLoaded) {
-              List<Post> posts = data.listOfPost?.toList() ?? [];
-              if (posts.isEmpty) {
-                return const SizedBox(
-                  height: 300,
-                  child: Center(
-                    child: PostNotFoundCard(),
-                  ),
-                );
-              }
-              return ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: List.generate(
-                  posts.length,
-                  (index) => PostCard(
-                    post: posts[index],
-                  ),
-                ),
-              );
-            }
-            if (data is PostError) {
-              return ErrorCard(
-                message: data.message ?? '',
-              );
-            }
-            return SizedBox(
-              height: 300,
-              child: Center(
-                child: LoadingAnimationWidget.discreteCircle(
-                  color: DbpColor().jendelaGray,
-                  secondRingColor: DbpColor().jendelaGreen,
-                  thirdRingColor: DbpColor().jendelaOrange,
-                  size: 70.0,
-                ),
+    return BlocProvider(
+      create: (context) => latestPostBloc,
+      child: BlocConsumer<PostBloc, PostState>(
+        bloc: latestPostBloc,
+        listener: (context, state) {},
+        builder: (BuildContext context, PostState state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Siaran',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
-            );
-          },
-        ),
-      ],
+              BlocBuilder<PostBloc, PostState>(
+                bloc: latestPostBloc,
+                builder: (context, data) {
+                  if (data is PostLoaded) {
+                    List<Post> posts = data.listOfPost?.toList() ?? [];
+                    if (posts.isEmpty) {
+                      return const SizedBox(
+                        height: 300,
+                        child: Center(
+                          child: PostNotFoundCard(),
+                        ),
+                      );
+                    }
+                    return ListView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: List.generate(
+                        posts.length,
+                        (index) => PostCard(
+                          post: posts[index],
+                        ),
+                      ),
+                    );
+                  }
+                  if (data is PostError) {
+                    return ErrorCard(
+                      message: data.message ?? '',
+                    );
+                  }
+                  return SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: LoadingAnimationWidget.discreteCircle(
+                        color: DbpColor().jendelaGray,
+                        secondRingColor: DbpColor().jendelaGreen,
+                        thirdRingColor: DbpColor().jendelaOrange,
+                        size: 70.0,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

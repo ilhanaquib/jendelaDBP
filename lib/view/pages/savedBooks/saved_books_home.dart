@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
+import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 
 import 'package:jendela_dbp/view/pages/savedBooks/liked_books.dart';
 import 'package:jendela_dbp/view/pages/savedBooks/liked_books_grid.dart';
@@ -17,26 +19,29 @@ class _SavedBooksHomeState extends State<SavedBooksHome> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: controller,
-      scrollDirection: Axis.horizontal,
-      children: [
-        UserBooks(
-          controller: controller,
-        ),
-        if (ResponsiveLayout.isDesktop(context))
-          LikedBooksGrid(
+    return BlocProvider(
+      create: (context) => LikedStatusCubit(),
+      child: PageView(
+        controller: controller,
+        scrollDirection: Axis.horizontal,
+        children: [
+          UserBooks(
             controller: controller,
-          )
-        else if (ResponsiveLayout.isTablet(context))
-          LikedBooksGrid(
-            controller: controller,
-          )
-        else
-          LikedBooks(
-            controller: controller,
-          )
-      ],
+          ),
+          if (ResponsiveLayout.isDesktop(context))
+            LikedBooksGrid(
+              controller: controller,
+            )
+          else if (ResponsiveLayout.isTablet(context))
+            LikedBooksGrid(
+              controller: controller,
+            )
+          else
+            LikedBooks(
+              controller: controller,
+            )
+        ],
+      ),
     );
   }
 }

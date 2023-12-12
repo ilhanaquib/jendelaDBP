@@ -527,47 +527,43 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                       return;
                     },
                   )
-                : SizedBox(
-                    width: 150,
-                    child: OutlinedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            DbpColor().jendelaGreen), // Green background
-                        overlayColor: MaterialStateProperty.all<Color>(
-                            Colors.transparent), // No overlay color
-                        side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(color: DbpColor().jendelaGreen, width: 2),
-                        ), // Green border
-                      ),
-                      child: const Row(
-                        children: [
-                          Text(
-                            'Muat Turun',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Icon(Icons.download, color: Colors.white),
-                        ],
-                      ),
-                      onPressed: () async {
-                        var connectivityResult =
-                            await (Connectivity().checkConnectivity());
-                        if (connectivityResult == ConnectivityResult.mobile ||
-                            connectivityResult == ConnectivityResult.wifi) {
-                          downloadBook();
-                        } else {
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              behavior: SnackBarBehavior.floating,
-                              content: Text('Memerlukan penggunaan internet'),
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
-                        }
-                      },
+                : OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          DbpColor().jendelaGreen), // Green background
+                      overlayColor: MaterialStateProperty.all<Color>(
+                          Colors.transparent), // No overlay color
+                      side: MaterialStateProperty.all<BorderSide>(
+                        BorderSide(color: DbpColor().jendelaGreen, width: 2),
+                      ), // Green border
                     ),
+                    child: const Row(
+                      children: [
+                        Text(
+                          'Muat Turun',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.download, color: Colors.white),
+                      ],
+                    ),
+                    onPressed: () async {
+                      var connectivityResult =
+                          await (Connectivity().checkConnectivity());
+                      if (connectivityResult == ConnectivityResult.mobile ||
+                          connectivityResult == ConnectivityResult.wifi) {
+                        downloadBook();
+                      } else {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            content: Text('Memerlukan penggunaan internet'),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      }
+                    },
                   ),
       );
     } else if (".mp3" == fileExt.toLowerCase()) {

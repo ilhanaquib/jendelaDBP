@@ -68,63 +68,72 @@ class _PostAndArticleState extends State<PostAndArticle> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: const Text('Sohor Kini'),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: GestureDetector(
-              onTap: () {
-                _scaffoldKey.currentState?.openDrawer();
-              },
-              child: Image.asset('assets/images/logo.png')
-              // CircleAvatar(
-              //   backgroundImage:
-              //       context.watch<ImageBloc>().selectedImageProvider ??
-              //           const AssetImage('assets/images/logo.png'),
-              // ),
+    return BlocProvider(
+      create: (context) => latestPostBloc,
+      child: BlocConsumer<PostBloc, PostState>(
+        bloc: latestPostBloc,
+        listener: (context, state) {},
+        builder: (BuildContext context, PostState state) {
+          return Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              title: const Text('Sohor Kini'),
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: GestureDetector(
+                    onTap: () {
+                      _scaffoldKey.currentState?.openDrawer();
+                    },
+                    child: Image.asset('assets/images/logo.png')
+                    // CircleAvatar(
+                    //   backgroundImage:
+                    //       context.watch<ImageBloc>().selectedImageProvider ??
+                    //           const AssetImage('assets/images/logo.png'),
+                    // ),
+                    ),
               ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: CartIcon(),
-          ),
-        ],
-      ),
-      drawer: const HomeDrawer(),
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar(
-            floating: true,
-            snap: true,
-            elevation: 0.0,
-            toolbarHeight: 0.01,
-          ),
-          SliverFillRemaining(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                connectionCubit.checkConnection(context);
-                await Future.delayed(const Duration(milliseconds: 100));
-                latestPostBloc.add(PostFetch());
-                latestArticleBloc.add(ArticleFetch());
-              },
-              child: ListView(
-                children: [
-                  _postList(context),
-                  ResponsiveLayout.isDesktop(context) ||
-                          ResponsiveLayout.isTablet(context)
-                      ? _articleListBig(context)
-                      : _articleList(context)
-                ],
-              ),
+              actions: const [
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: CartIcon(),
+                ),
+              ],
             ),
-          )
-        ],
+            drawer: const HomeDrawer(),
+            body: CustomScrollView(
+              slivers: [
+                const SliverAppBar(
+                  floating: true,
+                  snap: true,
+                  elevation: 0.0,
+                  toolbarHeight: 0.01,
+                ),
+                SliverFillRemaining(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      connectionCubit.checkConnection(context);
+                      await Future.delayed(const Duration(milliseconds: 100));
+                      latestPostBloc.add(PostFetch());
+                      latestArticleBloc.add(ArticleFetch());
+                    },
+                    child: ListView(
+                      children: [
+                        _postList(context),
+                        ResponsiveLayout.isDesktop(context) ||
+                                ResponsiveLayout.isTablet(context)
+                            ? _articleListBig(context)
+                            : _articleList(context)
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }

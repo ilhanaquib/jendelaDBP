@@ -39,6 +39,24 @@ class AuthLoaded extends AuthState {
             isAuthenticated: isAuthenticated);
 }
 
+// class AuthAuthenticated extends AuthState {
+//   final User? user;
+//   final String? message;
+//   final bool hideNavigationBar;
+//   const AuthAuthenticated(
+//       {this.user, this.message, this.hideNavigationBar = false})
+//       : super(user: user, message: message);
+
+//   @override
+//   bool operator ==(Object o) {
+//     if (identical(this, o)) return true;
+//     return o is AuthAuthenticated && o.user == user;
+//   }
+
+//   @override
+//   int get hashCode => user.hashCode;
+// }
+
 class AuthLoading extends AuthState {
   final User? user;
   final String? message;

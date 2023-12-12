@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -277,8 +278,11 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
       15: kategori15Books,
     };
 
-    return BlocProvider(
-      create: (context) => ImageBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ImageBloc()),
+        BlocProvider(create: (context) => LikedStatusCubit())
+      ],
       child: Scaffold(
         backgroundColor: Colors.white,
         key: _scaffoldKey,

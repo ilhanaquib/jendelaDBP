@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
+import 'package:jendela_dbp/hive/models/hive_book_model.dart';
+import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
 import 'package:jendela_dbp/hive/models/hive_user_book_model.dart';
 import 'package:jendela_dbp/stateManagement/states/auth_state.dart';
 import 'package:jendela_dbp/view/pages/audiobooks/audiobooks_home.dart';
@@ -19,10 +21,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:jendela_dbp/components/persistent_bottom_nav_bar.dart';
-import 'package:jendela_dbp/stateManagement/blocs/image_picker_bloc.dart';
-import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
-import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'package:jendela_dbp/view/authentication/create_new_password.dart';
 import 'package:jendela_dbp/view/authentication/forgot_password.dart';
 import 'package:jendela_dbp/view/authentication/signin.dart';
@@ -33,8 +32,6 @@ import 'package:jendela_dbp/view/onboarding/onboard_screen.dart';
 import 'package:jendela_dbp/view/pages/savedBooks/liked_books.dart';
 import 'package:jendela_dbp/controllers/liked_books_management.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hive_book_model.dart';
-import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
 
 final ValueNotifier<bool> showHomeNotifier = ValueNotifier<bool>(false);
 
@@ -63,14 +60,12 @@ void main() async {
       ),
     );
   } else {
-    // Code for other platforms (e.g., Android)
     runApp(JendelaDBP(showHomeNotifier: showHomeNotifier));
   }
 }
 
 class JendelaDBP extends StatefulWidget {
-  const JendelaDBP({Key? key, required this.showHomeNotifier})
-      : super(key: key);
+  const JendelaDBP({Key? key, required this.showHomeNotifier}) : super(key: key);
 
   final bool showHomeNotifier;
 
@@ -89,58 +84,49 @@ class _JendelaDBPState extends State<JendelaDBP> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthCubit>(
-          create: (BuildContext context) => AuthCubit(),
-        ),
-        BlocProvider<ImageBloc>(
-          create: (BuildContext context) => ImageBloc(),
-        ),
-        BlocProvider(
-          create: (context) => LikedStatusCubit(),
-        ),
-        BlocProvider(
-          create: (context) => PostBloc(),
-        ),
-      ],
-      child: BlocConsumer<AuthCubit, AuthState>(
-        bloc: authCubit,
-        listener: (context, state) {},
-        builder: (BuildContext context, AuthState state) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              useMaterial3: true,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: DbpColor().jendelaGray,
-              ),
-              textTheme: GoogleFonts.interTextTheme(),
-              unselectedWidgetColor: DbpColor().jendelaGray,
-              dividerColor: Colors.transparent,
-            ),
-            routes: {
-              // bottom nav bar
-              '/home': (context) => const MyPersistentBottomNavBar(),
-              '/savedBooks': (context) => const LikedBooks(),
-              '/audiobooks': (context) => const AudiobooksHome(),
+  void dispose() {
+    super.dispose();
+  }
 
-              //authentication
-              '/signup': (context) => const Signup(),
-              '/signin': (context) => const Signin(),
-              '/verification': (context) => const Verification(),
-              '/verificationPassword': (context) =>
-                  const verificationPassword(),
-              '/forgotPassword': (context) => const ForgotPassword(),
-              '/createNewPassword': (context) => const CreateNewPassword()
-            },
-            home: widget.showHomeNotifier
-                ? const MyPersistentBottomNavBar()
-                : const OnboardScreen(),
-          );
-        },
-      ),
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => authCubit,
+      child: BlocConsumer<AuthCubit, AuthState>(
+          bloc: authCubit,
+          listener: (context, state) {},
+          builder: (BuildContext context, AuthState state) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                useMaterial3: true,
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: DbpColor().jendelaGray,
+                ),
+                textTheme: GoogleFonts.interTextTheme(),
+                unselectedWidgetColor: DbpColor().jendelaGray,
+                dividerColor: Colors.transparent,
+              ),
+              routes: {
+                // bottom nav bar
+                '/home': (context) => const MyPersistentBottomNavBar(),
+                '/savedBooks': (context) => const LikedBooks(),
+                '/audiobooks': (context) => const AudiobooksHome(),
+
+                //authentication
+                '/signup': (context) => const Signup(),
+                '/signin': (context) => const Signin(),
+                '/verification': (context) => const Verification(),
+                '/verificationPassword': (context) =>
+                    const verificationPassword(),
+                '/forgotPassword': (context) => const ForgotPassword(),
+                '/createNewPassword': (context) => const CreateNewPassword()
+              },
+              home: widget.showHomeNotifier
+                  ? const MyPersistentBottomNavBar()
+                  : const OnboardScreen(),
+            );
+          }),
     );
   }
 }

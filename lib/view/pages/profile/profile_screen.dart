@@ -33,12 +33,16 @@ class _ProfileScreen extends State<ProfileScreen> {
   final FocusNode _userConfirmPasswordFocusNode = FocusNode();
   int runCount = 1;
   String? currentUser = '';
+  AuthCubit authCubit = AuthCubit();
 
   @override
   void initState() {
     super.initState();
     _userNewPasswordController.text = '';
     _userConfirmPasswordController.text = '';
+    authCubit.getUserLoginOrNot();
+    authCubit.getUser();
+
   }
 
   @override
@@ -99,7 +103,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                 },
                 builder: (context, state) {
                   if (state is AuthLoaded) {
-                    if (state.isAuthenticated == true) {
+                    authCubit.getUserLoginOrNot();
+                    authCubit.getUser();
                       _userNameController.text = state.user!.name ?? '';
                       _userFirstNameController.text =
                           state.user!.firstName ?? '';
@@ -107,7 +112,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                       _userEmailController.text = state.user!.email ?? '';
                       return _userProfileWidget(context,
                           user: state.user ?? User());
-                    }
+                    
                   }
 
                   if (state is AuthLoading) {
@@ -282,6 +287,7 @@ class _ProfileScreen extends State<ProfileScreen> {
           ),
           onPressed: () {
             BlocProvider.of<AuthCubit>(context).logout(context);
+            Navigator.pushNamed(context, '/home');
           },
           child: const Text(
             'Log Keluar',

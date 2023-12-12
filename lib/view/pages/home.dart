@@ -61,69 +61,79 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     List<int> bookList = bookAPIBox.keys.cast<int>().toList();
-    return Scaffold(
-      backgroundColor: Colors.white,
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        key: appBarKey,
-        centerTitle: true,
-        title: const Text('Laman Utama'),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: GestureDetector(
-              onTap: () {
-                _scaffoldKey.currentState?.openDrawer();
-              },
-              child: Image.asset('assets/images/logo.png')
-              // CircleAvatar(
-              //   backgroundImage:
-              //       context.watch<ImageBloc>().selectedImageProvider ??
-              //           const AssetImage('assets/images/logo.png'),
-              // ),
+    return BlocProvider(
+      create: (context) => postBloc,
+      child: BlocConsumer<PostBloc, PostState>(
+        bloc: postBloc,
+        listener: (context, state) {},
+        builder: (BuildContext context, PostState state) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            key: _scaffoldKey,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              key: appBarKey,
+              centerTitle: true,
+              title: const Text('Laman Utama'),
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: GestureDetector(
+                    onTap: () {
+                      _scaffoldKey.currentState?.openDrawer();
+                    },
+                    child: Image.asset('assets/images/logo.png')
+                    // CircleAvatar(
+                    //   backgroundImage:
+                    //       context.watch<ImageBloc>().selectedImageProvider ??
+                    //           const AssetImage('assets/images/logo.png'),
+                    // ),
+                    ),
               ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: CartIcon(),
-          ),
-        ],
-      ),
-      drawer: const HomeDrawer(),
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar(
-            floating: true,
-            snap: true,
-            elevation: 0.0,
-            toolbarHeight: 0.01,
-          ),
-          SliverFillRemaining(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                connectionCubit.checkConnection(context);
-                postBloc.add(PostFetch());
-                articleBloc.add(ArticleFetch());
-                setState(() {});
-              },
-              child: ListView(
-                children: [
-                  _post(context),
-                  _article(context),
-                  for (int i = 1; i < 9; i++) _articleCategory(context, i),
-                  bookShelf(
-                    context,
-                    "Buku",
-                    0,
-                    bookList,
-                    bookAPIBox,
-                  )
-                ],
-              ),
+              actions: const [
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: CartIcon(),
+                ),
+              ],
             ),
-          )
-        ],
+            drawer: const HomeDrawer(),
+            body: CustomScrollView(
+              slivers: [
+                const SliverAppBar(
+                  floating: true,
+                  snap: true,
+                  elevation: 0.0,
+                  toolbarHeight: 0.01,
+                ),
+                SliverFillRemaining(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      connectionCubit.checkConnection(context);
+                      postBloc.add(PostFetch());
+                      articleBloc.add(ArticleFetch());
+                      setState(() {});
+                    },
+                    child: ListView(
+                      children: [
+                        _post(context),
+                        _article(context),
+                        for (int i = 1; i < 9; i++)
+                          _articleCategory(context, i),
+                        bookShelf(
+                          context,
+                          "Buku",
+                          0,
+                          bookList,
+                          bookAPIBox,
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }

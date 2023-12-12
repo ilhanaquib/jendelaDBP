@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/components/bookDetail/no_format.dart';
 import 'package:jendela_dbp/components/cart/cart_icon.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
@@ -16,7 +15,6 @@ import 'package:jendela_dbp/components/bookDetail/bought_book_bottom_sheet.dart'
 import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'package:jendela_dbp/view/pages/audiobooks/audiobooks.dart';
 
 // ignore: must_be_immutable
@@ -64,11 +62,11 @@ class _BookDetailState extends State<BookDetail> {
     //     context.read<LikedStatusCubit>().state[widget.book!.id!] ?? false;
 
     // Listen to changes in liked status through the cubit
-    context.read<LikedStatusCubit>().stream.listen((state) {
-      // setState(() {
-      //   _isBookLiked = state[widget.bookId] ?? false;
-      // });
-    });
+    //context.read<LikedStatusCubit>().stream.listen((state) {
+    //   // setState(() {
+    //   //   _isBookLiked = state[widget.bookId] ?? false;
+    //   // });
+    // });
   }
 
   // void _toggleLikedStatus() async {
