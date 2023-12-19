@@ -30,7 +30,7 @@ class ArticleSlideshowCard extends StatefulWidget {
   final bool bookmark;
   final Article article;
   final double textSize;
-  final pageContoller;
+  final PageController pageContoller;
   @override
   State<ArticleSlideshowCard> createState() => _HomeArticleCard();
 }
@@ -51,7 +51,7 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
     if (parts.length >= 3) {
       String firstPart = parts[0];
       String modifiedFirstPart =
-          firstPart.substring(0, 5) + ' ' + firstPart.substring(5);
+          '${firstPart.substring(0, 5)} ${firstPart.substring(5)}';
       return modifiedFirstPart[0].toUpperCase() +
           modifiedFirstPart.toUpperCase().substring(1);
     }
@@ -101,7 +101,7 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
                           Colors.transparent,
                           Colors.black.withOpacity(1)
                         ],
-                        stops: [0.6, 1.0],
+                        stops: const [0.6, 1.0],
                       ),
                     ),
                   ),

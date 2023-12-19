@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
-import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:jendela_dbp/hive/models/hive_article_model.dart';
 import 'package:jendela_dbp/view/pages/postAndArticles/articles/article_detail_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';

@@ -237,18 +237,24 @@ class _Signin extends State<Signin> {
                             ),
                           )),
                       testInternetAccess
-                          ? LoadingAnimationWidget.discreteCircle(
-                              color: DbpColor().jendelaGray,
-                              secondRingColor: DbpColor().jendelaGreen,
-                              thirdRingColor: DbpColor().jendelaOrange,
-                              size: 50.0,
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 24.0),
+                              child: LoadingAnimationWidget.discreteCircle(
+                                color: DbpColor().jendelaGray,
+                                secondRingColor: DbpColor().jendelaGreen,
+                                thirdRingColor: DbpColor().jendelaOrange,
+                                size: 50.0,
+                              ),
                             )
                           : isToLogin
-                              ? LoadingAnimationWidget.discreteCircle(
-                                  color: DbpColor().jendelaGray,
-                                  secondRingColor: DbpColor().jendelaGreen,
-                                  thirdRingColor: DbpColor().jendelaOrange,
-                                  size: 50.0,
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 24.0),
+                                  child: LoadingAnimationWidget.discreteCircle(
+                                    color: DbpColor().jendelaGray,
+                                    secondRingColor: DbpColor().jendelaGreen,
+                                    thirdRingColor: DbpColor().jendelaOrange,
+                                    size: 50.0,
+                                  ),
                                 )
                               : SizedBox(
                                   height: 70,
@@ -267,7 +273,7 @@ class _Signin extends State<Signin> {
                                       ),
                                       onPressed: () async {
                                         isLoading = true;
-                                        
+
                                         FocusScopeNode currentFocus =
                                             FocusScope.of(context);
                                         currentFocus.unfocus();

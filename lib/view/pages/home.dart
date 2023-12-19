@@ -347,7 +347,7 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 24, bottom: 12),
+            padding: const EdgeInsets.only(left: 24, bottom: 12, right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -362,7 +362,10 @@ class _HomeState extends State<Home> {
                       screen: const AllArticle(),
                     );
                   },
-                  child: const Text('Lihat Semua'),
+                  child: Text(
+                    'Lihat Semua',
+                    style: TextStyle(color: DbpColor().jendelaGray),
+                  ),
                 )
               ],
             ),
@@ -494,7 +497,7 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 24, bottom: 12),
+            padding: const EdgeInsets.only(left: 24, bottom: 12, right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -510,7 +513,10 @@ class _HomeState extends State<Home> {
                       screen: CategorizedArticles(i: i),
                     );
                   },
-                  child: const Text('Lihat Semua'),
+                  child: Text(
+                    'Lihat Semua',
+                    style: TextStyle(color: DbpColor().jendelaGray),
+                  ),
                 )
               ],
             ),

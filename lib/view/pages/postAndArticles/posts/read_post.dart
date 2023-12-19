@@ -7,10 +7,7 @@ import 'package:jendela_dbp/stateManagement/events/post_event.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:html/parser.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
-import 'package:jendela_dbp/hive/models/hive_article_model.dart';
-import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
-import 'package:jendela_dbp/stateManagement/events/article_event.dart';
 
 class ReadPost extends StatefulWidget {
   const ReadPost({Key? key, this.post}) : super(key: key);

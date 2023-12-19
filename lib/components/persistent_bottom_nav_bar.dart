@@ -1,8 +1,6 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/view/pages/home.dart';
-import 'package:jendela_dbp/view/pages/postAndArticles/post_and_article.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -25,11 +23,11 @@ class MyPersistentBottomNavBar extends StatefulWidget {
 enum UniLinksType { string, uri }
 
 class _MyPersistentBottomNavBarState extends State<MyPersistentBottomNavBar> with SingleTickerProviderStateMixin {
-  String? _latestLink = 'Unknown';
-  Uri? _latestUri;
-  final UniLinksType _type = UniLinksType.string;
-  // ignore: unused_field
-  StreamSubscription? _sub;
+  // String? _latestLink = 'Unknown';
+  // Uri? _latestUri;
+  // final UniLinksType _type = UniLinksType.string;
+  // // ignore: unused_field
+  // StreamSubscription? _sub;
 
   @override
   void initState() {

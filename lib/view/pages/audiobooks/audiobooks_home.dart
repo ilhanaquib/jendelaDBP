@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:math';
 
@@ -33,10 +35,6 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
   //-----custom refresh indicator----
 
   static const _circleSize = 70.0;
-
-  static const _defaultShadow = [
-    BoxShadow(blurRadius: 10, color: Colors.black26)
-  ];
 
   double _progress = 0.0;
 

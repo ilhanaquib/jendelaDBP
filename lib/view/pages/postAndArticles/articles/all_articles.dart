@@ -7,13 +7,10 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:jendela_dbp/components/article/article_card.dart';
 import 'package:jendela_dbp/components/cart/cart_icon.dart';
 import 'package:jendela_dbp/components/posts/error_card.dart';
-import 'package:jendela_dbp/components/posts/post_card.dart';
-import 'package:jendela_dbp/components/posts/post_not_found_card.dart';
 import 'package:jendela_dbp/components/ujana/home_drawer.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:jendela_dbp/hive/models/hive_article_model.dart';
-import 'package:jendela_dbp/hive/models/hive_post_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/connection_cubit.dart';
@@ -194,9 +191,9 @@ class _AllArticleState extends State<AllArticle> {
             if (data is ArticleError) {
               return const ErrorCard(message: 'error');
             }
-            return SizedBox(
-              height: 300,
-              child: Center(
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 300.0),
                 child: LoadingAnimationWidget.discreteCircle(
                   color: DbpColor().jendelaGray,
                   secondRingColor: DbpColor().jendelaGreen,

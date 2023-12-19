@@ -235,19 +235,25 @@ class _LoginCard extends State<LoginCard> {
                           ),
                         )),
                     testInternetAccess
-                        ? LoadingAnimationWidget.discreteCircle(
-                            color: DbpColor().jendelaGray,
-                            secondRingColor: DbpColor().jendelaGreen,
-                            thirdRingColor: DbpColor().jendelaOrange,
-                            size: 50.0,
-                          )
+                        ? Padding(
+                          padding: const EdgeInsets.only(top:24.0),
+                          child: LoadingAnimationWidget.discreteCircle(
+                              color: DbpColor().jendelaGray,
+                              secondRingColor: DbpColor().jendelaGreen,
+                              thirdRingColor: DbpColor().jendelaOrange,
+                              size: 50.0,
+                            ),
+                        )
                         : isToLogin
-                            ? LoadingAnimationWidget.discreteCircle(
-                                color: DbpColor().jendelaGray,
-                                secondRingColor: DbpColor().jendelaGreen,
-                                thirdRingColor: DbpColor().jendelaOrange,
-                                size: 50.0,
-                              )
+                            ? Padding(
+                              padding: const EdgeInsets.only(top:24.0),
+                              child: LoadingAnimationWidget.discreteCircle(
+                                  color: DbpColor().jendelaGray,
+                                  secondRingColor: DbpColor().jendelaGreen,
+                                  thirdRingColor: DbpColor().jendelaOrange,
+                                  size: 50.0,
+                                ),
+                            )
                             : SizedBox(
                                 height: 70,
                                 width: 500,

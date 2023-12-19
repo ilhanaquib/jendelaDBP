@@ -17,6 +17,7 @@ import 'package:jendela_dbp/stateManagement/blocs/poduct_bloc.dart';
 import 'package:jendela_dbp/stateManagement/events/article_event.dart';
 import 'package:jendela_dbp/stateManagement/states/article_state.dart';
 
+// ignore: must_be_immutable
 class CategorizedArticles extends StatefulWidget {
   CategorizedArticles({super.key, required this.i});
 
@@ -103,10 +104,9 @@ class _CategorizedArticlesState extends State<CategorizedArticles> {
               child: ListView(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: //_articleCategory(context, widget.i),
-                    _articleListBig(context, widget.i)
-                  ),
+                      padding: const EdgeInsets.only(bottom: 24),
+                      child: //_articleCategory(context, widget.i),
+                          _articleListBig(context, widget.i)),
                 ],
               ),
             ),
@@ -190,9 +190,9 @@ class _CategorizedArticlesState extends State<CategorizedArticles> {
             if (data is ArticleError) {
               return const ErrorCard(message: 'error');
             }
-            return SizedBox(
-              height: 300,
-              child: Center(
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 300.0),
                 child: LoadingAnimationWidget.discreteCircle(
                   color: DbpColor().jendelaGray,
                   secondRingColor: DbpColor().jendelaGreen,

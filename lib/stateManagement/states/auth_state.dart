@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides, overridden_fields
+
 import 'package:equatable/equatable.dart';
 import 'package:jendela_dbp/model/user_model.dart';
 

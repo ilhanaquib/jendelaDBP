@@ -462,16 +462,21 @@ class AuthCubit extends Cubit<AuthState> {
             // await getKategori(context, data['token'], GlobalVar.kategori14);
 
             isToLogin = false;
-            emit(AuthLoaded(
-                isAuthenticated: true,
-                hideNavigationBar: hideNavigationBar,
-                user: user));
+            emit(
+              AuthLoaded(
+                  isAuthenticated: true,
+                  hideNavigationBar: hideNavigationBar,
+                  user: user),
+            );
           } else if (response.statusCode >= 300) {
             // Fail response
-            emit(AuthError(
-                isAuthenticated: false,
-                hideNavigationBar: hideNavigationBar,
-                message: 'Nama Pengguna atau Kata Laluan Salah @ Kod: $statusCode'));
+            emit(
+              AuthError(
+                  isAuthenticated: false,
+                  hideNavigationBar: hideNavigationBar,
+                  message:
+                      'Nama Pengguna atau Kata Laluan Salah @ Kod: $statusCode'),
+            );
             return {
               'isToLogin': isToLogin,
               'formKey': formKey,

@@ -1,15 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:text_scroll/text_scroll.dart';
-import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
-import 'package:alh_pdf_view/controller/alh_pdf_internal_controller.dart';
-import 'package:alh_pdf_view/controller/alh_pdf_view_controller.dart';
 import 'package:alh_pdf_view/lib.dart';
-import 'package:alh_pdf_view/model/alh_pdf_view_creation_params.dart';
-import 'package:alh_pdf_view/model/fit_policy.dart';
 import 'package:alh_pdf_view/view/alh_pdf_view.dart';
 
 // ignore: must_be_immutable

@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
-import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:jendela_dbp/controllers/dbp_color.dart';
@@ -48,7 +47,7 @@ class _HomeArticleCard extends State<HomeArticleCard> {
     if (parts.length >= 3) {
       String firstPart = parts[0];
       String modifiedFirstPart =
-          firstPart.substring(0, 5) + ' ' + firstPart.substring(5);
+          '${firstPart.substring(0, 5)} ${firstPart.substring(5)}';
       return modifiedFirstPart[0].toUpperCase() +
           modifiedFirstPart.toUpperCase().substring(1);
     }
@@ -57,17 +56,6 @@ class _HomeArticleCard extends State<HomeArticleCard> {
 
   @override
   Widget build(BuildContext context) {
-    double aspectRatio1;
-    if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
-      aspectRatio1 = 22;
-    } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
-      aspectRatio1 = 1;
-    } else {
-      // Use the default padding for phones and other devices
-      aspectRatio1 = 1;
-    }
     return GestureDetector(
       onTap: () {
         if (Platform.isWindows) {
@@ -114,7 +102,7 @@ class _HomeArticleCard extends State<HomeArticleCard> {
                               Colors.transparent,
                               Colors.black.withOpacity(1)
                             ],
-                            stops: [0.6, 1.0],
+                            stops: const [0.6, 1.0],
                           ),
                         ),
                       ),
