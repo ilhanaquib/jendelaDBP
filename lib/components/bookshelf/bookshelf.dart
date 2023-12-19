@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:hive/hive.dart';
+import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/bookshelf/books_inside_shelf.dart';
@@ -27,10 +29,13 @@ Widget bookShelf(
               PersistentNavBarNavigator.pushNewScreen(
                 context,
                 withNavBar: false,
-                screen: AllBooks(
-                    categoryTitle: categoryTitle,
-                    listBook: listBook,
-                    bookBox: apiBook),
+                screen: BlocProvider(
+                  create: (context) => LikedStatusCubit(),
+                  child: AllBooks(
+                      categoryTitle: categoryTitle,
+                      listBook: listBook,
+                      bookBox: apiBook),
+                ),
               );
             },
           ),

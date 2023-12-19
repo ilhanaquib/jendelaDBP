@@ -1,14 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
-import 'package:jendela_dbp/api_services.dart';
-import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/model/user_model.dart';
-import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
 import 'package:jendela_dbp/view/pages/home.dart';
 import 'package:jendela_dbp/view/pages/postAndArticles/post_and_article.dart';
 
@@ -18,8 +10,7 @@ import 'package:jendela_dbp/view/pages/ujana.dart';
 import 'package:jendela_dbp/view/pages/savedBooks/saved_books_home.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/view/pages/audiobooks/audiobooks_home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uni_links/uni_links.dart';
+
 
 class MyPersistentBottomNavBar extends StatefulWidget {
   const MyPersistentBottomNavBar({
@@ -43,7 +34,7 @@ class _MyPersistentBottomNavBarState extends State<MyPersistentBottomNavBar> wit
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    //initPlatformState();
   }
 
   @override
@@ -54,7 +45,7 @@ class _MyPersistentBottomNavBarState extends State<MyPersistentBottomNavBar> wit
     List<Widget> buildScreens() {
       return [
         const Home(),
-        const PostAndArticle(),
+        // const PostAndArticle(),
         const Ujana(),
         const AudiobooksHome(),
         const SavedBooksHome(),
@@ -71,12 +62,12 @@ class _MyPersistentBottomNavBarState extends State<MyPersistentBottomNavBar> wit
           activeColorPrimary: DbpColor().jendelaOrange,
           inactiveColorPrimary: DbpColor().jendelaGray,
         ),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.article_rounded),
-          title: "Posts",
-          activeColorPrimary: DbpColor().jendelaOrange,
-          inactiveColorPrimary: DbpColor().jendelaGray,
-        ),
+        // PersistentBottomNavBarItem(
+        //   icon: const Icon(Icons.article_rounded),
+        //   title: "Posts",
+        //   activeColorPrimary: DbpColor().jendelaOrange,
+        //   inactiveColorPrimary: DbpColor().jendelaGray,
+        // ),
         PersistentBottomNavBarItem(
           icon: const Icon(
             Icons.local_library_outlined,
@@ -126,158 +117,158 @@ class _MyPersistentBottomNavBarState extends State<MyPersistentBottomNavBar> wit
     );
   }
 
-  initPlatformState() async {
-    if (_type == UniLinksType.string) {
-      await initPlatformStateForStringUniLinks();
-    } else {
-      await initPlatformStateForUriUniLinks();
-    }
-    await handleUniLinks();
-  }
+  // initPlatformState() async {
+  //   if (_type == UniLinksType.string) {
+  //     await initPlatformStateForStringUniLinks();
+  //   } else {
+  //     await initPlatformStateForUriUniLinks();
+  //   }
+  //   await handleUniLinks();
+  // }
 
-  /// An implementation using a [String] link
-  initPlatformStateForStringUniLinks() async {
-    // Attach a listener to the links stream
-    _sub = linkStream.listen((String? link) {
-      if (!mounted) return;
-      setState(() {
-        _latestLink = link ?? 'Unknown';
-        _latestUri = null;
-        try {
-          if (link != null) _latestUri = Uri.parse(link);
-        // ignore: empty_catches
-        } on FormatException {}
-      });
-    }, onError: (err) {
-      if (!mounted) return;
-      setState(() {
-        _latestLink = 'Failed to get latest link: $err.';
-        _latestUri = null;
-      });
-    });
+  // /// An implementation using a [String] link
+  // initPlatformStateForStringUniLinks() async {
+  //   // Attach a listener to the links stream
+  //   _sub = linkStream.listen((String? link) {
+  //     if (!mounted) return;
+  //     setState(() {
+  //       _latestLink = link ?? 'Unknown';
+  //       _latestUri = null;
+  //       try {
+  //         if (link != null) _latestUri = Uri.parse(link);
+  //       // ignore: empty_catches
+  //       } on FormatException {}
+  //     });
+  //   }, onError: (err) {
+  //     if (!mounted) return;
+  //     setState(() {
+  //       _latestLink = 'Failed to get latest link: $err.';
+  //       _latestUri = null;
+  //     });
+  //   });
 
-    // Attach a second listener to the stream
-    linkStream.listen((String? link) {
-      // print('got link: $link');
-    }, onError: (err) {
-      // print('got err: $err');
-    });
+  //   // Attach a second listener to the stream
+  //   linkStream.listen((String? link) {
+  //     // print('got link: $link');
+  //   }, onError: (err) {
+  //     // print('got err: $err');
+  //   });
 
-    // Get the latest link
-    String? initialLink;
-    Uri? initialUri;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      initialLink = await getInitialLink();
-      // print('initial link: $initialLink');
-      if (initialLink != null) initialUri = Uri.parse(initialLink);
-    } on PlatformException {
-      initialLink = 'Failed to get initial link.';
-      initialUri = null;
-    } on FormatException {
-      initialLink = 'Failed to parse the initial link as Uri.';
-      initialUri = null;
-    }
+  //   // Get the latest link
+  //   String? initialLink;
+  //   Uri? initialUri;
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     initialLink = await getInitialLink();
+  //     // print('initial link: $initialLink');
+  //     if (initialLink != null) initialUri = Uri.parse(initialLink);
+  //   } on PlatformException {
+  //     initialLink = 'Failed to get initial link.';
+  //     initialUri = null;
+  //   } on FormatException {
+  //     initialLink = 'Failed to parse the initial link as Uri.';
+  //     initialUri = null;
+  //   }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+  //   // If the widget was removed from the tree while the asynchronous platform
+  //   // message was in flight, we want to discard the reply rather than calling
+  //   // setState to update our non-existent appearance.
+  //   if (!mounted) return;
 
-    setState(() {
-      _latestLink = initialLink;
-      _latestUri = initialUri;
-    });
-  }
+  //   setState(() {
+  //     _latestLink = initialLink;
+  //     _latestUri = initialUri;
+  //   });
+  // }
 
-  /// An implementation using the [Uri] convenience helpers
-  initPlatformStateForUriUniLinks() async {
-    // Attach a listener to the Uri links stream
-    _sub = uriLinkStream.listen((Uri? uri) {
-      if (!mounted) return;
-      setState(() {
-        _latestUri = uri;
-        _latestLink = uri?.toString() ?? 'Unknown';
-      });
-    }, onError: (err) {
-      if (!mounted) return;
-      setState(() {
-        _latestUri = null;
-        _latestLink = 'Failed to get latest link: $err.';
-      });
-    });
+  // /// An implementation using the [Uri] convenience helpers
+  // initPlatformStateForUriUniLinks() async {
+  //   // Attach a listener to the Uri links stream
+  //   _sub = uriLinkStream.listen((Uri? uri) {
+  //     if (!mounted) return;
+  //     setState(() {
+  //       _latestUri = uri;
+  //       _latestLink = uri?.toString() ?? 'Unknown';
+  //     });
+  //   }, onError: (err) {
+  //     if (!mounted) return;
+  //     setState(() {
+  //       _latestUri = null;
+  //       _latestLink = 'Failed to get latest link: $err.';
+  //     });
+  //   });
 
-    // Attach a second listener to the stream
-    uriLinkStream.listen((Uri? uri) {
-      // print('got uri: ${uri?.path} ${uri?.queryParametersAll}');
-    }, onError: (err) {
-      // print('got err: $err');
-    });
+  //   // Attach a second listener to the stream
+  //   uriLinkStream.listen((Uri? uri) {
+  //     // print('got uri: ${uri?.path} ${uri?.queryParametersAll}');
+  //   }, onError: (err) {
+  //     // print('got err: $err');
+  //   });
 
-    // Get the latest Uri
-    Uri? initialUri;
-    String? initialLink;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      initialUri = await getInitialUri();
-      // print('initial uri: ${initialUri?.path}'
-      // ' ${initialUri?.queryParametersAll}');
-      initialLink = initialUri?.toString();
-    } on PlatformException {
-      initialUri = null;
-      initialLink = 'Failed to get initial uri.';
-    } on FormatException {
-      initialUri = null;
-      initialLink = 'Bad parse the initial link as Uri.';
-    }
+  //   // Get the latest Uri
+  //   Uri? initialUri;
+  //   String? initialLink;
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     initialUri = await getInitialUri();
+  //     // print('initial uri: ${initialUri?.path}'
+  //     // ' ${initialUri?.queryParametersAll}');
+  //     initialLink = initialUri?.toString();
+  //   } on PlatformException {
+  //     initialUri = null;
+  //     initialLink = 'Failed to get initial uri.';
+  //   } on FormatException {
+  //     initialUri = null;
+  //     initialLink = 'Bad parse the initial link as Uri.';
+  //   }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+  //   // If the widget was removed from the tree while the asynchronous platform
+  //   // message was in flight, we want to discard the reply rather than calling
+  //   // setState to update our non-existent appearance.
+  //   if (!mounted) return;
 
-    setState(() {
-      _latestUri = initialUri;
-      _latestLink = initialLink;
-    });
-  }
+  //   setState(() {
+  //     _latestUri = initialUri;
+  //     _latestLink = initialLink;
+  //   });
+  // }
 
-  Future<void> handleUniLinks() async {
-    if (_latestUri != null || _latestLink != null) {
-      Uri theLink = _latestUri ??
-          Uri.parse(_latestLink ?? ('https://${GlobalVar.baseURLDomain}'));
-      String host = theLink.host;
-      String scheme = theLink.scheme;
-      String authority = theLink.authority;
-      if (host == 'callback' || authority == 'callback') {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        bool isAppleSignin = prefs.getBool('isAppleSignin') ?? false;
-        if (scheme == 'signinwithapple' && isAppleSignin == true) {
-          // proceed with signinwithapple
-          Map<String, List<String>> queryParams = theLink.queryParametersAll;
-          // get user object
-          Response userRes =
-              await ApiService.maklumatPengguna(queryParams['token']?[0]);
-          if (userRes.statusCode == 200) {
-            var userRespBody = json.decode(userRes.body);
-            User user = User.fromJson(userRespBody);
-            // set is apple signin status to false
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setBool('isAppleSignin', false);
-            // login user with token
-            if(!context.mounted) return;
-            await BlocProvider.of<AuthCubit>(context).saveAuthUserToLocal(
-                username: queryParams['user_email']?[0] ?? '',
-                user: user,
-                token: queryParams['token']?[0] ?? '');
-            setState(() async {
-              _latestUri = null;
-              _latestLink = null;
-              await BlocProvider.of<AuthCubit>(context).getUser();
-            });
-          }
-        }
-      }
-    }
-  }
+  // Future<void> handleUniLinks() async {
+  //   if (_latestUri != null || _latestLink != null) {
+  //     Uri theLink = _latestUri ??
+  //         Uri.parse(_latestLink ?? ('https://${GlobalVar.baseURLDomain}'));
+  //     String host = theLink.host;
+  //     String scheme = theLink.scheme;
+  //     String authority = theLink.authority;
+  //     if (host == 'callback' || authority == 'callback') {
+  //       SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       bool isAppleSignin = prefs.getBool('isAppleSignin') ?? false;
+  //       if (scheme == 'signinwithapple' && isAppleSignin == true) {
+  //         // proceed with signinwithapple
+  //         Map<String, List<String>> queryParams = theLink.queryParametersAll;
+  //         // get user object
+  //         Response userRes =
+  //             await ApiService.maklumatPengguna(queryParams['token']?[0]);
+  //         if (userRes.statusCode == 200) {
+  //           var userRespBody = json.decode(userRes.body);
+  //           User user = User.fromJson(userRespBody);
+  //           // set is apple signin status to false
+  //           SharedPreferences prefs = await SharedPreferences.getInstance();
+  //           prefs.setBool('isAppleSignin', false);
+  //           // login user with token
+  //           if(!context.mounted) return;
+  //           await BlocProvider.of<AuthCubit>(context).saveAuthUserToLocal(
+  //               username: queryParams['user_email']?[0] ?? '',
+  //               user: user,
+  //               token: queryParams['token']?[0] ?? '');
+  //           setState(() async {
+  //             _latestUri = null;
+  //             _latestLink = null;
+  //             await BlocProvider.of<AuthCubit>(context).getUser();
+  //           });
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 }

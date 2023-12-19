@@ -35,7 +35,9 @@ Future<Box<HiveBookAPI>> getKategori(context, generateToken, kategori) async {
     } else if (response.statusCode == 200) {
       for (int i = 0; i < data.length; i++) {
         HiveBookAPI bookNew = HiveBookAPI.fromJson(data[i]);
-        bookAPIBox.add(bookNew);
+        if (!bookAPIBox.values.any((book) => book.id == bookNew.id)) {
+          bookAPIBox.add(bookNew);
+        }
       }
     }
   } catch (exception, stackTrace) {

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/components/bookReader/new_pdf_viewer.dart';
 import 'package:jendela_dbp/components/bookReader/pdf_viewer.dart';
 
 import 'package:jendela_dbp/components/bukuDibeli/book_information.dart';
@@ -388,9 +389,9 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                           DbpColor().jendelaGreen), // Green background
                       overlayColor: MaterialStateProperty.all<Color>(
                           Colors.transparent), // No overlay color
-                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
-                          color: DbpColor().jendelaGreen,
-                          width: 2)), // Green border
+                      side: MaterialStateProperty.all<BorderSide>(
+                        BorderSide(color: DbpColor().jendelaGreen, width: 2),
+                      ), // Green border
                     ),
                     child: const Row(
                       children: [
@@ -499,7 +500,8 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                         PersistentNavBarNavigator.pushNewScreen(
                           context,
                           withNavBar: false,
-                          screen: PdfViewerPage(
+                          screen: 
+                          PdfViewerPage(
                             pdfPath: decryptedFile,
                             bookName: widget.purchasedBook.productName!,
                           ),

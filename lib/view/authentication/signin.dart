@@ -267,23 +267,7 @@ class _Signin extends State<Signin> {
                                       ),
                                       onPressed: () async {
                                         isLoading = true;
-                                        //   var connectivityResult =
-                                        //       await (Connectivity()
-                                        //           .checkConnectivity());
-                                        //   if (connectivityResult ==
-                                        //           ConnectivityResult.mobile ||
-                                        //       connectivityResult ==
-                                        //           ConnectivityResult.wifi) {
-                                        //     _login();
-                                        //   } else {
-                                        //     ScaffoldMessenger.of(context)
-                                        //         .showSnackBar(SnackBar(
-                                        //       behavior: SnackBarBehavior.floating,
-                                        //       content:
-                                        //           Text('Tiada Sambungan Internet'),
-                                        //       duration: Duration(seconds: 3),
-                                        //     ));
-                                        //   }
+                                        
                                         FocusScopeNode currentFocus =
                                             FocusScope.of(context);
                                         currentFocus.unfocus();

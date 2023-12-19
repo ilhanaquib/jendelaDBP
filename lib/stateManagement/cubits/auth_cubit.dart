@@ -429,7 +429,7 @@ class AuthCubit extends Cubit<AuthState> {
               emit(AuthError(
                   isAuthenticated: false,
                   hideNavigationBar: hideNavigationBar,
-                  message: 'Session Expired. Please login again'));
+                  message: 'Sesi tamat tempoh. sila log masuk sekali lagi'));
               return {
                 'isToLogin': isToLogin,
                 'formKey': formKey,
@@ -471,7 +471,7 @@ class AuthCubit extends Cubit<AuthState> {
             emit(AuthError(
                 isAuthenticated: false,
                 hideNavigationBar: hideNavigationBar,
-                message: 'Session Expired. Please login again'));
+                message: 'Nama Pengguna atau Kata Laluan Salah @ Kod: $statusCode'));
             return {
               'isToLogin': isToLogin,
               'formKey': formKey,
@@ -483,7 +483,7 @@ class AuthCubit extends Cubit<AuthState> {
             emit(AuthError(
                 isAuthenticated: false,
                 hideNavigationBar: hideNavigationBar,
-                message: 'Nama Pengguna atau Kata Laluan Salah @ Code:' +
+                message: 'Nama Pengguna atau Kata Laluan Salah @ Kod:' +
                     statusCode.toString()));
 
             isToLogin = false;

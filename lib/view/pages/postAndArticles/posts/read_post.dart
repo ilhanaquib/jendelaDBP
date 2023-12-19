@@ -1,98 +1,88 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:html/parser.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jendela_dbp/hive/models/hive_post_model.dart';
-import 'package:text_scroll/text_scroll.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
+import 'package:jendela_dbp/stateManagement/events/post_event.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:html/parser.dart';
+import 'package:jendela_dbp/controllers/dbp_color.dart';
+import 'package:jendela_dbp/hive/models/hive_article_model.dart';
+import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
+import 'package:jendela_dbp/stateManagement/cubits/auth_cubit.dart';
+import 'package:jendela_dbp/stateManagement/events/article_event.dart';
 
 class ReadPost extends StatefulWidget {
-  const ReadPost({super.key, required this.post});
+  const ReadPost({Key? key, this.post}) : super(key: key);
 
-  final Post post;
+  final Post? post;
 
   @override
-  State<ReadPost> createState() => _ReadPostState();
+  State<ReadPost> createState() => _ArticleDetailScreen();
 }
 
-class _ReadPostState extends State<ReadPost> {
+class _ArticleDetailScreen extends State<ReadPost> {
+  PostBloc relatedPostBloc = PostBloc();
+  late AuthCubit _authCubit;
+
+  @override
+  void initState() {
+    relatedPostBloc.add(PostFetch());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    relatedPostBloc.close();
+    _authCubit.setHideNavigationBar(hideNavBar: false);
+    super.dispose();
+  }
+
+  DbpColor colors = DbpColor();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TextScroll(
-          widget.post.title!,
-          mode: TextScrollMode.bouncing,
-          velocity: const Velocity(
-            pixelsPerSecond: Offset(50, 0),
-          ),
-          selectable: true,
-          pauseBetween: const Duration(seconds: 20),
-        ),
+    _authCubit = BlocProvider.of<AuthCubit>(context);
+    _authCubit.setHideNavigationBar(hideNavBar: true);
+    Uri uri =
+        Uri.parse(widget.post!.link ?? "https://{GlobalVar.BaseURLDomain}");
+    Map<String, dynamic> queryParam = uri.queryParameters.map(
+      (key, value) => MapEntry(
+        key,
+        value.toString(),
       ),
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar(
-            floating: true,
-            snap: true,
-            elevation: 0.0,
-            toolbarHeight: 0.01,
-          ),
-          SliverFillRemaining(
-            child: InteractiveViewer(
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8, bottom: 16),
-                          child: Text(
-                            parse(widget.post.title).documentElement?.text ??
-                                '',
-                            textAlign: TextAlign.start,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 5,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24),
-                          ),
-                        ),
-                        HtmlWidget(
-                          widget.post.content!,
-                          onTapUrl: (url) => launchUrl(Uri.parse(url),
-                              mode: LaunchMode.inAppWebView),
-                          textStyle: const TextStyle(fontSize: 16),
-                          customStylesBuilder: ((element) {
-                            if (element.classes.contains('wp-caption-text')) {
-                              return {'color': 'gray', 'font-size': 'smaller'};
-                            }
-                            if (element.classes.contains('statement')) {
-                              return {'color': 'gray', 'font-size': 'smaller'};
-                            }
-                            return null;
-                          }),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: Text(
-                            DateFormat('d MMM yyyy')
-                                .format(DateTime.parse(widget.post.date ?? '')),
-                            style: const TextStyle(
-                                textBaseline: TextBaseline.alphabetic,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+    );
+    queryParam.addAll({'_fromApp': 'y'});
+    WebViewController controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onWebResourceError: (WebResourceError error) {},
+        ),
+      )
+      ..loadRequest(uri);
+
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: Text(
+            parse(widget.post?.title).body?.text ?? '',
+            // textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.black.withOpacity(0.7),
+              fontWeight: FontWeight.bold,
             ),
-          )
-        ],
+          ),
+          iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: colors.bgPrimaryColor,
+        ),
+        body: WebViewWidget(
+          controller: controller,
+        ),
       ),
     );
   }

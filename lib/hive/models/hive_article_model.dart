@@ -37,7 +37,8 @@ class Article {
       this.edbpLiveStatus,
       this.categories,
       this.tags,
-      this.featuredImage2});
+      this.featuredImage2,
+      this.domain});
   @HiveField(0)
   String? blogId;
   @HiveField(1)
@@ -104,11 +105,14 @@ class Article {
   List<dynamic>? tags;
   @HiveField(32)
   String? featuredImage2;
+  @HiveField(33)
+  String? domain;
 
   static Article fromJson(Map jsonString) {
     return Article(
         blogId: jsonString['BLOG_ID'],
         id: jsonString['ID'],
+        domain: jsonString['domain'],
         postAuthor: jsonString['post_author'],
         postDate: jsonString['post_date'],
         postDateGmt: jsonString['post_date_gmt'],
@@ -144,6 +148,7 @@ class Article {
         featuredImage2: jsonString['featured_image_2'] == ""
             ? null
             : jsonString['featured_image_2']);
+
   }
 
   Map<String, dynamic> toJson() {
@@ -181,6 +186,7 @@ class Article {
     data['tags'] = tags;
     data['featured_image'] = featuredImage;
     data['featured_image_2'] = featuredImage2;
+    data['domain'] = domain;
     return data;
   }
 }

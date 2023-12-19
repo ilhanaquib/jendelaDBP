@@ -55,7 +55,7 @@ void main() async {
     WindowManager.instance.setMinimumSize(const Size(850, 650));
     runApp(
       DevicePreview(
-        enabled: false,
+        enabled: true,
         builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
       ),
     );

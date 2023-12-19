@@ -12,8 +12,8 @@ class PostNotFoundCard extends StatelessWidget {
       hideBackgroundAnimation: true,
       image: null,
       packageImage: PackageImage.Image_4,
-      title: 'Missing Posts',
-      subTitle: 'Sorry, The Posts You\'re Looking for Are Not Here.',
+      title: 'Tiada Siaran',
+      subTitle: 'Maaf, tiada siaran tersedia',
       titleTextStyle: const TextStyle(
         fontSize: 22,
         color: Color(0xff9da9c7),

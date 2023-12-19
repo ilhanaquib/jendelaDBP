@@ -7,5 +7,5 @@ class DbpColor {
   Color jendelaOrange = const Color.fromARGB(255, 235, 127, 35);
   Color jendelaBlack = const Color.fromARGB(255, 51, 51, 51);
   Color jendelaGray = const Color.fromARGB(255, 123, 123, 123);
-
+  Color jendelaTurqoise = const Color.fromARGB(255, 20, 184, 166);
 }

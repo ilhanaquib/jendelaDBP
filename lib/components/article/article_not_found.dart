@@ -12,8 +12,8 @@ class ArticleNotFoundCard extends StatelessWidget {
       hideBackgroundAnimation: true,
       image: null,
       packageImage: PackageImage.Image_4,
-      title: 'Missing Articles',
-      subTitle: 'Sorry, The Artivles You\'re Looking for Are Not Here.',
+      title: 'Tiada Artikel',
+      subTitle: 'Maaf, tiada artikel tersedia',
       titleTextStyle: const TextStyle(
         fontSize: 22,
         color: Color(0xff9da9c7),

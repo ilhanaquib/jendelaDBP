@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:jendela_dbp/components/article/article_slideshow_card.dart';
 import 'package:jendela_dbp/hive/models/hive_book_model.dart';
+import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
+import 'package:jendela_dbp/view/pages/postAndArticles/articles/all_articles.dart';
+import 'package:jendela_dbp/view/pages/postAndArticles/articles/all_articles_categorized.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:jendela_dbp/components/article/article_not_found.dart';
 import 'package:jendela_dbp/components/bookshelf/bookshelf.dart';
@@ -26,6 +31,7 @@ import 'package:jendela_dbp/stateManagement/events/article_event.dart';
 import 'package:jendela_dbp/stateManagement/events/post_event.dart';
 import 'package:jendela_dbp/stateManagement/states/article_state.dart';
 import 'package:jendela_dbp/stateManagement/states/post_state.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -42,6 +48,8 @@ class _HomeState extends State<Home> {
   ProductBloc bookBloc = ProductBloc();
   Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
   ConnectionCubit connectionCubit = ConnectionCubit();
+  final PageController pageController = PageController();
+  int currentPage = 0;
 
   @override
   void initState() {
@@ -61,8 +69,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     List<int> bookList = bookAPIBox.keys.cast<int>().toList();
-    return BlocProvider(
-      create: (context) => postBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => postBloc),
+        BlocProvider(
+          create: (context) => LikedStatusCubit(),
+        )
+      ],
       child: BlocConsumer<PostBloc, PostState>(
         bloc: postBloc,
         listener: (context, state) {},
@@ -115,10 +128,23 @@ class _HomeState extends State<Home> {
                     },
                     child: ListView(
                       children: [
+                        _articleSlideshow(context),
                         _post(context),
+                        const SizedBox(
+                          height: 24,
+                        ),
                         _article(context),
+                        const SizedBox(
+                          height: 24,
+                        ),
                         for (int i = 1; i < 9; i++)
-                          _articleCategory(context, i),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: _articleCategory(context, i),
+                          ),
+                        const SizedBox(
+                          height: 24,
+                        ),
                         bookShelf(
                           context,
                           "Buku",
@@ -143,9 +169,9 @@ class _HomeState extends State<Home> {
     if (ResponsiveLayout.isDesktop(context)) {
       childAspectRatio = 1.1;
     } else if (ResponsiveLayout.isTablet(context)) {
-      childAspectRatio = 1;
+      childAspectRatio = 0.9;
     } else {
-      childAspectRatio = 0.6;
+      childAspectRatio = 0.8;
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
@@ -189,20 +215,29 @@ class _HomeState extends State<Home> {
               }
               return Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
-                child: GridView(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      mainAxisSpacing: 5,
-                      crossAxisSpacing: 5,
-                      childAspectRatio: childAspectRatio),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  children: List.generate(
-                    posts.length,
-                    (index) => HomePostCard(
-                      post: posts[index],
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 19),
+                      child: SizedBox(
+                        child: HomePostCard(post: posts[0]),
+                      ),
                     ),
-                  ),
+                    GridView(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: 18,
+                          childAspectRatio: childAspectRatio),
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: List.generate(
+                        posts.length - 1,
+                        (index) => HomePostCard(
+                          post: posts[index + 1],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             }
@@ -228,25 +263,68 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget _articleSlideshow(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12, bottom: 12),
+      child: BlocBuilder<ArticleBloc, ArticleState>(
+        bloc: articleBloc,
+        builder: (context, data) {
+          if (data is ArticleLoaded) {
+            List<Article> articles = data.listOfArticle?.take(8).toList() ?? [];
+            if (articles.isEmpty) {
+              return const SizedBox(
+                height: 300,
+                child: Center(
+                  child: ArticleNotFoundCard(),
+                ),
+              );
+            }
+            return SizedBox(
+              height: 500, // Set your desired height
+              child: PageView.builder(
+                controller: pageController,
+                //itemCount: articles.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ArticleSlideshowCard(
+                    pageContoller: pageController,
+                    article: articles[index % articles.length],
+                    textSize: ResponsiveLayout.isDesktop(context)
+                        ? 250
+                        : ResponsiveLayout.isTablet(context)
+                            ? 170
+                            : 130,
+                  );
+                },
+              ),
+            );
+          }
+          if (data is ArticleError) {
+            return const ErrorCard(message: 'error');
+          }
+          return SizedBox(
+            height: 300,
+            child: Center(
+              child: LoadingAnimationWidget.discreteCircle(
+                color: DbpColor().jendelaGray,
+                secondRingColor: DbpColor().jendelaGreen,
+                thirdRingColor: DbpColor().jendelaOrange,
+                size: 70.0,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   Widget _article(BuildContext context) {
-    double childAspectRatio;
-    if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
-      childAspectRatio = 1;
-    } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
-      childAspectRatio = 1;
-    } else {
-      // Use the default padding for phones and other devices
-      childAspectRatio = 0.6;
-    }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
       crossAxisCount = 5;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      crossAxisCount = 3;
+      crossAxisCount = 4;
     } else {
       // Use the default padding for phones and other devices
       crossAxisCount = 2;
@@ -254,13 +332,13 @@ class _HomeState extends State<Home> {
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
-      numOfPost = 10;
+      numOfPost = 11;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      numOfPost = 6;
+      numOfPost = 9;
     } else {
       // Use the default padding for phones and other devices
-      numOfPost = 4;
+      numOfPost = 5;
     }
 
     return Padding(
@@ -268,11 +346,25 @@ class _HomeState extends State<Home> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 24),
-            child: Text(
-              'Artikel Terkini',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          Padding(
+            padding: EdgeInsets.only(left: 24, bottom: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Artikel Terkini',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                TextButton(
+                  onPressed: () {
+                    PersistentNavBarNavigator.pushNewScreen(
+                      context,
+                      screen: const AllArticle(),
+                    );
+                  },
+                  child: const Text('Lihat Semua'),
+                )
+              ],
             ),
           ),
           BlocBuilder<ArticleBloc, ArticleState>(
@@ -291,20 +383,42 @@ class _HomeState extends State<Home> {
                 }
                 return Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: GridView(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount,
-                        mainAxisSpacing: 5,
-                        crossAxisSpacing: 5,
-                        childAspectRatio: childAspectRatio),
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: List.generate(
-                      articles.length,
-                      (index) => HomeArticleCard(
-                        article: articles[index],
-                      ),
-                    ),
+                  child: StaggeredGrid.count(
+                    crossAxisCount: crossAxisCount,
+                    mainAxisSpacing: ResponsiveLayout.isDesktop(context)
+                        ? 5
+                        : ResponsiveLayout.isTablet(context)
+                            ? 8
+                            : 10,
+                    crossAxisSpacing: ResponsiveLayout.isDesktop(context)
+                        ? 5
+                        : ResponsiveLayout.isTablet(context)
+                            ? 8
+                            : 8,
+                    children: articles.map((article) {
+                      int index = articles
+                          .indexOf(article); // Index of the current article
+                      int crossAxisCellCount = 2;
+                      int mainAxisCellCount = 2;
+
+                      if (index != 0) {
+                        crossAxisCellCount = 1;
+                        mainAxisCellCount = 1;
+                      }
+
+                      return StaggeredGridTile.count(
+                        crossAxisCellCount: crossAxisCellCount,
+                        mainAxisCellCount: mainAxisCellCount,
+                        child: HomeArticleCard(
+                          article: article,
+                          textSize: ResponsiveLayout.isDesktop(context)
+                              ? 250
+                              : ResponsiveLayout.isTablet(context)
+                                  ? 170
+                                  : 130,
+                        ),
+                      );
+                    }).toList(),
                   ),
                 );
               }
@@ -351,24 +465,13 @@ class _HomeState extends State<Home> {
       8: 'Tunas Cipta',
     };
 
-    double childAspectRatio;
-    if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
-      childAspectRatio = 1;
-    } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
-      childAspectRatio = 1;
-    } else {
-      // Use the default padding for phones and other devices
-      childAspectRatio = 0.6;
-    }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
       crossAxisCount = 5;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      crossAxisCount = 3;
+      crossAxisCount = 4;
     } else {
       // Use the default padding for phones and other devices
       crossAxisCount = 2;
@@ -376,13 +479,13 @@ class _HomeState extends State<Home> {
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
-      numOfPost = 10;
+      numOfPost = 11;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      numOfPost = 6;
+      numOfPost = 9;
     } else {
       // Use the default padding for phones and other devices
-      numOfPost = 4;
+      numOfPost = 5;
     }
 
     return Padding(
@@ -391,10 +494,25 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 24),
-            child: Text(
-              categoryName[i]!,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            padding: EdgeInsets.only(left: 24, bottom: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  categoryName[i]!,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                TextButton(
+                  onPressed: () {
+                    PersistentNavBarNavigator.pushNewScreen(
+                      context,
+                      screen: CategorizedArticles(i: i),
+                    );
+                  },
+                  child: const Text('Lihat Semua'),
+                )
+              ],
             ),
           ),
           BlocBuilder<ArticleBloc, ArticleState>(
@@ -416,20 +534,42 @@ class _HomeState extends State<Home> {
                 }
                 return Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: GridView(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount,
-                        mainAxisSpacing: 5,
-                        crossAxisSpacing: 5,
-                        childAspectRatio: childAspectRatio),
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: List.generate(
-                      articles.length,
-                      (index) => HomeArticleCard(
-                        article: articles[index],
-                      ),
-                    ),
+                  child: StaggeredGrid.count(
+                    crossAxisCount: crossAxisCount,
+                    mainAxisSpacing: ResponsiveLayout.isDesktop(context)
+                        ? 5
+                        : ResponsiveLayout.isTablet(context)
+                            ? 8
+                            : 10,
+                    crossAxisSpacing: ResponsiveLayout.isDesktop(context)
+                        ? 5
+                        : ResponsiveLayout.isTablet(context)
+                            ? 8
+                            : 8,
+                    children: articles.map((article) {
+                      int index = articles
+                          .indexOf(article); // Index of the current article
+                      int crossAxisCellCount = 2;
+                      int mainAxisCellCount = 2;
+
+                      if (index != 0) {
+                        crossAxisCellCount = 1;
+                        mainAxisCellCount = 1;
+                      }
+
+                      return StaggeredGridTile.count(
+                        crossAxisCellCount: crossAxisCellCount,
+                        mainAxisCellCount: mainAxisCellCount,
+                        child: HomeArticleCard(
+                          article: article,
+                          textSize: ResponsiveLayout.isDesktop(context)
+                              ? 250
+                              : ResponsiveLayout.isTablet(context)
+                                  ? 170
+                                  : 130,
+                        ),
+                      );
+                    }).toList(),
                   ),
                 );
               }

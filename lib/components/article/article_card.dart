@@ -23,7 +23,6 @@ class ArticleCard extends StatefulWidget {
   final bool bookmark;
   final Article article;
   @override
-  
   State<ArticleCard> createState() => _ArticleCard();
 }
 
@@ -42,62 +41,81 @@ class _ArticleCard extends State<ArticleCard> {
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(
-              color: DbpColor().jendelaGreen,
-            ),
-          ),
-          color: Colors.white,
-          elevation: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 8, right: 10, top: 10, bottom: 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.article.featuredImage!,
-                    width: ResponsiveLayout.isDesktop(context)
-                        ? 200
-                        : ResponsiveLayout.isTablet(context)
-                            ? 170
-                            : 120,
-                    fit: BoxFit.fill,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border:
+                      Border.all(color: DbpColor().jendelaTurqoise, width: 2.0),
+                  color: DbpColor().jendelaTurqoise,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: widget.article.categories!.map((category) {
+                      // Assuming 'name' is a key in the category object
+                      String categoryName = category[
+                          'name']; // Replace 'name' with the actual key name
+                      return Text(
+                        categoryName,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13),
+                      );
+                    }).toList(),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      child: Text(
-                        parse(widget.article.postTitle).body?.text ?? '',
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: true,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Text(
-                      DateFormat('d MMM yyyy').format(
-                          DateTime.parse(widget.article.postDate ?? '')),
-                      style: const TextStyle(
-                        textBaseline: TextBaseline.alphabetic,
-                      ),
-                    ),
-                  ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 8, right: 10, top: 10, bottom: 10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.article.featuredImage!,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: Text(
+                      parse(widget.article.postTitle).body?.text ?? '',
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 5,),
+                  Text(
+                    DateFormat('d MMM yyyy')
+                        .format(DateTime.parse(widget.article.postDate ?? '')),
+                    style: const TextStyle(
+                      textBaseline: TextBaseline.alphabetic,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

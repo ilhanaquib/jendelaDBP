@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:jendela_dbp/controllers/dbp_color.dart';
@@ -13,14 +14,15 @@ import 'package:jendela_dbp/view/pages/postAndArticles/articles/article_detail_s
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-class HomeArticleCard extends StatefulWidget {
-  const HomeArticleCard(
+class ArticleSlideshowCard extends StatefulWidget {
+  const ArticleSlideshowCard(
       {Key? key,
       this.viewCount = 0,
       this.isSaved = false,
       this.bookmark = false,
       required this.article,
-      required this.textSize})
+      required this.textSize,
+      required this.pageContoller})
       : super(key: key);
 
   final int viewCount;
@@ -28,11 +30,12 @@ class HomeArticleCard extends StatefulWidget {
   final bool bookmark;
   final Article article;
   final double textSize;
+  final pageContoller;
   @override
-  State<HomeArticleCard> createState() => _HomeArticleCard();
+  State<ArticleSlideshowCard> createState() => _HomeArticleCard();
 }
 
-class _HomeArticleCard extends State<HomeArticleCard> {
+class _HomeArticleCard extends State<ArticleSlideshowCard> {
   void _launchURL() async {
     if (await canLaunchUrl(Uri.parse(
         widget.article.guid ?? "https://{GlobalVar.BaseURLDomain}"))) {
@@ -57,17 +60,6 @@ class _HomeArticleCard extends State<HomeArticleCard> {
 
   @override
   Widget build(BuildContext context) {
-    double aspectRatio1;
-    if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
-      aspectRatio1 = 22;
-    } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
-      aspectRatio1 = 1;
-    } else {
-      // Use the default padding for phones and other devices
-      aspectRatio1 = 1;
-    }
     return GestureDetector(
       onTap: () {
         if (Platform.isWindows) {
@@ -87,48 +79,41 @@ class _HomeArticleCard extends State<HomeArticleCard> {
           Padding(
             padding:
                 const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: AspectRatio(
-                      aspectRatio: 1 / 1  , //21
-                      child: CachedNetworkImage(
-                        imageUrl: widget.article.featuredImage!,
-                        height: 50,
-                        fit: BoxFit.cover,
+            child: Stack(
+              children: [
+                CachedNetworkImage(
+                  imageUrl: widget.article.featuredImage!,
+                  width: ResponsiveLayout.isDesktop(context)
+                      ? 1200
+                      : ResponsiveLayout.isTablet(context)
+                          ? 850
+                          : 500,
+                  height: 500,
+                  fit: BoxFit.cover,
+                ),
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(1)
+                        ],
+                        stops: [0.6, 1.0],
                       ),
                     ),
                   ),
-                  Positioned.fill(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(1)
-                            ],
-                            stops: [0.6, 1.0],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Positioned(
             bottom: 10,
             left: 10,
             child: Padding(
-              padding: const EdgeInsets.only(left: 0, right: 0),
+              padding: const EdgeInsets.only(left: 0, right: 0, bottom: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -176,7 +161,23 @@ class _HomeArticleCard extends State<HomeArticleCard> {
                 ],
               ),
             ),
-          )
+          ),
+          Positioned(
+            bottom: 10,
+            left: 135,
+            child: SmoothPageIndicator(
+              controller: widget.pageContoller,
+              count: 8,
+              effect: ExpandingDotsEffect(
+                  activeDotColor: DbpColor().jendelaOrange,
+                  dotColor: DbpColor().jendelaGray,
+                  dotHeight: 8,
+                  dotWidth: 8),
+              onDotClicked: (index) => widget.pageContoller.animateToPage(index,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn),
+            ),
+          ),
         ],
       ),
     );

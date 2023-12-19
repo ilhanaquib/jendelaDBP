@@ -135,7 +135,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
             key: _pdfViewerKey,
             scrollDirection: PdfScrollDirection.horizontal,
             enableTextSelection: true,
-            pageLayoutMode: PdfPageLayoutMode.single,
+            pageLayoutMode: PdfPageLayoutMode.continuous,
             canShowScrollHead: true,
             canShowScrollStatus: true,
             onPageChanged: (PdfPageChangedDetails details) async {

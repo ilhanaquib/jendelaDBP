@@ -46,55 +46,48 @@ class _HomePostCard extends State<HomePostCard> {
           screen: ReadPost(post: widget.post),
         );
       },
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: BorderSide(
-            color: DbpColor().jendelaGreen,
-          ),
-        ),
-        color: Colors.white,
-        elevation: 0,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
                 child: CachedNetworkImage(
                   imageUrl: widget.post.featuredMediaUrls!,
-                  width: 150,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 5, right: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    child: Text(
-                      widget.post.title!,
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  child: Text(
+                    widget.post.title!,
+                    softWrap: true,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text(
-                    DateFormat('d MMM yyyy').format(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12.0),
+                  child: Text(
+                    DateFormat('d MMM yyyy HH:mm').format(
                       DateTime.parse(widget.post.date ?? ''),
                     ),
                     style: const TextStyle(
                       textBaseline: TextBaseline.alphabetic,
                     ),
                   ),
-                ],
-              ),
+                )
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

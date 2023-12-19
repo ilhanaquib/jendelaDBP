@@ -218,7 +218,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
         if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var token = prefs.getString('token');
-          bookAPIBox.clear();
+          //bookAPIBox.clear();
           await getKategori(context, token, GlobalVar.kategori1);
           await getKategori(context, token, GlobalVar.kategori2);
           await getKategori(context, token, GlobalVar.kategori3);
@@ -332,13 +332,13 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                       _progress = _controller.value;
                       final widgetWidth = constraints.maxWidth;
                       final widgetHeight = constraints.maxHeight;
-                      final letterTopWidth = (widgetWidth / 2) + 50;
-                      final leftValue = (widgetWidth -
-                              (letterTopWidth * controller.value / 1))
-                          .clamp(letterTopWidth - 100, double.infinity);
+                      final letterTopHeight = (widgetHeight / 2) + 50;
+                      final topValue = (widgetHeight -
+                              (letterTopHeight * controller.value / 1))
+                          .clamp(letterTopHeight - 100, double.infinity);
 
-                      final rightValue =
-                          (widgetWidth - (widgetWidth * controller.value / 1))
+                      final bottomValue =
+                          (widgetHeight - (widgetHeight * controller.value / 1))
                               .clamp(0.0, double.infinity);
 
                       final opacity =
@@ -351,26 +351,27 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                             child: child,
                           ),
                           Positioned(
-                            right: rightValue,
+                            bottom:
+                                bottomValue, // Adjusted to animate from bottom
                             child: Container(
-                              height: widgetHeight,
                               width: widgetWidth,
+                              height: widgetHeight,
                               decoration: const BoxDecoration(
                                 color: Colors.white,
-                                boxShadow: _defaultShadow,
                               ),
                             ),
                           ),
                           Positioned(
-                            left: leftValue,
+                            top: topValue, // Adjusted to animate from top
                             child: CustomPaint(
                               painter: BookPainter(
                                 strokeColor: Colors.white,
                                 progress: _progress,
                               ),
                               child: SizedBox(
-                                height: widgetHeight,
-                                width: letterTopWidth,
+                                width:
+                                    widgetWidth, // Use width to match the container width
+                                height: letterTopHeight,
                               ),
                             ),
                           ),

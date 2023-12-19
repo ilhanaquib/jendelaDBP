@@ -42,7 +42,6 @@ class _ProfileScreen extends State<ProfileScreen> {
     _userConfirmPasswordController.text = '';
     authCubit.getUserLoginOrNot();
     authCubit.getUser();
-
   }
 
   @override
@@ -105,14 +104,12 @@ class _ProfileScreen extends State<ProfileScreen> {
                   if (state is AuthLoaded) {
                     authCubit.getUserLoginOrNot();
                     authCubit.getUser();
-                      _userNameController.text = state.user!.name ?? '';
-                      _userFirstNameController.text =
-                          state.user!.firstName ?? '';
-                      _userLastNameController.text = state.user!.lastName ?? '';
-                      _userEmailController.text = state.user!.email ?? '';
-                      return _userProfileWidget(context,
-                          user: state.user ?? User());
-                    
+                    _userNameController.text = state.user!.name ?? '';
+                    _userFirstNameController.text = state.user!.firstName ?? '';
+                    _userLastNameController.text = state.user!.lastName ?? '';
+                    _userEmailController.text = state.user!.email ?? '';
+                    return _userProfileWidget(context,
+                        user: state.user ?? User());
                   }
 
                   if (state is AuthLoading) {
@@ -249,28 +246,29 @@ class _ProfileScreen extends State<ProfileScreen> {
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: OutlinedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    DbpColor().jendelaGreen), // Green background
-                overlayColor: MaterialStateProperty.all<Color>(
-                    Colors.transparent), // No overlay color
-                side: MaterialStateProperty.all<BorderSide>(BorderSide(
-                    color: DbpColor().jendelaGreen, width: 2)), // Green border
-              ),
-              child: const Text(
-                'Kemas Kini',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              onPressed: () {
-                BlocProvider.of<AuthCubit>(context).update(
-                    name: _userNameController.text,
-                    firstName: _userFirstNameController.text,
-                    lastName: _userLastNameController.text,
-                    email: _userEmailController.text,
-                    newPassword: _userNewPasswordController.text,
-                    confirmPassword: _userConfirmPasswordController.text);
-              }),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  DbpColor().jendelaGreen), // Green background
+              overlayColor: MaterialStateProperty.all<Color>(
+                  Colors.transparent), // No overlay color
+              side: MaterialStateProperty.all<BorderSide>(BorderSide(
+                  color: DbpColor().jendelaGreen, width: 2)), // Green border
+            ),
+            child: const Text(
+              'Kemas Kini',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            onPressed: () {
+              BlocProvider.of<AuthCubit>(context).update(
+                  name: _userNameController.text,
+                  firstName: _userFirstNameController.text,
+                  lastName: _userLastNameController.text,
+                  email: _userEmailController.text,
+                  newPassword: _userNewPasswordController.text,
+                  confirmPassword: _userConfirmPasswordController.text);
+            },
+          ),
         ),
         const SizedBox(
           height: 10.0,
