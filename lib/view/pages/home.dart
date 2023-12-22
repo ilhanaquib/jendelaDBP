@@ -2,16 +2,28 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:jendela_dbp/components/DBPImportedWidgets/not_found_card.dart';
 import 'package:jendela_dbp/components/article/article_slideshow_card.dart';
-import 'package:jendela_dbp/components/berita/berita_card.dart';
+import 'package:jendela_dbp/components/berita/berita_not_found_card.dart';
 import 'package:jendela_dbp/components/berita/home_berita_card.dart';
+import 'package:jendela_dbp/components/radio/radio_card.dart';
+import 'package:jendela_dbp/components/radio/radio_not_found_card.dart';
+import 'package:jendela_dbp/components/tv/tv_card.dart';
+import 'package:jendela_dbp/components/tv/tv_not_found_card.dart';
 import 'package:jendela_dbp/hive/models/hive_berita_model.dart';
 import 'package:jendela_dbp/hive/models/hive_book_model.dart';
+import 'package:jendela_dbp/hive/models/hive_tv_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/berita_bloc.dart';
+import 'package:jendela_dbp/stateManagement/blocs/radio_bloc.dart';
+import 'package:jendela_dbp/stateManagement/blocs/tv_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
 import 'package:jendela_dbp/stateManagement/events/berita_event.dart';
+import 'package:jendela_dbp/stateManagement/events/radio_event.dart';
+import 'package:jendela_dbp/stateManagement/events/tv_event.dart';
 import 'package:jendela_dbp/stateManagement/states/berita_state.dart';
+import 'package:jendela_dbp/stateManagement/states/radio_state.dart';
+import 'package:jendela_dbp/stateManagement/states/tv_state.dart';
+import 'package:jendela_dbp/view/pages/all_radio_screen.dart';
+import 'package:jendela_dbp/view/pages/all_tv.dart';
 import 'package:jendela_dbp/view/pages/berita/all_berita.dart';
 import 'package:jendela_dbp/view/pages/articles/all_articles.dart';
 import 'package:jendela_dbp/view/pages/articles/all_articles_categorized.dart';
@@ -31,6 +43,7 @@ import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:jendela_dbp/hive/models/hive_article_model.dart';
 import 'package:jendela_dbp/hive/models/hive_post_model.dart';
+import 'package:jendela_dbp/hive/models/hive_radio_model.dart' as radio1;
 import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/poduct_bloc.dart';
 import 'package:jendela_dbp/stateManagement/blocs/post_bloc.dart';
@@ -54,6 +67,8 @@ class _HomeState extends State<Home> {
   PostBloc postBloc = PostBloc();
   ArticleBloc articleBloc = ArticleBloc();
   BeritaBloc beritaBloc = BeritaBloc();
+  TvBloc tvBloc = TvBloc();
+  RadioBloc radioBloc = RadioBloc();
 
   ProductBloc bookBloc = ProductBloc();
   Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
@@ -67,6 +82,8 @@ class _HomeState extends State<Home> {
     postBloc.add(PostFetch());
     beritaBloc.add(BeritaFetch(perPage: 15));
     articleBloc.add(ArticleFetch());
+    tvBloc.add(TvFetch());
+    radioBloc.add(RadioFetch());
     super.initState();
   }
 
@@ -75,6 +92,8 @@ class _HomeState extends State<Home> {
     beritaBloc.close();
     postBloc.close();
     articleBloc.close();
+    tvBloc.close();
+    radioBloc.close();
     super.dispose();
   }
 
@@ -137,6 +156,8 @@ class _HomeState extends State<Home> {
                       beritaBloc.add(BeritaFetch(perPage: 15));
                       postBloc.add(PostFetch());
                       articleBloc.add(ArticleFetch());
+                      tvBloc.add(TvFetch());
+                      radioBloc.add(RadioFetch());
                       setState(() {});
                     },
                     child: ListView(
@@ -151,6 +172,19 @@ class _HomeState extends State<Home> {
                           height: 24,
                         ),
                         _article(context),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        _tvWidget(context),
+                        Container(
+                          height: 12,
+                          color: DbpColor().jendelaGreenBlue,
+                        ),
+                        Container(
+                          height: 12,
+                          color: DbpColor().jendelaDarkGreenBlue,
+                        ),
+                        _radioWidget(context),
                         const SizedBox(
                           height: 24,
                         ),
@@ -344,7 +378,7 @@ class _HomeState extends State<Home> {
       crossAxisCount = 4;
     } else {
       // Use the default padding for phones and other devices
-      crossAxisCount = 2;
+      crossAxisCount = 4;
     }
     return Padding(
       padding: const EdgeInsets.only(top: 0),
@@ -381,12 +415,12 @@ class _HomeState extends State<Home> {
             builder: (context, data) {
               if (data is BeritaLoaded) {
                 List<Berita> beritaList =
-                    data.listOfBerita?.take(10).toList() ?? [];
+                    data.listOfBerita?.take(9).toList() ?? [];
                 if (beritaList.isEmpty) {
                   return const SizedBox(
                     height: 300,
                     child: Center(
-                      child: ArticleNotFoundCard(),
+                      child: BeritaNotFoundCard(),
                     ),
                   );
                 }
@@ -406,12 +440,12 @@ class _HomeState extends State<Home> {
                             : 8,
                     children: beritaList.map((berita) {
                       int index = beritaList.indexOf(berita);
-                      int crossAxisCellCount = 2;
-                      int mainAxisCellCount = 2;
+                      int crossAxisCellCount = 4;
+                      int mainAxisCellCount = 3;
 
                       if (index != 0) {
-                        crossAxisCellCount = 1;
-                        mainAxisCellCount = 1;
+                        crossAxisCellCount = 2;
+                        mainAxisCellCount = 3;
                       }
 
                       return StaggeredGridTile.count(
@@ -461,7 +495,7 @@ class _HomeState extends State<Home> {
       crossAxisCount = 4;
     } else {
       // Use the default padding for phones and other devices
-      crossAxisCount = 2;
+      crossAxisCount = 4;
     }
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
@@ -535,12 +569,12 @@ class _HomeState extends State<Home> {
                     children: articles.map((article) {
                       int index = articles
                           .indexOf(article); // Index of the current article
-                      int crossAxisCellCount = 2;
-                      int mainAxisCellCount = 2;
+                      int crossAxisCellCount = 4;
+                      int mainAxisCellCount = 3;
 
                       if (index != 0) {
-                        crossAxisCellCount = 1;
-                        mainAxisCellCount = 1;
+                        crossAxisCellCount = 2;
+                        mainAxisCellCount = 3;
                       }
 
                       return StaggeredGridTile.count(
@@ -580,6 +614,223 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget _tvWidget(BuildContext context) {
+    int crossAxisCount;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      crossAxisCount = 5;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      crossAxisCount = 4;
+    } else {
+      // Use the default padding for phones and other devices
+      crossAxisCount = 4;
+    }
+    return Container(
+      color: DbpColor().jendelaGreenBlue,
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 24, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'TV DBP',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const AllTvScreen(),
+                      );
+                    },
+                    child: const Text(
+                      'Lihat Semua',
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 205, 204, 204)),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              child: BlocBuilder<TvBloc, TvState>(
+                bloc: tvBloc,
+                builder: (context, data) {
+                  if (data is TvError) {
+                    return ErrorCard(message: data.message);
+                  }
+                  if (data is TvLoaded) {
+                    List<Tv> tvList = data.tv?.take(9).toList() ?? [];
+                    if (tvList.isEmpty) {
+                      return const SizedBox(height: 300, child: TvNotFoundCard());
+                    }
+                    return StaggeredGrid.count(
+                      crossAxisCount: crossAxisCount,
+                      mainAxisSpacing: ResponsiveLayout.isDesktop(context)
+                          ? 5
+                          : ResponsiveLayout.isTablet(context)
+                              ? 8
+                              : 1,
+                      crossAxisSpacing: ResponsiveLayout.isDesktop(context)
+                          ? 5
+                          : ResponsiveLayout.isTablet(context)
+                              ? 8
+                              : 1,
+                      children: tvList.map((tv) {
+                        int index =
+                            tvList.indexOf(tv); // Index of the current article
+                        int crossAxisCellCount = 4;
+                        int mainAxisCellCount = 3;
+
+                        if (index != 0) {
+                          crossAxisCellCount = 2;
+                          mainAxisCellCount = 2;
+                        }
+
+                        return StaggeredGridTile.count(
+                          crossAxisCellCount: crossAxisCellCount,
+                          mainAxisCellCount: mainAxisCellCount,
+                          child: TvCard(
+                            tv: tv,
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  }
+                  return Center(
+                    child: LoadingAnimationWidget.discreteCircle(
+                      color: DbpColor().jendelaGray,
+                      secondRingColor: DbpColor().jendelaGreen,
+                      thirdRingColor: DbpColor().jendelaOrange,
+                      size: 70.0,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _radioWidget(BuildContext context) {
+    int crossAxisCount;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      crossAxisCount = 5;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      crossAxisCount = 4;
+    } else {
+      // Use the default padding for phones and other devices
+      crossAxisCount = 4;
+    }
+    return Container(
+      color: DbpColor().jendelaDarkGreenBlue,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 24, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'RADIO DBP',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: const AllRadioScreen(),
+                      );
+                    },
+                    child: const Text(
+                      'Lihat Semua',
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 205, 204, 204)),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              child: BlocBuilder<RadioBloc, RadioState>(
+                bloc: radioBloc,
+                builder: (context, data) {
+                  if (data is RadioError) {
+                    return ErrorCard(message: data.message);
+                  }
+                  if (data is RadioLoaded) {
+                    List<radio1.Radio> radios =
+                        data.radios?.take(9).toList() ?? [];
+                    if (radios.isEmpty) {
+                      return const SizedBox(height: 300, child: RadioNotFoundCard());
+                    }
+                    return StaggeredGrid.count(
+                      crossAxisCount: crossAxisCount,
+                      mainAxisSpacing: ResponsiveLayout.isDesktop(context)
+                          ? 5
+                          : ResponsiveLayout.isTablet(context)
+                              ? 8
+                              : 1,
+                      crossAxisSpacing: ResponsiveLayout.isDesktop(context)
+                          ? 5
+                          : ResponsiveLayout.isTablet(context)
+                              ? 8
+                              : 1,
+                      children: radios.map((radio) {
+                        int index = radios
+                            .indexOf(radio); // Index of the current article
+                        int crossAxisCellCount = 4;
+                        int mainAxisCellCount = 3;
+
+                        if (index != 0) {
+                          crossAxisCellCount = 2;
+                          mainAxisCellCount = 2;
+                        }
+
+                        return StaggeredGridTile.count(
+                          crossAxisCellCount: crossAxisCellCount,
+                          mainAxisCellCount: mainAxisCellCount,
+                          child: RadioCard(
+                            radio: radio,
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  }
+                  return Center(
+                    child: LoadingAnimationWidget.discreteCircle(
+                      color: DbpColor().jendelaGray,
+                      secondRingColor: DbpColor().jendelaGreen,
+                      thirdRingColor: DbpColor().jendelaOrange,
+                      size: 70.0,
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _articleCategory(BuildContext context, int i) {
     Map<int, dynamic> categoryId = {
       1: GlobalVar.dewanBahasaId,
@@ -611,7 +862,7 @@ class _HomeState extends State<Home> {
       crossAxisCount = 4;
     } else {
       // Use the default padding for phones and other devices
-      crossAxisCount = 2;
+      crossAxisCount = 4;
     }
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
@@ -630,8 +881,9 @@ class _HomeState extends State<Home> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Divider(),
           Padding(
-            padding: const EdgeInsets.only(left: 24, bottom: 12, right: 20),
+            padding: const EdgeInsets.only(left: 20, bottom: 12, right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -673,7 +925,7 @@ class _HomeState extends State<Home> {
                   return const SizedBox(
                     height: 300,
                     child: Center(
-                      child: ArticleNotFoundCard(),
+                      child: BeritaNotFoundCard(),
                     ),
                   );
                 }
@@ -694,12 +946,12 @@ class _HomeState extends State<Home> {
                     children: beritaList.map((berita) {
                       int index = beritaList
                           .indexOf(berita); // Index of the current article
-                      int crossAxisCellCount = 2;
-                      int mainAxisCellCount = 2;
+                      int crossAxisCellCount = 4;
+                      int mainAxisCellCount = 3;
 
                       if (index != 0) {
-                        crossAxisCellCount = 1;
-                        mainAxisCellCount = 1;
+                        crossAxisCellCount = 2;
+                        mainAxisCellCount = 3;
                       }
 
                       return StaggeredGridTile.count(
@@ -774,12 +1026,12 @@ class _HomeState extends State<Home> {
                     children: articles.map((article) {
                       int index = articles
                           .indexOf(article); // Index of the current article
-                      int crossAxisCellCount = 2;
-                      int mainAxisCellCount = 2;
+                      int crossAxisCellCount = 4;
+                      int mainAxisCellCount = 3;
 
                       if (index != 0) {
-                        crossAxisCellCount = 1;
-                        mainAxisCellCount = 1;
+                        crossAxisCellCount = 2;
+                        mainAxisCellCount = 3;
                       }
 
                       return StaggeredGridTile.count(

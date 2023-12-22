@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:empty_widget/empty_widget.dart';
 
-class ArticleNotFoundCard extends StatelessWidget {
-  const ArticleNotFoundCard({super.key});
+class BeritaNotFoundCard extends StatelessWidget {
+  const BeritaNotFoundCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +12,8 @@ class ArticleNotFoundCard extends StatelessWidget {
       hideBackgroundAnimation: true,
       image: null,
       packageImage: PackageImage.Image_4,
-      title: 'Tiada Artikel',
-      subTitle: 'Maaf, tiada artikel dijumpai',
+      title: 'Tiada Berita',
+      subTitle: 'Maaf, tiada berita dijumpai',
       titleTextStyle: const TextStyle(
         fontSize: 22,
         color: Color(0xff9da9c7),

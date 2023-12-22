@@ -33,7 +33,7 @@ class _NewPdfViewerPageState extends State<NewPdfViewerPage> {
       lastRead = 1;
     }
 
-    print('this is the last read page: $lastRead');
+    //print('this is the last read page: $lastRead');
   }
 
   @override
