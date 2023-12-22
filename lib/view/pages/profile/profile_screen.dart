@@ -125,7 +125,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                       ),
                     );
                   }
-
                   return _userLoginWidget();
                 }),
           ),
@@ -251,8 +250,9 @@ class _ProfileScreen extends State<ProfileScreen> {
                   DbpColor().jendelaGreen), // Green background
               overlayColor: MaterialStateProperty.all<Color>(
                   Colors.transparent), // No overlay color
-              side: MaterialStateProperty.all<BorderSide>(BorderSide(
-                  color: DbpColor().jendelaGreen, width: 2)), // Green border
+              side: MaterialStateProperty.all<BorderSide>(
+                BorderSide(color: DbpColor().jendelaGreen, width: 2),
+              ), // Green border
             ),
             child: const Text(
               'Kemas Kini',

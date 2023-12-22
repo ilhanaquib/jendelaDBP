@@ -404,12 +404,24 @@ class AuthCubit extends Cubit<AuthState> {
         isAuthenticated: isAuthenticated,
         hideNavigationBar: hideNavigationBar,
         message: message));
+    //check if form is empty
     if (!form!.validate()) {
       isToLogin = false;
-      emit(AuthError(
+      emit(
+        AuthError(
           isAuthenticated: false,
-          message: "Wrong email or password.",
-          hideNavigationBar: hideNavigationBar));
+          message: "Sila masukkan emel dan kata laluan",
+          hideNavigationBar: hideNavigationBar,
+        ),
+      );
+
+      // // Get the ScaffoldMessenger instance from the current context
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     behavior: SnackBarBehavior.floating,
+      //     content: Text("Sila masukkan emel dan kata laluan"),
+      //     duration: Duration(seconds: 3),
+      //   ),
     } else {
       form.save();
       var data = {};

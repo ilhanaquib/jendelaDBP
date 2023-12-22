@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:jendela_dbp/components/DBPImportedWidgets/not_found_card.dart';
 import 'package:jendela_dbp/components/article/article_slideshow_card.dart';
+import 'package:jendela_dbp/components/berita/berita_card.dart';
+import 'package:jendela_dbp/components/berita/home_berita_card.dart';
+import 'package:jendela_dbp/hive/models/hive_berita_model.dart';
 import 'package:jendela_dbp/hive/models/hive_book_model.dart';
+import 'package:jendela_dbp/stateManagement/blocs/berita_bloc.dart';
 import 'package:jendela_dbp/stateManagement/cubits/liked_status_cubit.dart';
-import 'package:jendela_dbp/view/pages/postAndArticles/articles/all_articles.dart';
-import 'package:jendela_dbp/view/pages/postAndArticles/articles/all_articles_categorized.dart';
+import 'package:jendela_dbp/stateManagement/events/berita_event.dart';
+import 'package:jendela_dbp/stateManagement/states/berita_state.dart';
+import 'package:jendela_dbp/view/pages/berita/all_berita.dart';
+import 'package:jendela_dbp/view/pages/articles/all_articles.dart';
+import 'package:jendela_dbp/view/pages/articles/all_articles_categorized.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -45,6 +53,8 @@ class _HomeState extends State<Home> {
   final GlobalKey appBarKey = GlobalKey();
   PostBloc postBloc = PostBloc();
   ArticleBloc articleBloc = ArticleBloc();
+  BeritaBloc beritaBloc = BeritaBloc();
+
   ProductBloc bookBloc = ProductBloc();
   Box<HiveBookAPI> bookAPIBox = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
   ConnectionCubit connectionCubit = ConnectionCubit();
@@ -55,12 +65,14 @@ class _HomeState extends State<Home> {
   void initState() {
     connectionCubit.checkConnection(context);
     postBloc.add(PostFetch());
+    beritaBloc.add(BeritaFetch(perPage: 15));
     articleBloc.add(ArticleFetch());
     super.initState();
   }
 
   @override
   void dispose() {
+    beritaBloc.close();
     postBloc.close();
     articleBloc.close();
     super.dispose();
@@ -122,6 +134,7 @@ class _HomeState extends State<Home> {
                   child: RefreshIndicator(
                     onRefresh: () async {
                       connectionCubit.checkConnection(context);
+                      beritaBloc.add(BeritaFetch(perPage: 15));
                       postBloc.add(PostFetch());
                       articleBloc.add(ArticleFetch());
                       setState(() {});
@@ -130,6 +143,10 @@ class _HomeState extends State<Home> {
                       children: [
                         _articleSlideshow(context),
                         _post(context),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        _beritaWidget(context),
                         const SizedBox(
                           height: 24,
                         ),
@@ -313,6 +330,123 @@ class _HomeState extends State<Home> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _beritaWidget(BuildContext context) {
+    int crossAxisCount;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      crossAxisCount = 5;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      crossAxisCount = 4;
+    } else {
+      // Use the default padding for phones and other devices
+      crossAxisCount = 2;
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 24, bottom: 12, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Berita Terkini',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                TextButton(
+                  onPressed: () {
+                    PersistentNavBarNavigator.pushNewScreen(
+                      context,
+                      // change to all berita
+                      screen: const AllBerita(),
+                    );
+                  },
+                  child: Text(
+                    'Lihat Semua',
+                    style: TextStyle(color: DbpColor().jendelaGray),
+                  ),
+                )
+              ],
+            ),
+          ),
+          BlocBuilder<BeritaBloc, BeritaState>(
+            bloc: beritaBloc,
+            builder: (context, data) {
+              if (data is BeritaLoaded) {
+                List<Berita> beritaList =
+                    data.listOfBerita?.take(10).toList() ?? [];
+                if (beritaList.isEmpty) {
+                  return const SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: ArticleNotFoundCard(),
+                    ),
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: StaggeredGrid.count(
+                    crossAxisCount: crossAxisCount,
+                    mainAxisSpacing: ResponsiveLayout.isDesktop(context)
+                        ? 5
+                        : ResponsiveLayout.isTablet(context)
+                            ? 8
+                            : 10,
+                    crossAxisSpacing: ResponsiveLayout.isDesktop(context)
+                        ? 5
+                        : ResponsiveLayout.isTablet(context)
+                            ? 8
+                            : 8,
+                    children: beritaList.map((berita) {
+                      int index = beritaList.indexOf(berita);
+                      int crossAxisCellCount = 2;
+                      int mainAxisCellCount = 2;
+
+                      if (index != 0) {
+                        crossAxisCellCount = 1;
+                        mainAxisCellCount = 1;
+                      }
+
+                      return StaggeredGridTile.count(
+                        crossAxisCellCount: crossAxisCellCount,
+                        mainAxisCellCount: mainAxisCellCount,
+                        child: HomeBeritaCard(
+                          berita: berita,
+                          textSize: ResponsiveLayout.isDesktop(context)
+                              ? 250
+                              : ResponsiveLayout.isTablet(context)
+                                  ? 170
+                                  : 130,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                );
+              }
+              if (data is ArticleError) {
+                return const ErrorCard(message: 'error');
+              }
+              return SizedBox(
+                height: 300,
+                child: Center(
+                  child: LoadingAnimationWidget.discreteCircle(
+                    color: DbpColor().jendelaGray,
+                    secondRingColor: DbpColor().jendelaGreen,
+                    thirdRingColor: DbpColor().jendelaOrange,
+                    size: 70.0,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -520,6 +654,91 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 0, bottom: 8, left: 20, right: 20),
+            child: Text('Berita',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          ),
+          BlocBuilder<BeritaBloc, BeritaState>(
+            bloc: beritaBloc,
+            builder: (context, data) {
+              if (data is BeritaLoaded) {
+                List<Berita> beritaList = data.listOfBerita
+                        ?.where((e) => e.blogId == categoryId[i])
+                        .take(numOfPost)
+                        .toList() ??
+                    [];
+                if (beritaList.isEmpty) {
+                  return const SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: ArticleNotFoundCard(),
+                    ),
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: StaggeredGrid.count(
+                    crossAxisCount: crossAxisCount,
+                    mainAxisSpacing: ResponsiveLayout.isDesktop(context)
+                        ? 5
+                        : ResponsiveLayout.isTablet(context)
+                            ? 8
+                            : 10,
+                    crossAxisSpacing: ResponsiveLayout.isDesktop(context)
+                        ? 5
+                        : ResponsiveLayout.isTablet(context)
+                            ? 8
+                            : 8,
+                    children: beritaList.map((berita) {
+                      int index = beritaList
+                          .indexOf(berita); // Index of the current article
+                      int crossAxisCellCount = 2;
+                      int mainAxisCellCount = 2;
+
+                      if (index != 0) {
+                        crossAxisCellCount = 1;
+                        mainAxisCellCount = 1;
+                      }
+
+                      return StaggeredGridTile.count(
+                        crossAxisCellCount: crossAxisCellCount,
+                        mainAxisCellCount: mainAxisCellCount,
+                        child: HomeBeritaCard(
+                          berita: berita,
+                          textSize: ResponsiveLayout.isDesktop(context)
+                              ? 250
+                              : ResponsiveLayout.isTablet(context)
+                                  ? 170
+                                  : 130,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                );
+              }
+
+              if (data is ArticleError) {
+                return const ErrorCard(message: 'error');
+              }
+              return SizedBox(
+                height: 300,
+                child: Center(
+                  child: LoadingAnimationWidget.discreteCircle(
+                    color: DbpColor().jendelaGray,
+                    secondRingColor: DbpColor().jendelaGreen,
+                    thirdRingColor: DbpColor().jendelaOrange,
+                    size: 70.0,
+                  ),
+                ),
+              );
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 40, bottom: 8, left: 20, right: 20),
+            child: Text('Artikel',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
           ),
           BlocBuilder<ArticleBloc, ArticleState>(
             bloc: articleBloc,

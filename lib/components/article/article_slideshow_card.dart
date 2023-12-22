@@ -10,7 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/hive/models/hive_article_model.dart';
-import 'package:jendela_dbp/view/pages/postAndArticles/articles/article_detail_screen.dart';
+import 'package:jendela_dbp/view/pages/articles/article_detail_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -58,6 +58,65 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
     return domain;
   }
 
+  Widget getImageWidget() {
+    if (widget.article.featuredImage != null) {
+      return Stack(
+        children: [
+          CachedNetworkImage(
+            imageUrl: widget.article.featuredImage!,
+            width: ResponsiveLayout.isDesktop(context)
+                ? 1200
+                : ResponsiveLayout.isTablet(context)
+                    ? 850
+                    : 500,
+            height: 500,
+            fit: BoxFit.cover,
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black.withOpacity(1)],
+                  stops: const [0.6, 1.0],
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    } else {
+      // Display a default image from assets if featuredImage is null
+      return Stack(
+        children: [
+          Image.asset(
+            'assets/images/logonobg.png', // Replace 'default_image.png' with your actual default image path
+            width: ResponsiveLayout.isDesktop(context)
+                ? 1200
+                : ResponsiveLayout.isTablet(context)
+                    ? 850
+                    : 500,
+            height: 500,
+            fit: BoxFit.cover,
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black.withOpacity(1)],
+                  stops: const [0.6, 1.0],
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -76,39 +135,7 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
       },
       child: Stack(
         children: [
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
-            child: Stack(
-              children: [
-                CachedNetworkImage(
-                  imageUrl: widget.article.featuredImage!,
-                  width: ResponsiveLayout.isDesktop(context)
-                      ? 1200
-                      : ResponsiveLayout.isTablet(context)
-                          ? 850
-                          : 500,
-                  height: 500,
-                  fit: BoxFit.cover,
-                ),
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(1)
-                        ],
-                        stops: const [0.6, 1.0],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          getImageWidget(),
           Positioned(
             bottom: 10,
             left: 10,

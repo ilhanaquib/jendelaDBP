@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
+import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/not_found_card.dart';
@@ -25,6 +27,9 @@ class AudiosInsideShelf extends StatefulWidget {
 }
 
 class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
+  Box<HivePurchasedBook> purchasedBooks =
+      Hive.box<HivePurchasedBook>(GlobalVar.puchasedBook);
+
   String capitalizeEachWord(String input) {
     List<String> words = input.toLowerCase().split(' ');
     List<String> capitalizedWords = [];
@@ -114,7 +119,8 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 20),
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
                               child: SizedBox(
                                 width: imageWidth,
                                 child: Card(

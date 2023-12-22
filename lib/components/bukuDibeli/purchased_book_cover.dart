@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jendela_dbp/components/bookReader/new_pdf_viewer.dart';
 import 'package:jendela_dbp/components/bookReader/pdf_viewer.dart';
 
 import 'package:jendela_dbp/components/bukuDibeli/book_information.dart';
@@ -500,7 +501,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                           context,
                           withNavBar: false,
                           screen: 
-                          PdfViewerPage(
+                          NewPdfViewerPage(
                             pdfPath: decryptedFile,
                             bookName: widget.purchasedBook.productName!,
                           ),

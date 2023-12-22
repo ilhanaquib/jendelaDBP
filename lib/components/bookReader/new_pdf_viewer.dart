@@ -1,10 +1,10 @@
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:text_scroll/text_scroll.dart';
-import 'package:alh_pdf_view/lib.dart';
-import 'package:alh_pdf_view/view/alh_pdf_view.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 // ignore: must_be_immutable
 class NewPdfViewerPage extends StatefulWidget {
@@ -21,14 +21,19 @@ class _NewPdfViewerPageState extends State<NewPdfViewerPage> {
   int lastRead = 0;
   bool showAppBar = true;
 
-  void getLastReadPage() async {
+  getLastReadPage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    lastRead = prefs.getInt('lastRead')!;
-    if (lastRead.toString().isEmpty) {
-      lastRead = 1;
+    int? storedLastRead = prefs.getInt('lastRead');
+
+    if (storedLastRead != null) {
+      // Value exists in SharedPreferences
+      lastRead = storedLastRead;
     } else {
-      lastRead = lastRead;
+      // No value found in SharedPreferences, setting a default value of 1
+      lastRead = 1;
     }
+
+    print('this is the last read page: $lastRead');
   }
 
   @override
@@ -64,13 +69,13 @@ class _NewPdfViewerPageState extends State<NewPdfViewerPage> {
           );
         },
         child: SizedBox(
-          child: AlhPdfView(
-            filePath: widget.pdfPath.toString(),
+          child: PDFView(
+            filePath: widget.pdfPath.path,
             swipeHorizontal: true,
-            //defaultPage: 2,
+            defaultPage: lastRead,
             onPageChanged: (page, total) async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
-              await prefs.setInt('lastRead', page);
+              await prefs.setInt('lastRead', page!);
             },
           ),
         ),
