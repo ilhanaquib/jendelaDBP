@@ -10,8 +10,6 @@ import 'package:jendela_dbp/hive/models/hive_berita_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:jendela_dbp/controllers/dbp_color.dart';
-import 'package:jendela_dbp/hive/models/hive_article_model.dart';
-import 'package:jendela_dbp/view/pages/articles/article_detail_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 

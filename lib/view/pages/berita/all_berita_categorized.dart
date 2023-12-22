@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/components/article/article_card.dart';
 import 'package:jendela_dbp/components/berita/berita_card.dart';
+import 'package:jendela_dbp/components/berita/berita_not_found_card.dart';
 import 'package:jendela_dbp/hive/models/hive_berita_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/berita_bloc.dart';
 import 'package:jendela_dbp/stateManagement/events/berita_event.dart';
 import 'package:jendela_dbp/stateManagement/states/berita_state.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import 'package:jendela_dbp/components/article/article_not_found.dart';
 import 'package:jendela_dbp/components/cart/cart_icon.dart';
 import 'package:jendela_dbp/components/posts/error_card.dart';
 import 'package:jendela_dbp/components/ujana/home_drawer.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
-import 'package:jendela_dbp/hive/models/hive_article_model.dart';
-import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
-import 'package:jendela_dbp/stateManagement/blocs/poduct_bloc.dart';
-import 'package:jendela_dbp/stateManagement/events/article_event.dart';
 import 'package:jendela_dbp/stateManagement/states/article_state.dart';
 
 // ignore: must_be_immutable
@@ -168,7 +163,7 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
                 return const SizedBox(
                   height: 300,
                   child: Center(
-                    child: ArticleNotFoundCard(),
+                    child: BeritaNotFoundCard(),
                   ),
                 );
               }

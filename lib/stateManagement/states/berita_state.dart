@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, overridden_fields
+
 import 'package:equatable/equatable.dart';
 import 'package:jendela_dbp/hive/models/hive_berita_model.dart';
 
@@ -27,8 +29,11 @@ abstract class BeritaState extends Equatable {
 // }
 
 class BeritaLoaded extends BeritaState {
+  @override
   List props = [];
+  @override
   final List<Berita>? listOfBerita;
+  @override
   final Berita? berita;
   final int page;
   final bool hasReachedMax;
@@ -58,14 +63,17 @@ class BeritaLoaded extends BeritaState {
 }
 
 class BeritaInit extends BeritaState {
+  @override
   List props = [];
 }
 
 class BeritaLoading extends BeritaState {
+  @override
   List props = [];
 }
 
 class BeritaError extends BeritaState {
+  @override
   List props = [];
   String? message;
   BeritaError({this.message});

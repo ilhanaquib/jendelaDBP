@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/components/article/article_not_found.dart';
 import 'package:jendela_dbp/components/berita/berita_card.dart';
+import 'package:jendela_dbp/components/berita/berita_not_found_card.dart';
 import 'package:jendela_dbp/hive/models/hive_berita_model.dart';
 import 'package:jendela_dbp/stateManagement/blocs/berita_bloc.dart';
 import 'package:jendela_dbp/stateManagement/events/berita_event.dart';
@@ -159,7 +159,7 @@ class _AllBeritaState extends State<AllBerita> {
                   height: 300,
                   child: Center(
                     //change card
-                    child: ArticleNotFoundCard(),
+                    child: BeritaNotFoundCard(),
                   ),
                 );
               }
