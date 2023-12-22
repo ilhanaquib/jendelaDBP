@@ -21,6 +21,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   StreamSubscription<Duration?>? _positionSubscription;
   StreamSubscription<Duration?>? _durationSubscription;
   bool _isPlaying = false;
+  bool isMuted = false;
 
   @override
   void initState() {
@@ -41,9 +42,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     });
 
     _loadAudioFromFile(widget.audioFile!).then((filePath) {
-    _audioPlayer.setFilePath(filePath);
-    _audioPlayer.play();
-  });
+      _audioPlayer.setFilePath(filePath);
+      _audioPlayer.play();
+    });
 
     _audioPlayer.playerStateStream.listen((playerState) {
       setState(() {
@@ -101,7 +102,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     setState(() {});
     _audioPlayer.setSpeed(speed);
   }
-
+  
   String formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     String hours = twoDigits(duration.inHours.remainder(60));
@@ -206,7 +207,29 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const SizedBox(width: 60,),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (isMuted) {
+                      _audioPlayer.setVolume(1.0); // Unmute the audio player
+                    } else {
+                      _audioPlayer.setVolume(0.0); // Mute the audio player
+                    }
+                    isMuted = !isMuted; // Toggle mute state
+                  });
+                },
+                icon: isMuted
+                    ? const Icon(
+                        Icons.volume_off,
+                        color: Color.fromARGB(255, 191, 191, 191),
+                        size: 30,
+                      )
+                    : const Icon(
+                        Icons.volume_up,
+                        color: Color.fromARGB(255, 191, 191, 191),
+                        size: 30,
+                      ),
+              ),
               IconButton(
                 onPressed: () {
                   _skipBackward();

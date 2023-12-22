@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
-import 'package:jendela_dbp/view/pages/postAndArticles/posts/read_post.dart';
+import 'package:jendela_dbp/view/pages/posts/read_post.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/hive/models/hive_post_model.dart';

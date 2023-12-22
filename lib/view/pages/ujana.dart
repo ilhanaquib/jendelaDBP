@@ -540,8 +540,9 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                                           // Display filtered bookshelves
                                           for (int i = 1; i <= 15; i++)
                                             if (selectedFilters.isEmpty ||
-                                                selectedFilters
-                                                    .contains(i.toString()))
+                                                selectedFilters.contains(
+                                                  i.toString(),
+                                                ))
                                               bookShelf(
                                                 context,
                                                 GlobalVar.getTitleForCategory(

@@ -22,6 +22,7 @@ class _Signin extends State<Signin> {
   final _autoValidate = AutovalidateMode.disabled;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  String returnRoute = '';
   // Box<BookAPI> bookAPIBox = Hive.box<BookAPI>(topBookBox);
   bool _passwordVisible = false;
 
@@ -76,311 +77,322 @@ class _Signin extends State<Signin> {
       padding = const EdgeInsets.only(left: 15, right: 15, top: 20);
     }
     return Scaffold(
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Center(
-              child: SizedBox(
-                height: 120,
-                child: Image.asset('assets/images/logo.png'),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/logonobg.png',
+                  height: 120,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Form(
-              autovalidateMode: _autoValidate,
-              key: _formKey,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Selamat Kembali',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 25),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Kami gembira untuk bertemu kembali',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: DbpColor().jendelaGray,
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Form(
+                autovalidateMode: _autoValidate,
+                key: _formKey,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Selamat Kembali',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 25),
                           ),
-                        ),
-                        Text(
-                          'Masukkan emel dan kata laluan anda',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: DbpColor().jendelaGray,
+                          const SizedBox(
+                            height: 10,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 20),
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 15, right: 15),
-                          child: TextFormField(
-                            validator: (String? value) {
-                              if (value!.isEmpty) {
-                                return "Sila masukkan nama pengguna";
-                              } else {
-                                return null;
-                              }
-                            },
-                            controller: usernameController,
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 18),
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 12),
-                              suffixIcon: const Icon(
-                                Icons.email_rounded,
-                                color: Color.fromARGB(255, 162, 162, 162),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 185, 185, 185),
-                                ),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              labelText: 'Emel atau nama pengguna',
-                              labelStyle: TextStyle(
-                                color: DbpColor().jendelaGray,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 185, 185, 185),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 185, 185, 185),
-                                ),
-                              ),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
+                          Text(
+                            'Kami gembira untuk bertemu kembali',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: DbpColor().jendelaGray,
                             ),
                           ),
-                        ),
+                          Text(
+                            'Masukkan emel dan kata laluan anda',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: DbpColor().jendelaGray,
+                            ),
+                          ),
+                        ],
                       ),
-                      Container(
-                          padding: const EdgeInsets.only(left: 15, right: 15),
-                          child: TextFormField(
-                            // key: widget.fieldKey,
-                            validator: (String? value) {
-                              if (passwordController.text.isEmpty) {
-                                return 'Kata laluan diperlukan';
-                              }
-                              return null;
-                            },
-                            obscureText: !_passwordVisible,
-                            cursorColor: Colors.red,
-                            controller: passwordController,
-                            // onFieldSubmitted: widget.onFieldSubmitted,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 12),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  // Based on passwordVisible state choose the icon
-                                  _passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color:
-                                      const Color.fromARGB(255, 162, 162, 162),
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20, bottom: 20),
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: TextFormField(
+                              validator: (String? value) {
+                                if (value!.isEmpty) {
+                                  return "Sila masukkan nama pengguna";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              controller: usernameController,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 18),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 12),
+                                suffixIcon: const Icon(
+                                  Icons.email_rounded,
+                                  color: Color.fromARGB(255, 162, 162, 162),
                                 ),
-                                onPressed: () {
-                                  // print(_passwordVisible);
-                                  // Update the state i.e. toogle the state of passwordVisible variable
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
-                                },
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 185, 185, 185),
-                                ),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              labelText: 'Kata Laluan',
-                              labelStyle: TextStyle(
-                                color: DbpColor().jendelaGray,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 185, 185, 185),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 185, 185, 185),
-                                ),
-                              ),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
-                            ),
-                          )),
-                      testInternetAccess
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 24.0),
-                              child: LoadingAnimationWidget.discreteCircle(
-                                color: DbpColor().jendelaGray,
-                                secondRingColor: DbpColor().jendelaGreen,
-                                thirdRingColor: DbpColor().jendelaOrange,
-                                size: 50.0,
-                              ),
-                            )
-                          : isToLogin
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 24.0),
-                                  child: LoadingAnimationWidget.discreteCircle(
-                                    color: DbpColor().jendelaGray,
-                                    secondRingColor: DbpColor().jendelaGreen,
-                                    thirdRingColor: DbpColor().jendelaOrange,
-                                    size: 50.0,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Color.fromARGB(255, 185, 185, 185),
                                   ),
-                                )
-                              : SizedBox(
-                                  height: 70,
-                                  width: 500,
-                                  child: Padding(
-                                    padding: padding,
-                                    child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        side: BorderSide(
-                                          color: DbpColor().jendelaOrange,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                labelText: 'Emel atau nama pengguna',
+                                labelStyle: TextStyle(
+                                  color: DbpColor().jendelaGray,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromARGB(255, 185, 185, 185),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromARGB(255, 185, 185, 185),
+                                  ),
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: TextFormField(
+                              // key: widget.fieldKey,
+                              validator: (String? value) {
+                                if (passwordController.text.isEmpty) {
+                                  return 'Kata laluan diperlukan';
+                                }
+                                return null;
+                              },
+                              obscureText: !_passwordVisible,
+                              cursorColor: Colors.red,
+                              controller: passwordController,
+                              // onFieldSubmitted: widget.onFieldSubmitted,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 30, vertical: 12),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    // Based on passwordVisible state choose the icon
+                                    _passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: const Color.fromARGB(
+                                        255, 162, 162, 162),
+                                  ),
+                                  onPressed: () {
+                                    // print(_passwordVisible);
+                                    // Update the state i.e. toogle the state of passwordVisible variable
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  },
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Color.fromARGB(255, 185, 185, 185),
+                                  ),
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                labelText: 'Kata Laluan',
+                                labelStyle: TextStyle(
+                                  color: DbpColor().jendelaGray,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromARGB(255, 185, 185, 185),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromARGB(255, 185, 185, 185),
+                                  ),
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                              ),
+                            )),
+                        testInternetAccess
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 24.0),
+                                child: LoadingAnimationWidget.discreteCircle(
+                                  color: DbpColor().jendelaGray,
+                                  secondRingColor: DbpColor().jendelaGreen,
+                                  thirdRingColor: DbpColor().jendelaOrange,
+                                  size: 50.0,
+                                ),
+                              )
+                            : isToLogin
+                                ? Padding(
+                                    padding: const EdgeInsets.only(top: 24.0),
+                                    child:
+                                        LoadingAnimationWidget.discreteCircle(
+                                      color: DbpColor().jendelaGray,
+                                      secondRingColor: DbpColor().jendelaGreen,
+                                      thirdRingColor: DbpColor().jendelaOrange,
+                                      size: 50.0,
+                                    ),
+                                  )
+                                : SizedBox(
+                                    height: 70,
+                                    width: 500,
+                                    child: Padding(
+                                      padding: padding,
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          foregroundColor: Colors.white,
+                                          side: BorderSide(
+                                            color: DbpColor().jendelaOrange,
+                                          ),
+                                          backgroundColor:
+                                              DbpColor().jendelaOrange,
+                                          minimumSize:
+                                              const Size.fromHeight(70),
                                         ),
-                                        backgroundColor:
-                                            DbpColor().jendelaOrange,
-                                        minimumSize: const Size.fromHeight(70),
-                                      ),
-                                      onPressed: () async {
-                                        isLoading = true;
+                                        onPressed: () async {
+                                          isLoading = true;
 
-                                        FocusScopeNode currentFocus =
-                                            FocusScope.of(context);
-                                        currentFocus.unfocus();
-                                        setState(() {
-                                          testInternetAccess = true;
-                                        });
-                                        try {
-                                          final result = await InternetAddress
-                                                  .lookup('google.com')
-                                              .timeout(
-                                                  const Duration(seconds: 3));
-                                          if (result.isNotEmpty &&
-                                              result[0].rawAddress.isNotEmpty) {
+                                          FocusScopeNode currentFocus =
+                                              FocusScope.of(context);
+                                          currentFocus.unfocus();
+                                          setState(() {
+                                            testInternetAccess = true;
+                                          });
+                                          try {
+                                            final result = await InternetAddress
+                                                    .lookup('google.com')
+                                                .timeout(
+                                                    const Duration(seconds: 3));
+                                            if (result.isNotEmpty &&
+                                                result[0]
+                                                    .rawAddress
+                                                    .isNotEmpty) {
+                                              setState(() {
+                                                testInternetAccess = false;
+                                              });
+                                              if (!context.mounted) return;
+                                              Map authResult =
+                                                  await authCubit.login(context,
+                                                      isToLogin: isToLogin,
+                                                      formKey: _formKey,
+                                                      usernameController:
+                                                          usernameController,
+                                                      passwordController:
+                                                          passwordController);
+                                              setState(() {
+                                                isToLogin =
+                                                    authResult['isToLogin'];
+                                                usernameController = authResult[
+                                                    'usernameController'];
+                                                passwordController = authResult[
+                                                    'passwordController'];
+                                              });
+                                              if (isToLogin) {
+                                                Future.delayed(const Duration(
+                                                        seconds: 1))
+                                                    .then((value) async {
+                                                  // Navigator.of(context)
+                                                  //     .pushReplacementNamed('/Home');
+                                                  try {
+                                                    // pushNewScreen(
+                                                    //   context,
+                                                    //   screen: MyApp(),
+                                                    //   withNavBar:
+                                                    //       false, // OPTIONAL VALUE. True by default.
+                                                    // );
+                                                    Navigator.of(context)
+                                                        .pushReplacementNamed(
+                                                      '/home',
+                                                    );
+                                                  } catch (e, st) {
+                                                    await Sentry
+                                                        .captureException(
+                                                      e,
+                                                      stackTrace: st,
+                                                    );
+                                                  }
+                                                });
+                                              }
+                                            }
+                                          } catch (exception, stackTrace) {
                                             setState(() {
                                               testInternetAccess = false;
                                             });
+                                            await Sentry.captureException(
+                                              exception,
+                                              stackTrace: stackTrace,
+                                            );
                                             if (!context.mounted) return;
-                                            Map authResult =
-                                                await authCubit.login(context,
-                                                    isToLogin: isToLogin,
-                                                    formKey: _formKey,
-                                                    usernameController:
-                                                        usernameController,
-                                                    passwordController:
-                                                        passwordController);
-                                            setState(() {
-                                              isToLogin =
-                                                  authResult['isToLogin'];
-                                              usernameController = authResult[
-                                                  'usernameController'];
-                                              passwordController = authResult[
-                                                  'passwordController'];
-                                            });
-                                            if (isToLogin) {
-                                              Future.delayed(const Duration(
-                                                      seconds: 1))
-                                                  .then((value) async {
-                                                // Navigator.of(context)
-                                                //     .pushReplacementNamed('/Home');
-                                                try {
-                                                  // pushNewScreen(
-                                                  //   context,
-                                                  //   screen: MyApp(),
-                                                  //   withNavBar:
-                                                  //       false, // OPTIONAL VALUE. True by default.
-                                                  // );
-                                                  Navigator.of(context)
-                                                      .pushReplacementNamed(
-                                                    '/home',
-                                                  );
-                                                } catch (e, st) {
-                                                  await Sentry.captureException(
-                                                    e,
-                                                    stackTrace: st,
-                                                  );
-                                                }
-                                              });
-                                            }
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              content:
+                                                  Text('Tiada Akses Internet'),
+                                              duration: Duration(seconds: 3),
+                                            ));
                                           }
-                                        } catch (exception, stackTrace) {
                                           setState(() {
                                             testInternetAccess = false;
                                           });
-                                          await Sentry.captureException(
-                                            exception,
-                                            stackTrace: stackTrace,
-                                          );
-                                          if (!context.mounted) return;
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                            behavior: SnackBarBehavior.floating,
-                                            content:
-                                                Text('Tiada Akses Internet'),
-                                            duration: Duration(seconds: 3),
-                                          ));
-                                        }
-                                        setState(() {
-                                          testInternetAccess = false;
-                                        });
-                                      },
-                                      child: const Text(
-                                        'Log Masuk',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
+                                        },
+                                        child: const Text(
+                                          'Log Masuk',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: AuthProvider(
-                          account: 'Tidak mempunyai akaun?',
-                          orangeAccount: ' Daftar Akaun',
-                          guest: 'Anda juga boleh teruskan sebagai',
-                          guestAccount: ' Tetamu',
-                          pageNavigator: goToSignup,
-                        ),
-                      )
-                    ],
-                  )
-                ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: AuthProvider(
+                            account: 'Tidak mempunyai akaun?',
+                            orangeAccount: ' Daftar Akaun',
+                            guest: 'Anda juga boleh teruskan sebagai',
+                            guestAccount: ' Tetamu',
+                            pageNavigator: goToSignup,
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
