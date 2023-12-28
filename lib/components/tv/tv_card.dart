@@ -51,7 +51,9 @@ class _VideoCard extends State<TvCard> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: DbpColor().jendelaGreenBlue,
       child: GestureDetector(
           onTap: () {
             Navigator.push(

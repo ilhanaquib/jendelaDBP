@@ -76,7 +76,7 @@ class _HomePostCard extends State<HomePostCard> {
                 Padding(
                   padding: const EdgeInsets.only(top: 12.0),
                   child: Text(
-                    DateFormat('d MMM yyyy HH:mm').format(
+                    DateFormat('d MMM yyyy, HH:mm').format(
                       DateTime.parse(widget.post.date ?? ''),
                     ),
                     style: const TextStyle(

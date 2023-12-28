@@ -60,6 +60,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
   List<int> kategori13Books = [];
   List<int> kategori14Books = [];
   List<int> kategori15Books = [];
+  List<int> kategori16Books = [];
   bool isLoading = true;
 
   dynamic allProduct;
@@ -107,6 +108,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
       await getKategori(context, token, GlobalVar.kategori13);
       await getKategori(context, token, GlobalVar.kategori14);
       await getKategori(context, token, GlobalVar.kategori15);
+      await getKategori(context, token, GlobalVar.kategori16);
     }
 
     getKategoriFromAPI();
@@ -194,6 +196,11 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
         .where(
             (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori15)
         .toList();
+    kategori16Books = APIBook.keys
+        .cast<int>()
+        .where(
+            (key) => APIBook.get(key)!.productCategory == GlobalVar.kategori16)
+        .toList();
   }
 
   List<String> selectedFilters = [];
@@ -232,6 +239,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
           await getKategori(context, token, GlobalVar.kategori13);
           await getKategori(context, token, GlobalVar.kategori14);
           await getKategori(context, token, GlobalVar.kategori15);
+          await getKategori(context, token, GlobalVar.kategori16);
         }
       } catch (exception) {
         if (!context.mounted) return;
@@ -274,6 +282,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
       13: kategori13Books,
       14: kategori14Books,
       15: kategori15Books,
+      16: kategori16Books,
     };
 
     return MultiBlocProvider(
@@ -491,7 +500,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                                 ),
                               ),
                               for (int i = 1;
-                                  i <= 15;
+                                  i <= 16;
                                   i++) // Loop through kategoriXTitle
                                 Padding(
                                   padding:
@@ -538,7 +547,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                                             CrossAxisAlignment.center,
                                         children: [
                                           // Display filtered bookshelves
-                                          for (int i = 1; i <= 15; i++)
+                                          for (int i = 1; i <= 16; i++)
                                             if (selectedFilters.isEmpty ||
                                                 selectedFilters.contains(
                                                   i.toString(),
