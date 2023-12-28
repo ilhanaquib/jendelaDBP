@@ -140,7 +140,7 @@ class _AllArticleState extends State<AllArticle> {
       childAspectRatio = 1.05;
     } else {
       // Use the default padding for phones and other devices
-      childAspectRatio = 0.70;
+      childAspectRatio = 0.65;
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {

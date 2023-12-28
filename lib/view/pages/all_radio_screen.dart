@@ -47,9 +47,11 @@ class _AllRadiosScreen extends State<AllRadioScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.maybeOf(context)!.size;
     return Scaffold(
+      backgroundColor: DbpColor().jendelaDarkGreenBlue,
         appBar: AppBar(
+          backgroundColor: DbpColor().jendelaDarkGreenBlue,
           centerTitle: true,
-          title: const Text('Radio DBP', style: TextStyle(color: Colors.black)),
+          title: const Text('Radio DBP', style: TextStyle(color: Colors.white)),
         ),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

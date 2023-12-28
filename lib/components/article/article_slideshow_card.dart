@@ -69,7 +69,7 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
                 : ResponsiveLayout.isTablet(context)
                     ? 850
                     : 500,
-            height: 500,
+            height: 600,
             fit: BoxFit.cover,
           ),
           Positioned.fill(
@@ -119,65 +119,53 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (Platform.isWindows) {
-          _launchURL();
-        } else {
-          PersistentNavBarNavigator.pushNewScreen(
-            context,
-            withNavBar: false,
-            screen: ArticleDetailScreen(
-              article: widget.article,
-            ),
-          );
-        }
-      },
-      child: Stack(
-        children: [
-          getImageWidget(),
-          Positioned(
-            bottom: 10,
-            left: 10,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 0, right: 0, bottom: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: DbpColor().jendelaOrange, width: 2.0),
-                          color: DbpColor().jendelaOrange,
-                          borderRadius: BorderRadius.circular(100)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          getCategoryName(widget.article.domain!),
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 10),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    //width: 100,
-                    child: SizedBox(
-                      width: widget.textSize,
+    return Stack(
+      children: [
+        getImageWidget(),
+        Positioned(
+          bottom: 10,
+          left: 10,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: DbpColor().jendelaOrange, width: 2.0),
+                        color: DbpColor().jendelaOrange,
+                        borderRadius: BorderRadius.circular(100)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        parse(widget.article.postTitle).body?.text ?? '',
-                        softWrap: true,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            backgroundColor: Colors.black),
+                        getCategoryName(widget.article.domain!),
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 10),
                       ),
                     ),
                   ),
-                  Text(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: SizedBox(
+                    width: widget.textSize,
+                    child: Text(
+                      parse(widget.article.postTitle).body?.text ?? '',
+                      softWrap: true,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 29),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Text(
                     DateFormat('d MMM yyyy HH:mm').format(
                       DateTime.parse(widget.article.postDate ?? ''),
                     ),
@@ -185,28 +173,55 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
                         textBaseline: TextBaseline.alphabetic,
                         color: Color.fromARGB(255, 201, 211, 223)),
                   ),
-                ],
-              ),
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    if (Platform.isWindows) {
+                      _launchURL();
+                    } else {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        withNavBar: false,
+                        screen: ArticleDetailScreen(
+                          article: widget.article,
+                        ),
+                      );
+                    }
+                  },
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: DbpColor().jendelaTurqoiseDark,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          10.0), // Adjust the radius as needed
+                    ),
+                  ),
+                  child: const Text(
+                    'Baca Artikel',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
             ),
           ),
-          Positioned(
-            bottom: 10,
-            left: 135,
-            child: SmoothPageIndicator(
-              controller: widget.pageContoller,
-              count: 8,
-              effect: ExpandingDotsEffect(
-                  activeDotColor: DbpColor().jendelaOrange,
-                  dotColor: DbpColor().jendelaGray,
-                  dotHeight: 8,
-                  dotWidth: 8),
-              onDotClicked: (index) => widget.pageContoller.animateToPage(index,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeIn),
-            ),
+        ),
+        Positioned(
+          bottom: 10,
+          left: 135,
+          child: SmoothPageIndicator(
+            controller: widget.pageContoller,
+            count: 8,
+            effect: ExpandingDotsEffect(
+                activeDotColor: DbpColor().jendelaOrange,
+                dotColor: DbpColor().jendelaGray,
+                dotHeight: 8,
+                dotWidth: 8),
+            onDotClicked: (index) => widget.pageContoller.animateToPage(index,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeIn),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

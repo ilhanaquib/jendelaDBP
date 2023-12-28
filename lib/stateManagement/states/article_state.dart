@@ -1,27 +1,26 @@
+// ignore_for_file: must_be_immutable, overridden_fields
+
 import 'package:equatable/equatable.dart';
 import 'package:jendela_dbp/hive/models/hive_article_model.dart';
 
-// ignore: must_be_immutable
 abstract class ArticleState extends Equatable {
   ArticleState();
-  List<Article>? listOfArtikel;
-  Article? article;
+  List<Article>? listOfArticle;
+  Article? artikel;
 
   ArticleLoaded copyWith({List<Article>? listOfArticle, Article? article}) {
     return ArticleLoaded(
-      listOfArticle: listOfArticle ?? listOfArtikel,
-      article: article ?? this.article,
+      listOfArticle: listOfArticle ?? this.listOfArticle,
+      article: article ?? artikel,
     );
   }
 }
 
-// ignore: must_be_immutable
 class ArticleLoaded extends ArticleState {
   @override
   List props = [];
-  final List<Article>? listOfArticle;
   @override
-  // ignore: overridden_fields
+  final List<Article>? listOfArticle;
   final Article? article;
 
   ArticleLoaded({this.listOfArticle, this.article}) : super();
@@ -36,22 +35,19 @@ class ArticleLoaded extends ArticleState {
 
   @override
   String toString() =>
-      'ArticleLoaded { article: ${article.toString()}, listOfArticle: ${listOfArticle.toString()} }';
+      'PostLoaded { artikel: ${article.toString()}, listOfArtikel: ${listOfArticle.toString()} }';
 }
 
-// ignore: must_be_immutable
 class ArticleInit extends ArticleState {
   @override
   List props = [];
 }
 
-// ignore: must_be_immutable
 class ArticleLoading extends ArticleState {
   @override
   List props = [];
 }
 
-// ignore: must_be_immutable
 class ArticleError extends ArticleState {
   @override
   List props = [];

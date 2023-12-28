@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jendela_dbp/components/berita/berita_card.dart';
-import 'package:jendela_dbp/components/berita/berita_not_found_card.dart';
+import 'package:jendela_dbp/components/article/article_card.dart';
+import 'package:jendela_dbp/components/article/article_not_found.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/hive/models/hive_berita_model.dart';
-import 'package:jendela_dbp/stateManagement/blocs/berita_bloc.dart';
-import 'package:jendela_dbp/stateManagement/events/berita_event.dart';
-import 'package:jendela_dbp/stateManagement/states/berita_state.dart';
+import 'package:jendela_dbp/hive/models/hive_article_model.dart';
+import 'package:jendela_dbp/stateManagement/blocs/article_bloc.dart';
+import 'package:jendela_dbp/stateManagement/events/article_event.dart';
+import 'package:jendela_dbp/stateManagement/states/article_state.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:jendela_dbp/components/cart/cart_icon.dart';
@@ -19,15 +19,15 @@ import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:jendela_dbp/stateManagement/cubits/connection_cubit.dart';
 
-class CategorizedBerita extends StatefulWidget {
-  CategorizedBerita({super.key, required this.i});
+class CategorizedArticle extends StatefulWidget {
+  CategorizedArticle({super.key, required this.i});
   int i;
   @override
-  State<CategorizedBerita> createState() => _CategorizedBeritaState();
+  State<CategorizedArticle> createState() => _CategorizedArticleState();
 }
 
-class _CategorizedBeritaState extends State<CategorizedBerita> {
-  BeritaBloc beritaBloc = BeritaBloc();
+class _CategorizedArticleState extends State<CategorizedArticle> {
+  ArticleBloc articleBloc = ArticleBloc();
   ConnectionCubit connectionCubit = ConnectionCubit();
   final int _perPage = 25;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -47,8 +47,8 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
 
   @override
   void initState() {
-    beritaBloc.add(
-      BeritaFetch(perPage: _perPage),
+    articleBloc.add(
+      ArticleFetch(perPage: _perPage),
     );
 
     super.initState();
@@ -56,7 +56,7 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
 
   @override
   void dispose() {
-    beritaBloc.close();
+    articleBloc.close();
     super.dispose();
   }
 
@@ -65,11 +65,11 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => beritaBloc,
-      child: BlocConsumer<BeritaBloc, BeritaState>(
-        bloc: beritaBloc,
+      create: (context) => articleBloc,
+      child: BlocConsumer<ArticleBloc, ArticleState>(
+        bloc: articleBloc,
         listener: (context, state) {},
-        builder: (BuildContext context, BeritaState state) {
+        builder: (BuildContext context, ArticleState state) {
           return ScaffoldMessenger(
             key: scaffoldMessengerKey,
             child: Scaffold(
@@ -115,7 +115,7 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
 
                     scaffoldMessengerKey.currentState!.showSnackBar(
                       const SnackBar(
-                        content: Text('Sedang mendapatkan berita...'),
+                        content: Text('Sedang mendapatkan artikel...'),
                         duration: Duration(
                             days: 1), // Long duration to keep snackbar visible
                       ),
@@ -124,8 +124,8 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
                     // Simulating content fetching delay
                     Future.delayed(const Duration(seconds: 1), () {
                       // Add event to fetch more content
-                      beritaBloc.add(
-                        BeritaFetchMore(perPage: 25),
+                      articleBloc.add(
+                        ArticleFetchMore(perPage: 25),
                       );
 
                       // Update state after content is fetched
@@ -153,10 +153,10 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
                             connectionCubit.checkConnection(context);
                             await Future.delayed(
                                 const Duration(milliseconds: 100));
-                            beritaBloc.add(BeritaFetch());
+                            articleBloc.add(ArticleFetch());
                           },
                           child: SingleChildScrollView(
-                              child: _beritaList(context))),
+                              child: _articleList(context))),
                     )
                   ],
                 ),
@@ -168,7 +168,7 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
     );
   }
 
-  Widget _beritaList(BuildContext context) {
+  Widget _articleList(BuildContext context) {
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
@@ -212,27 +212,27 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Berita',
+                  'Artikel',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ],
             ),
           ),
           SizedBox(
-            child: BlocBuilder<BeritaBloc, BeritaState>(
-              bloc: beritaBloc,
+            child: BlocBuilder<ArticleBloc, ArticleState>(
+              bloc: articleBloc,
               builder: (context, data) {
-                if (data is BeritaLoaded) {
-                  List<Berita> berita = data.listOfBerita
+                if (data is ArticleLoaded) {
+                  List<Article> articles = data.listOfArticle
                           ?.where((e) => e.blogId == categoryId[widget.i])
                           .toList() ??
                       [];
-                  if (berita.isEmpty) {
+                  if (articles.isEmpty) {
                     return const SizedBox(
                       height: 300,
                       child: Center(
                         //change card
-                        child: BeritaNotFoundCard(),
+                        child: ArticleNotFoundCard(),
                       ),
                     );
                   }
@@ -247,15 +247,15 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       children: List.generate(
-                        berita.length,
-                        (index) => BeritaCard(
-                          berita: berita[index],
+                        articles.length,
+                        (index) => ArticleCard(
+                          article: articles[index],
                         ),
                       ),
                     ),
                   );
                 }
-                if (data is BeritaError) {
+                if (data is ArticleError) {
                   return const ErrorCard(message: 'error');
                 }
                 return Center(

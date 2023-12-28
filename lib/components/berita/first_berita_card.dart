@@ -12,8 +12,8 @@ import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-class HomeBeritaCard extends StatefulWidget {
-  const HomeBeritaCard(
+class FirstBeritaCard extends StatefulWidget {
+  const FirstBeritaCard(
       {Key? key,
       this.viewCount = 0,
       this.isSaved = false,
@@ -28,10 +28,10 @@ class HomeBeritaCard extends StatefulWidget {
   final Berita berita;
   final double textSize;
   @override
-  State<HomeBeritaCard> createState() => _HomeArticleCard();
+  State<FirstBeritaCard> createState() => _FirstBeritaCard();
 }
 
-class _HomeArticleCard extends State<HomeBeritaCard> {
+class _FirstBeritaCard extends State<FirstBeritaCard> {
   void _launchURL() async {
     if (await canLaunchUrl(
         Uri.parse(widget.berita.guid ?? "https://{GlobalVar.BaseURLDomain}"))) {
@@ -122,80 +122,79 @@ class _HomeArticleCard extends State<HomeBeritaCard> {
           );
         }
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
-            child: ClipRRect(
+      child: Container(
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 30, 41, 59),
+            borderRadius: BorderRadius.circular(8)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: getImageWidget()),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 0, right: 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Padding(
-                //   padding: const EdgeInsets.only(bottom: 8.0),
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //         border: Border.all(
-                //             color: DbpColor().jendelaOrange, width: 2.0),
-                //         color: DbpColor().jendelaOrange,
-                //         borderRadius: BorderRadius.circular(100)),
-                //     child: Padding(
-                //       padding: const EdgeInsets.all(4.0),
-                //       child: Text(
-                //         getCategoryName(widget.berita.domain!),
-                //         style: const TextStyle(
-                //             color: Colors.black, fontSize: 10),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                 Padding(
-                   padding: const EdgeInsets.only(top:8.0),
-                   child: Column(
+            Padding(
+              padding: const EdgeInsets.only(left: 0, right: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 8.0),
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //         border: Border.all(
+                  //             color: DbpColor().jendelaOrange, width: 2.0),
+                  //         color: DbpColor().jendelaOrange,
+                  //         borderRadius: BorderRadius.circular(100)),
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(4.0),
+                  //       child: Text(
+                  //         getCategoryName(widget.berita.domain!),
+                  //         style: const TextStyle(
+                  //             color: Colors.black, fontSize: 10),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          //width: 100,
-                          child: SizedBox(
-                            width: widget.textSize,
-                            child: Text(
-                              parse(widget.berita.postTitle).body?.text ?? '',
-                              softWrap: true,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
+                          width: widget.textSize,
+                          child: Text(
+                            parse(widget.berita.postTitle).body?.text ?? '',
+                            softWrap: true,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            DateFormat('d MMM yyyy, HH:mm').format(
-                              DateTime.parse(widget.berita.postDate ?? ''),
-                            ),
-                            style: const TextStyle(
-                                textBaseline: TextBaseline.alphabetic,
-                                color: Color.fromARGB(255, 174, 176, 178)),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          DateFormat('d MMM yyyy, HH:mm').format(
+                            DateTime.parse(widget.berita.postDate ?? ''),
                           ),
+                          style: const TextStyle(
+                              textBaseline: TextBaseline.alphabetic,
+                              color: Color.fromARGB(255, 201, 211, 223)),
+                        ),
+                        const SizedBox(
+                          height: 8,
                         ),
                       ],
                     ),
-                 ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

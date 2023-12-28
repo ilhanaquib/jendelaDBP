@@ -130,10 +130,10 @@ class _AllBeritaState extends State<AllBerita> {
       childAspectRatio = 1;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      childAspectRatio = 1.05;
+      childAspectRatio = 0.9;
     } else {
       // Use the default padding for phones and other devices
-      childAspectRatio = 0.85;
+      childAspectRatio = 0.65;
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
@@ -147,7 +147,7 @@ class _AllBeritaState extends State<AllBerita> {
       crossAxisCount = 2;
     }
     return Padding(
-      padding: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
       child: SizedBox(
         child: BlocBuilder<BeritaBloc, BeritaState>(
           bloc: beritaBloc,

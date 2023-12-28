@@ -46,10 +46,12 @@ class _AllTvScreen extends State<AllTvScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.maybeOf(context)!.size;
     return Scaffold(
+      backgroundColor: DbpColor().jendelaGreenBlue,
       appBar: AppBar(
+        backgroundColor: DbpColor().jendelaGreenBlue,
         centerTitle: true,
         title:
-            const Text('TV DBP', style:  TextStyle(color: Colors.black)),
+            const Text('TV DBP', style:  TextStyle(color: Colors.white)),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -57,7 +59,7 @@ class _AllTvScreen extends State<AllTvScreen> {
         child: SizedBox(
           width: size.width,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(0),
             child: BlocBuilder<TvBloc, TvState>(
               bloc: tvBloc,
               builder: (context, state) {
@@ -74,7 +76,7 @@ class _AllTvScreen extends State<AllTvScreen> {
                     },
                   ).toList();
                   return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20.0),
+                    margin: const EdgeInsets.symmetric(vertical: 0),
                     child: Column(children: listWidget),
                   );
                 }

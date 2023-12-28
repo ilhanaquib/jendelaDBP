@@ -167,8 +167,6 @@ class _HomeArticleCard extends State<HomeArticleCard> {
                     ),
                   ),
                   SizedBox(
-                    //width: 100,
-                    child: SizedBox(
                       width: widget.textSize,
                       child: Text(
                         parse(widget.article.postTitle).body?.text ?? '',
@@ -179,7 +177,6 @@ class _HomeArticleCard extends State<HomeArticleCard> {
                             backgroundColor: Colors.black),
                       ),
                     ),
-                  ),
                   Text(
                     DateFormat('d MMM yyyy HH:mm').format(
                       DateTime.parse(widget.article.postDate ?? ''),

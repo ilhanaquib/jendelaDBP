@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:jendela_dbp/components/article/article_card.dart';
 import 'package:jendela_dbp/components/article/article_slideshow_card.dart';
+import 'package:jendela_dbp/components/berita/berita_card.dart';
 import 'package:jendela_dbp/components/berita/berita_not_found_card.dart';
+import 'package:jendela_dbp/components/berita/first_berita_card.dart';
 import 'package:jendela_dbp/components/berita/home_berita_card.dart';
 import 'package:jendela_dbp/components/radio/radio_card.dart';
 import 'package:jendela_dbp/components/radio/radio_not_found_card.dart';
@@ -24,9 +27,10 @@ import 'package:jendela_dbp/stateManagement/states/radio_state.dart';
 import 'package:jendela_dbp/stateManagement/states/tv_state.dart';
 import 'package:jendela_dbp/view/pages/all_radio_screen.dart';
 import 'package:jendela_dbp/view/pages/all_tv.dart';
+import 'package:jendela_dbp/view/pages/articles/categorized_all_articles.dart';
+import 'package:jendela_dbp/view/pages/berita/all_berita_categorized.dart';
 import 'package:jendela_dbp/view/pages/berita/all_berita.dart';
 import 'package:jendela_dbp/view/pages/articles/all_articles.dart';
-import 'package:jendela_dbp/view/pages/articles/all_articles_categorized.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -75,13 +79,16 @@ class _HomeState extends State<Home> {
   ConnectionCubit connectionCubit = ConnectionCubit();
   final PageController pageController = PageController();
   int currentPage = 0;
+  
 
   @override
   void initState() {
     connectionCubit.checkConnection(context);
     postBloc.add(PostFetch());
     beritaBloc.add(BeritaFetch(perPage: 15));
+    //beritaBloc.add(BeritaFetchMore(perPage: 15));
     articleBloc.add(ArticleFetch());
+    // articleBloc.add(ArticleFetchMore());
     tvBloc.add(TvFetch());
     radioBloc.add(RadioFetch());
     super.initState();
@@ -97,9 +104,23 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
+  List<int> kategori15Books = [];
+  List<int> kategori16Books = [];
+
   @override
   Widget build(BuildContext context) {
     List<int> bookList = bookAPIBox.keys.cast<int>().toList();
+    List<int> majalahListEkonomi = kategori15Books = bookAPIBox.keys
+        .cast<int>()
+        .where((key) =>
+            bookAPIBox.get(key)!.productCategory == GlobalVar.kategori15)
+        .toList();
+    List<int> majalahListBahasa = kategori16Books = bookAPIBox.keys
+        .cast<int>()
+        .where((key) =>
+            bookAPIBox.get(key)!.productCategory == GlobalVar.kategori16)
+        .toList();
+    List<int> majalahList = majalahListEkonomi + majalahListBahasa;
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => postBloc),
@@ -154,8 +175,10 @@ class _HomeState extends State<Home> {
                     onRefresh: () async {
                       connectionCubit.checkConnection(context);
                       beritaBloc.add(BeritaFetch(perPage: 15));
+                      //beritaBloc.add(BeritaFetchMore(perPage: 15));
                       postBloc.add(PostFetch());
                       articleBloc.add(ArticleFetch());
+                      // articleBloc.add(ArticleFetchMore());
                       tvBloc.add(TvFetch());
                       radioBloc.add(RadioFetch());
                       setState(() {});
@@ -163,10 +186,10 @@ class _HomeState extends State<Home> {
                     child: ListView(
                       children: [
                         _articleSlideshow(context),
-                        _post(context),
-                        const SizedBox(
-                          height: 24,
-                        ),
+                        // _post(context),
+                        // const SizedBox(
+                        //   height: 24,
+                        // ),
                         _beritaWidget(context),
                         const SizedBox(
                           height: 24,
@@ -174,6 +197,10 @@ class _HomeState extends State<Home> {
                         _article(context),
                         const SizedBox(
                           height: 24,
+                        ),
+                        Container(
+                          height: 12,
+                          color: DbpColor().jendelaGreenBlue,
                         ),
                         _tvWidget(context),
                         Container(
@@ -185,8 +212,27 @@ class _HomeState extends State<Home> {
                           color: DbpColor().jendelaDarkGreenBlue,
                         ),
                         _radioWidget(context),
+                        Container(
+                          height: 12,
+                          color: DbpColor().jendelaDarkGreenBlue,
+                        ),
                         const SizedBox(
-                          height: 24,
+                          height: 12,
+                        ),
+                        
+                        bookShelf(
+                          context,
+                          "Majalah",
+                          15,
+                          majalahList,
+                          bookAPIBox,
+                        ),
+                        bookShelf(
+                          context,
+                          "Buku",
+                          0,
+                          bookList,
+                          bookAPIBox,
                         ),
                         for (int i = 1; i < 9; i++)
                           Padding(
@@ -196,13 +242,6 @@ class _HomeState extends State<Home> {
                         const SizedBox(
                           height: 24,
                         ),
-                        bookShelf(
-                          context,
-                          "Buku",
-                          0,
-                          bookList,
-                          bookAPIBox,
-                        )
                       ],
                     ),
                   ),
@@ -215,6 +254,7 @@ class _HomeState extends State<Home> {
     );
   }
 
+  // ignore: unused_element
   Widget _post(BuildContext context) {
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
@@ -331,7 +371,7 @@ class _HomeState extends State<Home> {
               );
             }
             return SizedBox(
-              height: 500, // Set your desired height
+              height: 600, // Set your desired height
               child: PageView.builder(
                 controller: pageController,
                 //itemCount: articles.length,
@@ -343,7 +383,7 @@ class _HomeState extends State<Home> {
                         ? 250
                         : ResponsiveLayout.isTablet(context)
                             ? 170
-                            : 130,
+                            : 350,
                   );
                 },
               ),
@@ -369,16 +409,35 @@ class _HomeState extends State<Home> {
   }
 
   Widget _beritaWidget(BuildContext context) {
+    double childAspectRatio;
+    if (ResponsiveLayout.isDesktop(context)) {
+      childAspectRatio = 1.1;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      childAspectRatio = 1;
+    } else {
+      childAspectRatio = 0.8;
+    }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
-      crossAxisCount = 5;
+      crossAxisCount = 10;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      crossAxisCount = 4;
+      crossAxisCount = 3;
     } else {
       // Use the default padding for phones and other devices
-      crossAxisCount = 4;
+      crossAxisCount = 2;
+    }
+    int numOfPost;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      numOfPost = 9;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      numOfPost = 7;
+    } else {
+      // Use the default padding for phones and other devices
+      numOfPost = 5;
     }
     return Padding(
       padding: const EdgeInsets.only(top: 0),
@@ -415,7 +474,7 @@ class _HomeState extends State<Home> {
             builder: (context, data) {
               if (data is BeritaLoaded) {
                 List<Berita> beritaList =
-                    data.listOfBerita?.take(9).toList() ?? [];
+                    data.listOfBerita?.take(numOfPost).toList() ?? [];
                 if (beritaList.isEmpty) {
                   return const SizedBox(
                     height: 300,
@@ -426,46 +485,49 @@ class _HomeState extends State<Home> {
                 }
                 return Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: StaggeredGrid.count(
-                    crossAxisCount: crossAxisCount,
-                    mainAxisSpacing: ResponsiveLayout.isDesktop(context)
-                        ? 5
-                        : ResponsiveLayout.isTablet(context)
-                            ? 8
-                            : 10,
-                    crossAxisSpacing: ResponsiveLayout.isDesktop(context)
-                        ? 5
-                        : ResponsiveLayout.isTablet(context)
-                            ? 8
-                            : 8,
-                    children: beritaList.map((berita) {
-                      int index = beritaList.indexOf(berita);
-                      int crossAxisCellCount = 4;
-                      int mainAxisCellCount = 3;
-
-                      if (index != 0) {
-                        crossAxisCellCount = 2;
-                        mainAxisCellCount = 3;
-                      }
-
-                      return StaggeredGridTile.count(
-                        crossAxisCellCount: crossAxisCellCount,
-                        mainAxisCellCount: mainAxisCellCount,
-                        child: HomeBeritaCard(
-                          berita: berita,
-                          textSize: ResponsiveLayout.isDesktop(context)
-                              ? 250
-                              : ResponsiveLayout.isTablet(context)
-                                  ? 170
-                                  : 130,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 19),
+                        child: SizedBox(
+                          child: FirstBeritaCard(
+                            berita: beritaList[0],
+                            textSize: ResponsiveLayout.isDesktop(context)
+                                ? 250
+                                : ResponsiveLayout.isTablet(context)
+                                    ? 500
+                                    : 350,
+                          ),
                         ),
-                      );
-                    }).toList(),
+                      ),
+                      GridView(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: crossAxisCount,
+                            crossAxisSpacing: 18,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: childAspectRatio),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: List.generate(
+                          beritaList.length - 1,
+                          (index) => HomeBeritaCard(
+                            berita: beritaList[index + 1],
+                            textSize: ResponsiveLayout.isDesktop(context)
+                                ? 250
+                                : ResponsiveLayout.isTablet(context)
+                                    ? 170
+                                    : 350,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }
-              if (data is ArticleError) {
-                return const ErrorCard(message: 'error');
+              if (data is BeritaError) {
+                return ErrorCard(
+                  message: data.message ?? '',
+                );
               }
               return SizedBox(
                 height: 300,
@@ -489,10 +551,10 @@ class _HomeState extends State<Home> {
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
-      crossAxisCount = 5;
+      crossAxisCount = 10;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      crossAxisCount = 4;
+      crossAxisCount = 8;
     } else {
       // Use the default padding for phones and other devices
       crossAxisCount = 4;
@@ -500,10 +562,10 @@ class _HomeState extends State<Home> {
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
-      numOfPost = 11;
+      numOfPost = 9;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      numOfPost = 9;
+      numOfPost = 7;
     } else {
       // Use the default padding for phones and other devices
       numOfPost = 5;
@@ -553,45 +615,51 @@ class _HomeState extends State<Home> {
                   );
                 }
                 return Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: StaggeredGrid.count(
-                    crossAxisCount: crossAxisCount,
-                    mainAxisSpacing: ResponsiveLayout.isDesktop(context)
-                        ? 5
-                        : ResponsiveLayout.isTablet(context)
-                            ? 8
-                            : 10,
-                    crossAxisSpacing: ResponsiveLayout.isDesktop(context)
-                        ? 5
-                        : ResponsiveLayout.isTablet(context)
-                            ? 8
-                            : 8,
-                    children: articles.map((article) {
-                      int index = articles
-                          .indexOf(article); // Index of the current article
-                      int crossAxisCellCount = 4;
-                      int mainAxisCellCount = 3;
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: StaggeredGrid.count(
+                      crossAxisCount: crossAxisCount,
+                      mainAxisSpacing: ResponsiveLayout.isDesktop(context)
+                          ? 5
+                          : ResponsiveLayout.isTablet(context)
+                              ? 8
+                              : 10,
+                      crossAxisSpacing: ResponsiveLayout.isDesktop(context)
+                          ? 5
+                          : ResponsiveLayout.isTablet(context)
+                              ? 8
+                              : 8,
+                      children: articles.asMap().entries.map((entry) {
+                        int index =
+                            entry.key; // Get the index of the current article
 
-                      if (index != 0) {
-                        crossAxisCellCount = 2;
-                        mainAxisCellCount = 3;
-                      }
+                        int crossAxisCellCount = 4;
+                        int mainAxisCellCount = 3;
 
-                      return StaggeredGridTile.count(
-                        crossAxisCellCount: crossAxisCellCount,
-                        mainAxisCellCount: mainAxisCellCount,
-                        child: HomeArticleCard(
-                          article: article,
-                          textSize: ResponsiveLayout.isDesktop(context)
-                              ? 250
-                              : ResponsiveLayout.isTablet(context)
-                                  ? 170
-                                  : 130,
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                );
+                        if (index != 0) {
+                          crossAxisCellCount = 2;
+                          mainAxisCellCount = 3;
+                        }
+
+                        return StaggeredGridTile.count(
+                          crossAxisCellCount: crossAxisCellCount,
+                          mainAxisCellCount: mainAxisCellCount,
+                          child: HomeArticleCard(
+                            article: entry.value,
+                            textSize: index == 0
+                                ? (ResponsiveLayout.isDesktop(context)
+                                    ? 300
+                                    : ResponsiveLayout.isTablet(context)
+                                        ? 170
+                                        : 350)
+                                : (ResponsiveLayout.isDesktop(context)
+                                    ? 250
+                                    : ResponsiveLayout.isTablet(context)
+                                        ? 170
+                                        : 130),
+                          ),
+                        );
+                      }).toList(),
+                    ));
               }
               if (data is ArticleError) {
                 return const ErrorCard(message: 'error');
@@ -618,13 +686,24 @@ class _HomeState extends State<Home> {
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
-      crossAxisCount = 5;
+      crossAxisCount = 12;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      crossAxisCount = 4;
+      crossAxisCount = 10;
     } else {
       // Use the default padding for phones and other devices
       crossAxisCount = 4;
+    }
+    int numOfPost;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      numOfPost = 9;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      numOfPost = 7;
+    } else {
+      // Use the default padding for phones and other devices
+      numOfPost = 5;
     }
     return Container(
       color: DbpColor().jendelaGreenBlue,
@@ -632,32 +711,17 @@ class _HomeState extends State<Home> {
         padding: const EdgeInsets.all(0),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 24, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'TV DBP',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.white),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      PersistentNavBarNavigator.pushNewScreen(
-                        context,
-                        screen: const AllTvScreen(),
-                      );
-                    },
-                    child: const Text(
-                      'Lihat Semua',
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 205, 204, 204)),
-                    ),
-                  )
-                ],
+            const Padding(
+              padding: EdgeInsets.only(left: 24, right: 20),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'TV DBP',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.white),
+                ),
               ),
             ),
             SizedBox(
@@ -668,41 +732,95 @@ class _HomeState extends State<Home> {
                     return ErrorCard(message: data.message);
                   }
                   if (data is TvLoaded) {
-                    List<Tv> tvList = data.tv?.take(9).toList() ?? [];
+                    List<Tv> tvList = data.tv?.take(numOfPost).toList() ?? [];
                     if (tvList.isEmpty) {
-                      return const SizedBox(height: 300, child: TvNotFoundCard());
+                      return const SizedBox(
+                          height: 300, child: TvNotFoundCard());
                     }
-                    return StaggeredGrid.count(
-                      crossAxisCount: crossAxisCount,
-                      mainAxisSpacing: ResponsiveLayout.isDesktop(context)
-                          ? 5
-                          : ResponsiveLayout.isTablet(context)
-                              ? 8
-                              : 1,
-                      crossAxisSpacing: ResponsiveLayout.isDesktop(context)
-                          ? 5
-                          : ResponsiveLayout.isTablet(context)
-                              ? 8
-                              : 1,
-                      children: tvList.map((tv) {
-                        int index =
-                            tvList.indexOf(tv); // Index of the current article
-                        int crossAxisCellCount = 4;
-                        int mainAxisCellCount = 3;
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          StaggeredGrid.count(
+                            crossAxisCount: crossAxisCount,
+                            mainAxisSpacing: ResponsiveLayout.isDesktop(context)
+                                ? 5
+                                : ResponsiveLayout.isTablet(context)
+                                    ? 8
+                                    : 1,
+                            crossAxisSpacing:
+                                ResponsiveLayout.isDesktop(context)
+                                    ? 5
+                                    : ResponsiveLayout.isTablet(context)
+                                        ? 8
+                                        : 1,
+                            children: tvList.map((tv) {
+                              int index = tvList
+                                  .indexOf(tv); // Index of the current article
+                              int crossAxisCellCount = 4;
+                              int mainAxisCellCount =
+                                  ResponsiveLayout.isDesktop(context)
+                                      ? 3
+                                      : ResponsiveLayout.isTablet(context)
+                                          ? 4
+                                          : 3;
 
-                        if (index != 0) {
-                          crossAxisCellCount = 2;
-                          mainAxisCellCount = 2;
-                        }
+                              if (index != 0) {
+                                crossAxisCellCount = 2;
+                                mainAxisCellCount = 2;
+                              }
 
-                        return StaggeredGridTile.count(
-                          crossAxisCellCount: crossAxisCellCount,
-                          mainAxisCellCount: mainAxisCellCount,
-                          child: TvCard(
-                            tv: tv,
+                              return StaggeredGridTile.count(
+                                crossAxisCellCount: crossAxisCellCount,
+                                mainAxisCellCount: mainAxisCellCount,
+                                child: TvCard(
+                                  tv: tv,
+                                ),
+                              );
+                            }).toList(),
                           ),
-                        );
-                      }).toList(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: SizedBox(
+                              width: 155,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: DbpColor().jendelaDarkBlue,
+                                  side: BorderSide(
+                                    color: DbpColor().jendelaDarkBlue,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        8.0), // Adjust the radius as needed
+                                  ),
+                                ),
+                                onPressed: () {
+                                  PersistentNavBarNavigator.pushNewScreen(
+                                    context,
+                                    screen: const AllTvScreen(),
+                                  );
+                                },
+                                child: const Row(
+                                  children: [
+                                    Text(
+                                      'Selanjutnya',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_right_alt_rounded,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   }
                   return Center(
@@ -726,13 +844,24 @@ class _HomeState extends State<Home> {
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
       // Increase left and right padding for desktop
-      crossAxisCount = 5;
+      crossAxisCount = 12;
     } else if (ResponsiveLayout.isTablet(context)) {
       // Increase left and right padding for tablets
-      crossAxisCount = 4;
+      crossAxisCount = 10;
     } else {
       // Use the default padding for phones and other devices
       crossAxisCount = 4;
+    }
+    int numOfPost;
+    if (ResponsiveLayout.isDesktop(context)) {
+      // Increase left and right padding for desktop
+      numOfPost = 9;
+    } else if (ResponsiveLayout.isTablet(context)) {
+      // Increase left and right padding for tablets
+      numOfPost = 7;
+    } else {
+      // Use the default padding for phones and other devices
+      numOfPost = 5;
     }
     return Container(
       color: DbpColor().jendelaDarkGreenBlue,
@@ -740,32 +869,17 @@ class _HomeState extends State<Home> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 24, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'RADIO DBP',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.white),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      PersistentNavBarNavigator.pushNewScreen(
-                        context,
-                        screen: const AllRadioScreen(),
-                      );
-                    },
-                    child: const Text(
-                      'Lihat Semua',
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 205, 204, 204)),
-                    ),
-                  )
-                ],
+            const Padding(
+              padding: EdgeInsets.only(left: 24, right: 20),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'RADIO DBP',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.white),
+                ),
               ),
             ),
             SizedBox(
@@ -777,41 +891,95 @@ class _HomeState extends State<Home> {
                   }
                   if (data is RadioLoaded) {
                     List<radio1.Radio> radios =
-                        data.radios?.take(9).toList() ?? [];
+                        data.radios?.take(numOfPost).toList() ?? [];
                     if (radios.isEmpty) {
-                      return const SizedBox(height: 300, child: RadioNotFoundCard());
+                      return const SizedBox(
+                          height: 300, child: RadioNotFoundCard());
                     }
-                    return StaggeredGrid.count(
-                      crossAxisCount: crossAxisCount,
-                      mainAxisSpacing: ResponsiveLayout.isDesktop(context)
-                          ? 5
-                          : ResponsiveLayout.isTablet(context)
-                              ? 8
-                              : 1,
-                      crossAxisSpacing: ResponsiveLayout.isDesktop(context)
-                          ? 5
-                          : ResponsiveLayout.isTablet(context)
-                              ? 8
-                              : 1,
-                      children: radios.map((radio) {
-                        int index = radios
-                            .indexOf(radio); // Index of the current article
-                        int crossAxisCellCount = 4;
-                        int mainAxisCellCount = 3;
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          StaggeredGrid.count(
+                            crossAxisCount: crossAxisCount,
+                            mainAxisSpacing: ResponsiveLayout.isDesktop(context)
+                                ? 5
+                                : ResponsiveLayout.isTablet(context)
+                                    ? 8
+                                    : 1,
+                            crossAxisSpacing:
+                                ResponsiveLayout.isDesktop(context)
+                                    ? 5
+                                    : ResponsiveLayout.isTablet(context)
+                                        ? 8
+                                        : 3,
+                            children: radios.map((radio) {
+                              int index = radios.indexOf(
+                                  radio); // Index of the current article
+                              int crossAxisCellCount = 4;
+                              int mainAxisCellCount =
+                                  ResponsiveLayout.isDesktop(context)
+                                      ? 4
+                                      : ResponsiveLayout.isTablet(context)
+                                          ? 4
+                                          : 3;
 
-                        if (index != 0) {
-                          crossAxisCellCount = 2;
-                          mainAxisCellCount = 2;
-                        }
+                              if (index != 0) {
+                                crossAxisCellCount = 2;
+                                mainAxisCellCount = 2;
+                              }
 
-                        return StaggeredGridTile.count(
-                          crossAxisCellCount: crossAxisCellCount,
-                          mainAxisCellCount: mainAxisCellCount,
-                          child: RadioCard(
-                            radio: radio,
+                              return StaggeredGridTile.count(
+                                crossAxisCellCount: crossAxisCellCount,
+                                mainAxisCellCount: mainAxisCellCount,
+                                child: RadioCard(
+                                  radio: radio,
+                                ),
+                              );
+                            }).toList(),
                           ),
-                        );
-                      }).toList(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: SizedBox(
+                              width: 155,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: DbpColor().jendelaDarkBlue,
+                                  side: BorderSide(
+                                    color: DbpColor().jendelaDarkBlue,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        8.0), // Adjust the radius as needed
+                                  ),
+                                ),
+                                onPressed: () {
+                                  PersistentNavBarNavigator.pushNewScreen(
+                                    context,
+                                    screen: const AllRadioScreen(),
+                                  );
+                                },
+                                child: const Row(
+                                  children: [
+                                    Text(
+                                      'Selanjutnya',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_right_alt_rounded,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   }
                   return Center(
@@ -853,29 +1021,6 @@ class _HomeState extends State<Home> {
       8: 'Tunas Cipta',
     };
 
-    int crossAxisCount;
-    if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
-      crossAxisCount = 5;
-    } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
-      crossAxisCount = 4;
-    } else {
-      // Use the default padding for phones and other devices
-      crossAxisCount = 4;
-    }
-    int numOfPost;
-    if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
-      numOfPost = 11;
-    } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
-      numOfPost = 9;
-    } else {
-      // Use the default padding for phones and other devices
-      numOfPost = 5;
-    }
-
     return Padding(
       padding: const EdgeInsets.only(top: 0),
       child: Column(
@@ -892,25 +1037,28 @@ class _HomeState extends State<Home> {
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-                TextButton(
-                  onPressed: () {
-                    PersistentNavBarNavigator.pushNewScreen(
-                      context,
-                      screen: CategorizedArticles(i: i),
-                    );
-                  },
-                  child: Text(
-                    'Lihat Semua',
-                    style: TextStyle(color: DbpColor().jendelaGray),
-                  ),
-                )
               ],
             ),
           ),
           const Padding(
             padding: EdgeInsets.only(top: 0, bottom: 8, left: 20, right: 20),
-            child: Text('Berita',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Berita',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Color.fromARGB(255, 100, 116, 139),
+                  ),
+                ),
+                Divider(
+                  color: Color.fromARGB(255, 100, 116, 139),
+                  thickness: .3,
+                )
+              ],
+            ),
           ),
           BlocBuilder<BeritaBloc, BeritaState>(
             bloc: beritaBloc,
@@ -918,90 +1066,13 @@ class _HomeState extends State<Home> {
               if (data is BeritaLoaded) {
                 List<Berita> beritaList = data.listOfBerita
                         ?.where((e) => e.blogId == categoryId[i])
-                        .take(numOfPost)
+                        .take(4)
                         .toList() ??
                     [];
-                if (beritaList.isEmpty) {
-                  return const SizedBox(
-                    height: 300,
-                    child: Center(
-                      child: BeritaNotFoundCard(),
-                    ),
-                  );
+                if (beritaList.length < 4) {
+                  beritaBloc.add(BeritaFetchMore(perPage: 15));
                 }
-                return Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: StaggeredGrid.count(
-                    crossAxisCount: crossAxisCount,
-                    mainAxisSpacing: ResponsiveLayout.isDesktop(context)
-                        ? 5
-                        : ResponsiveLayout.isTablet(context)
-                            ? 8
-                            : 10,
-                    crossAxisSpacing: ResponsiveLayout.isDesktop(context)
-                        ? 5
-                        : ResponsiveLayout.isTablet(context)
-                            ? 8
-                            : 8,
-                    children: beritaList.map((berita) {
-                      int index = beritaList
-                          .indexOf(berita); // Index of the current article
-                      int crossAxisCellCount = 4;
-                      int mainAxisCellCount = 3;
-
-                      if (index != 0) {
-                        crossAxisCellCount = 2;
-                        mainAxisCellCount = 3;
-                      }
-
-                      return StaggeredGridTile.count(
-                        crossAxisCellCount: crossAxisCellCount,
-                        mainAxisCellCount: mainAxisCellCount,
-                        child: HomeBeritaCard(
-                          berita: berita,
-                          textSize: ResponsiveLayout.isDesktop(context)
-                              ? 250
-                              : ResponsiveLayout.isTablet(context)
-                                  ? 170
-                                  : 130,
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                );
-              }
-
-              if (data is ArticleError) {
-                return const ErrorCard(message: 'error');
-              }
-              return SizedBox(
-                height: 300,
-                child: Center(
-                  child: LoadingAnimationWidget.discreteCircle(
-                    color: DbpColor().jendelaGray,
-                    secondRingColor: DbpColor().jendelaGreen,
-                    thirdRingColor: DbpColor().jendelaOrange,
-                    size: 70.0,
-                  ),
-                ),
-              );
-            },
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 40, bottom: 8, left: 20, right: 20),
-            child: Text('Artikel',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          ),
-          BlocBuilder<ArticleBloc, ArticleState>(
-            bloc: articleBloc,
-            builder: (context, data) {
-              if (data is ArticleLoaded) {
-                List<Article> articles = data.listOfArticle
-                        ?.where((e) => e.blogId == categoryId[i])
-                        .take(numOfPost)
-                        .toList() ??
-                    [];
-                if (articles.isEmpty) {
+                if (beritaList.isEmpty) {
                   return const SizedBox(
                     height: 300,
                     child: Center(
@@ -1011,52 +1082,54 @@ class _HomeState extends State<Home> {
                 }
                 return Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: StaggeredGrid.count(
-                    crossAxisCount: crossAxisCount,
-                    mainAxisSpacing: ResponsiveLayout.isDesktop(context)
-                        ? 5
-                        : ResponsiveLayout.isTablet(context)
-                            ? 8
-                            : 10,
-                    crossAxisSpacing: ResponsiveLayout.isDesktop(context)
-                        ? 5
-                        : ResponsiveLayout.isTablet(context)
-                            ? 8
-                            : 8,
-                    children: articles.map((article) {
-                      int index = articles
-                          .indexOf(article); // Index of the current article
-                      int crossAxisCellCount = 4;
-                      int mainAxisCellCount = 3;
-
-                      if (index != 0) {
-                        crossAxisCellCount = 2;
-                        mainAxisCellCount = 3;
-                      }
-
-                      return StaggeredGridTile.count(
-                        crossAxisCellCount: crossAxisCellCount,
-                        mainAxisCellCount: mainAxisCellCount,
-                        child: HomeArticleCard(
-                          article: article,
-                          textSize: ResponsiveLayout.isDesktop(context)
-                              ? 250
-                              : ResponsiveLayout.isTablet(context)
-                                  ? 170
-                                  : 130,
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                  child: ResponsiveLayout.isDesktop(context)
+                      ? GridView(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 5),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: List.generate(
+                            beritaList.length,
+                            (index) => BeritaCard(
+                              berita: beritaList[index],
+                            ),
+                          ),
+                        )
+                      : ResponsiveLayout.isTablet(context)
+                          ? GridView(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4,
+                                childAspectRatio: 0.6,
+                              ),
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              children: List.generate(
+                                beritaList.length,
+                                (index) => BeritaCard(
+                                  berita: beritaList[index],
+                                ),
+                              ),
+                            )
+                          : ListView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              children: List.generate(
+                                beritaList.length,
+                                (index) => BeritaCard(
+                                  berita: beritaList[index],
+                                ),
+                              ),
+                            ),
                 );
               }
-
-              if (data is ArticleError) {
+              if (data is BeritaError) {
                 return const ErrorCard(message: 'error');
               }
-              return SizedBox(
-                height: 300,
-                child: Center(
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 300.0),
                   child: LoadingAnimationWidget.discreteCircle(
                     color: DbpColor().jendelaGray,
                     secondRingColor: DbpColor().jendelaGreen,
@@ -1066,6 +1139,179 @@ class _HomeState extends State<Home> {
                 ),
               );
             },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: SizedBox(
+              width: 203,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: DbpColor().jendelaLightGray,
+                  side: BorderSide(
+                    color: DbpColor().jendelaLightGray,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        8.0), // Adjust the radius as needed
+                  ),
+                ),
+                onPressed: () {
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: CategorizedBerita(i: i),
+                  );
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      'Berita Selanjutnya',
+                      style: TextStyle(color: DbpColor().jendelaLightGrayFont),
+                    ),
+                    Icon(
+                      Icons.arrow_right_alt_rounded,
+                      color: DbpColor().jendelaLightGrayFont,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 40, bottom: 8, left: 20, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Artikel',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Color.fromARGB(255, 100, 116, 139),
+                  ),
+                ),
+                Divider(
+                  color: Color.fromARGB(255, 100, 116, 139),
+                  thickness: .3,
+                )
+              ],
+            ),
+          ),
+          BlocBuilder<ArticleBloc, ArticleState>(
+            bloc: articleBloc,
+            builder: (context, data) {
+              if (data is ArticleLoaded) {
+                List<Article> articles = data.listOfArticle
+                        ?.where((e) => e.blogId == categoryId[i])
+                        .take(9)
+                        .toList() ??
+                    [];
+                if (articles.length < 11) {
+                  articleBloc.add(ArticleFetchMore());
+                }
+                if (articles.isEmpty) {
+                  return const SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: ArticleNotFoundCard(),
+                    ),
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(left: 0, right: 0),
+                  child: ResponsiveLayout.isDesktop(context)
+                      ? GridView(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 5),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: List.generate(
+                            articles.length,
+                            (index) => ArticleCard(
+                              article: articles[index],
+                            ),
+                          ),
+                        )
+                      : ResponsiveLayout.isTablet(context)
+                          ? GridView(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                               // mainAxisSpacing: 2,
+                                childAspectRatio: 0.9,
+                              ),
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              children: List.generate(
+                                articles.length,
+                                (index) => ArticleCard(
+                                  article: articles[index],
+                                ),
+                              ),
+                            )
+                          : ListView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              children: List.generate(
+                                articles.length,
+                                (index) => ArticleCard(
+                                  article: articles[index],
+                                ),
+                              ),
+                            ),
+                );
+              }
+              if (data is ArticleError) {
+                return const ErrorCard(message: 'error');
+              }
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 300.0),
+                  child: LoadingAnimationWidget.discreteCircle(
+                    color: DbpColor().jendelaGray,
+                    secondRingColor: DbpColor().jendelaGreen,
+                    thirdRingColor: DbpColor().jendelaOrange,
+                    size: 70.0,
+                  ),
+                ),
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: SizedBox(
+              width: 207,
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: DbpColor().jendelaLightGray,
+                  side: BorderSide(
+                    color: DbpColor().jendelaLightGray,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        8.0), // Adjust the radius as needed
+                  ),
+                ),
+                onPressed: () {
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: CategorizedArticle(i: i),
+                  );
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      'Artikel Selanjutnya',
+                      style: TextStyle(color: DbpColor().jendelaLightGrayFont),
+                    ),
+                    Icon(
+                      Icons.arrow_right_alt_rounded,
+                      color: DbpColor().jendelaLightGrayFont,
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),

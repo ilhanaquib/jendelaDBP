@@ -39,40 +39,40 @@ class _ArticleCard extends State<BeritaCard> {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+        padding: const EdgeInsets.only(left: 0, right: 0, bottom: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 8.0),
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       border:
-            //           Border.all(color: DbpColor().jendelaTurqoise, width: 2.0),
-            //       color: DbpColor().jendelaTurqoise,
-            //       borderRadius: BorderRadius.circular(100),
-            //     ),
-            //     child: Padding(
-            //       padding: const EdgeInsets.only(left: 8, right: 8),
-            //       child: Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: widget.berita.categories!.map((category) {
-            //           // Assuming 'name' is a key in the category object
-            //           String categoryName = category[
-            //               'name']; // Replace 'name' with the actual key name
-            //           return Text(
-            //             categoryName,
-            //             style: const TextStyle(
-            //                 color: Colors.white,
-            //                 fontWeight: FontWeight.bold,
-            //                 fontSize: 13),
-            //           );
-            //         }).toList(),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0, left: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  border:
+                      Border.all(color: DbpColor().jendelaTurqoise, width: 2.0),
+                  color: DbpColor().jendelaTurqoise,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: widget.berita.categories!.map((category) {
+                      // Assuming 'name' is a key in the category object
+                      String categoryName = category[
+                          'name']; // Replace 'name' with the actual key name
+                      return Text(
+                        categoryName,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(
                   left: 8, right: 10, top: 10, bottom: 10),
@@ -93,19 +93,18 @@ class _ArticleCard extends State<BeritaCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                    width: 150,
-                    child: Text(
-                      parse(widget.berita.postTitle).body?.text ?? '',
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: true,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 5,),
                   Text(
-                    DateFormat('d MMM yyyy')
+                    parse(widget.berita.postTitle).body?.text ?? '',
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    DateFormat('d MMM yyyy, HH:mm')
                         .format(DateTime.parse(widget.berita.postDate ?? '')),
                     style: const TextStyle(
                       textBaseline: TextBaseline.alphabetic,
