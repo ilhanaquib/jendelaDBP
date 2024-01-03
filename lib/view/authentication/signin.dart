@@ -46,8 +46,6 @@ class _Signin extends State<Signin> {
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([
-      // DeviceOrientation.landscapeRight,
-      // DeviceOrientation.landscapeLeft,
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
@@ -67,13 +65,10 @@ class _Signin extends State<Signin> {
     AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
     EdgeInsetsGeometry padding;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       padding = const EdgeInsets.only(left: 600, right: 600, top: 20);
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       padding = const EdgeInsets.only(left: 150, right: 150, top: 20);
     } else {
-      // Use the default padding for phones and other devices
       padding = const EdgeInsets.only(left: 15, right: 15, top: 20);
     }
     return Scaffold(
@@ -98,7 +93,6 @@ class _Signin extends State<Signin> {
                 autovalidateMode: _autoValidate,
                 key: _formKey,
                 child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
@@ -194,13 +188,11 @@ class _Signin extends State<Signin> {
                               obscureText: !_passwordVisible,
                               cursorColor: Colors.red,
                               controller: passwordController,
-                              // onFieldSubmitted: widget.onFieldSubmitted,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 12),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    // Based on passwordVisible state choose the icon
                                     _passwordVisible
                                         ? Icons.visibility
                                         : Icons.visibility_off,
@@ -208,8 +200,6 @@ class _Signin extends State<Signin> {
                                         255, 162, 162, 162),
                                   ),
                                   onPressed: () {
-                                    // print(_passwordVisible);
-                                    // Update the state i.e. toogle the state of passwordVisible variable
                                     setState(() {
                                       _passwordVisible = !_passwordVisible;
                                     });

@@ -56,52 +56,20 @@ class _FirstBeritaCard extends State<FirstBeritaCard> {
 
   Widget getImageWidget() {
     if (widget.berita.featuredImage != null) {
-      return Stack(
-        children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: CachedNetworkImage(
-              imageUrl: widget.berita.featuredImage!,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withOpacity(1)],
-                  stops: const [0.6, 1.0],
-                ),
-              ),
-            ),
-          ),
-        ],
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: CachedNetworkImage(
+          imageUrl: widget.berita.featuredImage!,
+          fit: BoxFit.cover,
+        ),
       );
     } else {
-      return Stack(
-        children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Image.asset(
-              'assets/images/logonobg.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withOpacity(1)],
-                  stops: const [0.6, 1.0],
-                ),
-              ),
-            ),
-          ),
-        ],
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Image.asset(
+          'assets/images/logonobg.png',
+          fit: BoxFit.cover,
+        ),
       );
     }
   }
@@ -130,7 +98,8 @@ class _FirstBeritaCard extends State<FirstBeritaCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8), topRight: Radius.circular(8)),
                 child: getImageWidget()),
             Padding(
               padding: const EdgeInsets.only(left: 0, right: 0),
@@ -138,26 +107,9 @@ class _FirstBeritaCard extends State<FirstBeritaCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // Padding(
-                  //   padding: const EdgeInsets.only(bottom: 8.0),
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //         border: Border.all(
-                  //             color: DbpColor().jendelaOrange, width: 2.0),
-                  //         color: DbpColor().jendelaOrange,
-                  //         borderRadius: BorderRadius.circular(100)),
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(4.0),
-                  //       child: Text(
-                  //         getCategoryName(widget.berita.domain!),
-                  //         style: const TextStyle(
-                  //             color: Colors.black, fontSize: 10),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,

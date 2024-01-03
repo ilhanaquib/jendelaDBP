@@ -3,19 +3,15 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jendela_dbp/components/bookDetail/no_format.dart';
 import 'package:jendela_dbp/components/cart/cart_icon.dart';
 import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:jendela_dbp/hive/models/hive_book_model.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:jendela_dbp/components/DBPImportedWidgets/no_description_card.dart';
 import 'package:jendela_dbp/components/bookDetail/buy_bottom_sheet.dart';
-import 'package:jendela_dbp/components/bookDetail/bought_book_bottom_sheet.dart';
 import 'package:jendela_dbp/hive/models/hive_purchased_book_model.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
 import 'package:jendela_dbp/controllers/global_var.dart';
-import 'package:jendela_dbp/view/pages/audiobooks/audiobooks.dart';
 
 // ignore: must_be_immutable
 class BookDetail extends StatefulWidget {
@@ -46,14 +42,6 @@ class _BookDetailState extends State<BookDetail> {
       Hive.box<HivePurchasedBook>(GlobalVar.puchasedBook);
   Set<String> selectedFormats = {};
   dynamic format;
-
-  bool isBookPurchased(int bookId) {
-    return purchasedBooks.containsKey(bookId);
-  }
-
-  HivePurchasedBook getBook(int bookId) {
-    return HivePurchasedBook();
-  }
 
   @override
   void initState() {
@@ -149,49 +137,35 @@ class _BookDetailState extends State<BookDetail> {
     );
   }
 
-  Future<void> boughtBook(context) {
-    return showModalBottomSheet(
-      useRootNavigator: true,
-      elevation: 2,
-      barrierColor: Colors.black.withOpacity(0.8),
-      backgroundColor: Colors.white,
-      context: context,
-      builder: (builder) {
-        return const SizedBox(
-          height: 150,
-          child: BoughtBookBottomSheet(),
-        );
-      },
-    );
-  }
+  bool hasAudiobookFormat(String woocommerceVariations) {
+    List toJSonVariation = convert.json.decode(woocommerceVariations);
 
-  Future<void> noFormat(context) {
-    return showModalBottomSheet(
-      useRootNavigator: true,
-      elevation: 2,
-      barrierColor: Colors.black.withOpacity(0.8),
-      backgroundColor: Colors.white,
-      context: context,
-      builder: (builder) {
-        return const SizedBox(
-          height: 150,
-          child: NoFormatSheet(),
-        );
-      },
-    );
+    toJSonVariation = toJSonVariation.where((variation) {
+      return variation['status'].toString().toLowerCase() == "publish";
+    }).toList();
+
+    List<String> format = List.generate(toJSonVariation.length, (index) {
+      return toJSonVariation[index]['attributes']!["pa_pilihan-format"]
+              is String
+          ? "Pilihan Format: ${toJSonVariation[index]['attributes']!["pa_pilihan-format"]}"
+          : "Pilihan Format: Buku Cetak";
+    });
+
+    String joinedFormat = format.join(", ");
+    joinedFormat = joinedFormat.split(":")[1];
+
+    return joinedFormat.toLowerCase().contains('audio') ||
+        joinedFormat.toLowerCase().contains('mp3');
   }
 
   @override
   Widget build(BuildContext context) {
     double containerWidth;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       containerWidth = 500;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       containerWidth = 400;
     } else {
-      // Use the default padding for phones and other devices
       containerWidth = 300;
     }
     String getCategory(String category) {
@@ -221,7 +195,7 @@ class _BookDetailState extends State<BookDetail> {
         backgroundColor: const Color.fromARGB(255, 255, 246, 239),
         actions: const [
           Padding(
-            padding:  EdgeInsets.only(right: 10),
+            padding: EdgeInsets.only(right: 10),
             child: CartIcon(),
           )
         ],
@@ -294,8 +268,7 @@ class _BookDetailState extends State<BookDetail> {
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
                               widget.book!.name!,
-                              textAlign:
-                                  TextAlign.center, // Center-aligns the text
+                              textAlign: TextAlign.center,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -323,8 +296,7 @@ class _BookDetailState extends State<BookDetail> {
                                   color: Colors.black.withOpacity(0.2),
                                   spreadRadius: 2,
                                   blurRadius: 2,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
+                                  offset: const Offset(0, 3),
                                 ),
                               ],
                             ),
@@ -450,151 +422,110 @@ class _BookDetailState extends State<BookDetail> {
                   ),
                   if (ResponsiveLayout.isDesktop(context) ||
                       ResponsiveLayout.isTablet(context))
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: 70,
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  side: BorderSide(
-                                    color: DbpColor().jendelaOrange,
-                                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          height: 70,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  width: 10,
                                 ),
-                                // 1. check if the book is purchased
-                                // 2. if book isnt purchased, should buy
-                                // 3. if book is purhcaesd, open the book pdf/epub
-                                onPressed: isBookPurchased(widget.book!.id!)
-                                    ? () {
-                                        // 1. check if book is downloaded
-                                        // 2. if book isnt downloaded, open a popup that asks user to download book/
-                                        boughtBook(context);
-                                      }
-                                    : () {
-                                        buyItem(context);
-                                      },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
+                                OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      color: DbpColor().jendelaOrange,
+                                    ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.import_contacts_rounded,
-                                        color: DbpColor().jendelaOrange,
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Baca Buku',
-                                            style: TextStyle(
-                                              color: DbpColor().jendelaOrange,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 24,
-                              ),
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: DbpColor().jendelaOrange,
-                                  side: BorderSide(
-                                    color: DbpColor().jendelaOrange,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  List toJSonVariation = convert.json.decode(
-                                      widget.book!.woocommerceVariations ??
-                                          '[]');
-
-                                  toJSonVariation =
-                                      toJSonVariation.where((variation) {
-                                    return variation['status']
-                                            .toString()
-                                            .toLowerCase() ==
-                                        "publish";
-                                  }).toList();
-
-                                  List<String> format = List.generate(
-                                      toJSonVariation.length, (index) {
-                                    return toJSonVariation[index]
-                                                ['attributes']![
-                                            "pa_pilihan-format"] is String
-                                        ? "Pilihan Format: ${toJSonVariation[index]['attributes']!["pa_pilihan-format"]}"
-                                        : "Pilihan Format: Buku Cetak";
-                                  });
-
-                                  String joinedFormat = format.join(", ");
-                                  joinedFormat = joinedFormat.split(":")[1];
-
-                                  if (joinedFormat
-                                          .toLowerCase()
-                                          .contains('audio') ||
-                                      joinedFormat
-                                          .toLowerCase()
-                                          .contains('mp3')) {
-                                    if (isBookPurchased(widget.book!.id!)) {
-                                      PersistentNavBarNavigator.pushNewScreen(
-                                        context,
-                                        screen: Audiobooks(
-                                          book: widget.bookIdentification,
+                                  // 1. check if the book is purchased
+                                  // 2. if book isnt purchased, should buy
+                                  // 3. if book is purhcaesd, open the book pdf/epub
+                                  onPressed: () {
+                                    buyItem(context);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.import_contacts_rounded,
+                                          color: DbpColor().jendelaOrange,
                                         ),
-                                      );
-                                    } else {
-                                      buyItem(context);
-                                    }
-                                  } else {
-                                    noFormat(context);
-                                  }
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.headphones_rounded,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Main Audio',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Baca Buku',
+                                              style: TextStyle(
+                                                color: DbpColor().jendelaOrange,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                  width: 24,
+                                ),
+                                hasAudiobookFormat(
+                                        widget.book!.woocommerceVariations!)
+                                    ? OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          backgroundColor:
+                                              DbpColor().jendelaOrange,
+                                          side: BorderSide(
+                                            color: DbpColor().jendelaOrange,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          buyItem(context);
+                                        },
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.headphones_rounded,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Main Audio',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox(height: 0, width: 0),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -602,156 +533,115 @@ class _BookDetailState extends State<BookDetail> {
                   else
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: 70,
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              // read book button
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  side: BorderSide(
-                                    color: DbpColor().jendelaOrange,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 70,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: hasAudiobookFormat(
+                                      widget.book!.woocommerceVariations!)
+                                  ? MainAxisAlignment.spaceEvenly
+                                  : MainAxisAlignment.center,
+                              children: [
+                                // read book button
+                                OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      color: DbpColor().jendelaOrange,
+                                    ),
                                   ),
-                                ),
-                                // 1. check if the book is purchased
-                                // 2. if book isnt purchased, should buy
-                                // 3. if book is purhcaesd, open the book pdf/epub
-                                onPressed: isBookPurchased(widget.book!.id!)
-                                    ? () {
-                                        // 1. check if book is downloaded
-                                        // 2. if book isnt downloaded, open a popup that asks user to download book
-                                        boughtBook(context);
-                                      }
-                                    : () {
-                                        buyItem(context);
-                                      },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.import_contacts_rounded,
-                                        color: DbpColor().jendelaOrange,
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Baca',
-                                            style: TextStyle(
-                                              color: DbpColor().jendelaOrange,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Buku',
-                                            style: TextStyle(
-                                              color: DbpColor().jendelaOrange,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              // play audio button
-                              OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  backgroundColor: DbpColor().jendelaOrange,
-                                  side: BorderSide(
-                                    color: DbpColor().jendelaOrange,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  List toJSonVariation = convert.json.decode(
-                                      widget.book!.woocommerceVariations ??
-                                          '[]');
-
-                                  toJSonVariation =
-                                      toJSonVariation.where((variation) {
-                                    return variation['status']
-                                            .toString()
-                                            .toLowerCase() ==
-                                        "publish";
-                                  }).toList();
-
-                                  List<String> format = List.generate(
-                                      toJSonVariation.length, (index) {
-                                    return toJSonVariation[index]
-                                                ['attributes']![
-                                            "pa_pilihan-format"] is String
-                                        ? "Pilihan Format: ${toJSonVariation[index]['attributes']!["pa_pilihan-format"]}"
-                                        : "Pilihan Format: Buku Cetak";
-                                  });
-
-                                  String joinedFormat = format.join(", ");
-                                  joinedFormat = joinedFormat.split(":")[1];
-
-                                  if (joinedFormat
-                                          .toLowerCase()
-                                          .contains('audio') ||
-                                      joinedFormat
-                                          .toLowerCase()
-                                          .contains('mp3')) {
-                                    if (isBookPurchased(widget.book!.id!)) {
-                                      PersistentNavBarNavigator.pushNewScreen(
-                                        context,
-                                        screen: Audiobooks(
-                                          book: widget.bookIdentification,
+                                  onPressed: () {
+                                    buyItem(context);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.import_contacts_rounded,
+                                          color: DbpColor().jendelaOrange,
                                         ),
-                                      );
-                                    } else {
-                                      buyItem(context);
-                                    }
-                                  } else {
-                                    noFormat(context);
-                                  }
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.headphones_rounded,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Main',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          Text(
-                                            'Audio',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Baca',
+                                              style: TextStyle(
+                                                color: DbpColor().jendelaOrange,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Buku',
+                                              style: TextStyle(
+                                                color: DbpColor().jendelaOrange,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                // play audio button
+                                hasAudiobookFormat(
+                                        widget.book!.woocommerceVariations!)
+                                    ? OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          backgroundColor:
+                                              DbpColor().jendelaOrange,
+                                          side: BorderSide(
+                                            color: DbpColor().jendelaOrange,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          buyItem(context);
+                                        },
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.headphones_rounded,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Main',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    'Audio',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox(height: 0, width: 0),
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -74,7 +74,6 @@ class _LikedBooksGridState extends State<LikedBooksGrid> {
     likedStatusMap[bookId] = isLiked; // Update liked status map
 
     setState(() {
-      // Refresh the UI if needed
     });
   }
 
@@ -111,40 +110,30 @@ class _LikedBooksGridState extends State<LikedBooksGrid> {
 
     double imageWidth;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       imageWidth = 200;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       imageWidth = 150;
     } else {
-      // Use the default padding for phones and other devices
       imageWidth = 100;
     }
     EdgeInsetsGeometry padding;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       padding = const EdgeInsets.only(top: 200);
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       padding = const EdgeInsets.only(top: 100);
     } else {
-      // Use the default padding for phones and other devices
       padding = const EdgeInsets.only(top: 50);
     }
     double mainAxisSpacing;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       mainAxisSpacing = 50;
     } else {
-      // Increase left and right padding for tablets
       mainAxisSpacing = 10;
     }
     double crossAxisSpacing;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisSpacing = 50;
     } else {
-      // Increase left and right padding for tablets
       crossAxisSpacing = 10;
     }
     return Scaffold(
@@ -284,7 +273,7 @@ class _LikedBooksGridState extends State<LikedBooksGrid> {
                                             Color.fromARGB(255, 245, 88, 88),
                                         dotSecondaryColor: Colors.white,
                                       ),
-                                      isLiked: true, // Set initial liked status
+                                      isLiked: true,
                                       onTap: (bool isLiked) async {
                                         int bookIdToDelete = book.id!;
 

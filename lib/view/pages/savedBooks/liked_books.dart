@@ -73,9 +73,7 @@ class _LikedBooksState extends State<LikedBooks> {
     context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
     likedStatusMap[bookId] = isLiked; // Update liked status map
 
-    setState(() {
-      // Refresh the UI if needed
-    });
+    setState(() {});
   }
 
   @override
@@ -111,24 +109,18 @@ class _LikedBooksState extends State<LikedBooks> {
 
     double imageWidth;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       imageWidth = 250;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       imageWidth = 200;
     } else {
-      // Use the default padding for phones and other devices
       imageWidth = 100;
     }
     EdgeInsetsGeometry padding;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       padding = const EdgeInsets.only(top: 200);
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       padding = const EdgeInsets.only(top: 100);
     } else {
-      // Use the default padding for phones and other devices
       padding = const EdgeInsets.only(top: 50);
     }
     return Scaffold(

@@ -60,7 +60,7 @@ class _CategorizedArticleState extends State<CategorizedArticle> {
     super.dispose();
   }
 
-  bool isFetching = false; // Track fetching status
+  bool isFetching = false;
 
   @override
   Widget build(BuildContext context) {
@@ -117,23 +117,19 @@ class _CategorizedArticleState extends State<CategorizedArticle> {
                       const SnackBar(
                         content: Text('Sedang mendapatkan artikel...'),
                         duration: Duration(
-                            days: 1), // Long duration to keep snackbar visible
+                            days: 1), 
                       ),
                     );
 
-                    // Simulating content fetching delay
                     Future.delayed(const Duration(seconds: 1), () {
-                      // Add event to fetch more content
                       articleBloc.add(
                         ArticleFetchMore(perPage: 25),
                       );
 
-                      // Update state after content is fetched
                       setState(() {
                         isFetching = false;
                       });
 
-                      // Hide snackbar after content is fetched
                       scaffoldMessengerKey.currentState!.hideCurrentSnackBar();
                     });
                   }
@@ -171,24 +167,18 @@ class _CategorizedArticleState extends State<CategorizedArticle> {
   Widget _articleList(BuildContext context) {
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       childAspectRatio = 1;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
-      childAspectRatio = 0.9;
+      childAspectRatio = 1.1;
     } else {
-      // Use the default padding for phones and other devices
-      childAspectRatio = 0.65;
+      childAspectRatio = 0.62;
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 3;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 2;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 2;
     }
     Map<int, dynamic> categoryId = {

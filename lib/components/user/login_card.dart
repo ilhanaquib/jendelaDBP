@@ -47,8 +47,6 @@ class _LoginCard extends State<LoginCard> {
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([
-      // DeviceOrientation.landscapeRight,
-      // DeviceOrientation.landscapeLeft,
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
@@ -92,13 +90,10 @@ class _LoginCard extends State<LoginCard> {
     AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
     EdgeInsetsGeometry padding;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       padding = const EdgeInsets.only(left: 600, right: 600, top: 20);
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       padding = const EdgeInsets.only(left: 150, right: 150, top: 20);
     } else {
-      // Use the default padding for phones and other devices
       padding = const EdgeInsets.only(left: 15, right: 15, top: 20);
     }
     return Column(
@@ -109,7 +104,6 @@ class _LoginCard extends State<LoginCard> {
             autovalidateMode: _autoValidate,
             key: _formKey,
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Text(
                   'Anda belum log masuk',

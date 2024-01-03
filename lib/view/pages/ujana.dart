@@ -358,8 +358,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                             child: child,
                           ),
                           Positioned(
-                            bottom:
-                                bottomValue, // Adjusted to animate from bottom
+                            bottom: bottomValue,
                             child: Container(
                               width: widgetWidth,
                               height: widgetHeight,
@@ -369,15 +368,14 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                             ),
                           ),
                           Positioned(
-                            top: topValue, // Adjusted to animate from top
+                            top: topValue,
                             child: CustomPaint(
                               painter: BookPainter(
                                 strokeColor: Colors.white,
                                 progress: _progress,
                               ),
                               child: SizedBox(
-                                width:
-                                    widgetWidth, // Use width to match the container width
+                                width: widgetWidth,
                                 height: letterTopHeight,
                               ),
                             ),
@@ -448,9 +446,9 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                             );
                           },
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.black, // Text color
-                            backgroundColor: const Color.fromARGB(
-                                255, 244, 244, 244), // Button background color
+                            foregroundColor: Colors.black,
+                            backgroundColor:
+                                const Color.fromARGB(255, 244, 244, 244),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                               side: BorderSide.none,
@@ -461,9 +459,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                             child: Row(
                               children: [
                                 Icon(Icons.search_rounded),
-                                SizedBox(
-                                    width:
-                                        10), // Add spacing between icon and text
+                                SizedBox(width: 10),
                                 Text(
                                   'Cari buku kegemaran anda...',
                                   style: TextStyle(
@@ -482,7 +478,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                         padding: const EdgeInsets.only(
                             left: 20, top: 25, bottom: 10),
                         child: SizedBox(
-                          height: 40, // Adjust the height as needed
+                          height: 40,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
@@ -499,9 +495,7 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                                   },
                                 ),
                               ),
-                              for (int i = 1;
-                                  i <= 16;
-                                  i++) // Loop through kategoriXTitle
+                              for (int i = 1; i <= 16; i++)
                                 Padding(
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 5),
@@ -546,7 +540,6 @@ class _UjanaState extends State<Ujana> with TickerProviderStateMixin {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          // Display filtered bookshelves
                                           for (int i = 1; i <= 16; i++)
                                             if (selectedFilters.isEmpty ||
                                                 selectedFilters.contains(

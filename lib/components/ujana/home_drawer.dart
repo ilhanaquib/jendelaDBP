@@ -19,8 +19,7 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   AuthCubit authCubit = AuthCubit();
-  late String _username = ''; // Store the username
-
+  late String _username = '';
   DateTime currentTime = DateTime.now();
   String _getGreeting(int hour) {
     if (hour > 5 && hour < 12) {
@@ -37,7 +36,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   @override
   void initState() {
     super.initState();
-    _fetchUsername(); // Fetch the username when the widget initializes
+    _fetchUsername(); 
   }
 
   Future<void> _fetchUsername() async {
@@ -45,8 +44,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
     if (isLoggedIn) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       _username = prefs.getString('currentUser') ??
-          ''; // Get the username from SharedPreferences
-      setState(() {}); // Update the state to display the username
+          '';
+      setState(() {}); 
     }
   }
 

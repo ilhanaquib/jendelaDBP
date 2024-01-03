@@ -131,7 +131,6 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
   }
 
   void getBookDetailFromParent() {
-    //keys will be in integer (auto increment)
     parentBook = bookFromAPI.keys
         .cast<int>()
         .where(
@@ -148,7 +147,6 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
   }
 
   Future<void> getBookDetails() async {
-    //keys will be in integer (auto increment)
     myBook = purchasedBook.keys
         .cast<int>()
         // .where((key) => PurchasedBook.get(key).product_id == widget.bookID)
@@ -329,8 +327,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                         borderRadius: BorderRadius.circular(10),
                         child: CachedNetworkImage(
                           alignment: Alignment.bottomCenter,
-                          fit: BoxFit
-                              .cover, // Use BoxFit.cover for maintaining aspect ratio within rounded corners
+                          fit: BoxFit.cover,
                           imageUrl: widget.purchasedBook.featuredMediaUrl ?? '',
                         ),
                       ),
@@ -387,21 +384,22 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                 ? OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
-                      overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
+                          DbpColor().jendelaGreen),
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(Colors.transparent),
                       side: MaterialStateProperty.all<BorderSide>(
                         BorderSide(color: DbpColor().jendelaGreen, width: 2),
-                      ), // Green border
+                      ),
                     ),
                     child: const Row(
                       children: [
+                        Icon(Icons.book_rounded, color: Colors.white),
+                        SizedBox(width: 8,),
                         Text(
                           'Baca',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        Icon(Icons.book_rounded, color: Colors.white),
                       ],
                     ),
                     onPressed: () async {
@@ -422,21 +420,21 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                 : OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
-                      overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
-                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
-                          color: DbpColor().jendelaGreen,
-                          width: 2)), // Green border
+                          DbpColor().jendelaGreen),
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(Colors.transparent),
+                      side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(color: DbpColor().jendelaGreen, width: 2)),
                     ),
                     child: const Row(
                       children: [
+                        Icon(Icons.download, color: Colors.white),
+                        SizedBox(width: 8,),
                         Text(
                           'Muat Turun',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        Icon(Icons.download, color: Colors.white),
                       ],
                     ),
                     onPressed: () async {
@@ -470,21 +468,21 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                 ? OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
-                      overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
-                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
-                          color: DbpColor().jendelaGreen,
-                          width: 2)), // Green border
+                          DbpColor().jendelaGreen),
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(Colors.transparent),
+                      side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(color: DbpColor().jendelaGreen, width: 2)),
                     ),
                     child: const Row(
                       children: [
+                        Icon(Icons.book_rounded, color: Colors.white),
+                        SizedBox(width: 8,),
                         Text(
                           'Baca',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        Icon(Icons.book_rounded, color: Colors.white),
                       ],
                     ),
                     onPressed: () async {
@@ -501,8 +499,7 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                         PersistentNavBarNavigator.pushNewScreen(
                           context,
                           withNavBar: false,
-                          screen: 
-                          NewPdfViewerPage(
+                          screen: NewPdfViewerPage(
                             pdfPath: decryptedFile,
                             bookName: widget.purchasedBook.productName!,
                           ),
@@ -533,21 +530,22 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                 : OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
-                      overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
+                          DbpColor().jendelaGreen),
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(Colors.transparent),
                       side: MaterialStateProperty.all<BorderSide>(
                         BorderSide(color: DbpColor().jendelaGreen, width: 2),
-                      ), // Green border
+                      ),
                     ),
                     child: const Row(
                       children: [
+                        Icon(Icons.download, color: Colors.white),
+                        SizedBox(width: 8,),
                         Text(
                           'Muat Turun',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        Icon(Icons.download, color: Colors.white),
                       ],
                     ),
                     onPressed: () async {
@@ -583,21 +581,21 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                 ? OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
-                      overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
-                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
-                          color: DbpColor().jendelaGreen,
-                          width: 2)), // Green border
+                          DbpColor().jendelaGreen),
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(Colors.transparent),
+                      side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(color: DbpColor().jendelaGreen, width: 2)),
                     ),
                     child: const Row(
                       children: [
+                        Icon(Icons.play_arrow, color: Colors.white),
+                        SizedBox(width: 8,),
                         Text(
                           'Buka',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        Icon(Icons.play_arrow, color: Colors.white),
                       ],
                     ),
                     onPressed: () async {
@@ -632,21 +630,21 @@ class _BookPurchasedCoverCard extends State<BookPurchasedCoverCard> {
                 : OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
-                      overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
-                      side: MaterialStateProperty.all<BorderSide>(BorderSide(
-                          color: DbpColor().jendelaGreen,
-                          width: 2)), // Green border
+                          DbpColor().jendelaGreen),
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(Colors.transparent),
+                      side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(color: DbpColor().jendelaGreen, width: 2)),
                     ),
                     child: const Row(
                       children: [
+                        Icon(Icons.download, color: Colors.white),
+                        SizedBox(width: 8,),
                         Text(
                           'Muat Turun',
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        Icon(Icons.download, color: Colors.white),
                       ],
                     ),
                     onPressed: () async {

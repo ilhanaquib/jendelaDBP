@@ -84,11 +84,10 @@ class _HomeArticleCard extends State<HomeArticleCard> {
         ],
       );
     } else {
-      // Display a default image from assets if featuredImage is null
       return Stack(
         children: [
           Image.asset(
-            'assets/images/logonobg.png', // Replace 'default_image.png' with your actual default image path
+            'assets/images/logonobg.png',
             width: ResponsiveLayout.isDesktop(context)
                 ? 1200
                 : ResponsiveLayout.isTablet(context)
@@ -161,7 +160,7 @@ class _HomeArticleCard extends State<HomeArticleCard> {
                         child: Text(
                           getCategoryName(widget.article.domain!),
                           style: const TextStyle(
-                              color: Colors.black, fontSize: 10),
+                              color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

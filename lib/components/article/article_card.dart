@@ -58,15 +58,14 @@ class _ArticleCard extends State<ArticleCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: widget.article.categories!.map((category) {
-                      // Assuming 'name' is a key in the category object
                       String categoryName = category[
-                          'name']; // Replace 'name' with the actual key name
+                          'name'];
                       return Text(
                         categoryName,
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13),
+                            fontSize: 10),
                       );
                     }).toList(),
                   ),
@@ -107,6 +106,7 @@ class _ArticleCard extends State<ArticleCard> {
                     DateFormat('d MMM yyyy, HH:mm')
                         .format(DateTime.parse(widget.article.postDate ?? '')),
                     style: const TextStyle(
+                      fontSize: 10,
                       textBaseline: TextBaseline.alphabetic,
                     ),
                   ),

@@ -93,13 +93,10 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     EdgeInsetsGeometry padding;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       padding = const EdgeInsets.only(left: 600, right: 600, top: 20);
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       padding = const EdgeInsets.only(left: 150, right: 150, top: 20);
     } else {
-      // Use the default padding for phones and other devices
       padding = const EdgeInsets.only(left: 20, right: 20, top: 20);
     }
 
@@ -437,7 +434,6 @@ class _SignupState extends State<Signup> {
             Padding(
               padding: padding,
               child: BlocConsumer<AuthCubit, AuthState>(
-                // Use BlocConsumer to interact with the AuthCubit
                 builder: (context, state) {
                   return SizedBox(
                     width: 100,
@@ -499,7 +495,6 @@ class _SignupState extends State<Signup> {
                   );
                 },
                 listener: (context, state) {
-                  // Handle state changes if needed
                   if (state is AuthLoaded) {
                     _showSuccessPopup();
                   } else if (state is AuthError) {

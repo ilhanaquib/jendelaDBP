@@ -57,10 +57,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         if (!context.mounted) return;
         context.read<ImageBloc>().updateSelectedImage(_selectedImage!);
 
-        // Call the updateAppBar callback to notify the parent widget
         widget.updateAppBar();
 
-        Navigator.of(context).pop(); // Go back to the home screen
+        Navigator.of(context).pop();
       } else {
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -124,7 +123,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             secondRingColor: DbpColor().jendelaGreen,
                             thirdRingColor: DbpColor().jendelaOrange,
                             size: 50.0,
-                          ) // Show this when saving
+                          )
                       ],
                     ),
                   ),

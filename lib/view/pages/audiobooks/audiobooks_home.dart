@@ -41,6 +41,7 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
   late AnimationController _controller;
 
   //-----custom refresh indicator----
+
   Box<HiveBookAPI> apiBook = Hive.box<HiveBookAPI>(GlobalVar.apiBook);
   List<int> kategori1Books = [];
   List<int> kategori2Books = [];
@@ -108,7 +109,6 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
   }
 
   void getKategoriFromAPI() {
-    //print('object');
     kategori1Books = apiBook.keys
         .cast<int>()
         .where(
@@ -359,7 +359,7 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
                         ),
                         Positioned(
                           bottom:
-                              bottomValue, // Adjusted to animate from bottom
+                              bottomValue,
                           child: Container(
                             width: widgetWidth,
                             height: widgetHeight,
@@ -369,7 +369,7 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
                           ),
                         ),
                         Positioned(
-                          top: topValue, // Adjusted to animate from top
+                          top: topValue,
                           child: CustomPaint(
                             painter: BookPainter(
                               strokeColor: Colors.white,
@@ -377,7 +377,7 @@ class _AudiobooksHomeState extends State<AudiobooksHome>
                             ),
                             child: SizedBox(
                               width:
-                                  widgetWidth, // Use width to match the container width
+                                  widgetWidth,
                               height: letterTopHeight,
                             ),
                           ),
@@ -463,9 +463,9 @@ class BookPainter extends CustomPainter {
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
-    const double maxAngle = pi / 6; // Maximum angle for book closing
+    const double maxAngle = pi / 6; 
     final double angle = maxAngle * progress;
-    final double offsetX = 20.0 * progress; // Offset for book closing
+    final double offsetX = 20.0 * progress;
 
     final Path path = Path()
       ..moveTo(offsetX, size.height)
@@ -474,9 +474,8 @@ class BookPainter extends CustomPainter {
       ..lineTo(size.width - offsetX, size.height)
       ..close();
 
-    // Rotate the path to simulate book closing
     final Matrix4 matrix = Matrix4.identity()
-      ..setEntry(3, 2, 0.001) // Perspective
+      ..setEntry(3, 2, 0.001)
       ..rotateX(angle);
     path.transform(matrix.storage);
 

@@ -57,13 +57,10 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
   Widget build(BuildContext context) {
     double imageWidth;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       imageWidth = 250;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       imageWidth = 200;
     } else {
-      // Use the default padding for phones and other devices
       imageWidth = 100;
     }
     return Scaffold(
@@ -84,16 +81,14 @@ class _AudiosInsideShelfState extends State<AudiosInsideShelf> {
                   List<dynamic> variations =
                       jsonDecode(woocommerceVariationsString);
 
-                  // Check if the book has the format 'Buku Audio'
                   bool hasBukuAudioFormat = variations.any((variation) {
                     return variation['attribute_summary'] ==
                         'Pilihan Format: Buku Audio';
                   });
 
-                  // Skip books that don't have the 'Buku Audio' format
                   if (!hasBukuAudioFormat) {
                     return const SizedBox
-                        .shrink(); // Return an empty SizedBox to hide the book
+                        .shrink();
                   }
 
                   return Padding(

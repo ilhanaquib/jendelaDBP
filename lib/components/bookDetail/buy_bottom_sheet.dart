@@ -343,12 +343,11 @@ class _BuyBottomSheetState extends State<BuyBottomSheet> {
           children: [
             Container(
               width: double
-                  .infinity, // Set the width to take the full available width
+                  .infinity,
               alignment:
-                  Alignment.center, // Align text in the center horizontally
+                  Alignment.center,
               child: const Text(
                 'Maaf, buku ini tiada stok buat masa sekarang.',
-                // Additional styling can be applied to the text if needed
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ),

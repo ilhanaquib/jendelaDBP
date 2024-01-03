@@ -219,7 +219,6 @@ class _AllBooksState extends State<AllBooks> {
                           Icons.picture_as_pdf_rounded,
                           'PDF',
                           () {
-                            // Toggle the 'PDF' format in filteredBooks
                             if (selectedFormats.contains('PDF')) {
                               selectedFormats.remove('PDF');
                             } else {
@@ -235,7 +234,6 @@ class _AllBooksState extends State<AllBooks> {
                           Symbols.auto_stories_rounded,
                           'EPUB',
                           () {
-                            // Toggle the 'EPUB' format in filteredBooks
                             if (selectedFormats.contains('EPUB')) {
                               selectedFormats.remove('EPUB');
                             } else {
@@ -251,7 +249,6 @@ class _AllBooksState extends State<AllBooks> {
                           Icons.library_books_rounded,
                           'Print',
                           () {
-                            // Toggle the 'Buku Cetak' format in filteredBooks
                             if (selectedFormats.contains('Buku Cetak')) {
                               selectedFormats.remove('Buku Cetak');
                             } else {
@@ -274,7 +271,6 @@ class _AllBooksState extends State<AllBooks> {
                             Icons.graphic_eq_rounded,
                             'Buku Audio',
                             () {
-                              // Toggle the 'Buku Audio' format in filteredBooks
                               if (selectedFormats.contains('Buku Audio')) {
                                 selectedFormats.remove('Buku Audio');
                               } else {
@@ -300,14 +296,11 @@ class _AllBooksState extends State<AllBooks> {
   }
 
   void filterBooks() {
-    // Clear the filteredBooks list
     filteredBooks.clear();
 
-    // Iterate through all books and filter based on selected formats
     for (int key in widget.listBook) {
       final HiveBookAPI? bookSpecific = widget.bookBox.get(key);
 
-      // Check if the book matches any of the selected formats
       if (selectedFormats.isEmpty ||
           selectedFormats.any(
             (format) => _hasFormat(bookSpecific, format),
@@ -321,7 +314,6 @@ class _AllBooksState extends State<AllBooks> {
   Widget build(BuildContext context) {
     void toggleSortingOrder(SortingOrder newSortingOrder) {
       setState(() {
-        // Call the appropriate sorting function with the ascending parameter
         if (newSortingOrder == SortingOrder.latest) {
           _sortBooksByLatest();
         } else if (newSortingOrder == SortingOrder.highToLow) {
@@ -466,7 +458,7 @@ class _AllBooksState extends State<AllBooks> {
                           itemBuilder: (context, index) {
                             final int key = hasSelectedFormats
                                 ? int.parse(filteredBooks[index])
-                                : widget.listBook[index]; // Convert back to int
+                                : widget.listBook[index];
                             final HiveBookAPI? bookSpecific =
                                 widget.bookBox.get(key);
                             var isBookLiked =
@@ -610,53 +602,49 @@ class _AllBooksState extends State<AllBooks> {
   }
 
   int _calculateCrossAxisCount(BoxConstraints constraints) {
-    // Calculate the cross-axis count based on screen width
     double screenWidth = constraints.maxWidth;
     if (screenWidth < 600) {
-      return 2; // For smaller screens
+      return 2;
     } else if (screenWidth < 1200) {
-      return 3; // For medium screens
+      return 3;
     } else {
-      return 4; // For larger screens
+      return 4;
     }
   }
 
   double _calculateMainAxisSpacing(
       BoxConstraints constraints, int crossAxisCount) {
-    // Calculate mainAxisSpacing based on screen width and crossAxisCount
     double screenWidth = constraints.maxWidth;
     if (screenWidth < 600) {
-      return 8.0; // For smaller screens
+      return 8.0;
     } else if (screenWidth < 1200) {
-      return 12.0; // For medium screens
+      return 12.0;
     } else {
-      return 4.0; // For larger screens
+      return 4.0;
     }
   }
 
   double _calculateCrossAxisSpacing(
       BoxConstraints constraints, int crossAxisCount) {
-    // Calculate crossAxisSpacing based on screen width and crossAxisCount
     double screenWidth = constraints.maxWidth;
     if (screenWidth < 600) {
-      return 8.0; // For smaller screens
+      return 8.0;
     } else if (screenWidth < 1200) {
-      return 12.0; // For medium screens
+      return 12.0;
     } else {
-      return 4.0; // For larger screens
+      return 4.0;
     }
   }
 
   double _calculateChildAspectRatio(
       BoxConstraints constraints, int crossAxisCount) {
-    // Calculate childAspectRatio based on screen width and crossAxisCount
     double screenWidth = constraints.maxWidth;
     if (screenWidth < 600) {
-      return 0.7; // For smaller screens
+      return 0.7;
     } else if (screenWidth < 1200) {
-      return 0.6; // For medium screens
+      return 0.6;
     } else {
-      return 1.4; // For larger screens
+      return 1.4;
     }
   }
 
@@ -678,13 +666,13 @@ class _AllBooksState extends State<AllBooks> {
   ) {
     return ElevatedButton(
       onPressed: () {
-        onPressed(); // Call the onPressed callback first
-        setState(() {}); // Trigger a rebuild to update the button color
+        onPressed(); 
+        setState(() {});
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: isSelected ? DbpColor().jendelaGreen : Colors.white,
         foregroundColor: isSelected ? Colors.white : DbpColor().jendelaGray,
-        elevation: 0, // Set elevation to 0 to remove shadow
+        elevation: 0,
       ),
       child: Row(
         children: [

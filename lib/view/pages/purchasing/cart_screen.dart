@@ -160,8 +160,6 @@ class _CartScreenState extends State<CartScreen> {
                           itemCount: addToCartListkeys.length,
                           shrinkWrap: true,
                           itemBuilder: (_, index) {
-                            // print(
-                            //     "Total Data: " + addToCartListkeys.toString());
                             final int key = addToCartListkeys[index];
                             final HiveBookAPI? specificBook = myCart.get(key);
 
@@ -319,7 +317,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                     left: BorderSide(
                                                                         color: Colors
                                                                             .black
-                                                                            .withOpacity(0.2)))),
+                                                                            .withOpacity(0.2),),),),
                                                             child: const Icon(
                                                               Icons.remove,
                                                               size: 15,

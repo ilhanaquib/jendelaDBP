@@ -15,7 +15,7 @@ import 'package:jendela_dbp/stateManagement/events/media_event.dart';
 import 'package:jendela_dbp/stateManagement/events/radio_event.dart';
 import 'package:jendela_dbp/stateManagement/states/media_state.dart';
 import 'package:jendela_dbp/stateManagement/states/radio_state.dart';
-import 'package:jendela_dbp/view/pages/all_radio_screen.dart';
+import 'package:jendela_dbp/view/pages/radio/all_radio_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 

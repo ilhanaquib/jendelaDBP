@@ -276,12 +276,12 @@ class _ProfileScreen extends State<ProfileScreen> {
         OutlinedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
-                Colors.red), // Green background
+                Colors.red), 
             overlayColor: MaterialStateProperty.all<Color>(
-                Colors.transparent), // No overlay color
+                Colors.transparent), 
             side: MaterialStateProperty.all<BorderSide>(
               const BorderSide(color: Colors.red, width: 2),
-            ), // Green border
+            ), 
           ),
           onPressed: () {
             BlocProvider.of<AuthCubit>(context).logout(context);

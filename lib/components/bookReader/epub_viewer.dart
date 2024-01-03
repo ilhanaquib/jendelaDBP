@@ -16,7 +16,7 @@ class EpubViewerPage extends StatefulWidget {
 
 class _EpubViewerPageState extends State<EpubViewerPage> {
   late EpubController _epubController;
-  String? lastReadCfi; // Store the last read position
+  String? lastReadCfi;
   bool isOverlayVisible = false;
 
   void showOverlayPage() {
@@ -34,7 +34,6 @@ class _EpubViewerPageState extends State<EpubViewerPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize with the saved last read position or start from the beginning
     _epubController = EpubController(
       document: EpubDocument.openAsset('assets/books/accessible_epub_3.epub'),
       epubCfi: lastReadCfi ?? 'epubcfi(/6/6[chapter-1]!/4/2/1)',
@@ -44,7 +43,6 @@ class _EpubViewerPageState extends State<EpubViewerPage> {
   @override
   void dispose() {
     super.dispose();
-    // Save the current position when the user closes the book
     lastReadCfi = _epubController.generateEpubCfi();
   }
 
@@ -52,12 +50,11 @@ class _EpubViewerPageState extends State<EpubViewerPage> {
   // ignore: deprecated_member_use
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
-          // Close the overlay page if it's visible
           if (isOverlayVisible) {
             closeOverlayPage();
-            return false; // Prevent default back navigation
+            return false;
           }
-          return true; // Allow default back navigation
+          return true;
         },
         child: Scaffold(
           appBar: AppBar(
@@ -73,12 +70,10 @@ class _EpubViewerPageState extends State<EpubViewerPage> {
             ),
             leading: IconButton(
               onPressed: () async {
-                // Close the overlay page if it's visible
                 if (isOverlayVisible) {
                   closeOverlayPage();
                 } else {
-                  Navigator.of(context)
-                      .pop(); // Navigate back to the previous page
+                  Navigator.of(context).pop();
                 }
               },
               icon: const Icon(Icons.arrow_back),
@@ -93,7 +88,6 @@ class _EpubViewerPageState extends State<EpubViewerPage> {
           body: Stack(children: [
             EpubView(
               controller: _epubController,
-              
             ),
             if (isOverlayVisible)
               GestureDetector(

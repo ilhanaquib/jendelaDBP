@@ -60,7 +60,7 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
     super.dispose();
   }
 
-  bool isFetching = false; // Track fetching status
+  bool isFetching = false;
 
   @override
   Widget build(BuildContext context) {
@@ -117,23 +117,19 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
                       const SnackBar(
                         content: Text('Sedang mendapatkan berita...'),
                         duration: Duration(
-                            days: 1), // Long duration to keep snackbar visible
+                            days: 1),
                       ),
                     );
 
-                    // Simulating content fetching delay
                     Future.delayed(const Duration(seconds: 1), () {
-                      // Add event to fetch more content
                       beritaBloc.add(
                         BeritaFetchMore(perPage: 25),
                       );
 
-                      // Update state after content is fetched
                       setState(() {
                         isFetching = false;
                       });
 
-                      // Hide snackbar after content is fetched
                       scaffoldMessengerKey.currentState!.hideCurrentSnackBar();
                     });
                   }
@@ -156,7 +152,7 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
                             beritaBloc.add(BeritaFetch());
                           },
                           child: SingleChildScrollView(
-                              child: _beritaList(context))),
+                              child: _beritaList(context),),),
                     )
                   ],
                 ),
@@ -171,24 +167,18 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
   Widget _beritaList(BuildContext context) {
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       childAspectRatio = 1;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       childAspectRatio = 0.9;
     } else {
-      // Use the default padding for phones and other devices
-      childAspectRatio = 0.65;
+      childAspectRatio = 0.62;
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 3;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 2;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 2;
     }
     Map<int, dynamic> categoryId = {
@@ -231,7 +221,6 @@ class _CategorizedBeritaState extends State<CategorizedBerita> {
                     return const SizedBox(
                       height: 300,
                       child: Center(
-                        //change card
                         child: BeritaNotFoundCard(),
                       ),
                     );

@@ -56,52 +56,20 @@ class _HomeArticleCard extends State<HomeBeritaCard> {
 
   Widget getImageWidget() {
     if (widget.berita.featuredImage != null) {
-      return Stack(
-        children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: CachedNetworkImage(
-              imageUrl: widget.berita.featuredImage!,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withOpacity(1)],
-                  stops: const [0.6, 1.0],
-                ),
-              ),
-            ),
-          ),
-        ],
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: CachedNetworkImage(
+          imageUrl: widget.berita.featuredImage!,
+          fit: BoxFit.cover,
+        ),
       );
     } else {
-      return Stack(
-        children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Image.asset(
-              'assets/images/logonobg.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withOpacity(1)],
-                  stops: const [0.6, 1.0],
-                ),
-              ),
-            ),
-          ),
-        ],
+      return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Image.asset(
+          'assets/images/logonobg.png',
+          fit: BoxFit.cover,
+        ),
       );
     }
   }
@@ -156,42 +124,41 @@ class _HomeArticleCard extends State<HomeBeritaCard> {
                 //     ),
                 //   ),
                 // ),
-                 Padding(
-                   padding: const EdgeInsets.only(top:8.0),
-                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          //width: 100,
-                          child: SizedBox(
-                            width: widget.textSize,
-                            child: Text(
-                              parse(widget.berita.postTitle).body?.text ?? '',
-                              softWrap: true,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        child: SizedBox(
+                          width: widget.textSize,
                           child: Text(
-                            DateFormat('d MMM yyyy, HH:mm').format(
-                              DateTime.parse(widget.berita.postDate ?? ''),
-                            ),
+                            parse(widget.berita.postTitle).body?.text ?? '',
+                            softWrap: true,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                                textBaseline: TextBaseline.alphabetic,
-                                color: Color.fromARGB(255, 174, 176, 178)),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                 ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          DateFormat('d MMM yyyy, HH:mm').format(
+                            DateTime.parse(widget.berita.postDate ?? ''),
+                          ),
+                          style: const TextStyle(
+                              textBaseline: TextBaseline.alphabetic,
+                              color: Color.fromARGB(255, 174, 176, 178)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

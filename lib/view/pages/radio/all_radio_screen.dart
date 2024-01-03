@@ -30,7 +30,6 @@ class _AllRadiosScreen extends State<AllRadioScreen> {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
-        // Reach the bottom.
         radioBloc.add(RadioFetchMore(perPage: _perPage));
       }
     });

@@ -26,7 +26,6 @@ class BookSearchDelegate extends SearchDelegate<String> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    // clear button
     return [
       IconButton(
         icon: const Icon(Icons.clear),
@@ -52,7 +51,6 @@ class BookSearchDelegate extends SearchDelegate<String> {
   // search result
   Widget buildResults(BuildContext context) {
     bool isDesktop = MediaQuery.of(context).size.width >= 600;
-    // bool isMobile = MediaQuery.of(context).size.width <= 600;
     return StreamBuilder<List<HiveBookAPI>>(
       stream: searchResultsStream(query),
       builder: (context, snapshot) {
@@ -73,7 +71,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: isDesktop
                 ? 6
-                : 2, // You can adjust the number of columns as needed
+                : 2,
             mainAxisSpacing: isDesktop ? 5 : 10.0,
             crossAxisSpacing: isDesktop ? 5 : 10.0,
           ),
@@ -106,7 +104,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
                         ],
                       ),
                     ),
-                  ), // Use your image data
+                  ),
                   Text(searchResults[index].name!),
                 ],
               ),
@@ -121,7 +119,6 @@ class BookSearchDelegate extends SearchDelegate<String> {
   // suggestion
   Widget buildSuggestions(BuildContext context) {
     bool isDesktop = MediaQuery.of(context).size.width >= 600;
-    // bool isMobile = MediaQuery.of(context).size.width <= 600;
     return StreamBuilder<List<HiveBookAPI>>(
       stream: searchResultsStream(query),
       builder: (context, snapshot) {
@@ -142,7 +139,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: isDesktop
                 ? 6
-                : 2, // You can adjust the number of columns as needed
+                : 2,
             mainAxisSpacing: isDesktop ? 5 : 20.0,
             crossAxisSpacing: isDesktop ? 5 : 20.0,
           ),

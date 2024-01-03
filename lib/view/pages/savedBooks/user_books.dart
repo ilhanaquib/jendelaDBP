@@ -165,7 +165,6 @@ class _UserBooks extends State<UserBooks> {
                                   ),
                                 );
                               }
-                              // return
                               if (ResponsiveLayout.isDesktop(context)) {
                                 return GridView(
                                   physics: const BouncingScrollPhysics(

@@ -28,7 +28,6 @@ class _AllTvScreen extends State<AllTvScreen> {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
-        // Reach the bottom.
         tvBloc.add(VideoFetchMore(perPage: _perPage));
       }
     });

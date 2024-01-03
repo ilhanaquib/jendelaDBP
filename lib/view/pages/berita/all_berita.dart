@@ -40,7 +40,6 @@ class _AllBeritaState extends State<AllBerita> {
         if (scrollController.offset >=
                 scrollController.position.maxScrollExtent &&
             !scrollController.position.outOfRange) {
-          // Reach the bottom.
           beritaBloc.add(
             BeritaFetchMore(perPage: 25),
           );
@@ -126,24 +125,18 @@ class _AllBeritaState extends State<AllBerita> {
   Widget _beritaList(BuildContext context) {
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       childAspectRatio = 1;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       childAspectRatio = 0.9;
     } else {
-      // Use the default padding for phones and other devices
-      childAspectRatio = 0.65;
+      childAspectRatio = 0.6;
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 3;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 2;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 2;
     }
     return Padding(
@@ -158,7 +151,6 @@ class _AllBeritaState extends State<AllBerita> {
                 return const SizedBox(
                   height: 300,
                   child: Center(
-                    //change card
                     child: BeritaNotFoundCard(),
                   ),
                 );
@@ -172,7 +164,7 @@ class _AllBeritaState extends State<AllBerita> {
                       crossAxisSpacing: 0,
                       childAspectRatio: childAspectRatio),
                   physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
+                  shrinkWrap: true, 
                   children: List.generate(
                     berita.length,
                     (index) => BeritaCard(
@@ -181,7 +173,7 @@ class _AllBeritaState extends State<AllBerita> {
                   ),
                 ),
               );
-            }
+            } 
             if (data is BeritaError) {
               return const ErrorCard(message: 'error');
             }

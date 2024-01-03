@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -15,6 +16,7 @@ import 'package:jendela_dbp/view/pages/audiobooks/audiobooks_home.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -49,23 +51,54 @@ void main() async {
   final showHomeNotifier = prefs.getBool('showHome') ?? false;
 
   if (Platform.isWindows) {
-    // Code specific to Windows
     await windowManager.ensureInitialized();
     WindowManager.instance.setSize(const Size(1500, 800));
     WindowManager.instance.setMinimumSize(const Size(850, 650));
-    runApp(
-      DevicePreview(
-        enabled: true,
-        builder: (context) => JendelaDBP(showHomeNotifier: showHomeNotifier),
-      ),
+    await SentryFlutter.init(
+      (options) {
+        options.dsn =
+            'https://73538fe8065b477e985ef1d3eb6aca65@o557568.ingest.sentry.io/5689994';
+      },
+      appRunner: () {
+        runZonedGuarded(() {
+          runApp(
+            DevicePreview(
+              enabled: true,
+              builder: (context) =>
+                  JendelaDBP(showHomeNotifier: showHomeNotifier),
+            ),
+          );
+        }, (Object exception, StackTrace stackTrace) async {
+          await Sentry.captureException(
+            exception,
+            stackTrace: stackTrace,
+          );
+        });
+      },
     );
   } else {
-    runApp(JendelaDBP(showHomeNotifier: showHomeNotifier));
+    await SentryFlutter.init(
+      (options) {
+        options.dsn =
+            'https://73538fe8065b477e985ef1d3eb6aca65@o557568.ingest.sentry.io/5689994';
+      },
+      appRunner: () {
+        runZonedGuarded(() {
+          runApp(JendelaDBP(showHomeNotifier: showHomeNotifier));
+        }, (Object exception, StackTrace stackTrace) async {
+          await Sentry.captureException(
+            exception,
+            stackTrace: stackTrace,
+          );
+        });
+      },
+    );
   }
 }
 
 class JendelaDBP extends StatefulWidget {
-  const JendelaDBP({Key? key, required this.showHomeNotifier}) : super(key: key);
+  const JendelaDBP({Key? key, required this.showHomeNotifier})
+      : super(key: key);
 
   final bool showHomeNotifier;
 

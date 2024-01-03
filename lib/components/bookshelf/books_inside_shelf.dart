@@ -83,9 +83,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
     context.read<LikedStatusCubit>().updateLikedStatus(bookId, isLiked);
     likedStatusMap[bookId] = isLiked; // Update liked status map
 
-    setState(() {
-      // Refresh the UI if needed
-    });
+    setState(() {});
   }
 
   Color getCircleAvatarBackgroundColor(int bookId) {
@@ -132,7 +130,6 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                         // print(bookSpecific.woocommerce_variations);
                       },
                       child: SizedBox(
-                        //height: 250,
                         width: 150,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -169,9 +166,8 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                         dotSecondaryColor: Colors.white,
                                       ),
                                       isLiked:
-                                          isBookLiked, // Set initial liked status
+                                          isBookLiked,
                                       onTap: (bool isLiked) async {
-                                        //Toggle liked status and perform other necessary operations
                                         final newLikedStatus = !isLiked;
 
                                         await likedStatusBox.put(
@@ -193,7 +189,7 @@ class _BooksInsideShelfState extends State<BooksInsideShelf> {
                                               key, newLikedStatus);
                                         }
 
-                                        return newLikedStatus; // Return the new liked status
+                                        return newLikedStatus;
                                       },
                                       likeBuilder: (bool isLiked) {
                                         return Stack(

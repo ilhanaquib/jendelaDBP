@@ -25,7 +25,7 @@ import 'package:jendela_dbp/stateManagement/events/tv_event.dart';
 import 'package:jendela_dbp/stateManagement/states/berita_state.dart';
 import 'package:jendela_dbp/stateManagement/states/radio_state.dart';
 import 'package:jendela_dbp/stateManagement/states/tv_state.dart';
-import 'package:jendela_dbp/view/pages/all_radio_screen.dart';
+import 'package:jendela_dbp/view/pages/radio/all_radio_screen.dart';
 import 'package:jendela_dbp/view/pages/all_tv.dart';
 import 'package:jendela_dbp/view/pages/articles/categorized_all_articles.dart';
 import 'package:jendela_dbp/view/pages/berita/all_berita_categorized.dart';
@@ -79,7 +79,6 @@ class _HomeState extends State<Home> {
   ConnectionCubit connectionCubit = ConnectionCubit();
   final PageController pageController = PageController();
   int currentPage = 0;
-  
 
   @override
   void initState() {
@@ -219,7 +218,7 @@ class _HomeState extends State<Home> {
                         const SizedBox(
                           height: 12,
                         ),
-                        
+
                         bookShelf(
                           context,
                           "Majalah",
@@ -382,7 +381,7 @@ class _HomeState extends State<Home> {
                     textSize: ResponsiveLayout.isDesktop(context)
                         ? 250
                         : ResponsiveLayout.isTablet(context)
-                            ? 170
+                            ? 500
                             : 350,
                   );
                 },
@@ -419,24 +418,18 @@ class _HomeState extends State<Home> {
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 10;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 3;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 2;
     }
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       numOfPost = 9;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       numOfPost = 7;
     } else {
-      // Use the default padding for phones and other devices
       numOfPost = 5;
     }
     return Padding(
@@ -550,24 +543,18 @@ class _HomeState extends State<Home> {
   Widget _article(BuildContext context) {
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 10;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 8;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 4;
     }
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       numOfPost = 9;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       numOfPost = 7;
     } else {
-      // Use the default padding for phones and other devices
       numOfPost = 5;
     }
 
@@ -685,24 +672,18 @@ class _HomeState extends State<Home> {
   Widget _tvWidget(BuildContext context) {
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 12;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 10;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 4;
     }
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       numOfPost = 9;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       numOfPost = 7;
     } else {
-      // Use the default padding for phones and other devices
       numOfPost = 5;
     }
     return Container(
@@ -755,7 +736,7 @@ class _HomeState extends State<Home> {
                                     ? 5
                                     : ResponsiveLayout.isTablet(context)
                                         ? 8
-                                        : 1,
+                                        : 10,
                             children: tvList.map((tv) {
                               int index = tvList
                                   .indexOf(tv); // Index of the current article
@@ -793,7 +774,7 @@ class _HomeState extends State<Home> {
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
-                                        8.0), // Adjust the radius as needed
+                                        8.0), 
                                   ),
                                 ),
                                 onPressed: () {
@@ -843,24 +824,18 @@ class _HomeState extends State<Home> {
   Widget _radioWidget(BuildContext context) {
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 12;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 10;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 4;
     }
     int numOfPost;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       numOfPost = 9;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       numOfPost = 7;
     } else {
-      // Use the default padding for phones and other devices
       numOfPost = 5;
     }
     return Container(
@@ -907,17 +882,17 @@ class _HomeState extends State<Home> {
                             mainAxisSpacing: ResponsiveLayout.isDesktop(context)
                                 ? 5
                                 : ResponsiveLayout.isTablet(context)
-                                    ? 8
+                                    ? 6
                                     : 1,
                             crossAxisSpacing:
                                 ResponsiveLayout.isDesktop(context)
                                     ? 5
                                     : ResponsiveLayout.isTablet(context)
                                         ? 8
-                                        : 3,
+                                        : 10,
                             children: radios.map((radio) {
                               int index = radios.indexOf(
-                                  radio); // Index of the current article
+                                  radio); 
                               int crossAxisCellCount = 4;
                               int mainAxisCellCount =
                                   ResponsiveLayout.isDesktop(context)
@@ -1237,7 +1212,7 @@ class _HomeState extends State<Home> {
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
-                               // mainAxisSpacing: 2,
+                                // mainAxisSpacing: 2,
                                 childAspectRatio: 0.9,
                               ),
                               physics: const NeverScrollableScrollPhysics(),
@@ -1289,7 +1264,7 @@ class _HomeState extends State<Home> {
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
-                        8.0), // Adjust the radius as needed
+                        8.0), 
                   ),
                 ),
                 onPressed: () {

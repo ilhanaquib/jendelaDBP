@@ -65,7 +65,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
               ),
               onPressed: () {
                 _searchResult.previousInstance();
-                setState(() {}); // Update the UI to reflect the new instance
+                setState(() {});
               },
             ),
             IconButton(
@@ -75,7 +75,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
               ),
               onPressed: () {
                 _searchResult.nextInstance();
-                setState(() {}); // Update the UI to reflect the new instance
+                setState(() {});
               },
             ),
           ],

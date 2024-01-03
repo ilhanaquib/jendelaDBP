@@ -124,7 +124,7 @@ class AuthProvider extends StatelessWidget {
                         builder: (context) => const MyPersistentBottomNavBar(),
                       ),
                       (route) =>
-                          false, // Prevent going back to the previous page
+                          false,
                     );
                   },
                 text: guestAccount,

@@ -7,13 +7,12 @@ class NoDescriptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Center(child: Text('Maaf, pautan tidak dijumpai.'));
     return EmptyWidget(
       hideBackgroundAnimation: true,
       image: null,
       packageImage: PackageImage.Image_4,
-      title: 'No Info On This Book',
-      subTitle: 'Sorry, We Don\'t Have Information On This Book.',
+      title: 'Maaf, kami tiada sinopsis untuk buku ini',
+     // subTitle: 'Sorry, We Don\'t Have Information On This Book.',
       titleTextStyle: const TextStyle(
         fontSize: 22,
         color: Color(0xff9da9c7),

@@ -113,8 +113,7 @@ class _CategorizedDewanState extends State<CategorizedDewan> {
                   _berita(context, widget.i),
                   Padding(
                       padding: const EdgeInsets.only(bottom: 24),
-                      child: //_articleCategory(context, widget.i),
-                          _articles(context, widget.i)),
+                      child: _articles(context, widget.i)),
                 ],
               ),
             ),
@@ -137,24 +136,18 @@ class _CategorizedDewanState extends State<CategorizedDewan> {
     };
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       childAspectRatio = 1;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       childAspectRatio = 1.05;
     } else {
-      // Use the default padding for phones and other devices
       childAspectRatio = 0.70;
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 3;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 2;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 2;
     }
     return Padding(
@@ -242,24 +235,18 @@ class _CategorizedDewanState extends State<CategorizedDewan> {
     };
     double childAspectRatio;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       childAspectRatio = 1;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       childAspectRatio = 1.05;
     } else {
-      // Use the default padding for phones and other devices
       childAspectRatio = 0.65;
     }
     int crossAxisCount;
     if (ResponsiveLayout.isDesktop(context)) {
-      // Increase left and right padding for desktop
       crossAxisCount = 3;
     } else if (ResponsiveLayout.isTablet(context)) {
-      // Increase left and right padding for tablets
       crossAxisCount = 2;
     } else {
-      // Use the default padding for phones and other devices
       crossAxisCount = 2;
     }
     return Padding(

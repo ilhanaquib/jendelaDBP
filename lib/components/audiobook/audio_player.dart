@@ -32,7 +32,6 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       });
     });
 
-    // Listen to durationStream and update _audioDuration when it changes
     _durationSubscription = _audioPlayer.durationStream.listen((duration) {
       if (duration != null) {
         setState(() {
@@ -77,24 +76,18 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   void _skipForward() async {
-    // Get the current position of the audio
     final currentPosition = _audioPlayer.position;
 
-    // Calculate the new position to skip forward by ten seconds
     final newPosition = currentPosition + const Duration(seconds: 10);
 
-    // Seek to the new position
     await _audioPlayer.seek(newPosition);
   }
 
   void _skipBackward() async {
-    // Get the current position of the audio
     final currentPosition = _audioPlayer.position;
 
-    // Calculate the new position to skip backward by ten seconds
     final newPosition = currentPosition - const Duration(seconds: 10);
 
-    // Seek to the new position
     await _audioPlayer.seek(newPosition);
   }
 
@@ -112,15 +105,13 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   Future<String> _loadAudioFromFile(String filePath) async {
-    // Use the provided filePath directly instead of loading from assets
     final File audioFile = File(filePath);
 
-    // You might want to perform checks here to ensure the file exists, etc.
     if (!await audioFile.exists()) {
       throw const FileSystemException("File does not exist");
     }
 
-    return filePath; // Return the file path
+    return filePath;
   }
 
   void _showPopup(BuildContext context) {
@@ -142,7 +133,6 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
         overlay.size.height - buttonPosition.dy,
       ),
       items: [
-        // Popup menu items here
         const PopupMenuItem(
           value: 0.5,
           child: Text('0.5x'),
@@ -211,11 +201,11 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                 onPressed: () {
                   setState(() {
                     if (isMuted) {
-                      _audioPlayer.setVolume(1.0); // Unmute the audio player
+                      _audioPlayer.setVolume(1.0);
                     } else {
-                      _audioPlayer.setVolume(0.0); // Mute the audio player
+                      _audioPlayer.setVolume(0.0);
                     }
-                    isMuted = !isMuted; // Toggle mute state
+                    isMuted = !isMuted;
                   });
                 },
                 icon: isMuted

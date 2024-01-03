@@ -9,7 +9,7 @@ import 'package:jendela_dbp/hive/models/hive_radio_model.dart' as radio_model;
 import 'package:jendela_dbp/stateManagement/blocs/media_bloc.dart';
 import 'package:jendela_dbp/stateManagement/events/media_event.dart';
 import 'package:jendela_dbp/stateManagement/states/media_state.dart';
-import 'package:jendela_dbp/view/pages/radio_screen.dart';
+import 'package:jendela_dbp/view/pages/radio/radio_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class RadioCard extends StatefulWidget {

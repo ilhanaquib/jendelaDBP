@@ -33,7 +33,7 @@ class BookInformation extends StatefulWidget {
 
   BookInformation({super.key, required this.bookIdentification});
   @override
-  State <BookInformation> createState() => _BookInformationState();
+  State<BookInformation> createState() => _BookInformationState();
 }
 
 class _BookInformationState extends State<BookInformation> {
@@ -130,12 +130,10 @@ class _BookInformationState extends State<BookInformation> {
   }
 
   void getBookDetailFromParent() {
-    //keys will be in integer (auto increment)
     parentBook = bookFromAPI.keys
         .cast<int>()
         .where((key) =>
             bookFromAPI.get(key)!.id == widget.bookIdentification.parentID)
-        //.where((key) => bookFromAPI.get(key).id == widget.bookID)
         .toList();
 
     if (parentBook.isNotEmpty) {
@@ -147,11 +145,8 @@ class _BookInformationState extends State<BookInformation> {
   }
 
   Future<void> getBookDetails() async {
-    //keys will be in integer (auto increment)
     myBook = purchasedBook.keys
         .cast<int>()
-        // .where((key) => PurchasedBook.get(key).product_id == widget.bookID)
-
         .where((key) =>
             purchasedBook.get(key)!.productId ==
             widget.bookIdentification.productId)
@@ -169,7 +164,6 @@ class _BookInformationState extends State<BookInformation> {
           ? '${appDocDir.path}/${myDetailsBook!.productId}$currentUser${myDetailsBook!.typeFile!.toLowerCase()}'
           : '${appDocDir.path.split('Android')[0]}${Constants.epubPath}/${myDetailsBook!.productId}$currentUser${myDetailsBook!.typeFile!.toLowerCase()}';
 
-      // Get encrypted file
       File file = File('$path.dbp');
       if (await file.exists()) {
         // print('Path if file exist: ' + myDetailsBook!.localPath.toString());
@@ -200,8 +194,6 @@ class _BookInformationState extends State<BookInformation> {
   }
 
   showAlertDialog(BuildContext context) async {
-    // set up the buttons
-
     Widget cancelButton = ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xffEBE9EB),
@@ -249,7 +241,6 @@ class _BookInformationState extends State<BookInformation> {
           }
         });
 
-    // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       content: const Text("Memulihkan kembali produk?"),
       actions: [
@@ -257,7 +248,6 @@ class _BookInformationState extends State<BookInformation> {
         cancelButton,
       ],
     );
-    // show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -320,8 +310,7 @@ class _BookInformationState extends State<BookInformation> {
                                   borderRadius: BorderRadius.circular(10),
                                   child: CachedNetworkImage(
                                     alignment: Alignment.bottomCenter,
-                                    fit: BoxFit
-                                        .cover, // Use BoxFit.cover for maintaining aspect ratio within rounded corners
+                                    fit: BoxFit.cover,
                                     imageUrl: widget.bookIdentification
                                             .featuredMediaUrl ??
                                         '',
@@ -580,9 +569,9 @@ class _BookInformationState extends State<BookInformation> {
                 ? OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
+                          DbpColor().jendelaGreen),
                       overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
+                          Colors.transparent),
                       side: MaterialStateProperty.all<BorderSide>(BorderSide(
                           color: DbpColor().jendelaGreen,
                           width: 2)), // Green border
@@ -603,7 +592,6 @@ class _BookInformationState extends State<BookInformation> {
                       });
                       if (Platform.isIOS) {
                         await openEpubReader();
-                        // OpenEpubReaderForIOS();
                       } else {
                         await openEpubReader();
                       }
@@ -615,12 +603,12 @@ class _BookInformationState extends State<BookInformation> {
                 : OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
+                          DbpColor().jendelaGreen),
                       overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
+                          Colors.transparent),  
                       side: MaterialStateProperty.all<BorderSide>(BorderSide(
                           color: DbpColor().jendelaGreen,
-                          width: 2)), // Green border
+                          width: 2)),
                     ),
                     child: const Row(
                       children: [
@@ -663,12 +651,12 @@ class _BookInformationState extends State<BookInformation> {
                 ? OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
+                          DbpColor().jendelaGreen),
                       overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
+                          Colors.transparent),
                       side: MaterialStateProperty.all<BorderSide>(BorderSide(
                           color: DbpColor().jendelaGreen,
-                          width: 2)), // Green border
+                          width: 2)),
                     ),
                     child: const Row(
                       children: [
@@ -681,13 +669,11 @@ class _BookInformationState extends State<BookInformation> {
                       ],
                     ),
                     onPressed: () async {
-                      // decrypt file
                       File file = File(localPathPermanent);
                       setState(() {
                         isLoadingBook = true;
                       });
                       if (await file.exists()) {
-                        // Decrypt file
                         File decryptedFile =
                             await EncryptFile.decryptFile(file);
                         if (!context.mounted) return;
@@ -728,9 +714,9 @@ class _BookInformationState extends State<BookInformation> {
                     child: OutlinedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                            DbpColor().jendelaGreen), // Green background
+                            DbpColor().jendelaGreen),
                         overlayColor: MaterialStateProperty.all<Color>(
-                            Colors.transparent), // No overlay color
+                            Colors.transparent),
                         side: MaterialStateProperty.all<BorderSide>(
                           BorderSide(color: DbpColor().jendelaGreen, width: 2),
                         ), // Green border
@@ -753,7 +739,7 @@ class _BookInformationState extends State<BookInformation> {
                             connectivityResult == ConnectivityResult.wifi) {
                           downloadBook();
                         } else {
-                          if(!context.mounted) return;
+                          if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               behavior: SnackBarBehavior.floating,
@@ -780,12 +766,12 @@ class _BookInformationState extends State<BookInformation> {
                 ? OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
+                          DbpColor().jendelaGreen),
                       overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
+                          Colors.transparent),
                       side: MaterialStateProperty.all<BorderSide>(BorderSide(
                           color: DbpColor().jendelaGreen,
-                          width: 2)), // Green border
+                          width: 2)),
                     ),
                     child: const Row(
                       children: [
@@ -804,7 +790,7 @@ class _BookInformationState extends State<BookInformation> {
                         // Decrypt file
                         decryptedFile = await EncryptFile.decryptFile(file);
                       }
-                      if(!context.mounted) return;
+                      if (!context.mounted) return;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -818,12 +804,12 @@ class _BookInformationState extends State<BookInformation> {
                 : OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          DbpColor().jendelaGreen), // Green background
+                          DbpColor().jendelaGreen),
                       overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent), // No overlay color
+                          Colors.transparent),
                       side: MaterialStateProperty.all<BorderSide>(BorderSide(
                           color: DbpColor().jendelaGreen,
-                          width: 2)), // Green border
+                          width: 2)),
                     ),
                     child: const Row(
                       children: [
@@ -845,7 +831,7 @@ class _BookInformationState extends State<BookInformation> {
                           connectivityResult == ConnectivityResult.wifi) {
                         downloadBook();
                       } else {
-                        if(!context.mounted) return;
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             behavior: SnackBarBehavior.floating,
@@ -877,7 +863,7 @@ class _BookInformationState extends State<BookInformation> {
           // Decrypt file
           decryptedFile = await EncryptFile.decryptFile(file);
         }
-        if(!context.mounted) return;
+        if (!context.mounted) return;
         Navigator.of(context).pushNamed('/AudioPlayer', arguments: {
           'title': widget.bookIdentification.productName,
           'path': decryptedFile!.path,

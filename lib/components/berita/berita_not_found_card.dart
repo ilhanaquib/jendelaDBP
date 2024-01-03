@@ -7,7 +7,6 @@ class BeritaNotFoundCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Center(child: Text('Maaf, pautan tidak dijumpai.'));
     return EmptyWidget(
       hideBackgroundAnimation: true,
       image: null,

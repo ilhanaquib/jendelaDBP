@@ -87,11 +87,10 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
         ],
       );
     } else {
-      // Display a default image from assets if featuredImage is null
       return Stack(
         children: [
           Image.asset(
-            'assets/images/logonobg.png', // Replace 'default_image.png' with your actual default image path
+            'assets/images/logonobg.png',
             width: ResponsiveLayout.isDesktop(context)
                 ? 1200
                 : ResponsiveLayout.isTablet(context)
@@ -135,16 +134,19 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border.all(
-                            color: DbpColor().jendelaOrange, width: 2.0),
-                        color: DbpColor().jendelaOrange,
-                        borderRadius: BorderRadius.circular(100)),
+                      border: Border.all(
+                          color: DbpColor().jendelaOrange, width: 2.0),
+                      color: DbpColor().jendelaOrange,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
                         getCategoryName(widget.article.domain!),
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 10),
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -156,10 +158,18 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
                     child: Text(
                       parse(widget.article.postTitle).body?.text ?? '',
                       softWrap: true,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 29),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 29,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(1),
+                            offset: const Offset(2, 2),
+                            blurRadius: 3,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -170,8 +180,9 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
                       DateTime.parse(widget.article.postDate ?? ''),
                     ),
                     style: const TextStyle(
-                        textBaseline: TextBaseline.alphabetic,
-                        color: Color.fromARGB(255, 201, 211, 223)),
+                      textBaseline: TextBaseline.alphabetic,
+                      color: Color.fromARGB(255, 201, 211, 223),
+                    ),
                   ),
                 ),
                 OutlinedButton(
@@ -190,9 +201,11 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
                   },
                   style: OutlinedButton.styleFrom(
                     backgroundColor: DbpColor().jendelaTurqoiseDark,
+                    side: BorderSide(
+                      color: DbpColor().jendelaTurqoiseDark,
+                    ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          10.0), // Adjust the radius as needed
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
                   child: const Text(
@@ -205,20 +218,22 @@ class _HomeArticleCard extends State<ArticleSlideshowCard> {
             ),
           ),
         ),
-        Positioned(
-          bottom: 10,
-          left: 135,
-          child: SmoothPageIndicator(
-            controller: widget.pageContoller,
-            count: 8,
-            effect: ExpandingDotsEffect(
-                activeDotColor: DbpColor().jendelaOrange,
-                dotColor: DbpColor().jendelaGray,
-                dotHeight: 8,
-                dotWidth: 8),
-            onDotClicked: (index) => widget.pageContoller.animateToPage(index,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeIn),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: SmoothPageIndicator(
+              controller: widget.pageContoller,
+              count: 8,
+              effect: ExpandingDotsEffect(
+                  activeDotColor: DbpColor().jendelaOrange,
+                  dotColor: DbpColor().jendelaGray,
+                  dotHeight: 8,
+                  dotWidth: 8),
+              onDotClicked: (index) => widget.pageContoller.animateToPage(index,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn),
+            ),
           ),
         ),
       ],
