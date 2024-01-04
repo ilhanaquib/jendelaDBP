@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:jendela_dbp/controllers/dbp_color.dart';
+import 'package:jendela_dbp/controllers/screen_size.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -95,7 +96,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     setState(() {});
     _audioPlayer.setSpeed(speed);
   }
-  
+
   String formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     String hours = twoDigits(duration.inHours.remainder(60));
@@ -185,8 +186,12 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(formatTime(_currentPosition)),
-            const SizedBox(
-              width: 190,
+            SizedBox(
+              width: ResponsiveLayout.isDesktop(context)
+                  ? 250
+                  : ResponsiveLayout.isTablet(context)
+                      ? 550
+                      : 190,
             ),
             Text(formatTime(_audioDuration)),
           ],

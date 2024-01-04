@@ -32,87 +32,98 @@ class Audiobooks extends StatelessWidget {
               children: [
                 const CurvedBackground(),
                 Center(
-                  child: Column(
+                  child: Stack(
                     children: [
-                      Card(
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Stack(
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl: book!.featuredMediaUrl!,
-                                height: 200,
-                                width: 150,
-                                fit: BoxFit.fill,
-                              ),
-                            ],
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Stack(
+                              children: [
+                                CachedNetworkImage(
+                                  imageUrl: book!.featuredMediaUrl!,
+                                  height: 200,
+                                  width: 150,
+                                  fit: BoxFit.fill,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                      Container(
-                        height: 100,
-                        margin:
-                            const EdgeInsets.only(left: 50, right: 50, top: 20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              spreadRadius: 2,
-                              blurRadius: 2,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    child: TextScroll(
-                                      book!.productName!,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                      mode: TextScrollMode.endless,
-                                      velocity: const Velocity(
-                                        pixelsPerSecond: Offset(30, 0),
-                                      ),
-                                      selectable: true,
-                                      pauseBetween: const Duration(seconds: 5),
-                                    ),
-                                  ),
-                                ],
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          height: 100,
+                          margin: const EdgeInsets.only(
+                              left: 50, right: 50, top: 20),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 2,
+                                blurRadius: 2,
+                                offset: const Offset(
+                                    0, 3), // changes position of shadow
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
+                                      child: TextScroll(
+                                        book!.productName!,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                        mode: TextScrollMode.endless,
+                                        velocity: const Velocity(
+                                          pixelsPerSecond: Offset(30, 0),
+                                        ),
+                                        selectable: true,
+                                        pauseBetween:
+                                            const Duration(seconds: 5),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Padding(
                         padding:
                             const EdgeInsets.only(top: 30, left: 20, right: 20),
                         child: SizedBox(
-                          height: 200,
+                          height: 100,
                           child: SingleChildScrollView(
                             child: Text(book!.descriptionParent!),
                           ),
                         ),
                       ),
-                       Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
-                        child: AudioPlayerWidget(audioFile: audioFile),
+                      Positioned(
+                        bottom: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 30),
+                          child: AudioPlayerWidget(audioFile: audioFile),
+                        ),
                       ),
                     ],
                   ),

@@ -106,7 +106,6 @@ class _UserBooks extends State<UserBooks> {
               ],
             ),
           ],
-          
         ),
       ),
       drawer: const HomeDrawer(),
@@ -136,92 +135,94 @@ class _UserBooks extends State<UserBooks> {
                     );
                   }
                   if (state is AuthLoaded) {
-                      return BlocConsumer<ProductBloc, ProductState>(
-                        bloc: purchasedBookBloc,
-                        listener: (context, state) {
-                          if (state is ProductError) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    return BlocConsumer<ProductBloc, ProductState>(
+                      bloc: purchasedBookBloc,
+                      listener: (context, state) {
+                        if (state is ProductError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
                               behavior: SnackBarBehavior.floating,
                               content: Text(state.message ?? ''),
                               duration: const Duration(seconds: 3),
-                            ));
-                          }
-                        },
-                        builder: (context, state) {
-                          if (state is ProductLoaded) {
-                            if ((state.dataBooks?.length ?? 0) > 0) {
-                              List<Widget> listOfWidget = [];
-                              for (var index in state.dataBooks!) {
-                                HivePurchasedBook? value =
-                                    bookPurchaseBox.get(index) ??
-                                        HivePurchasedBook();
-                                listOfWidget.add(
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16),
-                                    child: BookPurchasedCoverCard(
-                                      context,
-                                      purchasedBook: value,
-                                    ),
-                                  ),
-                                );
-                              }
-                              if (ResponsiveLayout.isDesktop(context)) {
-                                return GridView(
-                                  physics: const BouncingScrollPhysics(
-                                      parent: AlwaysScrollableScrollPhysics()),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3),
-                                  children: listOfWidget,
-                                );
-                              } else if (ResponsiveLayout.isTablet(context)) {
-                                return GridView(
-                                  physics: const BouncingScrollPhysics(
-                                      parent: AlwaysScrollableScrollPhysics()),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2),
-                                  children: listOfWidget,
-                                );
-                              } else {
-                                return ListView(
-                                  physics: const BouncingScrollPhysics(
-                                      parent: AlwaysScrollableScrollPhysics()),
-                                  children: listOfWidget,
-                                );
-                              }
-                            } else {
-                              return SingleChildScrollView(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                child: SizedBox(
-                                  height:
-                                      MediaQuery.maybeOf(context)?.size.height,
-                                  child: const Center(
-                                    child: NotFoundCard(),
+                            ),
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is ProductLoaded) {
+                          if ((state.dataBooks?.length ?? 0) > 0) {
+                            List<Widget> listOfWidget = [];
+                            for (var index in state.dataBooks!) {
+                              HivePurchasedBook? value =
+                                  bookPurchaseBox.get(index) ??
+                                      HivePurchasedBook();
+                              listOfWidget.add(
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: BookPurchasedCoverCard(
+                                    context,
+                                    purchasedBook: value,
                                   ),
                                 ),
                               );
                             }
-                          }
-
-                          if (state is ProductLoading) {
-                            return Center(
-                              child: LoadingAnimationWidget.discreteCircle(
-                                color: DbpColor().jendelaGray,
-                                secondRingColor: DbpColor().jendelaGreen,
-                                thirdRingColor: DbpColor().jendelaOrange,
-                                size: 50.0,
+                            if (ResponsiveLayout.isDesktop(context)) {
+                              return GridView(
+                                physics: const BouncingScrollPhysics(
+                                    parent: AlwaysScrollableScrollPhysics()),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3),
+                                children: listOfWidget,
+                              );
+                            } else if (ResponsiveLayout.isTablet(context)) {
+                              return GridView(
+                                physics: const BouncingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
+                                ),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2),
+                                children: listOfWidget,
+                              );
+                            } else {
+                              return ListView(
+                                physics: const BouncingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
+                                ),
+                                children: listOfWidget,
+                              );
+                            }
+                          } else {
+                            return SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.maybeOf(context)?.size.height,
+                                child: const Center(
+                                  child: NotFoundCard(),
+                                ),
                               ),
                             );
                           }
+                        }
 
-                          return LoginCard(
-                            text: 'Sila log masuk untuk lihat buku anda',
+                        if (state is ProductLoading) {
+                          return Center(
+                            child: LoadingAnimationWidget.discreteCircle(
+                              color: DbpColor().jendelaGray,
+                              secondRingColor: DbpColor().jendelaGreen,
+                              thirdRingColor: DbpColor().jendelaOrange,
+                              size: 50.0,
+                            ),
                           );
-                        },
-                      );
-                    
-                    
+                        }
+
+                        return LoginCard(
+                          text: 'Sila log masuk untuk lihat buku anda',
+                        );
+                      },
+                    );
                   }
                   return LoginCard(
                     text: 'Sila log masuk untuk lihat buku anda',
